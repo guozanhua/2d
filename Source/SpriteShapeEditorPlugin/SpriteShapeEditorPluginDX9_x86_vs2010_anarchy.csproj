@@ -44,7 +44,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\dev_dll\DX9\</OutputPath>
+    <OutputPath>..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutputPath>
     <OutDir>..\..\..\..\..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9</OutDir>
     <DefineConstants>HK_ANARCHY; PROFILING; _VISION_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE; _VR_DX9; TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -68,6 +68,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CSharpFramework">
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\CSharpFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FmodManaged">
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\FmodManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedFramework">
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\ManagedFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <HintPath>$(OutputPath)</HintPath>
       <Private>False</Private>
@@ -94,21 +103,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Editor\vForge\CSharpFramework\CSharpFrameworkDX9_x86_vs2010_anarchy.csproj">
-      <Project>{CE58B52F-2B4B-4017-AB74-D798B3F6FE14}</Project>
-      <Name>CSharpFramework</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Editor\vForge\ManagedBase\ManagedBaseDX9_win32_vs2010_anarchy.vcxproj">
-      <Project>{BB872DE8-68E8-4744-9330-E16A461FD0B9}</Project>
-      <Name>ManagedBase</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Editor\vForge\ManagedFramework\ManagedFrameworkDX9_win32_vs2010_anarchy.vcxproj">
-      <Project>{1DB746A2-0837-4FF8-9E54-1CE58933163E}</Project>
-      <Name>ManagedFramework</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\SpriteShapeManaged\SpriteShapeManagedDX9_win32_vs2010_anarchy.vcxproj">
       <Project>{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}</Project>
       <Name>SpriteShapeManaged</Name>

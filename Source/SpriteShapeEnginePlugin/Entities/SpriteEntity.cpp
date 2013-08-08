@@ -1,19 +1,10 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: PHYSICS_2012+VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
+#include "SpriteShapeEnginePluginPCH.h"
 
-#include <Vision/Samples/Engine/SpriteGame/SpriteGamePluginPCH.h>
-
-#include <Vision/Samples/Engine/SpriteGame/Entities/SpriteEntity.hpp>
-#include <Vision/Samples/Engine/SpriteGame/SpriteGameApplication.hpp>
+#include "Entities/SpriteEntity.hpp"
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 
-V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &g_sampleModule);
+V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &g_NodeModule);
 
 inline void InitVertex(int index, VisMBSimpleVertex_t *pVert, float x, float y, float z)
 {
@@ -39,14 +30,11 @@ void Sprite::InitFunction()
 // called by the engine when entity is destroyed
 void Sprite::DeInitFunction()
 {
-	MyGameManager::GlobalManager().DecRemainingItems();
 }
 
 // called by our InitFunction and our de-serialization code
 void Sprite::CommonInit()
 { 
-	MyGameManager::GlobalManager().IncRemainingItems();
-
 	// does not need to be serialized
 	m_fTimePos = Vision::Game.GetFloatRand()*hkvMath::pi () * 2.0f;
 

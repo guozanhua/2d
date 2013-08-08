@@ -1,13 +1,6 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: PHYSICS_2012+VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
+#include "SpriteGamePCH.h"
 
-#include <Vision/Samples/Engine/SpriteGame/SpriteGamePluginPCH.h>
-#include <Vision/Samples/Engine/SpriteGame/SpriteGameApplication.hpp>
+#include "SpriteGameApplication.hpp"
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>

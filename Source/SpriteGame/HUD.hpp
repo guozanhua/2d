@@ -1,11 +1,3 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: PHYSICS_2012+VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
 #ifndef HUD_HPP_INCLUDED
 #define HUD_HPP_INCLUDED
 

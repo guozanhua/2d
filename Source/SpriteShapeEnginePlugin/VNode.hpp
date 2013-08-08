@@ -1,11 +1,3 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
 #ifndef VNODE_HPP_INCLUDED
 #define VNODE_HPP_INCLUDED
 

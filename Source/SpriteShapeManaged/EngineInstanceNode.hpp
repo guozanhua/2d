@@ -1,10 +1,3 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
 
 #pragma once
 
@@ -14,7 +7,7 @@ using namespace CSharpFramework::Math;
 using namespace CSharpFramework::Shapes;
 using namespace CSharpFramework::Scene;
 
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeEnginePlugin/Source/VNode.hpp>
+#include "SpriteShapeEnginePlugin/VNode.hpp"
 
 namespace NodeManaged
 {

@@ -1,15 +1,7 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: PHYSICS_2012+VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
 #ifndef SpriteGameAPPLICAION_HPP_INCLUDED
 #define SpriteGameAPPLICAION_HPP_INCLUDED
 
-#include <Vision/Samples/Engine/SpriteGame/HUD.hpp>
+#include <HUD.hpp>
 
 #ifdef WIN32
 class IVRemoteInput;

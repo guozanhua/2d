@@ -1,13 +1,6 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
 
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeManaged/SpriteShapeManagedPCH.h>
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeManaged/EngineInstanceNode.hpp>
+#include <SpriteShapeManagedPCH.h>
+#include <EngineInstanceNode.hpp>
 
 using namespace ManagedFramework;
 #using <mscorlib.dll>

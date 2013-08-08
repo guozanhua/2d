@@ -1,12 +1,4 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeManaged/SpriteShapeManagedPCH.h>
+#include <SpriteShapeManagedPCH.h>
 
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;

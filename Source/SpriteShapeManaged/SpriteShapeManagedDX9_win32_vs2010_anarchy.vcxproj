@@ -44,8 +44,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\..\..\..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteShapeManaged</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\..\..\..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\SpriteShapeManaged.dll</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\dev_dll\SpriteShapeManagedDX9\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\dev_dll\DX9\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\SpriteShapeManagedDX9\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">SpriteShapeManaged</TargetName>
     <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\..\..\..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\SpriteShapeManaged.dll</OutputFile>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
@@ -129,7 +129,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\..\..;$(DXSDK_DIR)/Include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)../;$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir)</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -157,7 +157,7 @@
       </OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>Vision/Samples/vForge/SpriteShape/SpriteShapeManaged/SpriteShapeManagedPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>SpriteShapeManagedPCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeManaged.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEVELOPMENT;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;_VR_DX9;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;WIN32;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
@@ -188,8 +188,8 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>mscoree.lib;msvcrt.lib;msvcmrt.lib;msvcprt.lib;Base.lib;Vision.lib;SpriteShapeEnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\..\..\..\Lib\win32_vs2010_anarchy\dev_dll</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mscoree.lib;msvcrt.lib;msvcmrt.lib;msvcprt.lib;Base.lib;Vision.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\dev_dll</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>
@@ -204,28 +204,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EngineInstanceNode.cpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-    <ClCompile Include="NodeManaged.cpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-    <ClInclude Include="SpriteShapeManagedPCH.h">
-      <DeploymentContent>False</DeploymentContent>
-    </ClInclude>
-    <ClInclude Include="EngineInstanceNode.hpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClInclude>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-    <ClCompile Include="SpriteShapeManagedPCH.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
+    <Reference Include="CSharpFramework, Version=2013.1.0.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\CSharpFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedFramework, Version=2013.1.0.34518, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\ManagedFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <HintPath>$(OutputPath)</HintPath>
       <Private>False</Private>
@@ -254,6 +238,21 @@
       <Name>ManagedFramework</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SpriteShapeEnginePlugin\SpriteShapeEnginePluginDX9_win32_vs2010_anarchy.vcxproj">
+      <Project>{c9cf850c-beb9-4744-b58f-98d405fa1a93}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="EngineInstanceNode.cpp" />
+    <ClCompile Include="SpriteManaged.cpp" />
+    <ClCompile Include="SpriteShapeManagedPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EngineInstanceNode.hpp" />
+    <ClInclude Include="SpriteShapeManagedPCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">

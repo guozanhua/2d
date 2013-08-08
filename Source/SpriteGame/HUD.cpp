@@ -1,14 +1,6 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: PHYSICS_2012+VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
-#include <Vision/Samples/Engine/SpriteGame/SpriteGamePluginPCH.h>
-#include <Vision/Samples/Engine/SpriteGame/HUD.hpp>
-#include <Vision/Samples/Engine/SpriteGame/SpriteGameApplication.hpp>
+#include <SpriteGamePCH.h>
+#include <HUD.hpp>
+#include <SpriteGameApplication.hpp>
 
 
 // overridden OnPaint function. Rather than rendering all open dialogs, we do all the rendering on our own.

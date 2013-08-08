@@ -1,39 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Entities">
-        <UniqueIdentifier>474B1491-74B1-4147-B149-474B1491474B</UniqueIdentifier>
-        <DeploymentContent>False</DeploymentContent></Filter>
-
+    <ClCompile Include="HUD.cpp">
+      <Filter>
+      </Filter>
+      <DeploymentContent>False</DeploymentContent>
+    </ClCompile>
+    <ClInclude Include="HUD.hpp">
+      <Filter>
+      </Filter>
+      <DeploymentContent>False</DeploymentContent>
+    </ClInclude>
+    <ClCompile Include="SpriteGameApplication.cpp">
+      <Filter>
+      </Filter>
+      <DeploymentContent>False</DeploymentContent>
+    </ClCompile>
+    <ClInclude Include="SpriteGameApplication.hpp">
+      <Filter>
+      </Filter>
+      <DeploymentContent>False</DeploymentContent>
+    </ClInclude>
+    <ClCompile Include="SpriteGamePCH.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="VisSampleAppCallbacks.cpp" />
+    <ClCompile Include="VisSampleApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HUD.cpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClCompile>
-    <ClInclude Include="HUD.hpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClInclude>
-    <ClInclude Include="Entities\SpriteEntity.hpp">
-        <Filter>Entities</Filter>
-        <DeploymentContent>False</DeploymentContent></ClInclude>
-    <ClCompile Include="Entities\SpriteEntity.cpp">
-        <Filter>Entities</Filter>
-        <DeploymentContent>False</DeploymentContent></ClCompile>
-    <ClCompile Include="SpriteGameApplication.cpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClCompile>
-    <ClInclude Include="SpriteGameApplication.hpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClInclude>
-    <ClCompile Include="PluginMain.cpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClCompile>
-    <ClInclude Include="SpriteGamePluginPCH.h">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClInclude>
-    <ClCompile Include="SpriteGamePluginPCH.cpp">
-        <Filter></Filter>
-        <DeploymentContent>False</DeploymentContent></ClCompile>
-
+    <ClInclude Include="SpriteGamePCH.h" />
+    <ClInclude Include="VisSampleApp.hpp" />
   </ItemGroup>
 </Project>

@@ -1,12 +1,18 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGameDX9", "..\Source\SpriteGame\SpriteGameDX9_win32_vs2010_anarchy.vcxproj", "{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteShapeEditorPluginDX9_x86_vs2010_anarchy", "..\Source\SpriteShapeEditorPlugin\SpriteShapeEditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteShapeEnginePluginDX9", "..\Source\SpriteShapeEnginePlugin\SpriteShapeEnginePluginDX9_win32_vs2010_anarchy.vcxproj", "{C9CF850C-BEB9-4744-B58F-98D405FA1A93}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteShapeManagedDX9", "..\Source\SpriteShapeManaged\SpriteShapeManagedDX9_win32_vs2010_anarchy.vcxproj", "{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

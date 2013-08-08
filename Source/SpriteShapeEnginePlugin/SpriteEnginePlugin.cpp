@@ -1,20 +1,13 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
 ////////////////////////////////////////////////////////////////////////////
 //
 // This project is a sample engine plugin DLL that contains the classes used
 // by the engine and vForge for integrating it into the Vision Engine
 // 
 ////////////////////////////////////////////////////////////////////////////
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeEnginePlugin/Source/SpriteShapeEnginePluginPCH.h>
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeEnginePlugin/Source/VNode.hpp>
 
+#include <SpriteShapeEnginePluginPCH.h>
+
+#include <VNode.hpp>
 
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.

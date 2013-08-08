@@ -1,13 +1,5 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeEnginePlugin/Source/SpriteShapeEnginePluginPCH.h>
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeEnginePlugin/Source/VNode.hpp>
+#include <SpriteShapeEnginePluginPCH.h>
+#include <VNode.hpp>
 #include <Vision/Runtime/Base/System/Memory/VMemDbg.hpp>
 
 static int g_bModuleRegCount = 0;

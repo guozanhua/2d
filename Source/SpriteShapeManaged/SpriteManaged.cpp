@@ -9,26 +9,14 @@
 // NodeManaged.cpp : Defines the entry point for the DLL application.
 //
 
-#include <Vision/Samples/vForge/SpriteShape/SpriteShapeManaged/SpriteShapeManagedPCH.h>
+#include <SpriteShapeManagedPCH.h>
 
 #if (_MSC_VER < 1400)  //MSVC 8.0
   // Microsoft Knowledge Base 814472
   #include "_vcclrit.h"
 #endif
 
-/*
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
-					 )
-{
-    return TRUE;
-}
-
-*/
-
 VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteEnginePlugin();
-
 
 namespace NodeManaged
 {
