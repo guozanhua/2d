@@ -1,15 +1,4 @@
-// TKBMS v1.0 -----------------------------------------------------
-//
-// PLATFORM		: ALL
-// PRODUCT		: VISION
-// VISIBILITY		: PUBLIC
-//
-// ------------------------------------------------------TKBMS v1.0
-
-// NodeManaged.cpp : Defines the entry point for the DLL application.
-//
-
-#include <SpriteShapeManagedPCH.h>
+#include "SpriteShapeManagedPCH.h"
 
 #if (_MSC_VER < 1400)  //MSVC 8.0
   // Microsoft Knowledge Base 814472

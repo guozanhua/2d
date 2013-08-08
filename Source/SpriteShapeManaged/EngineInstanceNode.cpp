@@ -1,5 +1,5 @@
+#include "SpriteShapeManagedPCH.h"
 
-#include <SpriteShapeManagedPCH.h>
 #include <EngineInstanceNode.hpp>
 
 using namespace ManagedFramework;

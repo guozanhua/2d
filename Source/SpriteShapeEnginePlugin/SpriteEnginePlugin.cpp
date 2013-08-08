@@ -1,11 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
-//
-// This project is a sample engine plugin DLL that contains the classes used
-// by the engine and vForge for integrating it into the Vision Engine
-// 
-////////////////////////////////////////////////////////////////////////////
-
-#include <SpriteShapeEnginePluginPCH.h>
+#include "SpriteShapeEnginePluginPCH.h"
 
 #include <VNode.hpp>
 

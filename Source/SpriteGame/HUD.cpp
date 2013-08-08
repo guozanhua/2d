@@ -1,7 +1,7 @@
-#include <SpriteGamePCH.h>
+#include "SpriteGamePCH.h"
+
 #include <HUD.hpp>
 #include <SpriteGameApplication.hpp>
-
 
 // overridden OnPaint function. Rather than rendering all open dialogs, we do all the rendering on our own.
 // Alternatively, all HUD controls (health status bar etc.) could be implemented as dialog controls

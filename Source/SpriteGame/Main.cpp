@@ -1,8 +1,3 @@
-
-// Basic template to base a project EXE on.
-//
-//
-
 #include "SpriteGamePCH.h"
 
 #include "SpriteGameApplication.hpp"

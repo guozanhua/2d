@@ -1,9 +1,9 @@
-#include <SpriteShapeEnginePluginPCH.h>
+#include "SpriteShapeEnginePluginPCH.h"
+
 #include <VNode.hpp>
 #include <Vision/Runtime/Base/System/Memory/VMemDbg.hpp>
 
 static int g_bModuleRegCount = 0;
-
 
 /////////////////////////////////////////////////////////////////////////////
 // VNodeCollection_cl class
