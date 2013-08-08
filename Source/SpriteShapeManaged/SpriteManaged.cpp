@@ -5,7 +5,7 @@
   #include "_vcclrit.h"
 #endif
 
-VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteEnginePlugin();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin();
 
 namespace NodeManaged
 {
@@ -20,13 +20,13 @@ namespace NodeManaged
       __crt_dll_initialize();
 #endif
       //Init the entity plugin directly since we link statically to it
-      GetEnginePlugin_SpriteEnginePlugin()->InitEnginePlugin();
+      GetEnginePlugin_SpriteShapeEnginePlugin()->InitEnginePlugin();
     }
 
     static void DeInitManagedModule()
     {
       //Deinit the entity plugin directly since we link statically to it
-      GetEnginePlugin_SpriteEnginePlugin()->DeInitEnginePlugin();
+      GetEnginePlugin_SpriteShapeEnginePlugin()->DeInitEnginePlugin();
 
 #if (_MSC_VER < 1400)  //pre MSVC 8.0
       // Microsoft Knowledge Base 814472

@@ -99,7 +99,7 @@ void VNode_cl::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef 
 
 
 // implement the Serialize function. Perform a full serialisation
-V_IMPLEMENT_SERIAL( VNode_cl, VisTypedEngineObject_cl, 0, &g_NodeModule );
+V_IMPLEMENT_SERIAL( VNode_cl, VisTypedEngineObject_cl, 0, &gSpriteShapeEngineModule );
 void VNode_cl::Serialize( VArchive &ar )
 {
   VisTypedEngineObject_cl::Serialize(ar); // call base class

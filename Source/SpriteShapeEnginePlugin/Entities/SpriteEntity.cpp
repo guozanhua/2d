@@ -4,7 +4,7 @@
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 
-V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &g_NodeModule);
+V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gSpriteShapeEngineModule);
 
 inline void InitVertex(int index, VisMBSimpleVertex_t *pVert, float x, float y, float z)
 {

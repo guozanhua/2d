@@ -18,5 +18,5 @@
 #include <Vision/Runtime/Base/VBase.hpp>
 #include <Vision/Runtime/Engine/System/Vision.hpp>
 
-extern VModule g_NodeModule; // declared below with DECLARE_THIS_MODULE macro
+extern VModule gSpriteShapeEngineModule; // declared below with DECLARE_THIS_MODULE macro
 

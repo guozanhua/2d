@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\</OutputPath>
-    <OutDir>..\..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9</OutDir>
+    <OutDir>..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9</OutDir>
     <DefineConstants>HK_ANARCHY; PROFILING; _VISION_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE; _VR_DX9; TRACE; DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -45,7 +45,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutputPath>
-    <OutDir>..\..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9</OutDir>
+    <OutDir>..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9</OutDir>
     <DefineConstants>HK_ANARCHY; PROFILING; _VISION_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE; _VR_DX9; TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

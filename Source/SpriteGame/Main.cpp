@@ -11,7 +11,7 @@ int windowSizeY    = 768;                // Set the Window size Y if not in full
 int windowPosX    = 500;                 // Set the Window position X if not in fullscreen.
 int windowPosy    = 50;                  // Set the Window position Y if not in fullscreen.
 
-char name[]      = "StandAlone Project Template";  // Name to be displayed in the windows title bar.
+char name[]      = "2D Sprite Game";  // Name to be displayed in the windows title bar.
 char StartUpScene[]  = "Scenes\\Default.vscene";   // Set the location of your start up scene.
 
 float cameraInitX = 0;                    //
@@ -21,7 +21,7 @@ float cameraInitZ = 170;                  // Set our camera above the ground so 
 
 // Use the following line to initialize a plugin that is statically linked. 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
-VIMPORT IVisPlugin_cl* GetEnginePlugin_GamePlugin();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin();
          
 VisSampleAppPtr spApp;
 
@@ -80,7 +80,7 @@ VISION_INIT
   // Use the following line to load a plugin. Remember that, except on Windows platform, in addition
   // you still need to statically link your plugin library (e.g. on mobile platforms) through project
   // Properties, Linker, Additional Dependencies.
-  VISION_PLUGIN_ENSURE_LOADED(GamePlugin);
+  VISION_PLUGIN_ENSURE_LOADED(SpriteShapeEnginePlugin);
 
   // Init the application and point it to the start up scene.
   if (!spApp->InitSample( "", StartUpScene, VSAMPLE_INIT_DEFAULTS|VSAMPLE_CUSTOMDATADIRECTORIES,windowSizeX,windowSizeY))

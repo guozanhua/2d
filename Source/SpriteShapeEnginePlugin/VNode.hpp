@@ -7,13 +7,11 @@ class VNodeMananger_cl;
 class VNode_cl;
 typedef VSmartPtr<VNode_cl> VNodePtr;
 
-#ifdef SpriteEnginePlugin_EXPORTS
+#ifdef SPRITE_SHAPE_ENGINE_PLUGIN_EXPORTS
   #define NODE_IMPEXP __declspec(dllexport)
 #else
   #define NODE_IMPEXP __declspec(dllimport)
 #endif
-
-
 
 // 
 // *** VNodeCollection_cl ***
