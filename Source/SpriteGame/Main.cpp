@@ -3,8 +3,6 @@
 #include "VisSampleApp.hpp"
 #include "SpriteGameApplication.hpp"
 
-#include "Entities/SpriteEntity.hpp"
-
 //============================================================================================================
 // Properties for start up. Some of the settings are not relevant for mobile devices
 //============================================================================================================
@@ -112,7 +110,7 @@ VISION_SAMPLEAPP_AFTER_LOADING
 	VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
 	pCamera->SetPosition( hkvVec3(cameraInitX, cameraInitY, cameraInitZ) );
 
-	Sprite *pSprite = new Sprite();
+	SpriteGameManager::GlobalManager().OneTimeInit();
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -126,9 +124,12 @@ VISION_SAMPLEAPP_RUN
 
 VISION_DEINIT
 {
+	SpriteGameManager::GlobalManager().OneTimeDeInit();
+
 	// Deinit the application
 	spApp->DeInitSample();
 	spApp = NULL;
+
 	return true;
 }
 

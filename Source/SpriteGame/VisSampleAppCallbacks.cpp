@@ -9,21 +9,21 @@ VISION_CALLBACK bool VisionSampleAppRunFunction();
 
 VISION_RUN
 {
-  //check if the scene loading is finished
-  VisSampleApp::ApplicationState appState = static_cast<VisSampleApp*>(Vision::GetApplication())->GetApplicationState();
-  if (appState == VisSampleApp::AS_LOADING)
-  {
-    return true;
-  }
-  else if (appState == VisSampleApp::AS_LOADING_ERROR)
-  {
-    return false;
-  }
-  else if (appState == VisSampleApp::AS_AFTER_LOADING)
-  {
-    VisionSampleAppAfterLoadingFunction();
-  }  
-  return VisionSampleAppRunFunction();
+	//check if the scene loading is finished
+	VisSampleApp::ApplicationState appState = static_cast<VisSampleApp*>(Vision::GetApplication())->GetApplicationState();
+	if (appState == VisSampleApp::AS_LOADING)
+	{
+		return true;
+	}
+	else if (appState == VisSampleApp::AS_LOADING_ERROR)
+	{
+		return false;
+	}
+	else if (appState == VisSampleApp::AS_AFTER_LOADING)
+	{
+		VisionSampleAppAfterLoadingFunction();
+	}  
+	return VisionSampleAppRunFunction();
 }
 
 /*

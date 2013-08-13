@@ -34,6 +34,8 @@ protected:
 	float m_fTimePos;
 
 	VisMeshBuffer_cl *m_spriteMeshBuffer;
+	VisStaticMeshPtr m_staticMesh;
+	VisStaticMeshInstance_cl *m_staticMeshInstance;
 
 public:
 	// serialization and type management

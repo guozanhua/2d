@@ -7,7 +7,7 @@
 // Alternatively, all HUD controls (health status bar etc.) could be implemented as dialog controls
 void HUDGUIContext::OnPaint(VGraphicsInfo &Graphics, const VItemRenderInfo &parentState)
 {
-  //if (!MyGameManager::GlobalManager().GetPlayer())
+  //if (!SpriteGameManager::GlobalManager().GetPlayer())
   //  return;
   
   VSimpleRenderState_t state = VGUIManager::DefaultGUIRenderState(VIS_TRANSP_ALPHA);
@@ -33,7 +33,7 @@ void HUDGUIContext::OnPaint(VGraphicsInfo &Graphics, const VItemRenderInfo &pare
   m_spFont->PrintText(&Graphics.Renderer,labelpos,"Health :",V_RGBA_WHITE,state,1.f);
 
   // display remaining item counts
-  int iCount = MyGameManager::GlobalManager().GetRemainingItems();
+  int iCount = SpriteGameManager::GlobalManager().GetRemainingItems();
   char szBuffer[64];
   sprintf(szBuffer,"%i",iCount);
   labelpos.x = client.m_vMax.x-150.f;

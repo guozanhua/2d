@@ -28,6 +28,7 @@ xcopy "%SRC_DIR%\ManagedFramework.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\VisionEnginePlugin.vPlugin" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vHavok.vPlugin" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vFmodEnginePlugin.vPlugin" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\vRemotePlugin.vPlugin" "%ROOT_DIR%\%CONF%" /Y
 
 
 set CONF=Bin\%ARCH%\debug_dll\DX9
@@ -43,6 +44,7 @@ xcopy "%SRC_DIR%\ManagedFramework.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\VisionEnginePlugin.vPluginD" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vHavok.vPluginD" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vFmodEnginePlugin.vPluginD" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\vRemotePlugin.vPluginD" "%ROOT_DIR%\%CONF%" /Y
 
 
 REM - Start copy (Base data)

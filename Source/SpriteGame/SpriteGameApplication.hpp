@@ -3,11 +3,13 @@
 
 #include <HUD.hpp>
 
+#include "Entities/SpriteEntity.hpp"
+
 #ifdef WIN32
 class IVRemoteInput;
 #endif
 
-class MyGameManager : public IVisCallbackHandler_cl
+class SpriteGameManager : public IVisCallbackHandler_cl
 {
 public:
   VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
@@ -30,18 +32,19 @@ public:
   void DecRemainingItems();
 
   // access one global instance of the fame manager
-  static MyGameManager& GlobalManager() {return g_GameManager;}
+  static SpriteGameManager& GlobalManager() {return g_GameManager;}
 
 private:
   bool m_bPlayingTheGame;
   HUDGUIContextPtr m_spHUD;
   //Player *m_pPlayerEntity;
+  Sprite *m_pPlayerSprite;
   int m_iRemainingItems;
 #ifdef WIN32
   IVRemoteInput *m_pRemoteInput;
 #endif
 
-  static MyGameManager g_GameManager;
+  static SpriteGameManager g_GameManager;
 };
 
 

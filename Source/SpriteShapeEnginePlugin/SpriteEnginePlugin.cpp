@@ -7,27 +7,25 @@
 class SpriteShapeEnginePlugin_cl : public IVisPlugin_cl
 {
 public:
+	// this function is only called once since an external init counter takes care
+	VOVERRIDE void OnInitEnginePlugin()
+	{
+		Vision::RegisterModule(&gSpriteShapeEngineModule);
+		VNodeMananger_cl::GlobalManager().OneTimeInit();
+	}
 
-  // this function is only called once since an external init counter takes care
-  VOVERRIDE void OnInitEnginePlugin()
-  {
-    Vision::RegisterModule(&gSpriteShapeEngineModule);
-    VNodeMananger_cl::GlobalManager().OneTimeInit();
-  }
+	// only called once
+	VOVERRIDE void OnDeInitEnginePlugin()
+	{
+		Vision::UnregisterModule(&gSpriteShapeEngineModule);
+		VNodeMananger_cl::GlobalManager().OneTimeDeInit();
+	}
 
-  // only called once
-  VOVERRIDE void OnDeInitEnginePlugin()
-  {
-    Vision::UnregisterModule(&gSpriteShapeEngineModule);
-    VNodeMananger_cl::GlobalManager().OneTimeDeInit();
-  }
-  
-  VOVERRIDE const char *GetPluginName()
-  {
-    return "SpriteShapeEnginePlugin";  //must match DLL name
-  }
+	VOVERRIDE const char *GetPluginName()
+	{
+		return "SpriteShapeEnginePlugin";  //must match DLL name
+	}
 };
-
 
 // our global instance of the plugin descriptor:
 SpriteShapeEnginePlugin_cl g_SpriteShapeEnginePlugin;
@@ -37,7 +35,7 @@ DECLARE_THIS_MODULE( gSpriteShapeEngineModule,
 					 MAKE_VERSION(1, 0),
 					 "SpriteShapeEnginePlugin",
 					 "Havok",
-					 "Adds functionality for use with 2D",
+					 "2D toolset for Project Anarchy",
 					 &g_SpriteShapeEnginePlugin );
 
 ////////////////////////////////////////////////////////////////////////////

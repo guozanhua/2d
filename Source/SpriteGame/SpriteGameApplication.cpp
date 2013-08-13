@@ -10,9 +10,9 @@
 #endif
 
 // one global static instance
-MyGameManager MyGameManager::g_GameManager;
+SpriteGameManager SpriteGameManager::g_GameManager;
 
-void MyGameManager::OneTimeInit()
+void SpriteGameManager::OneTimeInit()
 {
 	m_bPlayingTheGame = false;
 	m_iRemainingItems = 0;
@@ -27,14 +27,14 @@ void MyGameManager::OneTimeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished += this;
 	m_pRemoteInput = NULL;
-	VISION_PLUGIN_ENSURE_LOADED(vRemoteInput);
-	m_pRemoteInput = (IVRemoteInput*)Vision::Plugins.GetRegisteredPlugin("vRemoteInput");
-	//if(Vision::Editor.IsInEditor() && m_pRemoteInput)
-	//m_pRemoteInput->SetResizeOnConnect(false);
+	//VISION_PLUGIN_ENSURE_LOADED(vRemoteInput);
+	//m_pRemoteInput = (IVRemoteInput*)Vision::Plugins.GetRegisteredPlugin("vRemoteInput");
 #endif
+
+	m_pPlayerSprite = reinterpret_cast<Sprite*>( Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 170), NULL) );
 }
 
-void MyGameManager::OneTimeDeInit()
+void SpriteGameManager::OneTimeDeInit()
 {
 	Vision::Callbacks.OnEditorModeChanged -= this;
 	Vision::Callbacks.OnBeforeSceneLoaded -= this;
@@ -43,9 +43,11 @@ void MyGameManager::OneTimeDeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
+
+	m_pPlayerSprite->Remove();
 }
 
-void MyGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
+void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 {
 	if (pData->m_pSender==&Vision::Callbacks.OnEditorModeChanged)
 	{
@@ -79,7 +81,7 @@ void MyGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 }
 
 // decrease the number of remaining items. Called in the DeInitFunction of HealthPack entity
-void MyGameManager::DecRemainingItems()
+void SpriteGameManager::DecRemainingItems()
 {
 	if (m_bPlayingTheGame)
 	{
@@ -90,9 +92,8 @@ void MyGameManager::DecRemainingItems()
 	}
 }
 
-
 // switch to play-the-game mode. Do some initialization such as HUD display
-void MyGameManager::SetPlayTheGame(bool bStatus)
+void SpriteGameManager::SetPlayTheGame(bool bStatus)
 {
 	if (m_bPlayingTheGame==bStatus)
 		return;
