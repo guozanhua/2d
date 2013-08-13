@@ -255,22 +255,6 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
     iSampleFlags &= ~VSAMPLE_ASKFULLSCREEN;
   }
 
-  // Show dialog asking the user if he wants to go fullscreen
-  if (iSampleFlags & VSAMPLE_ASKFULLSCREEN)
-  {
-    // the question is negated, so that just pressing enter will stay in windowed mode, the return value is true
-    if ( MessageBoxA (NULL, "Do you want to run in windowed mode?",szCaption, MB_ICONQUESTION | MB_YESNO ) == IDNO) 
-    {
-      iSampleFlags |= VSAMPLE_FORCEFULLSCREEN;
-    }
-    else
-    {
-      iSampleFlags &= ~VSAMPLE_FORCEFULLSCREEN;
-    }
-
-  }
-  //m_appConfig.m_videoConfig.m_iAdapter = 0;
-
   if ((iSampleFlags & VSAMPLE_FORCEFULLSCREEN) && (iSampleFlags & VSAMPLE_USEDESKTOPRESOLUTION))
   {
     DEVMODEA deviceMode;
@@ -772,23 +756,7 @@ void VisSampleApp::DeInitSample()
   m_bSampleInitialized = false; 
 
   DeInitEngine();
-  Vision::SetApplication(NULL);
-  
-  
-  #ifdef _VISION_PS3
-    #ifdef VSTREAMPROCESS_RUN_IN_SPURS
-      VStreamProcessor::DeInitialize();
-    #endif
-
-    VSpursHandler *pSpursHandler = Vision::GetSpursHandler();
-    #ifdef HK_DEBUG
-      VSpuPrintfService::Finalize();
-    #endif
-    bool bRet = pSpursHandler->DeInitializeSpurs();
-    VASSERT(bRet);
-    V_SAFE_DELETE(pSpursHandler);
-  #endif
-  
+  Vision::SetApplication(NULL);  
 
   //Unload any plugins
   //Remember: This can unload the application object's code if it's in a plugin.

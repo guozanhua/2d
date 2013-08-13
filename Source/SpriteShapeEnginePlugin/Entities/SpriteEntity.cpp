@@ -8,15 +8,18 @@ V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gSpriteShapeEngineModule);
 
 inline void InitVertex(int index, VisMBSimpleVertex_t *pVert, float x, float y, float z)
 {
-  VColorRef iColor((index==2)?0:255,(index==1)?0:255,(index==0)?0:255,(index%3)*85);
-  pVert->color = iColor.GetNative();
+	VColorRef iColor( (index == 2) ? 0 : 255,
+					  (index == 1) ? 0 : 255,
+					  (index == 0) ? 0 : 255,
+					  (index % 3) * 85 );
+	pVert->color = iColor.GetNative();
 
-  pVert->texcoord0[0] = x * 0.05f;
-  pVert->texcoord0[1] = y * 0.05f;
+	pVert->texcoord0[0] = x * 0.05f;
+	pVert->texcoord0[1] = y * 0.05f;
 
-  pVert->pos[0] = x;
-  pVert->pos[1] = y;
-  pVert->pos[2] = z;
+	pVert->pos[0] = x;
+	pVert->pos[1] = y;
+	pVert->pos[2] = z;
 }
 
 // called by the engine when entity is created. Not when it is de-serialized!
@@ -77,15 +80,15 @@ void Sprite::CommonInit()
 // called by the engine once a tick
 void Sprite::ThinkFunction()
 {
-  float dtime = Vision::GetTimer()->GetTimeDifference();
+	float dtime = Vision::GetTimer()->GetTimeDifference();
 
-  // rotate health pack
-  IncOrientation(dtime*40.f,0.f,0.f);
-  m_fTimePos = hkvMath::mod (m_fTimePos+dtime*3.f,hkvMath::pi () * 2.0f);
+	// rotate health pack
+	IncOrientation(dtime*40.f,0.f,0.f);
+	m_fTimePos = hkvMath::mod (m_fTimePos+dtime*3.f,hkvMath::pi () * 2.0f);
 
-  hkvVec3 vPos = m_vCenterPos;
-  vPos.z += 8.f*hkvMath::sinRad (m_fTimePos);
-  SetPosition(vPos);
+	hkvVec3 vPos = m_vCenterPos;
+	vPos.z += 8.f*hkvMath::sinRad (m_fTimePos);
+	SetPosition(vPos);
 }
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char * value)
@@ -102,28 +105,29 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char * value)
 // Serialization function : Used when exported by vForge and loaded by scene viewer
 void Sprite::Serialize( VArchive &ar )
 {
-  VisBaseEntity_cl::Serialize(ar);
-  if (ar.IsLoading())
-  {
-    m_vCenterPos.SerializeAsVisVector (ar);
-  } else
-  {
-    m_vCenterPos.SerializeAsVisVector (ar);
-  }
+	VisBaseEntity_cl::Serialize(ar);
+	if (ar.IsLoading())
+	{
+		m_vCenterPos.SerializeAsVisVector (ar);
+	} 
+	else
+	{
+		m_vCenterPos.SerializeAsVisVector (ar);
+	}
 }
 
 void Sprite::OnSerialized(VArchive &ar)
 {
-  VisBaseEntity_cl::OnSerialized(ar);
+	VisBaseEntity_cl::OnSerialized(ar);
 
-  // call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
-  CommonInit();
+	// call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
+	CommonInit();
 }
 
 // called when this item is picked by player
 void Sprite::Pickup()
 {
-  Remove();
+	Remove();
 }
 
 // vartable; provide the following members to vForge. Although vPhysXEntity is the base class we use VisBaseEntity_cl here to hide physX properties

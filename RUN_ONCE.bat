@@ -23,6 +23,8 @@ xcopy "%SRC_DIR%\lua100.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\Base.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\BaseUI.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\Vision.dll" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\CSharpFramework.dll" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\ManagedFramework.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\VisionEnginePlugin.vPlugin" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vHavok.vPlugin" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vFmodEnginePlugin.vPlugin" "%ROOT_DIR%\%CONF%" /Y
@@ -36,6 +38,8 @@ xcopy "%SRC_DIR%\lua100D.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\BaseD.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\BaseUID.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\VisionD.dll" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\CSharpFramework.dll" "%ROOT_DIR%\%CONF%" /Y
+xcopy "%SRC_DIR%\ManagedFramework.dll" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\VisionEnginePlugin.vPluginD" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vHavok.vPluginD" "%ROOT_DIR%\%CONF%" /Y
 xcopy "%SRC_DIR%\vFmodEnginePlugin.vPluginD" "%ROOT_DIR%\%CONF%" /Y

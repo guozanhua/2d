@@ -1,7 +1,9 @@
 #include "SpriteGamePCH.h"
 
-#include "SpriteGameApplication.hpp"
 #include "VisSampleApp.hpp"
+#include "SpriteGameApplication.hpp"
+
+#include "Entities/SpriteEntity.hpp"
 
 //============================================================================================================
 // Properties for start up. Some of the settings are not relevant for mobile devices
@@ -17,12 +19,12 @@ char StartUpScene[]  = "Scenes\\Default.vscene";   // Set the location of your s
 float cameraInitX = 0;                    //
 float cameraInitY = 0;                    //
 float cameraInitZ = 170;                  // Set our camera above the ground so that we can see 
-                                          // the ground.
+										  // the ground.
 
 // Use the following line to initialize a plugin that is statically linked. 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
 VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin();
-         
+		 
 VisSampleAppPtr spApp;
 
 //---------------------------------------------------------------------------------------------------------
@@ -30,63 +32,69 @@ VisSampleAppPtr spApp;
 //---------------------------------------------------------------------------------------------------------
 VISION_INIT
 {
-    // Create our new application.
-  spApp = new VisSampleApp();
-  
-  // set the initial starting position of our game window
-  // and other properties if not in fullscreen. This is only relevant on windows
+	// Create our new application.
+	spApp = new VisSampleApp();
+
+	// set the initial starting position of our game window
+	// and other properties if not in fullscreen. This is only relevant on windows
 #if defined(WIN32)
-  spApp->m_appConfig.m_videoConfig.m_iXPos = windowPosX;
-  spApp->m_appConfig.m_videoConfig.m_iYPos = windowPosy;
-  spApp->m_appConfig.m_videoConfig.m_szWindowTitle = name;
+	spApp->m_appConfig.m_videoConfig.m_iXPos = windowPosX;
+	spApp->m_appConfig.m_videoConfig.m_iYPos = windowPosy;
+	spApp->m_appConfig.m_videoConfig.m_szWindowTitle = name;
 #endif
 
-  // Set the executable directory the current directory
-  VisionAppHelpers::MakeEXEDirCurrent();
+	// Set the executable directory the current directory
+	VisionAppHelpers::MakeEXEDirCurrent();
 
-  // Set the paths to our stand alone version to override the VisSAampleApp paths.
-  // The paths are platform dependent
+	// Set the paths to our stand alone version to override the VisSAampleApp paths.
+	// The paths are platform dependent
 #if defined(WIN32)
-  const VString szRoot = "..\\..\\..\\..";
-  Vision::File.AddDataDirectory( szRoot + "\\Assets" );
-  Vision::File.AddDataDirectory( szRoot + "\\Data\\Vision\\Base" );
-  
+	const VString szRoot = "..\\..\\..\\..";
+	Vision::File.AddDataDirectory( szRoot + "\\Assets" );
+	Vision::File.AddDataDirectory( szRoot + "\\Data\\Vision\\Base" );
 #elif defined(_VISION_ANDROID)
-  VString szRoot = VisSampleApp::GetApkDirectory();
-  szRoot += "?assets";
-  Vision::File.AddDataDirectory( szRoot + "\\Assets" );
-  // "/Data/Vision/Base" is always added by the sample app
-  
+	VString szRoot = VisSampleApp::GetApkDirectory();
+	szRoot += "?assets";
+	Vision::File.AddDataDirectory( szRoot + "\\Assets" );
+
+	// "/Data/Vision/Base" is always added by the sample app
 #elif defined(_VISION_IOS)
-  // setup directories, does nothing on platforms other than iOS,
-  // pass true if you want load from the documents directory
-  VISION_SET_DIRECTORIES(false);
-  VString szRoot = VisSampleApp::GetRootDirectory();
-  // our deploy script always copies the asset data below the "Data" folder
-  Vision::File.AddDataDirectory( szRoot + "/Data/Assets" );
-  // "/Data/Vision/Base" is always added by the sample app
-  
+	// setup directories, does nothing on platforms other than iOS,
+	// pass true if you want load from the documents directory
+	VISION_SET_DIRECTORIES(false);
+	VString szRoot = VisSampleApp::GetRootDirectory();
+
+	// our deploy script always copies the asset data below the "Data" folder
+	Vision::File.AddDataDirectory( szRoot + "/Data/Assets" );
+
+	// "/Data/Vision/Base" is always added by the sample app
 #endif
 
 #if defined(VISION_OUTPUT_DIR)
-  // Set the output directory manually since VSAMPLE_CUSTOMDATADIRECTORIES was specified
-  // at the initialization.
-  Vision::File.SetOutputDirectory(VISION_OUTPUT_DIR);
-  Vision::File.AddDataDirectory(VISION_OUTPUT_DIR);
+	// Set the output directory manually since VSAMPLE_CUSTOMDATADIRECTORIES was specified
+	// at the initialization.
+	Vision::File.SetOutputDirectory(VISION_OUTPUT_DIR);
+	Vision::File.AddDataDirectory(VISION_OUTPUT_DIR);
 #endif
 
-  spApp->LoadVisionEnginePlugin();
+	spApp->LoadVisionEnginePlugin();
 
-  // Use the following line to load a plugin. Remember that, except on Windows platform, in addition
-  // you still need to statically link your plugin library (e.g. on mobile platforms) through project
-  // Properties, Linker, Additional Dependencies.
-  VISION_PLUGIN_ENSURE_LOADED(SpriteShapeEnginePlugin);
+	// Use the following line to load a plugin. Remember that, except on Windows platform, in addition
+	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
+	// Properties, Linker, Additional Dependencies.
+	VISION_PLUGIN_ENSURE_LOADED(SpriteShapeEnginePlugin);
 
-  // Init the application and point it to the start up scene.
-  if (!spApp->InitSample( "", StartUpScene, VSAMPLE_INIT_DEFAULTS|VSAMPLE_CUSTOMDATADIRECTORIES,windowSizeX,windowSizeY))
-    return false;
+	// Init the application and point it to the start up scene.
+	if ( !spApp->InitSample("",
+		StartUpScene,
+		VSAMPLE_INIT_DEFAULTS | VSAMPLE_CUSTOMDATADIRECTORIES,
+		windowSizeX,
+		windowSizeY) )
+	{
+		return false;
+	}
 
-  return true;
+	return true;
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -95,19 +103,16 @@ VISION_INIT
 
 VISION_SAMPLEAPP_AFTER_LOADING
 {
-  // define some help text
-  spApp->AddHelpText( "" );
-  spApp->AddHelpText( "How to use this demo :" );
-  spApp->AddHelpText( "" );
+	// define some help text
+	spApp->AddHelpText( "" );
+	spApp->AddHelpText( "How to use this demo :" );
+	spApp->AddHelpText( "" );
 
+	// Create a mouse controlled camera (optionally with gravity)
+	VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
+	pCamera->SetPosition( hkvVec3(cameraInitX, cameraInitY, cameraInitZ) );
 
-  // Create a mouse controlled camera (optionally with gravity)
-  VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
-  pCamera->SetPosition( hkvVec3( cameraInitX, cameraInitY, cameraInitZ ));
-
-
-  // Add other initial game code here
-  // [...]
+	Sprite *pSprite = new Sprite();
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -116,15 +121,15 @@ VISION_SAMPLEAPP_AFTER_LOADING
 
 VISION_SAMPLEAPP_RUN
 {
-  return spApp->Run();
+	return spApp->Run();
 }
 
 VISION_DEINIT
 {
-  // Deinit the application
-  spApp->DeInitSample();
-  spApp = NULL;
-  return true;
+	// Deinit the application
+	spApp->DeInitSample();
+	spApp = NULL;
+	return true;
 }
 
 VISION_MAIN_DEFAULT

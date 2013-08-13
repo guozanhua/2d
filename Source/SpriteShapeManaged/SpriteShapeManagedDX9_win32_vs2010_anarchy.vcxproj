@@ -204,11 +204,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="CSharpFramework, Version=2013.1.0.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\CSharpFramework.dll</HintPath>
+    <Reference Include="CSharpFramework, Version=2013.1.1.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\CSharpFramework.dll</HintPath>
     </Reference>
-    <Reference Include="ManagedFramework, Version=2013.1.0.34518, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\ManagedFramework.dll</HintPath>
+    <Reference Include="ManagedFramework, Version=2013.1.1.33610, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\ManagedFramework.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>$(OutputPath)</HintPath>
