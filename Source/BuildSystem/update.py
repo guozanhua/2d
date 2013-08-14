@@ -29,9 +29,9 @@ COMMAND_LINE_OPTIONS = (
      {'action': 'store',
       'dest': 'project',
       'help': "Project root directory"}),
-    (('-t', '--transform',),
+    (('-a', '--assets',),
      {'action': 'store_true',
-      'dest': 'transform',
+      'dest': 'assets',
       'default': False,
       'help': "Transform assets"}),
     (('-q', '--quiet',),
@@ -139,12 +139,27 @@ def main():
     conf_debug = 'Bin\%s\debug_dll\DX9' % arch
     update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
     
-    if options.transform:
+    if options.assets:
         print('Updating assets...')
-        asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
-        run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
-            False,
-            project_directory)
+
+        try:
+            base = 'Data\Vision\Base'
+            base_src = os.path.join(project_directory, base)
+            if not os.path.exists(base_src):
+                shutil.copytree( os.path.join(vision_directory, base), base_src )
+        
+            android = 'Data\Common\Android'
+            android_src = os.path.join(project_directory, android)
+            if not os.path.exists(android_src):
+                shutil.copytree( os.path.join(vision_directory, android), android_src )
+
+            print('Processing assets...')
+            asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
+            run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
+                True,
+                project_directory)
+        except:
+            print('Failed to update assets...')
 
     success = True
 

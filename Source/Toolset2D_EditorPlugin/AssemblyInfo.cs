@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("2D Toolset")]
+[assembly: AssemblyTitle("Toolset2D")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Havok")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyProduct("Toolset2D")]
+[assembly: AssemblyCopyright("Copyright (c) 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

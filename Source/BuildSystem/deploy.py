@@ -19,7 +19,6 @@ import shutil
 
 from optparse import OptionParser
 
-
 COMMAND_LINE_OPTIONS = (
     (('-s', '--source',),
      {'action': 'store',
