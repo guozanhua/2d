@@ -13,8 +13,8 @@
     <ProjectGuid>{8C897073-9C9E-4EFA-A0F6-317ACB479735}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpriteShapeEditorPlugin</RootNamespace>
-    <AssemblyName>SpriteShapeEditorPlugin.EditorPlugin</AssemblyName>
+    <RootNamespace>Toolset2D_EditorPlugin</RootNamespace>
+    <AssemblyName>Toolset2D_EditorPlugin.EditorPlugin</AssemblyName>
     <ApplicationIcon>
     </ApplicationIcon>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -59,13 +59,11 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Toolset2D_Plugin.cs" />
     <Compile Include="AssemblyInfo.cs">
       <DeploymentContent>False</DeploymentContent>
     </Compile>
     <Compile Include="SpriteShape.cs" />
-    <Compile Include="SpriteShapePlugin.cs">
-      <DeploymentContent>False</DeploymentContent>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CSharpFramework">
@@ -103,9 +101,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpriteShapeManaged\SpriteShapeManagedDX9_win32_vs2010_anarchy.vcxproj">
+    <ProjectReference Include="..\Toolset2D_Managed\Toolset2D_ManagedDX9_win32_vs2010_anarchy.vcxproj">
       <Project>{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}</Project>
-      <Name>SpriteShapeManaged</Name>
+      <Name>Toolset2D_ManagedDX9</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

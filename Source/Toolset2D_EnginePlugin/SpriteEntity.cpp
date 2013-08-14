@@ -1,4 +1,4 @@
-#include "SpriteShapeEnginePluginPCH.h"
+#include "Toolset2D_EnginePluginPCH.h"
 
 #include "SpriteEntity.hpp"
 
@@ -13,7 +13,7 @@ inline void InitVertex(int index, VisMBSimpleVertex_t *pVert, float x, float y, 
 					  (index == 0) ? 0 : 255,
 					  (index % 3) * 85 );
 	pVert->color = iColor.GetNative();
-
+	
 	pVert->texcoord0[0] = x * 0.05f;
 	pVert->texcoord0[1] = y * 0.05f;
 

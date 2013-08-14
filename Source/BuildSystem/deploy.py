@@ -31,7 +31,7 @@ COMMAND_LINE_OPTIONS = (
       'default': True,
       'help': "Don't print out status updates"}))
 
-CUSTOM_PLUGINS = ['SpriteShapeEditor', 'SpriteShapeManaged', 'SpriteShapeEnginePlugin']
+CUSTOM_PLUGINS = ['Toolset2D_EnginePlugin', 'Toolset2D_Managed', 'Toolset2D_EditorPlugin', 'SpriteGamePlugin']
 
 
 def main():
@@ -58,6 +58,7 @@ def main():
     if not source_directory:
         print("Didn't specify binary source directory!")
     else:
+        print("Deploying to %s" % destination_directory)
         source_directory = os.path.abspath(source_directory)
         bin_index = source_directory.rfind('Bin')
         bin_path = source_directory[bin_index:]
@@ -69,7 +70,7 @@ def main():
                     source_file = os.path.join(source_directory, filename)
                     destination_file = os.path.join(output_path, filename)
 
-                    if os.path.exists(destination_file) and\
+                    if not os.path.exists(destination_file) or\
                        (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
                         try:
                             shutil.copy2(source_file, output_path)

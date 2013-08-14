@@ -6,9 +6,9 @@ using namespace CSharpFramework::Math;
 using namespace CSharpFramework::Shapes;
 using namespace CSharpFramework::Scene;
 
-#include "SpriteShapeEnginePlugin/SpriteEntity.hpp"
+#include "Toolset2D_EnginePlugin/SpriteEntity.hpp"
 
-namespace SpriteManaged
+namespace Toolset2D_Managed
 {
   /// <summary>
   /// EngineInstanceNode : class that manages the native class

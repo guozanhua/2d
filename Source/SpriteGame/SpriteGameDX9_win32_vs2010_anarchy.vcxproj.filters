@@ -10,7 +10,4 @@
     <ClInclude Include="SpriteGamePCH.h" />
     <ClInclude Include="VisSampleApp.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\BuildSystem\deploy.py" />
-  </ItemGroup>
 </Project>

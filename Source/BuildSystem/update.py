@@ -29,6 +29,11 @@ COMMAND_LINE_OPTIONS = (
      {'action': 'store',
       'dest': 'project',
       'help': "Project root directory"}),
+    (('-t', '--transform',),
+     {'action': 'store_true',
+      'dest': 'transform',
+      'default': False,
+      'help': "Transform assets"}),
     (('-q', '--quiet',),
      {'action': 'store_false',
       'dest': 'verbose',
@@ -78,6 +83,9 @@ def run(arguments, verbose=False, current_directory=""):
     return output
 
 def update_files(source_path, output_path):
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
     for filename in os.listdir(source_path):
         copy_file = False
 
@@ -89,8 +97,8 @@ def update_files(source_path, output_path):
         if copy_file:
             source_file = os.path.join(source_path, filename)
             destination_file = os.path.join(output_path, filename)
-            if os.path.exists(destination_file) and\
-                (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
+            if not os.path.exists(destination_file) or\
+               (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
                 shutil.copy2(source_file, output_path)
                 print('Updating %s...' % filename)
             else:
@@ -131,11 +139,12 @@ def main():
     conf_debug = 'Bin\%s\debug_dll\DX9' % arch
     update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
     
-    print('Updating assets...')
-    asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
-    run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
-        False,
-        project_directory)
+    if options.transform:
+        print('Updating assets...')
+        asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
+        run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
+            False,
+            project_directory)
 
     success = True
 

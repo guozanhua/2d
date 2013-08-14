@@ -5,17 +5,17 @@ using CSharpFramework;
 using CSharpFramework.Math;
 using CSharpFramework.Shapes;
 using CSharpFramework.Actions;
-using SpriteManaged;
+using Toolset2D_Managed;
 using System.Runtime.Serialization;
 using ManagedFramework;
 using System.IO;
 
-namespace SpriteShapeEditorPlugin
+namespace Toolset2D_EditorPlugin
 {
     #region class SpriteShape
     /// <summary>
     /// SpriteShape : This is the class that represents the shape in the editor. It has an engine instance that handles the
-    /// native code. The engine instance code in located in the SpriteManaged project (managed C++ class library)
+    /// native code. The engine instance code in located in the Toolset2D_Managed project (managed C++ class library)
     /// </summary>
     [Serializable]
     public class SpriteShape : Shape3D

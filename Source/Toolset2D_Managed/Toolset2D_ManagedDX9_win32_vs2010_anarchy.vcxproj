@@ -21,7 +21,7 @@
     <Keyword>DynamicLibrary</Keyword>
     <RootNamespace>
     </RootNamespace>
-    <ProjectName>SpriteShapeManagedDX9</ProjectName>
+    <ProjectName>Toolset2D_ManagedDX9</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'" Label="Configuration">
@@ -40,14 +40,14 @@
   <PropertyGroup>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">.dll</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">.dll</TargetExt>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\SpriteShapeManagedDX9\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\Toolset2D_ManagedDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteShapeManaged</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\SpriteShapeManaged.dll</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\SpriteShapeManagedDX9\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Toolset2D_Managed</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\Toolset2D_Managed.dll</OutputFile>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\Toolset2D_ManagedDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">SpriteShapeManaged</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\SpriteShapeManaged.dll</OutputFile>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Toolset2D_Managed</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\Toolset2D_Managed.dll</OutputFile>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">true</LinkIncremental>
   </PropertyGroup>
@@ -81,8 +81,8 @@
       </OmitFramePointers>
       <Optimization>disabled</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>SpriteShapeManagedPCH.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeManaged.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile>Toolset2D_ManagedPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_Managed.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;_VR_DX9;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;WIN32;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
@@ -104,7 +104,7 @@
     <Lib>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>mscoree.lib;msvcrtd.lib;msvcmrtd.lib;msvcprtd.lib;BaseD.lib;VisionD.lib;SpriteShapeEnginePluginD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mscoree.lib;msvcrtd.lib;msvcmrtd.lib;msvcprtd.lib;BaseD.lib;VisionD.lib;Toolset2D_EnginePluginD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\win32_vs2010_anarchy\debug_dll</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -157,8 +157,8 @@
       </OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>SpriteShapeManagedPCH.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeManaged.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderFile>Toolset2D_ManagedPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_Managed.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEVELOPMENT;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;_VR_DX9;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;WIN32;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
@@ -180,7 +180,7 @@
     <Lib>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>mscoree.lib;msvcrt.lib;msvcmrt.lib;msvcprt.lib;Base.lib;Vision.lib;SpriteShapeEnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mscoree.lib;msvcrt.lib;msvcmrt.lib;msvcprt.lib;Base.lib;Vision.lib;Toolset2D_EnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\win32_vs2010_anarchy\dev_dll</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -228,23 +228,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpriteShapeEnginePlugin\SpriteShapeEnginePluginDX9_win32_vs2010_anarchy.vcxproj">
+    <ProjectReference Include="..\Toolset2D_EnginePlugin\Toolset2D_EnginePluginDX9_win32_vs2010_anarchy.vcxproj">
       <Project>{c9cf850c-beb9-4744-b58f-98d405fa1a93}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="EngineInstanceNode.cpp" />
-    <ClCompile Include="SpriteManaged.cpp" />
-    <ClCompile Include="SpriteShapeManagedPCH.cpp">
+    <ClCompile Include="Toolset2D_Managed.cpp" />
+    <ClCompile Include="Toolset2D_ManagedPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteShapeManagedPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Toolset2D_ManagedPCH.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineInstanceNode.hpp" />
-    <ClInclude Include="SpriteShapeManagedPCH.h" />
+    <ClInclude Include="Toolset2D_ManagedPCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">

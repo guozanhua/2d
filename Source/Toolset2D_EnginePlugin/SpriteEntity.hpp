@@ -1,7 +1,7 @@
 #ifndef SpriteENTITY_HPP_INCLUDED
 #define SpriteENTITY_HPP_INCLUDED
 
-#include "SpriteShapeEnginePluginPCH.h"
+#include "Toolset2D_EnginePluginPCH.h"
 
 // this include defines the SAMPLEPLUGIN_IMPEXP and declares the g_sampleModule
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Entities/SamplePluginModule.hpp>

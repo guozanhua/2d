@@ -20,7 +20,7 @@ float cameraInitZ = 170;                  // Set our camera above the ground so 
 
 // Use the following line to initialize a plugin that is statically linked. 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
-VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
 		 
 VisSampleAppPtr spApp;
 
@@ -73,13 +73,13 @@ VISION_INIT
 	Vision::File.SetOutputDirectory(VISION_OUTPUT_DIR);
 	Vision::File.AddDataDirectory(VISION_OUTPUT_DIR);
 #endif
-
+	
 	spApp->LoadVisionEnginePlugin();
 
 	// Use the following line to load a plugin. Remember that, except on Windows platform, in addition
 	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
 	// Properties, Linker, Additional Dependencies.
-	VISION_PLUGIN_ENSURE_LOADED(SpriteShapeEnginePlugin);
+	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
 	VISION_PLUGIN_ENSURE_LOADED(SpriteGamePlugin);
 
 	// Init the application and point it to the start up scene.

@@ -6,11 +6,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGameDX9", "..\Source\
 		{163121FB-25E9-4F6F-BAAB-490FC742A51E} = {163121FB-25E9-4F6F-BAAB-490FC742A51E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteShapeEditorPluginDX9_x86_vs2010_anarchy", "..\Source\SpriteShapeEditorPlugin\SpriteShapeEditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolset2D_EditorPluginDX9_x86_vs2010_anarchy", "..\Source\Toolset2D_EditorPlugin\Toolset2D_EditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteShapeEnginePluginDX9", "..\Source\SpriteShapeEnginePlugin\SpriteShapeEnginePluginDX9_win32_vs2010_anarchy.vcxproj", "{C9CF850C-BEB9-4744-B58F-98D405FA1A93}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_EnginePluginDX9", "..\Source\Toolset2D_EnginePlugin\Toolset2D_EnginePluginDX9_win32_vs2010_anarchy.vcxproj", "{C9CF850C-BEB9-4744-B58F-98D405FA1A93}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteShapeManagedDX9", "..\Source\SpriteShapeManaged\SpriteShapeManagedDX9_win32_vs2010_anarchy.vcxproj", "{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_ManagedDX9", "..\Source\Toolset2D_Managed\Toolset2D_ManagedDX9_win32_vs2010_anarchy.vcxproj", "{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
 	EndProjectSection
@@ -21,6 +21,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGamePluginDX9", "..\S
 	ProjectSection(ProjectDependencies) = postProject
 		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2D Toolset", "2D Toolset", "{10FEE6B0-9FCD-48FC-A402-FC590093E858}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{3E6E1E90-697D-4FB6-9C00-FDDF9F553F5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sprite Game", "Sprite Game", "{17F3DF43-789B-4B79-AFBD-8C16CE941133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,5 +111,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48} = {3E6E1E90-697D-4FB6-9C00-FDDF9F553F5F}
 	EndGlobalSection
 EndGlobal

@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../SpriteShapeEnginePlugin</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../Toolset2D_EnginePlugin</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -104,7 +104,7 @@
     <Lib>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionD.lib;VisionEnginePluginD.lib;vHavokD.lib;SpriteShapeEnginePluginD.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionD.lib;VisionEnginePluginD.lib;vHavokD.lib;Toolset2D_EnginePluginD.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\win32_vs2010_anarchy\debug_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -127,10 +127,18 @@
       </EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmtd.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../SpriteShapeEnginePlugin</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../Toolset2D_EnginePlugin</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -181,7 +189,7 @@
     <Lib>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;VisionEnginePlugin.lib;vHavok.lib;SpriteShapeEnginePlugin.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;VisionEnginePlugin.lib;vHavok.lib;Toolset2D_EnginePlugin.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Lib\win32_vs2010_anarchy\dev_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -189,7 +197,7 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;VisionEnginePlugin.lib;vRemoteInput.lib;vHavok.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;SpriteShapeEnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;VisionEnginePlugin.lib;vRemoteInput.lib;vHavok.lib;hkInternal.lib;hkGeometryUtilities.lib;hkVisualize.lib;hkSerialize.lib;hkCompat.lib;hkSceneData.lib;hkBase.lib;hkcdCollide.lib;hkcdInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkpDynamics.lib;hkpCollide.lib;hkpInternal.lib;hkpConstraintSolver.lib;hkpConstraint.lib;Toolset2D_EnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\dev_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86;../../Lib/win32_vs2010_anarchy/dev_dll</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -204,6 +212,10 @@
       </EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -217,9 +229,6 @@
     <ClCompile Include="VisSampleAppCallbacks.cpp" />
     <ClInclude Include="SpriteGamePCH.h" />
     <ClInclude Include="VisSampleApp.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\BuildSystem\deploy.py" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

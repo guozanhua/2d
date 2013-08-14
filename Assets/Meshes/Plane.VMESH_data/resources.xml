@@ -1,8 +1,10 @@
 <root>
-    <Resources Version="1" Count="4" PathType="Project">
-        <Resource Manager="Textures" Filename="Data\Textures\grid01.jpg" CustomInt="1,0" Size="4194304" />
-        <Resource Manager="EffectLibs" Filename="shaders\DeferredShading.ShaderLib" Size="113092" />
-        <Resource Manager="FILE" Filename="Data\Meshes\Plane.VMESH_data\materials.xml" Size="688" />
-        <Resource Manager="Static Meshes" Filename="Data\Meshes\Plane.VMESH" CustomInt="1" Size="388" />
+    <Resources Version="1" Count="6" PathType="Project">
+        <Resource Manager="FILE" Filename="Meshes/Plane.VMESH_data\materials.xml" OwnerRes="3" Size="682" />
+        <Resource Manager="EffectLibs" Filename="Shaders\BaseShaders.ShaderLib" Size="62776" />
+        <Resource Manager="Textures" Filename="Textures\grid01.jpg" CustomInt="1,64" Size="5592404" />
+        <Resource Manager="Static/Dynamic Meshes" Filename="Meshes/Plane.VMESH" CustomInt="1,1" Size="56" />
+        <Resource Manager="EffectLibs" Filename="Shaders\MobileShaders.ShaderLib" Size="3522784" />
+        <Resource Manager="EffectLibs" Filename="Shaders\vMaterial.ShaderLib" Size="390384" />
     </Resources>
 </root>

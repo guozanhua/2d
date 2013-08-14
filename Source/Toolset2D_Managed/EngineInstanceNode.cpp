@@ -1,11 +1,11 @@
-#include "SpriteShapeManagedPCH.h"
+#include "Toolset2D_ManagedPCH.h"
 
 #include <EngineInstanceNode.hpp>
 
 using namespace ManagedFramework;
 #using <mscorlib.dll>
 
-namespace SpriteManaged
+namespace Toolset2D_Managed
 {
 	// create the native instance in the constructor
 	EngineInstanceNode::EngineInstanceNode()

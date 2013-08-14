@@ -8,4 +8,4 @@
 set _ROOT=%~dp0
 set _UPDATE=%_ROOT%\Source\BuildSystem
 
-%_UPDATE%\update.py %_ROOT%
+%_UPDATE%\update.py --project=%_ROOT% --transform

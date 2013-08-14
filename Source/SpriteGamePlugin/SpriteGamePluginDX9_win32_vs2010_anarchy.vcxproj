@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../SpriteShapeEnginePlugin</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../Toolset2D_EnginePlugin</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../Toolset2D_EnginePlugin</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -191,7 +191,7 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;VisionEnginePlugin.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\dev_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>

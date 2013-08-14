@@ -21,7 +21,7 @@
     <Keyword>DynamicLibrary</Keyword>
     <RootNamespace>
     </RootNamespace>
-    <ProjectName>SpriteShapeEnginePluginDX9</ProjectName>
+    <ProjectName>Toolset2D_EnginePluginDX9</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'" Label="Configuration">
@@ -40,14 +40,14 @@
   <PropertyGroup>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">.vPluginD</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">.vPlugin</TargetExt>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\SpriteShapeEnginePluginDX9\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\Toolset2D_EnginePluginDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteShapeEnginePlugin</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Debug_DLL\DX9\SpriteShapeEnginePlugin.vPluginD</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\SpriteShapeEnginePluginDX9\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Toolset2D_EnginePlugin</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Debug_DLL\DX9\Toolset2D_EnginePlugin.vPluginD</OutputFile>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\Toolset2D_EnginePluginDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">SpriteShapeEnginePlugin</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Dev_DLL\DX9\SpriteShapeEnginePlugin.vPlugin</OutputFile>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Toolset2D_EnginePlugin</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Dev_DLL\DX9\Toolset2D_EnginePlugin.vPlugin</OutputFile>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">true</LinkIncremental>
   </PropertyGroup>
@@ -84,7 +84,7 @@
       </PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeEnginePlugin.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePlugin.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_SHAPE_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
@@ -129,6 +129,9 @@
       </EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmtd.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)..\Source\BuildSystem\update.py</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">
     <ClCompile>
@@ -163,7 +166,7 @@
       </PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeEnginePlugin.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePlugin.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEVELOPMENT;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_SHAPE_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
@@ -208,15 +211,18 @@
       </EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)..\Source\BuildSystem\update.py</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SpriteEnginePlugin.cpp" />
+    <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="SpriteEntity.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
-    <ClCompile Include="SpriteShapeEnginePluginPCH.cpp" />
+    <ClCompile Include="Toolset2D_EnginePluginPCH.cpp" />
     <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
-    <ClInclude Include="SpriteShapeEnginePluginPCH.h" />
+    <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

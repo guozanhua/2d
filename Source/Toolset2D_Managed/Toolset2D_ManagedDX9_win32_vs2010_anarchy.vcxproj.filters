@@ -3,11 +3,11 @@
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="EngineInstanceNode.cpp" />
-    <ClCompile Include="SpriteManaged.cpp" />
-    <ClCompile Include="SpriteShapeManagedPCH.cpp" />
+    <ClCompile Include="Toolset2D_Managed.cpp" />
+    <ClCompile Include="Toolset2D_ManagedPCH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineInstanceNode.hpp" />
-    <ClInclude Include="SpriteShapeManagedPCH.h" />
+    <ClInclude Include="Toolset2D_ManagedPCH.h" />
   </ItemGroup>
 </Project>

@@ -103,4 +103,3 @@ textures/ui/slidernorm.dds	textures/ui/slidernorm.dds	Usage="Undefined",sRGB=fal
 textures/ui/slidernorm.png	textures/ui/slidernorm.png	Usage="Undefined",sRGB=false
 textures/ui/white.dds	textures/ui/white.dds	Usage="Undefined",sRGB=false
 textures/water/water_n_01.dds	textures/water/water_n_01.dds	Usage="NormalMap",sRGB=false
-textures/spritesheets/enemyship.png	textures/spritesheets/enemyship.png	Usage="Undefined",sRGB=false
