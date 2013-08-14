@@ -1,18 +1,14 @@
-#include "SpriteGamePCH.h"
+#include "SpriteShapeEnginePluginPCH.h"
 
-#include "SpriteGameApplication.hpp"
+#include "SpriteManager.hpp"
+
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
-
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 
-#ifdef WIN32
-#include <Vision/Runtime/EnginePlugins/RemoteInputEnginePlugin/IVRemoteInput.hpp>
-#endif
-
 // One global static instance
-SpriteGameManager SpriteGameManager::g_GameManager;
+SpriteManager SpriteManager::g_SpriteManager;
 
-void SpriteGameManager::OneTimeInit()
+void SpriteManager::OneTimeInit()
 {
 	m_bPlayingTheGame = false;
 
@@ -26,17 +22,10 @@ void SpriteGameManager::OneTimeInit()
 	//load the remote input plugin
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished += this;
-	m_pRemoteInput = NULL;
-
-	// TODO: Add support for remote input
-	//VISION_PLUGIN_ENSURE_LOADED(vRemoteInput);
-	//m_pRemoteInput = (IVRemoteInput*)Vision::Plugins.GetRegisteredPlugin("vRemoteInput");
 #endif
-
-	m_pPlayerSprite = reinterpret_cast<Sprite*>( Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 170), NULL) );
 }
 
-void SpriteGameManager::OneTimeDeInit()
+void SpriteManager::OneTimeDeInit()
 {
 	Vision::Callbacks.OnEditorModeChanged -= this;
 	Vision::Callbacks.OnBeforeSceneLoaded -= this;
@@ -47,11 +36,9 @@ void SpriteGameManager::OneTimeDeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
-
-	m_pPlayerSprite->Remove();
 }
 
-void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
+void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 {
 	if (pData->m_pSender==&Vision::Callbacks.OnEditorModeChanged)
 	{
@@ -95,7 +82,7 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 }
 
-void SpriteGameManager::Render()
+void SpriteManager::Render()
 {
 	VSimpleRenderState_t	state;
 	hkvVec2					tl(450,80);hkvVec2	br(850,850);
@@ -115,59 +102,10 @@ void SpriteGameManager::Render()
 }
 
 // switch to play-the-game mode. Do some initialization such as HUD display
-void SpriteGameManager::SetPlayTheGame(bool bStatus)
+void SpriteManager::SetPlayTheGame(bool bStatus)
 {
 	if (m_bPlayingTheGame != bStatus)
 	{
 		m_bPlayingTheGame = bStatus;
-
-		if (m_bPlayingTheGame)
-		{
-			m_spHUD = new HUDGUIContext(NULL);
-			m_spHUD->SetActivate(true);
-
-	#if defined(WIN32) && !defined(_VISION_WINRT)
-			if(m_pRemoteInput)
-			{
-				m_pRemoteInput->InitEmulatedDevices();
-
-				///uncomment to disable touch input smoothing
-				//m_pRemoteInput->SetSmoothTouchInput(false);
-
-				//m_pRemoteInput->StartServer("SpriteGame\\RemoteGui");
-				m_pRemoteInput->AddVariable("health",100.0f);
-				m_pRemoteInput->AddVariable("remaining",6);
-			}
-
-			//if(m_pPlayerEntity)
-			//  m_pPlayerEntity->InitTouchInput();
-	#endif
-		} else
-		{
-			// deactivate the HUD
-			if (m_spHUD)
-			{
-				m_spHUD->SetActivate(false);
-
-				// Un-attach this context
-				m_spHUD->GetManager()->Contexts().SafeRemove(m_spHUD);
-
-				m_spHUD = NULL;
-			}
-	#if defined(WIN32) && !defined(_VISION_WINRT)
-			//if(m_pPlayerEntity)
-			//  m_pPlayerEntity->DeinitTouchInput();
-
-			if(m_pRemoteInput)
-			{
-				m_pRemoteInput->StopServer();
-				m_pRemoteInput->RemoveVariable("health");
-				m_pRemoteInput->RemoveVariable("remaining");
-			}
-	#endif
-
-			// clean up all pending particle effect instances
-			VisParticleGroupManager_cl::GlobalManager().Instances().Purge();
-		}
 	}
 }

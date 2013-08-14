@@ -1,7 +1,6 @@
 #include "SpriteGamePCH.h"
 
 #include "VisSampleApp.hpp"
-#include "SpriteGameApplication.hpp"
 
 //============================================================================================================
 // Properties for start up. Some of the settings are not relevant for mobile devices
@@ -81,6 +80,7 @@ VISION_INIT
 	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
 	// Properties, Linker, Additional Dependencies.
 	VISION_PLUGIN_ENSURE_LOADED(SpriteShapeEnginePlugin);
+	VISION_PLUGIN_ENSURE_LOADED(SpriteGamePlugin);
 
 	// Init the application and point it to the start up scene.
 	if ( !spApp->InitSample("",
@@ -109,8 +109,6 @@ VISION_SAMPLEAPP_AFTER_LOADING
 	// Create a mouse controlled camera (optionally with gravity)
 	VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
 	pCamera->SetPosition( hkvVec3(cameraInitX, cameraInitY, cameraInitZ) );
-
-	SpriteGameManager::GlobalManager().OneTimeInit();
 }
 
 //---------------------------------------------------------------------------------------------------------
@@ -124,8 +122,6 @@ VISION_SAMPLEAPP_RUN
 
 VISION_DEINIT
 {
-	SpriteGameManager::GlobalManager().OneTimeDeInit();
-
 	// Deinit the application
 	spApp->DeInitSample();
 	spApp = NULL;

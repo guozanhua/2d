@@ -16,12 +16,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C9CF850C-BEB9-4744-B58F-98D405FA1A93}</ProjectGuid>
+    <ProjectGuid>{163121FB-25E9-4F6F-BAAB-490FC742A51E}</ProjectGuid>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Keyword>DynamicLibrary</Keyword>
     <RootNamespace>
     </RootNamespace>
-    <ProjectName>SpriteShapeEnginePluginDX9</ProjectName>
+    <ProjectName>SpriteGamePluginDX9</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'" Label="Configuration">
@@ -40,20 +40,20 @@
   <PropertyGroup>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">.vPluginD</TargetExt>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">.vPlugin</TargetExt>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\SpriteShapeEnginePluginDX9\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Obj\win32_vs2010_anarchy\debug_dll\SpriteGamePluginDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\debug_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteShapeEnginePlugin</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Debug_DLL\DX9\SpriteShapeEnginePlugin.vPluginD</OutputFile>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\SpriteShapeEnginePluginDX9\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteGamePlugin</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Debug_DLL\DX9\SpriteGamePlugin.vPluginD</OutputFile>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Obj\win32_vs2010_anarchy\dev_dll\SpriteGamePluginDX9\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\dev_dll\DX9\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">SpriteShapeEnginePlugin</TargetName>
-    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Dev_DLL\DX9\SpriteShapeEnginePlugin.vPlugin</OutputFile>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">SpriteGamePlugin</TargetName>
+    <OutputFile Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">..\..\Bin\win32_vs2010_anarchy\Dev_DLL\DX9\SpriteGamePlugin.vPlugin</OutputFile>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(DXSDK_DIR)/Include;$(ProjectDir);../SpriteShapeEnginePlugin</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -80,12 +80,10 @@
       <OmitFramePointers>
       </OmitFramePointers>
       <Optimization>disabled</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeEnginePlugin.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_SHAPE_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>SpriteGamePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePlugin.pch</PrecompiledHeaderOutputFile>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_GAME_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -114,7 +112,7 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionD.lib;VisionEnginePluginD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\debug_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -163,8 +161,8 @@
       </PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)SpriteShapeEnginePlugin.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEVELOPMENT;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_SHAPE_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePlugin.pch</PrecompiledHeaderOutputFile>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_DEVELOPMENT;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;SPRITE_GAME_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -210,17 +208,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SpriteEnginePlugin.cpp" />
-    <ClCompile Include="SpriteEntity.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
-    <ClCompile Include="SpriteShapeEnginePluginPCH.cpp" />
-    <ClInclude Include="SpriteEntity.hpp" />
-    <ClInclude Include="SpriteManager.hpp" />
-    <ClInclude Include="SpriteShapeEnginePluginPCH.h" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="SpriteGameApplication.cpp" />
+    <ClCompile Include="SpriteGamePlugin.cpp" />
+    <ClCompile Include="SpriteGamePluginPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">SpriteGamePluginPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="HUD.hpp" />
+    <ClInclude Include="SpriteGameApplication.hpp" />
+    <ClInclude Include="SpriteGamePluginPCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">

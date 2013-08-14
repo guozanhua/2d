@@ -83,7 +83,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)SpriteGame.pch</PrecompiledHeaderOutputFile>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;USE_HAVOK;VHAVOKMODULE_IMPORTS;SpriteGamePLUGIN_EXPORTS;HK_CONFIG_SIMD=1;HK_DEBUG_SLOW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_DEBUG;HK_FULLDEBUG;_CONSOLE;HK_ANARCHY;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;USE_HAVOK;VHAVOKMODULE_IMPORTS;HK_CONFIG_SIMD=1;HK_DEBUG_SLOW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -215,22 +215,11 @@
     </ClCompile>
     <ClCompile Include="VisSampleApp.cpp" />
     <ClCompile Include="VisSampleAppCallbacks.cpp" />
-    <ClInclude Include="HUD.hpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClInclude>
-    <ClCompile Include="SpriteGameApplication.cpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClCompile>
-    <ClInclude Include="SpriteGameApplication.hpp">
-      <DeploymentContent>False</DeploymentContent>
-    </ClInclude>
     <ClInclude Include="SpriteGamePCH.h" />
     <ClInclude Include="VisSampleApp.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\BuildSystem\deploy.py" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGameDX9", "..\Source\SpriteGame\SpriteGameDX9_win32_vs2010_anarchy.vcxproj", "{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E} = {163121FB-25E9-4F6F-BAAB-490FC742A51E}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteShapeEditorPluginDX9_x86_vs2010_anarchy", "..\Source\SpriteShapeEditorPlugin\SpriteShapeEditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
@@ -15,6 +16,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteShapeManagedDX9", "..
 	EndProjectSection
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BuildSystem", "..\Source\BuildSystem\BuildSystem.pyproj", "{A3532733-0FF5-4D49-9B6A-797012D1BD48}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGamePluginDX9", "..\Source\SpriteGamePlugin\SpriteGamePluginDX9_win32_vs2010_anarchy.vcxproj", "{163121FB-25E9-4F6F-BAAB-490FC742A51E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +90,18 @@ Global
 		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|Mixed Platforms.ActiveCfg = Dev|Any CPU
 		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|win32.ActiveCfg = Debug|Any CPU
 		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|x86.ActiveCfg = Debug|Any CPU
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|win32.ActiveCfg = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|win32.Build.0 = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Debug DLL|x86.ActiveCfg = Debug DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{163121FB-25E9-4F6F-BAAB-490FC742A51E}.Dev DLL|x86.ActiveCfg = Dev DLL|win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

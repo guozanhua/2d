@@ -1,43 +1,43 @@
-#include "SpriteShapeEnginePluginPCH.h"
+#include "SpriteGamePluginPCH.h"
 
-#include "SpriteManager.hpp"
+#include "SpriteGameApplication.hpp"
 
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.
-class SpriteShapeEnginePlugin_cl : public IVisPlugin_cl
+class SpriteGamePlugin_cl : public IVisPlugin_cl
 {
 public:
 	// this function is only called once since an external init counter takes care
 	VOVERRIDE void OnInitEnginePlugin()
 	{
-		Vision::RegisterModule(&gSpriteShapeEngineModule);
-		SpriteManager::GlobalManager().OneTimeInit();
+		Vision::RegisterModule(&gSpriteGameModule);
+		SpriteGameManager::GlobalManager().OneTimeInit();
 	}
 
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
-		Vision::UnregisterModule(&gSpriteShapeEngineModule);
-		SpriteManager::GlobalManager().OneTimeDeInit();
+		SpriteGameManager::GlobalManager().OneTimeDeInit();
+		Vision::UnregisterModule(&gSpriteGameModule);
 	}
 
 	VOVERRIDE const char *GetPluginName()
 	{
 		// Must match DLL name
-		return "SpriteShapeEnginePlugin";
+		return "SpriteGamePlugin";
 	}
 };
 
 // our global instance of the plugin descriptor:
-SpriteShapeEnginePlugin_cl g_SpriteShapeEnginePlugin;
+SpriteGamePlugin_cl g_SpriteGamePlugin;
 
 // this plugin also declares a module which is needed for RTTI/serialization
-DECLARE_THIS_MODULE( gSpriteShapeEngineModule,
+DECLARE_THIS_MODULE( gSpriteGameModule,
 					 MAKE_VERSION(1, 0),
-					 "SpriteShapeEnginePlugin",
+					 "SpriteGamePlugin",
 					 "Havok",
 					 "2D toolset for Project Anarchy",
-					 &g_SpriteShapeEnginePlugin );
+					 &g_SpriteGamePlugin );
 
 ////////////////////////////////////////////////////////////////////////////
 // These functions are called directly by modules that statically link
@@ -46,9 +46,9 @@ DECLARE_THIS_MODULE( gSpriteShapeEngineModule,
 ////////////////////////////////////////////////////////////////////////////
 
 //  Use this to get and initialize the plugin when you link statically
-VEXPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin()
+VEXPORT IVisPlugin_cl* GetEnginePlugin_SpriteGamePlugin()
 {
-	return &g_SpriteShapeEnginePlugin;
+	return &g_SpriteGamePlugin;
 }
 
 #if (defined _DLL) || (defined _WINDLL)
@@ -56,7 +56,7 @@ VEXPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin()
 //  The engine uses this to get and initialize the plugin dynamically
 VEXPORT IVisPlugin_cl* GetEnginePlugin()
 {
-	return GetEnginePlugin_SpriteShapeEnginePlugin();
+	return GetEnginePlugin_SpriteGamePlugin();
 }
 
 #endif // _DLL or _WINDLL
