@@ -113,6 +113,8 @@ textures/fps/standing.dds#android-default	AssetMgmt_data/transformed/standingb26
 textures/fps/standing.dds#android-pvr	AssetMgmt_data/transformed/standingb26v47nclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-default	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.etc	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-pvr	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png#android-default	AssetMgmt_data/transformed/enemyship5yvzdn8clgdtc.rgba	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png#android-pvr	AssetMgmt_data/transformed/enemyship5yvzdn8clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/button.dds#android-default	AssetMgmt_data/transformed/button3kmwgwjclgdtc.rgba	Usage="Undefined",sRGB=false
 textures/ui/button.dds#android-pvr	AssetMgmt_data/transformed/button3kmwgwjclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_mouseover.tga#android-default	AssetMgmt_data/transformed/buttonquit_mouseoverf1f9p6jclgdtc.rgba	Usage="Undefined",sRGB=false

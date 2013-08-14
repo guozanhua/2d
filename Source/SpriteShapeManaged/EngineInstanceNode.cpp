@@ -6,7 +6,7 @@ using namespace ManagedFramework;
 #using <mscorlib.dll>
 
 
-namespace NodeManaged
+namespace SpriteManaged
 {
 	// create the native instance in the constructor
 	EngineInstanceNode::EngineInstanceNode()

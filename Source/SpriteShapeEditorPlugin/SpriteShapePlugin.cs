@@ -17,7 +17,7 @@ namespace SpriteShapeEditorPlugin
     /// </summary>
     public EditorPlugin()
     {
-      _version = 0;                 //version used for serialization
+      _version = 1;                 //version used for serialization
       _name = "SpriteShapeEditorPlugin";
     }
 
@@ -26,14 +26,13 @@ namespace SpriteShapeEditorPlugin
     /// This global info is filled inside InitPluginModule
     /// </summary>
     public static EditorPluginInfo EDITOR_PLUGIN_INFO = new EditorPluginInfo();
-
-
+   
     /// <summary>
     /// InitPluginModule : called at plugin initialisation time: Add the relevant shape creators here
     /// </summary>
     public override bool InitPluginModule()
     {
-      NodeManaged.ManagedModule.InitManagedModule();
+      SpriteManaged.ManagedModule.InitManagedModule();
 
       EDITOR_PLUGIN_INFO.NativePluginNames = new string[] { "SpriteShapeEditorPlugin" };
 
@@ -45,13 +44,10 @@ namespace SpriteShapeEditorPlugin
 
       // add them to the editor
       foreach (IShapeCreatorPlugin plugin in creators)
-        EditorManager.ShapeCreatorPlugins.Add( plugin );
-/*
-      // register tests (optional)
-      TestSuite suite = new  TestSuite("Node Shape Plugin Tests");
-      suite.Add( new TestFixture(typeof(Tests.EntityShapeTest)) );
-      TestManager.AddTestSuite( suite );
-*/
+      {
+          EditorManager.ShapeCreatorPlugins.Add(plugin);
+      }
+
       return true;
     }
 
@@ -61,12 +57,14 @@ namespace SpriteShapeEditorPlugin
     public override bool DeInitPluginModule()
     {
       // deregister the creator plugins again
-      foreach (IShapeCreatorPlugin plugin in creators)
-        EditorManager.ShapeCreatorPlugins.Remove( plugin );
-      
-      NodeManaged.ManagedModule.DeInitManagedModule();
+        foreach (IShapeCreatorPlugin plugin in creators)
+        {
+            EditorManager.ShapeCreatorPlugins.Remove(plugin);
+        }
 
-      return true;
+        SpriteManaged.ManagedModule.DeInitManagedModule();
+
+        return true;
     }
 
     /// <summary>
@@ -74,12 +72,11 @@ namespace SpriteShapeEditorPlugin
     /// </summary>
     public override bool IsStandardPlugin
     {
-      get
-      {
-        return false;
-      }
+        get
+        {
+            return true;
+        }
     }
-
 
     IShapeCreatorPlugin[] creators;
   }

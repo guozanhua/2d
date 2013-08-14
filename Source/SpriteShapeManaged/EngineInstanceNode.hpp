@@ -8,7 +8,7 @@ using namespace CSharpFramework::Scene;
 
 #include "SpriteShapeEnginePlugin/VNode.hpp"
 
-namespace NodeManaged
+namespace SpriteManaged
 {
   /// <summary>
   /// EngineInstanceNode : class that manages the native class

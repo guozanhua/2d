@@ -114,7 +114,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)..\Source\BuildSystem\deploy.py $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

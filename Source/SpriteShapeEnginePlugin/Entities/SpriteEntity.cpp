@@ -22,8 +22,9 @@ inline void InitVertex(int index, VisMBSimpleVertex_t *pVert, float x, float y, 
 	pVert->pos[2] = z;
 }
 
-
-// helper class that implements IVRender2DInterface which is passed to font printing. Then it re-directs the Draw2DBuffer function to fill a VDynamicMeshBuilder instance
+// See ticket #: 619-8332539
+// Helper class that implements IVRender2DInterface which is passed to font printing. Then it
+// re-directs the Draw2DBuffer function to fill a VDynamicMeshBuilder instance
 class VFontToMeshPrinter : public IVRender2DInterface
 {
 public:
@@ -51,12 +52,12 @@ public:
 	{
 		if (m_pBuilder!=NULL)
 		{
-			for (int i=0;i<iVertexCount;i++,pVertices++)
+			for (int i = 0; i < iVertexCount; i++, pVertices++)
 			{
 				m_pBuilder->AddVertex(
 					// position = write along x and z axis
 					hkvVec3(pVertices->screenPos.x, 0, -pVertices->screenPos.y),
-					// normal (=hardcoded)
+					// normal (hardcoded)
 					hkvVec3(0, -1.f, 0),
 					// tangent (hardcoded)
 					hkvVec3(1, 0, 0),
@@ -65,12 +66,16 @@ public:
 			}
 
 			// add a trivial index list
-			for (int i=0;i<iVertexCount;i+=3)
+			for (int i = 0; i < iVertexCount; i += 3)
 			{
-				m_pBuilder->AddTriangle(m_iVertexCount+i,m_iVertexCount+i+1,m_iVertexCount+i+2);
+				m_pBuilder->AddTriangle(m_iVertexCount + i,
+										m_iVertexCount + i + 1,
+										m_iVertexCount + i + 2);
 			}
 
-			VASSERT_MSG(m_Surface.m_spDiffuseTexture==NULL || m_Surface.m_spDiffuseTexture==pTexture, "font with multiple pages not supported in this sample");
+			VASSERT_MSG(m_Surface.m_spDiffuseTexture==NULL || m_Surface.m_spDiffuseTexture==pTexture,
+						"Font with multiple pages not supported in this sample");
+
 			m_Surface.m_spDiffuseTexture = pTexture;
 		}
 

@@ -1823,6 +1823,34 @@
                 "TemplateName": "Default"
             }
         },
+        "Textures/SpriteSheets/EnemyShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1592511650,
+                "TimeStamp": 1376416188830703500,
+                "LastEditTime": 1376416346904509300
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 512,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
         "Textures/UI/Button.dds": {
             "AssetType": "Texture",
             "Common": {

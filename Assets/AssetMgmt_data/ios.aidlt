@@ -62,6 +62,7 @@ textures/fps/sniper_border.dds	AssetMgmt_data/transformed/sniper_border7z9fznncl
 textures/fps/sniper_scope.dds	AssetMgmt_data/transformed/sniper_scope10htqm4clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/fps/standing.dds	AssetMgmt_data/transformed/standingb26v47nclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/grid01.jpg	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png	AssetMgmt_data/transformed/enemyship5yvzdn8clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/button.dds	AssetMgmt_data/transformed/button3kmwgwjclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_mouseover.tga	AssetMgmt_data/transformed/buttonquit_mouseoverf1f9p6jclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_normal.tga	AssetMgmt_data/transformed/buttonquit_normalhml1td0clgdtc.pvr	Usage="Undefined",sRGB=false
