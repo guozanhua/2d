@@ -210,13 +210,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entities\SpriteEntity.cpp" />
     <ClCompile Include="SpriteEnginePlugin.cpp" />
+    <ClCompile Include="SpriteEntity.cpp" />
     <ClCompile Include="SpriteShapeEnginePluginPCH.cpp" />
-    <ClCompile Include="VNode.cpp" />
-    <ClInclude Include="Entities\SpriteEntity.hpp" />
+    <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="SpriteShapeEnginePluginPCH.h" />
-    <ClInclude Include="VNode.hpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

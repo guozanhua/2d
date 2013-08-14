@@ -9,24 +9,26 @@
 #include <Vision/Runtime/EnginePlugins/RemoteInputEnginePlugin/IVRemoteInput.hpp>
 #endif
 
-// one global static instance
+// One global static instance
 SpriteGameManager SpriteGameManager::g_GameManager;
 
 void SpriteGameManager::OneTimeInit()
 {
 	m_bPlayingTheGame = false;
-	m_iRemainingItems = 0;
 
 	// the game manager should listen to the following callbacks:
 	Vision::Callbacks.OnEditorModeChanged += this;
 	Vision::Callbacks.OnBeforeSceneLoaded += this;
 	Vision::Callbacks.OnAfterSceneLoaded += this;
 	Vision::Callbacks.OnWorldDeInit += this;
+	Vision::Callbacks.OnRenderHook += this;
 
 	//load the remote input plugin
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished += this;
 	m_pRemoteInput = NULL;
+
+	// TODO: Add support for remote input
 	//VISION_PLUGIN_ENSURE_LOADED(vRemoteInput);
 	//m_pRemoteInput = (IVRemoteInput*)Vision::Plugins.GetRegisteredPlugin("vRemoteInput");
 #endif
@@ -40,6 +42,8 @@ void SpriteGameManager::OneTimeDeInit()
 	Vision::Callbacks.OnBeforeSceneLoaded -= this;
 	Vision::Callbacks.OnAfterSceneLoaded -= this;
 	Vision::Callbacks.OnWorldDeInit -= this;
+	Vision::Callbacks.OnRenderHook -= this;
+
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
@@ -51,98 +55,119 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 {
 	if (pData->m_pSender==&Vision::Callbacks.OnEditorModeChanged)
 	{
-		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
-		if (((VisEditorModeChangedDataObject_cl *)pData)->m_eNewMode != VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME)
-			SetPlayTheGame(false);
-		return;
-	}
+		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
 
-	if (pData->m_pSender==&Vision::Callbacks.OnBeforeSceneLoaded)
+		// When vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
+		if (pEditorModeChangedData->m_eNewMode != VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME)
+		{
+			SetPlayTheGame(false);
+		}
+	}
+	else if (pData->m_pSender==&Vision::Callbacks.OnBeforeSceneLoaded)
 	{
-		ResetRemainingItems();
-		// specifically in the Citymap we need accurate assignment because of nested Viszones
+		// We need accurate assignment because of nested Viszones
 		Vision::World.SetUseGeometryForVisibilityClassification(true);
 		return;
 	}
-	if (pData->m_pSender==&Vision::Callbacks.OnAfterSceneLoaded)
+	else if (pData->m_pSender==&Vision::Callbacks.OnAfterSceneLoaded)
 	{
-		if (Vision::Editor.IsPlayingTheGame()) // init play-the-game only in this vForge mode (or outside vForge)
+		// Init play-the-game only in this vForge mode (or outside vForge)
+		if (Vision::Editor.IsPlayingTheGame())
+		{
 			SetPlayTheGame(true);
-		return;
+		}
 	}
-	if (pData->m_pSender==&Vision::Callbacks.OnWorldDeInit) // this is important when running outside vForge
+	else if (pData->m_pSender==&Vision::Callbacks.OnWorldDeInit)
 	{
+		// This is important when running outside vForge
 		SetPlayTheGame(false);
-		return;
 	}
-	if(pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
+	else if(pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
 	{
+	}
+	else if (pData->m_pSender==&Vision::Callbacks.OnRenderHook)
+	{
+		VisRenderHookDataObject_cl *pRenderHookData = (VisRenderHookDataObject_cl *)pData;
+		if ( pRenderHookData->m_iEntryConst == VRH_POST_OCCLUSION_TESTS)
+		{
+			Render();
+		}
 	}
 }
 
-// decrease the number of remaining items. Called in the DeInitFunction of HealthPack entity
-void SpriteGameManager::DecRemainingItems()
+void SpriteGameManager::Render()
 {
-	if (m_bPlayingTheGame)
-	{
-		m_iRemainingItems--;
-		VASSERT(m_iRemainingItems>=0);
-		//if (m_pPlayerEntity && m_iRemainingItems==0) // player wins -> stop player interaction
-		//  m_pPlayerEntity->SetThinkFunctionStatus(FALSE);
-	}
+	VSimpleRenderState_t	state;
+	hkvVec2					tl(450,80);hkvVec2	br(850,850);
+	hkvVec2					tl2(50,50);hkvVec2	br2(650,350);
+
+	IVRender2DInterface *pRender = Vision::RenderLoopHelper.BeginOverlayRendering();
+	pRender->SetDepth(512.f);
+	pRender->SetScissorRect(NULL);
+	state.SetTransparency(VIS_TRANSP_ALPHA);
+
+	pRender->DrawSolidQuad(tl,br,VColorRef(255,0,255,100),state);
+	pRender->DrawSolidQuad(tl2,br2,VColorRef(0,255,0,128),state);
+
+	// TODO:  Render the sprites here
+
+	Vision::RenderLoopHelper.EndOverlayRendering();
 }
 
 // switch to play-the-game mode. Do some initialization such as HUD display
 void SpriteGameManager::SetPlayTheGame(bool bStatus)
 {
-	if (m_bPlayingTheGame==bStatus)
-		return;
-
-	m_bPlayingTheGame = bStatus;
-
-	if (m_bPlayingTheGame)
+	if (m_bPlayingTheGame != bStatus)
 	{
-		m_spHUD = new HUDGUIContext(NULL);
-		m_spHUD->SetActivate(true);
+		m_bPlayingTheGame = bStatus;
 
-#if defined(WIN32) && !defined(_VISION_WINRT)
-		if(m_pRemoteInput)
+		if (m_bPlayingTheGame)
 		{
-			m_pRemoteInput->InitEmulatedDevices();
+			m_spHUD = new HUDGUIContext(NULL);
+			m_spHUD->SetActivate(true);
 
-			///uncomment to disable touch input smoothing
-			//m_pRemoteInput->SetSmoothTouchInput(false);
+	#if defined(WIN32) && !defined(_VISION_WINRT)
+			if(m_pRemoteInput)
+			{
+				m_pRemoteInput->InitEmulatedDevices();
 
-			//m_pRemoteInput->StartServer("SpriteGame\\RemoteGui");
-			m_pRemoteInput->AddVariable("health",100.0f);
-			m_pRemoteInput->AddVariable("remaining",6);
-		}
+				///uncomment to disable touch input smoothing
+				//m_pRemoteInput->SetSmoothTouchInput(false);
 
-		//if(m_pPlayerEntity)
-		//  m_pPlayerEntity->InitTouchInput();
-#endif
-	} else
-	{
-		// deactivate the HUD
-		if (m_spHUD)
+				//m_pRemoteInput->StartServer("SpriteGame\\RemoteGui");
+				m_pRemoteInput->AddVariable("health",100.0f);
+				m_pRemoteInput->AddVariable("remaining",6);
+			}
+
+			//if(m_pPlayerEntity)
+			//  m_pPlayerEntity->InitTouchInput();
+	#endif
+		} else
 		{
-			m_spHUD->SetActivate(false);
-			m_spHUD->GetManager()->Contexts().SafeRemove(m_spHUD); // unattach this context
-			m_spHUD = NULL;
-		}
-#if defined(WIN32) && !defined(_VISION_WINRT)
-		//if(m_pPlayerEntity)
-		//  m_pPlayerEntity->DeinitTouchInput();
+			// deactivate the HUD
+			if (m_spHUD)
+			{
+				m_spHUD->SetActivate(false);
 
-		if(m_pRemoteInput)
-		{
-			m_pRemoteInput->StopServer();
-			m_pRemoteInput->RemoveVariable("health");
-			m_pRemoteInput->RemoveVariable("remaining");
-		}
-#endif
+				// Un-attach this context
+				m_spHUD->GetManager()->Contexts().SafeRemove(m_spHUD);
 
-		// clean up all pending particle effect instances
-		VisParticleGroupManager_cl::GlobalManager().Instances().Purge();
+				m_spHUD = NULL;
+			}
+	#if defined(WIN32) && !defined(_VISION_WINRT)
+			//if(m_pPlayerEntity)
+			//  m_pPlayerEntity->DeinitTouchInput();
+
+			if(m_pRemoteInput)
+			{
+				m_pRemoteInput->StopServer();
+				m_pRemoteInput->RemoveVariable("health");
+				m_pRemoteInput->RemoveVariable("remaining");
+			}
+	#endif
+
+			// clean up all pending particle effect instances
+			VisParticleGroupManager_cl::GlobalManager().Instances().Purge();
+		}
 	}
 }

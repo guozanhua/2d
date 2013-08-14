@@ -1,7 +1,5 @@
 #include "SpriteShapeEnginePluginPCH.h"
 
-#include <VNode.hpp>
-
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.
 class SpriteShapeEnginePlugin_cl : public IVisPlugin_cl
@@ -11,19 +9,18 @@ public:
 	VOVERRIDE void OnInitEnginePlugin()
 	{
 		Vision::RegisterModule(&gSpriteShapeEngineModule);
-		VNodeMananger_cl::GlobalManager().OneTimeInit();
 	}
 
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
 		Vision::UnregisterModule(&gSpriteShapeEngineModule);
-		VNodeMananger_cl::GlobalManager().OneTimeDeInit();
 	}
 
 	VOVERRIDE const char *GetPluginName()
 	{
-		return "SpriteShapeEnginePlugin";  //must match DLL name
+		// Must match DLL name
+		return "SpriteShapeEnginePlugin";
 	}
 };
 
@@ -47,7 +44,7 @@ DECLARE_THIS_MODULE( gSpriteShapeEngineModule,
 //  Use this to get and initialize the plugin when you link statically
 VEXPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin()
 {
-  return &g_SpriteShapeEnginePlugin;
+	return &g_SpriteShapeEnginePlugin;
 }
 
 #if (defined _DLL) || (defined _WINDLL)
@@ -55,7 +52,7 @@ VEXPORT IVisPlugin_cl* GetEnginePlugin_SpriteShapeEnginePlugin()
 //  The engine uses this to get and initialize the plugin dynamically
 VEXPORT IVisPlugin_cl* GetEnginePlugin()
 {
-  return GetEnginePlugin_SpriteShapeEnginePlugin();
+	return GetEnginePlugin_SpriteShapeEnginePlugin();
 }
 
 #endif // _DLL or _WINDLL

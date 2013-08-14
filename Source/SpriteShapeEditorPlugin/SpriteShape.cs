@@ -12,55 +12,13 @@ using System.IO;
 
 namespace SpriteShapeEditorPlugin
 {
-    #region Node Link classes
-
+    #region class SpriteShape
     /// <summary>
-    /// Link source class for a node
-    /// </summary>
-    [Serializable]
-    public class BidirectionalNodeLink : LinkBidirectional
-    {
-        public BidirectionalNodeLink(Shape3D ownerShape)
-            : base(ownerShape, "links to", "NodeSource_1")
-        {
-        }
-
-        #region ISerializable Members
-
-        /// <summary>
-        /// Called when deserializing
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected BidirectionalNodeLink(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            // nothing in addition to LinkSource
-        }
-
-        /// <summary>
-        /// Called when serializing
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            // nothing in addition to LinkSource
-        }
-
-        #endregion
-    }
-
-    #endregion
-
-    #region class NodeShape
-    /// <summary>
-    /// NodeShape : This is the class that represents the shape in the editor. It has an engine instance that handles the
+    /// SpriteShape : This is the class that represents the shape in the editor. It has an engine instance that handles the
     /// native code. The engine instance code in located in the SpriteManaged project (managed C++ class library)
     /// </summary>
     [Serializable]
-    public class NodeShape : Shape3D
+    public class SpriteShape : Shape3D
     {
         #region Constructor
 
@@ -68,7 +26,7 @@ namespace SpriteShapeEditorPlugin
         /// The constructor of the node shape, just takes the node name
         /// </summary>
         /// <param name="name">Name of the shape in the shape tree</param>
-        public NodeShape(string name)
+        public SpriteShape(string name)
             : base(name)
         {
         }
@@ -162,74 +120,9 @@ namespace SpriteShapeEditorPlugin
         {
             if (ConversionUtils.TraceOrientedBoundingBox(LocalBoundingBox, Position, RotationMatrix, rayStart, rayEnd, ref result))
                 result.hitShape = this;
-        }
-
-
+        }        
         #endregion
-
-        #region Linking to other Nodes
-
-        /// <summary>
-        /// Create the links used by this shape type
-        /// </summary>
-        public override void CreateAllLinks()
-        {
-            base.CreateAllLinks();
-
-            // add a bi-directional link type to this shape so we can link it to other nodes. We use bi-directional links here
-            // because the relationship between nodes is symmetrical and we do not care which one is source or target.
-            this.LinkBidirections.Add(new BidirectionalNodeLink(this));
-        }
-
-        /// <summary>
-        /// Inidcates whether a shape can be linked to this shape
-        /// </summary>
-        /// <param name="child">Shape instance to test</param>
-        /// <returns>true, if the shape can be linked</returns>
-        public override bool CanLink(ShapeLink src, ShapeLink target)
-        {
-            if (base.CanLink(src, target))
-                return true;
-
-            // check whether we are linking two nodes. The node can be a target or source.
-            // we always link in both directions node1 <-> node2
-            return (src is BidirectionalNodeLink) && (target is BidirectionalNodeLink);
-        }
-
-
-        /// <summary>
-        /// Performs the linking. Before, it has been checked whether it can be linked (CanLink)
-        /// </summary>
-        /// <param name="child"></param>
-        /// <returns></returns>
-        public override void OnLink(ShapeLink src, ShapeLink target)
-        {
-            base.OnLink(src, target);
-            // forward the linking to the engine instance so that the native class can link to other native instances
-            if (src.OwnerShape == this && (target is BidirectionalNodeLink))
-                this.EngineNode.LinkNode((EngineInstanceNode)target.OwnerShape._engineInstance);
-            if (target.OwnerShape == this && (src is BidirectionalNodeLink))
-                this.EngineNode.LinkNode((EngineInstanceNode)src.OwnerShape._engineInstance);
-        }
-
-
-        /// <summary>
-        /// Performs the unlinking
-        /// </summary>
-        /// <param name="src"></param>
-        /// <param name="target"></param>
-        public override void OnUnlink(ShapeLink src, ShapeLink target)
-        {
-            base.OnUnlink(src, target);
-            // forward the unlinking to the engine instance so that the native class can unlink from other native instances
-            if (src.OwnerShape == this && (target is BidirectionalNodeLink))
-                this.EngineNode.UnLinkNode((EngineInstanceNode)target.OwnerShape._engineInstance);
-            if (target.OwnerShape == this && (src is BidirectionalNodeLink))
-                this.EngineNode.UnLinkNode((EngineInstanceNode)src.OwnerShape._engineInstance);
-        }
-
-        #endregion
-
+        
         #region Serialization and Export
 
         /// <summary>
@@ -237,7 +130,7 @@ namespace SpriteShapeEditorPlugin
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        protected NodeShape(SerializationInfo info, StreamingContext context)
+        protected SpriteShape(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             //..nothing to do
@@ -311,7 +204,7 @@ namespace SpriteShapeEditorPlugin
         /// <returns></returns>
         public override string GetPluginCategory()
         {
-            return "Shapes";
+            return "2D Toolset";
         }
 
         /// <summary>
@@ -325,7 +218,7 @@ namespace SpriteShapeEditorPlugin
 
         public override ShapeBase CreateShapeInstance()
         {
-            NodeShape shape = new NodeShape("sprite");
+            SpriteShape shape = new SpriteShape("Sprite");
             shape.Position = EditorManager.Scene.CurrentShapeSpawnPosition;
             return shape;
         }

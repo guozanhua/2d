@@ -6,7 +6,7 @@ using namespace CSharpFramework::Math;
 using namespace CSharpFramework::Shapes;
 using namespace CSharpFramework::Scene;
 
-#include "SpriteShapeEnginePlugin/VNode.hpp"
+#include "SpriteShapeEnginePlugin/SpriteEntity.hpp"
 
 namespace SpriteManaged
 {
@@ -33,10 +33,8 @@ namespace SpriteManaged
     // special functions
     void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
 
-    void LinkNode(EngineInstanceNode ^pOther);
-    void UnLinkNode(EngineInstanceNode ^pOther);
   private:
     bool m_bIsVisible;
-    VNode_cl *m_pNode; // pointer to native engine object
+    Sprite *m_pNode; // pointer to native engine object
   };
 }

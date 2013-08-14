@@ -8,13 +8,9 @@
 
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
 
-///////////////////////////////////////////////////////////////////////////////////////
-// class Sprite : Entity class for health packs
-///////////////////////////////////////////////////////////////////////////////////////
 class Sprite : public VisBaseEntity_cl
 {
 public:
-
 	// overridden entity functions
 	SPRITE_IMPEXP VOVERRIDE void InitFunction();
 	SPRITE_IMPEXP VOVERRIDE void DeInitFunction();
@@ -22,9 +18,9 @@ public:
   
 	SPRITE_IMPEXP void OnVariableValueChanged(VisVariable_cl *pVar, const char * value);
 
-	// call this to pick up the item by player entity
-	SPRITE_IMPEXP void Pickup();
-
+	// render the shape in editor mode (or for debugging)
+	SPRITE_IMPEXP void DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections=false) const;
+	
 protected:
 	void CommonInit();
 
@@ -46,7 +42,6 @@ public:
 
 	// entity class registration
 	IMPLEMENT_OBJ_CLASS(Sprite);
-
 };
 
 #endif

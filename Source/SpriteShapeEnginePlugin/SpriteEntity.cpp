@@ -1,6 +1,6 @@
 #include "SpriteShapeEnginePluginPCH.h"
 
-#include "Entities/SpriteEntity.hpp"
+#include "SpriteEntity.hpp"
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 
@@ -62,7 +62,8 @@ public:
 					// tangent (hardcoded)
 					hkvVec3(1, 0, 0),
 					pVertices->texCoord,
-					pVertices->color);
+					pVertices->color
+					);
 			}
 
 			// add a trivial index list
@@ -136,7 +137,7 @@ VDynamicMesh *CreateTextMesh(VisFont_cl *pFont, const char *szText, VColorRef iC
 		printer.SetMeshBuilder(&builder);
 
 		// print again to add vertices
-		pFont->PrintText(&printer, hkvVec2(0, 0), szText,iColor);
+		pFont->PrintText(&printer, hkvVec2(0, 0), szText, iColor);
 
 		// setup surface properties (see VFontToMeshPrinter c'tor)
 		builder.CopySurfaceFrom(0, printer.GetVisSurface());
@@ -175,6 +176,30 @@ void Sprite::CommonInit()
 
 	if (Vision::Editor.IsPlaying())
 	{
+		VDynamicMesh* pMesh = NULL;
+
+		{
+			VDynamicMeshBuilder b(4, 2, 0, 1);
+			const hkvVec3 n;
+			const hkvVec3 t;
+			const hkvVec2 uv;
+			VColorRef color;
+			b.AddVertex( hkvVec3(0, 30, 0), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 30, 30), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 0, 30), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 0, 0), n, t, uv, color );
+			b.AddTriangle(0, 1, 2);
+			b.AddTriangle(2, 1, 0);
+			pMesh = b.Finalize();
+		}
+
+		if (pMesh != NULL)
+		{
+			pMesh->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
+		}
+
+		SetMesh(pMesh);
+
 		/*
 		m_spriteMeshBuffer = new VisMeshBuffer_cl();
 		
@@ -262,10 +287,12 @@ void Sprite::CommonInit()
 		m_staticMeshInstance->AssignToVisibilityZones();
 		*/
 
+		/*
 		char szNewText[1024];
 		sprintf(szNewText,"This is Frame #%i",20);
 		VisFont_cl *pFont = &Vision::Fonts.ConsoleFont();
 		SetMesh(CreateTextMesh(pFont, szNewText, V_RGBA_WHITE));
+		*/
 	}
 }
 
@@ -308,6 +335,19 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char * value)
 	}
 }
 
+// render the node (and optionally the connections)
+void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections) const
+{
+	/*
+	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
+	hkvAlignedBBox bbox;
+	hkvVec3 vRad(fSize,fSize,fSize);
+	bbox.m_vMin = m_vPos-vRad;
+	bbox.m_vMax = m_vPos+vRad;
+	pRenderer->RenderAABox(bbox,iColor,state);
+	*/
+}
+
 // Serialization function : Used when exported by vForge and loaded by scene viewer
 void Sprite::Serialize( VArchive &ar )
 {
@@ -328,12 +368,6 @@ void Sprite::OnSerialized(VArchive &ar)
 
 	// call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
 	CommonInit();
-}
-
-// called when this item is picked by player
-void Sprite::Pickup()
-{
-	Remove();
 }
 
 // vartable; provide the following members to vForge. Although vPhysXEntity is the base class we use VisBaseEntity_cl here to hide physX properties

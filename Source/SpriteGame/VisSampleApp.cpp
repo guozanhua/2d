@@ -2515,7 +2515,7 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
           m_spLogoOverlay->SetPos(fScreenRight - fGapRight - fWidth, fScreenBottom - fGapBottom - fHeight);
         }
 
-        m_spLogoOverlay->SetColor(VColorRef(255, 255, 255, m_bLogoFadeInDone ? 255 : 0));
+		m_spLogoOverlay->SetColor(VColorRef(255, 255, 255, m_bLogoFadeInDone ? 255 : 0));
         m_spLogoOverlay->GetTextureObject()->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
       }
 

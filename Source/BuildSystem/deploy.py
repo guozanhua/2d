@@ -71,8 +71,11 @@ def main():
 
                     if os.path.exists(destination_file) and\
                        (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
-                        shutil.copy2(source_file, output_path)
-                        print('Updating %s...' % destination_file)
+                        try:
+                            shutil.copy2(source_file, output_path)
+                            print('Updating %s...' % destination_file)
+                        except IOError:
+                            print('Failed to update %s...' % destination_file)
         success = True
 
     return success

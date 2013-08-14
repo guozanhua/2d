@@ -3,21 +3,10 @@
   <ItemGroup>
     <ClCompile Include="SpriteEnginePlugin.cpp" />
     <ClCompile Include="SpriteShapeEnginePluginPCH.cpp" />
-    <ClCompile Include="VNode.cpp" />
-    <ClCompile Include="Entities\SpriteEntity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
+    <ClCompile Include="SpriteEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SpriteShapeEnginePluginPCH.h" />
-    <ClInclude Include="VNode.hpp" />
-    <ClInclude Include="Entities\SpriteEntity.hpp">
-      <Filter>Entities</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{58f54dec-6c90-4586-a985-dd648ca3f1c1}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="SpriteEntity.hpp" />
   </ItemGroup>
 </Project>
