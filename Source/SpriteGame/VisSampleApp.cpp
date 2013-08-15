@@ -255,6 +255,21 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
     iSampleFlags &= ~VSAMPLE_ASKFULLSCREEN;
   }
 
+  // Show dialog asking the user if he wants to go fullscreen
+  if (iSampleFlags & VSAMPLE_ASKFULLSCREEN)
+  {
+	  // the question is negated, so that just pressing enter will stay in windowed mode, the return value is true
+	  if ( MessageBoxA (NULL, "Do you want to run in windowed mode?",szCaption, MB_ICONQUESTION | MB_YESNO ) == IDNO) 
+	  {
+		  iSampleFlags |= VSAMPLE_FORCEFULLSCREEN;
+	  }
+	  else
+	  {
+		  iSampleFlags &= ~VSAMPLE_FORCEFULLSCREEN;
+	  }
+
+  }
+
   if ((iSampleFlags & VSAMPLE_FORCEFULLSCREEN) && (iSampleFlags & VSAMPLE_USEDESKTOPRESOLUTION))
   {
     DEVMODEA deviceMode;

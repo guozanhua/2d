@@ -1,8 +1,10 @@
 #include "Toolset2D_EnginePluginPCH.h"
 
 #include "SpriteEntity.hpp"
+#include "SpriteManager.hpp"
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
+#include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
 V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gSpriteShapeEngineModule);
 
@@ -159,13 +161,18 @@ void Sprite::InitFunction()
 	// once at creation time get the original position
 	m_vCenterPos = GetPosition();
 	CommonInit();
+
+	SpriteManager::GlobalManager().AddSprite(this);
 }
 
 // called by the engine when entity is destroyed
 void Sprite::DeInitFunction()
 {
+	// TODO: Shouldn't this be removed?
 	//m_spriteMeshBuffer->Remove;
 	m_spriteMeshBuffer = NULL;
+
+	SpriteManager::GlobalManager().RemoveSprite(this);
 }
 
 // called by our InitFunction and our de-serialization code
@@ -200,12 +207,13 @@ void Sprite::CommonInit()
 
 		SetMesh(pMesh);
 
-		/*
-		m_spriteMeshBuffer = new VisMeshBuffer_cl();
-		
 		// texture
 		m_spSpriteSheetTexture = Vision::TextureManager.Load2DTexture("Textures\\SpriteSheets\\EnemyShip.png", VTM_FLAG_DEFAULT_MIPMAPPED);
 		VASSERT(m_spSpriteSheetTexture);
+
+		/*
+		m_spriteMeshBuffer = new VisMeshBuffer_cl();
+
 		m_spriteMeshBuffer->SetBaseTexture(m_spSpriteSheetTexture);
 
 		// alloc
@@ -301,27 +309,13 @@ void Sprite::ThinkFunction()
 {
 	float dtime = Vision::GetTimer()->GetTimeDifference();
 
-	// rotate health pack
+	// Rotate sprite
 	IncOrientation(dtime*40.f,0.f,0.f);
 	m_fTimePos = hkvMath::mod (m_fTimePos+dtime*3.f,hkvMath::pi () * 2.0f);
 
 	hkvVec3 vPos = m_vCenterPos;
 	vPos.z += 8.f*hkvMath::sinRad (m_fTimePos);
 	SetPosition(vPos);
-
-	VSimpleRenderState_t	state;
-	hkvVec2					tl(450,80);hkvVec2	br(850,850);
-	hkvVec2					tl2(50,50);hkvVec2	br2(650,350);
-	
-	IVRender2DInterface *pRender = Vision::RenderLoopHelper.BeginOverlayRendering();
-	pRender->SetDepth(512.f);
-	pRender->SetScissorRect(NULL);
-	state.SetTransparency(VIS_TRANSP_ALPHA);
-
-	pRender->DrawSolidQuad(tl,br,VColorRef(255,0,255,100),state);
-	pRender->DrawSolidQuad(tl2,br2,VColorRef(0,255,0,128),state);
-	
-	Vision::RenderLoopHelper.EndOverlayRendering();
 }
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char * value)
@@ -346,6 +340,11 @@ void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iC
 	bbox.m_vMax = m_vPos+vRad;
 	pRenderer->RenderAABox(bbox,iColor,state);
 	*/
+}
+
+void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
+{
+	pRender->DrawTexturedQuad( hkvVec2(50, 50), hkvVec2(100, 100), m_spSpriteSheetTexture, hkvVec2(0, 0), hkvVec2(1, 1), V_RGBA_WHITE, state );
 }
 
 // Serialization function : Used when exported by vForge and loaded by scene viewer

@@ -2,12 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="EngineInstanceNode.cpp" />
     <ClCompile Include="Toolset2D_Managed.cpp" />
     <ClCompile Include="Toolset2D_ManagedPCH.cpp" />
+    <ClCompile Include="EngineInstanceSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EngineInstanceNode.hpp" />
     <ClInclude Include="Toolset2D_ManagedPCH.h" />
+    <ClInclude Include="EngineInstanceSprite.hpp" />
   </ItemGroup>
 </Project>

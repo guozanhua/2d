@@ -17,8 +17,8 @@ public:
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
-		Vision::UnregisterModule(&gSpriteShapeEngineModule);
 		SpriteManager::GlobalManager().OneTimeDeInit();
+		Vision::UnregisterModule(&gSpriteShapeEngineModule);
 	}
 
 	VOVERRIDE const char *GetPluginName()

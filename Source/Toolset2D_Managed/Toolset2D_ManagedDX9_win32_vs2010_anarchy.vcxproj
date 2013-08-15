@@ -234,7 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="EngineInstanceNode.cpp" />
+    <ClCompile Include="EngineInstanceSprite.cpp" />
     <ClCompile Include="Toolset2D_Managed.cpp" />
     <ClCompile Include="Toolset2D_ManagedPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
@@ -243,7 +243,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EngineInstanceNode.hpp" />
+    <ClInclude Include="EngineInstanceSprite.hpp" />
     <ClInclude Include="Toolset2D_ManagedPCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,7 +1,7 @@
 #ifndef SpriteGameAPPLICAION_HPP_INCLUDED
 #define SpriteGameAPPLICAION_HPP_INCLUDED
 
-#include "SpriteEntity.hpp"
+class Sprite;
 
 class SpriteManager : public IVisCallbackHandler_cl
 {
@@ -12,8 +12,8 @@ public:
 	SPRITE_IMPEXP void OneTimeInit();
 	SPRITE_IMPEXP void OneTimeDeInit();
 
-	// switch to play-the-game mode. When not in vForge, this is default
-	void SetPlayTheGame(bool bStatus);
+	void AddSprite(Sprite *sprite);
+	void RemoveSprite(Sprite *sprite);
 
 	void Render();
 
@@ -21,7 +21,7 @@ public:
 	static SpriteManager& GlobalManager() {return g_SpriteManager;}
 
 private:
-	bool m_bPlayingTheGame;
+	VArray<Sprite*> m_sprites;
 
 	static SpriteManager g_SpriteManager;
 };

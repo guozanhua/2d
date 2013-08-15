@@ -62,14 +62,14 @@ namespace Toolset2D_EditorPlugin
         #region Engine Instance
 
         /// <summary>
-        /// Function to create the engine instance of the shape. The engine instance is of type EngineInstanceNode
+        /// Function to create the engine instance of the shape. The engine instance is of type EngineInstanceSprite
         /// and located in the managed code library.
         /// </summary>
         /// <param name="bCreateChildren">relevant for the base class to create instances for children</param>
         public override void CreateEngineInstance(bool bCreateChildren)
         {
             base.CreateEngineInstance(bCreateChildren);
-            _engineInstance = new EngineInstanceNode();
+            _engineInstance = new EngineInstanceSprite();
             SetEngineInstanceBaseProperties(); // sets the position etc.
         }
 
@@ -81,13 +81,13 @@ namespace Toolset2D_EditorPlugin
         {
             base.RemoveEngineInstance(bRemoveChildren);
 
-            // nothing else to do here (_engineInstance already destroyed in base.RemoveEngineInstance
+            // nothing else to do here (_engineInstance already destroyed in base.RemoveEngineInstance)
         }
 
         /// <summary>
         /// Helper field to access the engine instance as casted class to perform specfic operations on it
         /// </summary>
-        EngineInstanceNode EngineNode { get { return (EngineInstanceNode)_engineInstance; } }
+        EngineInstanceSprite EngineNode { get { return (EngineInstanceSprite)_engineInstance; } }
 
         /// <summary>
         /// Overridden render function: Let the engine instance render itself and render a box
@@ -107,7 +107,6 @@ namespace Toolset2D_EditorPlugin
         public override void SetEngineInstanceBaseProperties()
         {
             base.SetEngineInstanceBaseProperties();
-            // set other properties here : EngineNode.SetXYZ()
         }
 
         /// <summary>
@@ -119,7 +118,9 @@ namespace Toolset2D_EditorPlugin
         public override void OnTraceShape(ShapeTraceMode_e mode, Vector3F rayStart, Vector3F rayEnd, ref ShapeTraceResult result)
         {
             if (ConversionUtils.TraceOrientedBoundingBox(LocalBoundingBox, Position, RotationMatrix, rayStart, rayEnd, ref result))
+            {
                 result.hitShape = this;
+            }
         }        
         #endregion
         
@@ -137,7 +138,7 @@ namespace Toolset2D_EditorPlugin
         }
 
         /// <summary>
-        /// Called during export to collect native plugin information. In this case, return the global instance that applies for all shpes in this plugin
+        /// Called during export to collect native plugin information. In this case, return the global instance that applies for all shapes in this plugin
         /// </summary>
         /// <returns></returns>
         public override CSharpFramework.Serialization.EditorPluginInfo GetPluginInformation()
@@ -157,7 +158,7 @@ namespace Toolset2D_EditorPlugin
         }
 
         /// <summary>
-        /// Called when exporting the scene to engine archive. base implemenation calls function on engine object which in turn
+        /// Called when exporting the scene to engine archive. base implementation calls function on engine object which in turn
         /// serializes itself
         /// </summary>
         /// <returns></returns>
@@ -179,7 +180,6 @@ namespace Toolset2D_EditorPlugin
     /// </summary>
     class NodeShapeCreator : CSharpFramework.IShapeCreatorPlugin
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

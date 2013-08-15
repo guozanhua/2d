@@ -20,7 +20,9 @@ public:
 
 	// render the shape in editor mode (or for debugging)
 	SPRITE_IMPEXP void DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections=false) const;
-	
+
+	SPRITE_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
+
 protected:
 	void CommonInit();
 

@@ -1,6 +1,6 @@
 #include "SpriteGamePluginPCH.h"
 
-#include "SpriteGameApplication.hpp"
+#include "SpriteGameManager.hpp"
 
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.
@@ -36,7 +36,7 @@ DECLARE_THIS_MODULE( gSpriteGameModule,
 					 MAKE_VERSION(1, 0),
 					 "SpriteGamePlugin",
 					 "Havok",
-					 "2D toolset for Project Anarchy",
+					 "2D sprite game sample using the 2D toolset for Project Anarchy",
 					 &g_SpriteGamePlugin );
 
 ////////////////////////////////////////////////////////////////////////////
