@@ -2,13 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="SpriteGameApplication.cpp" />
     <ClCompile Include="SpriteGamePlugin.cpp" />
     <ClCompile Include="SpriteGamePluginPCH.cpp" />
+    <ClCompile Include="SpriteGameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HUD.hpp" />
-    <ClInclude Include="SpriteGameApplication.hpp" />
     <ClInclude Include="SpriteGamePluginPCH.h" />
+    <ClInclude Include="SpriteGameManager.hpp" />
   </ItemGroup>
 </Project>

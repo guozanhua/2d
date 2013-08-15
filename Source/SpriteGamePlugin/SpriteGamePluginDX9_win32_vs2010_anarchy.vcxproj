@@ -209,7 +209,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="SpriteGameApplication.cpp" />
+    <ClCompile Include="SpriteGameManager.cpp" />
     <ClCompile Include="SpriteGamePlugin.cpp" />
     <ClCompile Include="SpriteGamePluginPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
@@ -218,7 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HUD.hpp" />
-    <ClInclude Include="SpriteGameApplication.hpp" />
+    <ClInclude Include="SpriteGameManager.hpp" />
     <ClInclude Include="SpriteGamePluginPCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
