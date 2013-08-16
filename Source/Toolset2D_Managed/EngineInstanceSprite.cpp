@@ -2,6 +2,8 @@
 
 #include "EngineInstanceSprite.hpp"
 
+#include "Vision/Editor/vForge/EditorPlugins/VisionPlugin/VisionManaged/VisionManagedPCH.h"
+
 using namespace ManagedFramework;
 #using <mscorlib.dll>
 
@@ -21,21 +23,17 @@ namespace Toolset2D_Managed
 	// destroy the native instance of the node as well
 	void EngineInstanceSprite::DisposeObject()
 	{
-		if (m_pSprite)
-		{
-			m_pSprite->Release(); // decrease the refcounter
-			m_pSprite = NULL;
-		}
+		V_SAFE_DISPOSEANDRELEASE(m_pSprite);
 	}
 
 	void EngineInstanceSprite::SetPosition(float x,float y,float z)
 	{
-		m_pSprite->SetPosition(x,y,z);
+		m_pSprite->SetPosition(x, y, z);
 	}
 
-	void EngineInstanceSprite::SetOrientation(float /*yaw*/,float /*pitch*/,float /*roll*/)
+	void EngineInstanceSprite::SetOrientation(float yaw,float pitch,float roll)
 	{
-		// no orientation
+		m_pSprite->SetOrientation(yaw, pitch, roll);
 	}
 
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
@@ -49,7 +47,9 @@ namespace Toolset2D_Managed
 			{
 			case ShapeRenderMode::Normal:
 				if (m_bIsVisible)
+				{
 					m_pSprite->DebugRender(pRI,4.f,VColorRef(255,0,0,80), false);
+				}
 				break;
 			case ShapeRenderMode::Selected:
 				m_pSprite->DebugRender(pRI,5.f,VColorRef(255,160,0,140), false);

@@ -1,5 +1,5 @@
-#ifndef SpriteGameAPPLICAION_HPP_INCLUDED
-#define SpriteGameAPPLICAION_HPP_INCLUDED
+#ifndef SPRITE_MANAGER_HPP_INCLUDED
+#define SPRITE_MANAGER_HPP_INCLUDED
 
 class Sprite;
 
@@ -9,16 +9,16 @@ public:
 	VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
 
 	// called when plugin is loaded/unloaded
-	SPRITE_IMPEXP void OneTimeInit();
-	SPRITE_IMPEXP void OneTimeDeInit();
+	TOOLSET_2D_IMPEXP void OneTimeInit();
+	TOOLSET_2D_IMPEXP void OneTimeDeInit();
 
-	void AddSprite(Sprite *sprite);
-	void RemoveSprite(Sprite *sprite);
+	TOOLSET_2D_IMPEXP void AddSprite(Sprite *sprite);
+	TOOLSET_2D_IMPEXP void RemoveSprite(Sprite *sprite);
 
-	void Render();
+	TOOLSET_2D_IMPEXP void Render();
 
 	// access one global instance of the frame manager
-	static SpriteManager& GlobalManager() {return g_SpriteManager;}
+	static SpriteManager& GlobalManager() { return g_SpriteManager; }
 
 private:
 	VArray<Sprite*> m_sprites;
@@ -26,4 +26,4 @@ private:
 	static SpriteManager g_SpriteManager;
 };
 
-#endif
+#endif // SPRITE_MANAGER_HPP_INCLUDED

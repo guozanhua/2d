@@ -1,5 +1,5 @@
-#ifndef SpriteGameAPPLICAION_HPP_INCLUDED
-#define SpriteGameAPPLICAION_HPP_INCLUDED
+#ifndef SPRITE_GAME_MANAGER_HPP_INCLUDED
+#define SPRITE_GAME_MANAGER_HPP_INCLUDED
 
 #include <HUD.hpp>
 
@@ -24,17 +24,19 @@ public:
 	SPRITE_GAME_IMPEXP void Render();
 
 	// access one global instance of the frame manager
-	static SpriteGameManager& GlobalManager() {return g_GameManager;}
+	static SpriteGameManager& GlobalManager() { return g_SpriteGameManager; }
 
 private:
 	bool m_bPlayingTheGame;
 	HUDGUIContextPtr m_spHUD;
 
+	Sprite *m_pSprite;
+
 #ifdef WIN32
 	IVRemoteInput *m_pRemoteInput;
 #endif
 
-	static SpriteGameManager g_GameManager;
+	static SpriteGameManager g_SpriteGameManager;
 };
 
-#endif
+#endif // SPRITE_GAME_MANAGER_HPP_INCLUDED

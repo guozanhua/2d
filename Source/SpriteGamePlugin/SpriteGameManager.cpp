@@ -10,7 +10,7 @@
 #endif
 
 // One global static instance
-SpriteGameManager SpriteGameManager::g_GameManager;
+SpriteGameManager SpriteGameManager::g_SpriteGameManager;
 
 void SpriteGameManager::OneTimeInit()
 {
@@ -36,6 +36,7 @@ void SpriteGameManager::OneTimeInit()
 
 void SpriteGameManager::OneTimeDeInit()
 {
+	/* TODO: en-enable this
 	Vision::Callbacks.OnEditorModeChanged -= this;
 	Vision::Callbacks.OnBeforeSceneLoaded -= this;
 	Vision::Callbacks.OnAfterSceneLoaded -= this;
@@ -45,6 +46,7 @@ void SpriteGameManager::OneTimeDeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
+	*/
 }
 
 void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
@@ -66,6 +68,10 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
+		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0,0,0));
+		m_pSprite->InitFunction();
+		m_pSprite->LoadShoeBox("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
+
 		// Init play-the-game only in this vForge mode (or outside vForge)
 		if (Vision::Editor.IsPlayingTheGame())
 		{
@@ -74,6 +80,8 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
+		V_SAFE_DISPOSEOBJECT(m_pSprite);
+
 		// This is important when running outside vForge
 		SetPlayTheGame(false);
 	}
@@ -119,8 +127,9 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		m_bPlayingTheGame = bStatus;
 		if (m_bPlayingTheGame)
 		{
-			m_spHUD = new HUDGUIContext(NULL);
-			m_spHUD->SetActivate(true);
+			// TODO: Re-enable the HUD
+			//m_spHUD = new HUDGUIContext(NULL);
+			//m_spHUD->SetActivate(true);
 
 	#if defined(WIN32) && !defined(_VISION_WINRT)
 			if(m_pRemoteInput)

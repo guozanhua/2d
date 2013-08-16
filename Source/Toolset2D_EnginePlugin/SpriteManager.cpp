@@ -17,6 +17,8 @@ void SpriteManager::OneTimeInit()
 void SpriteManager::OneTimeDeInit()
 {
 	Vision::Callbacks.OnRenderHook -= this;
+
+	VASSERT(m_sprites.GetSize() == 0);
 }
 
 void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
@@ -50,13 +52,16 @@ void SpriteManager::Render()
 
 void SpriteManager::AddSprite(Sprite *sprite)
 {
-	m_sprites.Append(sprite);
+	const int spriteIndex = m_sprites.Find(sprite, 0);
+	if (spriteIndex == -1)
+	{
+		m_sprites.Append(sprite);
+	}
 }
 
 void SpriteManager::RemoveSprite(Sprite *sprite)
 {
 	const int spriteIndex = m_sprites.Find(sprite, 0);
-	VASSERT_MSG(spriteIndex != -1, "Unable to find the sprite in the sprite manager!")
 	if (spriteIndex != -1)
 	{
 		m_sprites.RemoveAt(spriteIndex);

@@ -3,47 +3,65 @@
 
 #include "Toolset2D_EnginePluginPCH.h"
 
-// this include defines the SAMPLEPLUGIN_IMPEXP and declares the g_sampleModule
-#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Entities/SamplePluginModule.hpp>
+struct SpriteCell
+{
+	VString name;
+	hkvVec2 offset;
+	hkvVec2 pivot;
+	int width;
+	int height;
+	int index;
+};
 
-#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
+struct SpriteState
+{
+	VString name;
+	VArray<SpriteCell*> cells;
+	float framerate;
+};
 
 class Sprite : public VisBaseEntity_cl
 {
 public:
+	V_DECLARE_SERIAL_DLLEXP(Sprite, TOOLSET_2D_IMPEXP)
+
+	// Entity class registration
+	IMPLEMENT_OBJ_CLASS(Sprite);
+
+	TOOLSET_2D_IMPEXP Sprite();
+	TOOLSET_2D_IMPEXP Sprite(const char *spriteSheetFilename, const char *shoeBoxXml);
+	TOOLSET_2D_IMPEXP VOVERRIDE ~Sprite();
+
 	// overridden entity functions
-	SPRITE_IMPEXP VOVERRIDE void InitFunction();
-	SPRITE_IMPEXP VOVERRIDE void DeInitFunction();
-	SPRITE_IMPEXP VOVERRIDE void ThinkFunction();
+	TOOLSET_2D_IMPEXP VOVERRIDE void InitFunction();
+	TOOLSET_2D_IMPEXP VOVERRIDE void DeInitFunction();
+	TOOLSET_2D_IMPEXP VOVERRIDE void ThinkFunction();
   
-	SPRITE_IMPEXP void OnVariableValueChanged(VisVariable_cl *pVar, const char * value);
+	TOOLSET_2D_IMPEXP VOVERRIDE void OnVariableValueChanged(VisVariable_cl *pVar, const char * value);
+
+	// serialization and type management
+	TOOLSET_2D_IMPEXP VOVERRIDE void Serialize( VArchive &ar );
+	TOOLSET_2D_IMPEXP VOVERRIDE void OnSerialized( VArchive &ar );
 
 	// render the shape in editor mode (or for debugging)
-	SPRITE_IMPEXP void DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections=false) const;
+	TOOLSET_2D_IMPEXP void DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections=false) const;
 
-	SPRITE_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
+	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
+
+	TOOLSET_2D_IMPEXP bool LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilename);
 
 protected:
 	void CommonInit();
 
+private:
 	VTextureObjectPtr m_spSpriteSheetTexture;
-  
-	hkvVec3 m_vCenterPos;
-	float m_fTimePos;
+
+	VArray<SpriteCell> m_cells;
+	VArray<SpriteState> m_states;
 
 	VisMeshBuffer_cl *m_spriteMeshBuffer;
 	VisStaticMeshPtr m_staticMesh;
 	VisStaticMeshInstance_cl *m_staticMeshInstance;
-
-public:
-	// serialization and type management
-	V_DECLARE_SERIAL_DLLEXP( Sprite, SPRITE_IMPEXP )
-
-	SPRITE_IMPEXP VOVERRIDE void Serialize( VArchive &ar );
-	SPRITE_IMPEXP VOVERRIDE void OnSerialized( VArchive &ar );
-
-	// entity class registration
-	IMPLEMENT_OBJ_CLASS(Sprite);
 };
 
 #endif

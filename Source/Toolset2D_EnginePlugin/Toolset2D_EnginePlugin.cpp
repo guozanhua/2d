@@ -10,7 +10,7 @@ public:
 	// this function is only called once since an external init counter takes care
 	VOVERRIDE void OnInitEnginePlugin()
 	{
-		Vision::RegisterModule(&gSpriteShapeEngineModule);
+		Vision::RegisterModule(&gToolset2D_EngineModule);
 		SpriteManager::GlobalManager().OneTimeInit();
 	}
 
@@ -18,7 +18,7 @@ public:
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
 		SpriteManager::GlobalManager().OneTimeDeInit();
-		Vision::UnregisterModule(&gSpriteShapeEngineModule);
+		Vision::UnregisterModule(&gToolset2D_EngineModule);
 	}
 
 	VOVERRIDE const char *GetPluginName()
@@ -32,7 +32,7 @@ public:
 Toolset2D_EnginePlugin_cl g_Toolset2D_EnginePlugin;
 
 // this plugin also declares a module which is needed for RTTI/serialization
-DECLARE_THIS_MODULE( gSpriteShapeEngineModule,
+DECLARE_THIS_MODULE( gToolset2D_EngineModule,
 					 MAKE_VERSION(1, 0),
 					 "Toolset2D_EnginePlugin",
 					 "Havok",
