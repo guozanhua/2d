@@ -71,6 +71,7 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0,0,0));
 		m_pSprite->InitFunction();
 		m_pSprite->LoadShoeBox("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
+		m_pSprite->SetState("rollLeft");
 
 		// Init play-the-game only in this vForge mode (or outside vForge)
 		if (Vision::Editor.IsPlayingTheGame())

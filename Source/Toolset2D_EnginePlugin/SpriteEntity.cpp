@@ -12,6 +12,8 @@ V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 
 Sprite::Sprite() :
 VisBaseEntity_cl(),
+m_currentFrame(-1),
+m_currentState(-1),
 m_spSpriteSheetTexture(NULL),
 m_spriteMeshBuffer(NULL),
 m_staticMesh(NULL),
@@ -86,20 +88,23 @@ bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilenam
 			cell.width = width;
 			cell.height = height;
 
-			m_cells.Append(cell);
-			SpriteCell *currentCell = &m_cells[m_cells.GetSize() - 1];
+			const int newCellIndex = m_cells.Append(cell);
+			SpriteCell *currentCell = &m_cells[newCellIndex];
 
 			const char *result = strrchr(name, '_');
 			int index = -1;
 			if (result != NULL)
 				index = result - name;
 
+			SpriteState *state = NULL;
+			int stateIndex = -1;
 			if (index == -1)
 			{
-				SpriteState state;
-				state.name = name;
-				state.framerate = 30.0f;
-				m_states.Append(state);
+				stateIndex = m_states.Append(SpriteState());
+				state = &m_states[stateIndex];
+				state->name = name;
+				state->framerate = 30.0f;
+				m_stateNameToIndex.Set(state->name, stateIndex);
 			}
 			else
 			{
@@ -109,28 +114,28 @@ bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilenam
 				VString number = VString(last.GetChar(), last.Find("."));
 				currentCell->index = atoi(number);
 
-				int stateIndex = -1;
 				for (int i = 0; i < m_states.GetSize(); i++)
 				{
 					if (m_states[i].name == stateName)
 					{
 						stateIndex = i;
+						state = &m_states[i];
 						break;
 					}
 				}
 
 				if (stateIndex == -1)
 				{
-					SpriteState state;
-					state.name = stateName;
-					state.cells.Append(currentCell);
-					m_states.Append(state);
+					stateIndex = m_states.Append(SpriteState());
+					state = &m_states[stateIndex];
+					state->name = stateName;
+					state->framerate = 10.f;
+					m_stateNameToIndex.Set(state->name, stateIndex);
 				}
-				else
-				{
-					m_states[stateIndex].cells.Append(currentCell);
-				}
-			}			
+
+			}
+
+			state->cells.Append(newCellIndex);
 		}
 
 		success = true;
@@ -174,6 +179,30 @@ void Sprite::CommonInit()
 void Sprite::ThinkFunction()
 {
 	// TODO: Update the current cell being rendered
+	if (m_currentState != -1)
+	{
+		m_lastTime += Vision::GetTimer()->GetTimeDifference();
+		const SpriteState *s = &m_states[m_currentState];
+		const float dt = 1.0f / s->framerate;
+		if (m_lastTime >= dt)
+		{
+			const int numCells = s->cells.GetSize();
+			m_currentFrame = (m_currentFrame + 1) % numCells;
+			m_lastTime -= dt;
+		}
+	}
+}
+
+bool Sprite::SetState(const char *state)
+{
+	int index = m_stateNameToIndex.Find(state);
+	if (index != -1)
+	{
+		m_currentState = index;
+		m_currentFrame = 0;
+		m_lastTime = 0.f;
+	}
+	return (index != -1);
 }
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
@@ -208,24 +237,27 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 	hkvVec2 tl;
 	hkvVec2 br;
 
-	tl.x = 50;
-	tl.y = 50;
+	hkvVec3 pos = GetPosition();
+	tl.x = pos.x;
+	tl.y = pos.y;
 
-	if (m_cells.GetSize() > 0)
+	if (m_currentState != -1)
 	{
 		hkvVec2 topLeft;
 		hkvVec2 bottomRight;
 
-		float width = m_spSpriteSheetTexture->GetTextureWidth();
-		float height = m_spSpriteSheetTexture->GetTextureHeight();
+		float width = static_cast<float>(m_spSpriteSheetTexture->GetTextureWidth());
+		float height = static_cast<float>(m_spSpriteSheetTexture->GetTextureHeight());
 
-		br.x = tl.x + m_cells[0].width;
-		br.y = tl.y + m_cells[0].height;
+		const SpriteState *spriteState = &m_states[m_currentState];
+		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
+		br.x = tl.x + cell->width;
+		br.y = tl.y + cell->height;
 
-		float w = (float)m_cells[0].width / width;
-		float h = (float)m_cells[0].height / height;
-		float x = m_cells[0].offset.x / width;
-		float y = m_cells[0].offset.y / height;
+		float w = (float)cell->width / width;
+		float h = (float)cell->height / height;
+		float x = cell->offset.x / width;
+		float y = cell->offset.y / height;
 
 		topLeft.x = x;
 		topLeft.y = y;

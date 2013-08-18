@@ -15,8 +15,12 @@ struct SpriteCell
 
 struct SpriteState
 {
+	SpriteState() : cells(100)
+	{
+
+	}
 	VString name;
-	VArray<SpriteCell*> cells;
+	VArray<int> cells;
 	float framerate;
 };
 
@@ -50,14 +54,21 @@ public:
 
 	TOOLSET_2D_IMPEXP bool LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilename);
 
+	TOOLSET_2D_IMPEXP bool SetState(const char *state);
+
 protected:
 	void CommonInit();
 
 private:
 	VTextureObjectPtr m_spSpriteSheetTexture;
 
+	int m_currentState;
+	int m_currentFrame;
+
+	float m_lastTime;
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;
+	VDictionary<int> m_stateNameToIndex;
 
 	VisMeshBuffer_cl *m_spriteMeshBuffer;
 	VisStaticMeshPtr m_staticMesh;

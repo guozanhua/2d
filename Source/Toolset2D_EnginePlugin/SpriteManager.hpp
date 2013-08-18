@@ -6,6 +6,8 @@ class Sprite;
 class SpriteManager : public IVisCallbackHandler_cl
 {
 public:
+	SpriteManager();
+
 	VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
 
 	// called when plugin is loaded/unloaded
