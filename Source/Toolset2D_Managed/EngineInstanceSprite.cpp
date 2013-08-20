@@ -82,6 +82,20 @@ namespace Toolset2D_Managed
 		return true;
 	}
 
+	bool EngineInstanceSprite::CanAttachComponent(ShapeComponent ^component, String ^%sError)
+	{
+		// Default implementation:
+		//	return ConversionUtils::CanAttachComponent(GetO3DPtr(),component,sError);
+
+		// For now, just allow script components
+		return (component->PrefabIdentifier == "VScriptComponent");
+	}
+
+	void EngineInstanceSprite::OnAttachComponent(ShapeComponent ^component)
+	{
+		ConversionUtils::OnAttachComponent(m_pSprite, component);
+	}
+
 	void EngineInstanceSprite::SetShoeBoxData(String ^pFileName, String ^pXml)
 	{
 		VString sFileName;

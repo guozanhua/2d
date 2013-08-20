@@ -4,8 +4,6 @@
 // This interface file generates Toolset2D_Module_wrapper.cpp
 // and is represented in Lua as the "Toolset 2D" module.
 
-#ifndef VLUA_APIDOC
-
 //get access to all vision specific things...
 %include <windows.i>
 %include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/vision_types.i>
@@ -18,11 +16,9 @@
 %include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/VisApiBaseEntity.i>
 
 //custom headers for generated source file
-%module FireLight
+%module Toolset2D
 %{
-  #include "..\Toolset2D_EnginePluginPCH.h"
+  #include "Toolset2D_EnginePluginPCH.h"
 %}
   
 %include <SpriteEntity.i>;
-
-#endif

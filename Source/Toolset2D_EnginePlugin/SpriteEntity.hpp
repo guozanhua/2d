@@ -37,6 +37,7 @@ public:
 	TOOLSET_2D_IMPEXP VOVERRIDE void ThinkFunction();
   
 	TOOLSET_2D_IMPEXP VOVERRIDE void OnVariableValueChanged(VisVariable_cl *pVar, const char * value);
+	TOOLSET_2D_IMPEXP VOVERRIDE BOOL AddComponent(IVObjectComponent *pComponent);
 
 	// serialization and type management
 	TOOLSET_2D_IMPEXP VOVERRIDE void Serialize( VArchive &ar );

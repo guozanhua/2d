@@ -33,6 +33,9 @@ namespace Toolset2D_Managed
 		VOVERRIDE void TraceShape(Shape3D ^ownerShape, Vector3F rayStart,Vector3F rayEnd, ShapeTraceResult^ %result) override;
 		VOVERRIDE bool OnExport(SceneExportInfo ^info) override;
 
+		VOVERRIDE bool CanAttachComponent(ShapeComponent ^component, String ^%sError) override;
+		VOVERRIDE void OnAttachComponent(ShapeComponent ^component) override;
+
 		// special functions
 		void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
 

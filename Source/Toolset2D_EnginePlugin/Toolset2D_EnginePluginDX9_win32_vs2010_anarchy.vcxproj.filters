@@ -20,7 +20,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Toolset2D_Module.i">
+    <CustomBuild Include="Lua\Toolset2D_Module.i">
       <Filter>Lua</Filter>
     </CustomBuild>
   </ItemGroup>

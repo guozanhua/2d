@@ -110,14 +110,15 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		m_bPlayingTheGame = bStatus;
 		if (m_bPlayingTheGame)
 		{
-			m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
-			m_pSprite->InitFunction();
-			m_pSprite->SetShoeBoxData("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
-			m_pSprite->SetState("rollLeft");
+			if (m_pSprite == NULL)
+			{
+				m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+				m_pSprite->SetShoeBoxData("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
+				m_pSprite->SetState("rollLeft");
+			}
 
-			// TODO: Re-enable the HUD
-			//m_spHUD = new HUDGUIContext(NULL);
-			//m_spHUD->SetActivate(true);
+			m_spHUD = new HUDGUIContext(NULL);
+			m_spHUD->SetActivate(true);
 
 	#if defined(WIN32) && !defined(_VISION_WINRT)
 			if(m_pRemoteInput)
@@ -129,8 +130,7 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		}
 		else
 		{
-			VASSERT(m_pSprite->GetRefCount() == 1);
-			Vision::Game.RemoveEntity(m_pSprite);
+			// This is automatically deleted on scene unload
 			m_pSprite = NULL;
 
 			// Deactivate the HUD

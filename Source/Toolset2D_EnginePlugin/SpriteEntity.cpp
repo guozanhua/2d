@@ -28,6 +28,8 @@ void Sprite::DeInitFunction()
 // called by our InitFunction and our de-serialization code
 void Sprite::CommonInit()
 {
+	SpriteManager::GlobalManager().AddSprite(this);
+
 	m_currentState = -1;
 	m_currentFrame = -1;
 	m_frameTime = 0.f;
@@ -39,13 +41,11 @@ void Sprite::CommonInit()
 	// base class initialization (TODO: seems missing from base?)
 	m_pCustomTraceBBox = NULL;
 
-	SpriteManager::GlobalManager().AddSprite(this);
-
 	SetShoeBoxData(m_spriteSheetFilename, m_xmlDataFilename);
 
+	/* TODO
 	if ( Vision::Editor.IsPlaying() )
 	{
-		/* TODO
 		VDynamicMesh* pMesh = NULL;
 		{
 			VDynamicMeshBuilder b(4, 2, 0, 1);
@@ -66,8 +66,8 @@ void Sprite::CommonInit()
 		{
 			pMesh->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
 		}
-		*/
 	}
+	*/
 }
 
 void Sprite::CommonDeInit()
@@ -224,6 +224,12 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 			m_spSpriteSheetTexture = NULL;
 		}
 	}
+}
+
+BOOL Sprite::AddComponent(IVObjectComponent *pComponent)
+{
+	BOOL success = VisBaseEntity_cl::AddComponent(pComponent);
+	return success;
 }
 
 // render the node (and optionally the connections)

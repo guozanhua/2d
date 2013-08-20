@@ -1666,11 +1666,11 @@ static swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
 
 /* -------- TYPES TABLE (END) -------- */
 
-#define SWIG_name      "FireLight"
-#define SWIG_init      luaopen_FireLight
-#define SWIG_init_user luaopen_FireLight_user
+#define SWIG_name      "Toolset2D"
+#define SWIG_init      luaopen_Toolset2D
+#define SWIG_init_user luaopen_Toolset2D_user
 
-#define SWIG_LUACODE   luaopen_FireLight_luacode
+#define SWIG_LUACODE   luaopen_Toolset2D_luacode
 
 
 namespace swig {
@@ -2872,7 +2872,7 @@ SWIGINTERN int VisBaseEntity_cl_GetPrimarySortingKey(VisBaseEntity_cl *self){
   }
 
 
-  #include "..\Toolset2D_EnginePluginPCH.h"
+  #include "Toolset2D_EnginePluginPCH.h"
 
 
   #include "SpriteEntity.hpp"
