@@ -27,15 +27,10 @@ struct SpriteState
 class Sprite : public VisBaseEntity_cl
 {
 public:
-	V_DECLARE_SERIAL_DLLEXP(Sprite, TOOLSET_2D_IMPEXP)
+	V_DECLARE_SERIAL_DLLEXP(Sprite, TOOLSET_2D_IMPEXP);
 
-	// Entity class registration
 	IMPLEMENT_OBJ_CLASS(Sprite);
-
-	TOOLSET_2D_IMPEXP Sprite();
-	TOOLSET_2D_IMPEXP Sprite(const char *spriteSheetFilename, const char *shoeBoxXml);
-	TOOLSET_2D_IMPEXP VOVERRIDE ~Sprite();
-
+	
 	// overridden entity functions
 	TOOLSET_2D_IMPEXP VOVERRIDE void InitFunction();
 	TOOLSET_2D_IMPEXP VOVERRIDE void DeInitFunction();
@@ -52,20 +47,33 @@ public:
 
 	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
 
-	TOOLSET_2D_IMPEXP bool LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilename);
+	TOOLSET_2D_IMPEXP bool SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename);
 
 	TOOLSET_2D_IMPEXP bool SetState(const char *state);
 
 protected:
 	void CommonInit();
+	void CommonDeInit();
 
 private:
+
+	// Properties
+	//-----
+
+	float TextureScale;
+
+	// Member variables
+	//-----
+
 	VTextureObjectPtr m_spSpriteSheetTexture;
+
+	VString m_spriteSheetFilename;
+	VString m_xmlDataFilename;
 
 	int m_currentState;
 	int m_currentFrame;
+	float m_frameTime;
 
-	float m_lastTime;
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;
 	VDictionary<int> m_stateNameToIndex;

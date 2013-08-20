@@ -19,7 +19,10 @@ namespace Toolset2D_Managed
 		EngineInstanceSprite();
 
 		VOVERRIDE void DisposeObject() override;
-		VOVERRIDE IntPtr GetNativeObject() override {return System::IntPtr((void *)m_pSprite);}
+		VOVERRIDE IntPtr GetNativeObject() override
+		{
+			return System::IntPtr((void *)m_pSprite);
+		}
 
 		// overridden IEngineShapeInstance functions
 		VOVERRIDE void SetVisible(bool bStatus) override {m_bIsVisible=bStatus;}
@@ -33,8 +36,12 @@ namespace Toolset2D_Managed
 		// special functions
 		void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
 
+		void SetShoeBoxData(String ^pFileName, String ^pXml);
+
 	private:
 		bool m_bIsVisible;
-		Sprite *m_pSprite; // pointer to native engine object
+		
+		// pointer to native engine object
+		Sprite *m_pSprite;
 	};
 }

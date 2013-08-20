@@ -13,17 +13,18 @@ namespace Toolset2D_Managed
 	EngineInstanceSprite::EngineInstanceSprite()
 	{
 		m_bIsVisible = true;
-		m_pSprite = new Sprite();
-
-		// add the ref counter. Refcounted native objects have the advantage that they can't be destroyed
-		// in the engine while animating the view
-		m_pSprite->AddRef();
+		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
 	}
 
 	// destroy the native instance of the node as well
 	void EngineInstanceSprite::DisposeObject()
 	{
-		V_SAFE_DISPOSEANDRELEASE(m_pSprite);
+		if (m_pSprite)
+		{
+			VASSERT(m_pSprite->GetRefCount() == 1);
+			m_pSprite->DisposeObject();
+			m_pSprite = NULL;
+		}
 	}
 
 	void EngineInstanceSprite::SetPosition(float x,float y,float z)
@@ -79,5 +80,19 @@ namespace Toolset2D_Managed
 		VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
 		ar.WriteObject(m_pSprite);
 		return true;
+	}
+
+	void EngineInstanceSprite::SetShoeBoxData(String ^pFileName, String ^pXml)
+	{
+		VString sFileName;
+		ConversionUtils::StringToVString(pFileName, sFileName);
+
+		VString sXml;
+		ConversionUtils::StringToVString(pXml, sXml);
+
+		if (!sFileName.IsEmpty())
+		{
+			m_pSprite->SetShoeBoxData(sFileName, sXml);
+		}
 	}
 }

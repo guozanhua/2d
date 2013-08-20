@@ -65,7 +65,7 @@ def main():
 
         for filename in os.listdir(source_directory):
             for plugin in CUSTOM_PLUGINS:
-                if plugin in filename:
+                if plugin.lower() in filename.lower():
                     source_file = os.path.join(source_directory, filename)
                     destination_file = os.path.join(output_path, filename)
 

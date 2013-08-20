@@ -1,10 +1,19 @@
 using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.ComponentModel;
+using System.Drawing.Design;
+using System.Collections.Generic;
 using CSharpFramework;
 using CSharpFramework.Math;
 using CSharpFramework.Shapes;
 using CSharpFramework.Actions;
+using CSharpFramework.PropertyEditors;
+using CSharpFramework.DynamicProperties;
+using CSharpFramework.UndoRedo;
+using CSharpFramework.Scene;
+using CSharpFramework.View;
+using CSharpFramework.Serialization;
 using Toolset2D_Managed;
 using System.Runtime.Serialization;
 using ManagedFramework;
@@ -20,6 +29,16 @@ namespace Toolset2D_EditorPlugin
     [Serializable]
     public class SpriteShape : Shape3D
     {
+        /// <summary>
+        /// Category string
+        /// </summary>
+        protected const string CAT_EVENTRES = "Sprite";
+
+        /// <summary>
+        /// Category ID
+        /// </summary>
+        protected const int CATORDER_EVENTRES = Shape3D.LAST_CATEGORY_ORDER_ID + 1;
+
         #region Constructor
 
         /// <summary>
@@ -96,8 +115,11 @@ namespace Toolset2D_EditorPlugin
         /// <param name="mode"></param>
         public override void RenderShape(VisionViewBase view, ShapeRenderMode mode)
         {
-            EngineNode.RenderShape(view, mode);
-            base.RenderShape(view, mode);
+            if (HasEngineInstance())
+            {
+                EngineNode.RenderShape(view, mode);
+                base.RenderShape(view, mode);
+            }
         }
 
         /// <summary>
@@ -107,6 +129,11 @@ namespace Toolset2D_EditorPlugin
         public override void SetEngineInstanceBaseProperties()
         {
             base.SetEngineInstanceBaseProperties();
+
+            if (HasEngineInstance())
+            {
+                EngineNode.SetShoeBoxData(m_SpriteSheetFilename, m_ShoeBoxData);
+            }
         }
 
         /// <summary>
@@ -167,6 +194,43 @@ namespace Toolset2D_EditorPlugin
             return base.OnExport(info);
         }
 
+        #endregion
+
+        #region Properties
+        string m_SpriteSheetFilename;
+        string m_ShoeBoxData;
+
+        [SortedCategory(CAT_EVENTRES, CATORDER_EVENTRES), PropertyOrder(1)]
+        [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
+        [Description("Texture used for the sprite sheet.")]
+        public string SpriteSheetFilename
+        {
+            get { return m_SpriteSheetFilename; }
+            set
+            {
+                if (m_SpriteSheetFilename == value) return;
+                m_SpriteSheetFilename = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        [PrefabResolveFilename]
+        [SortedCategory(CAT_EVENTRES, CATORDER_EVENTRES),
+        PropertyOrder(1),
+        EditorAttribute(typeof(FilenameEditor), typeof(UITypeEditor)),
+        FileDialogFilter(new string[] { ".xml" })]
+        [Description("XML file output by ShoeBox that describes where the cells are in the sprite sheet")]
+        [DependentProperties(new string[] { "SpriteSheetFilename" })]
+        public string ShoeBoxData
+        {
+            get { return m_ShoeBoxData; }
+            set
+            {
+                if (m_ShoeBoxData == value) return;
+                m_ShoeBoxData = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
         #endregion
     }
     #endregion

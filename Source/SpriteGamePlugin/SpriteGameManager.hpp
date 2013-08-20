@@ -24,7 +24,11 @@ public:
 	SPRITE_GAME_IMPEXP void Render();
 
 	// access one global instance of the frame manager
-	static SpriteGameManager& GlobalManager() { return g_SpriteGameManager; }
+	static SpriteGameManager& GlobalManager()
+	{
+		static SpriteGameManager spriteGameManager;
+		return spriteGameManager;
+	}
 
 private:
 	bool m_bPlayingTheGame;
@@ -35,8 +39,6 @@ private:
 #ifdef WIN32
 	IVRemoteInput *m_pRemoteInput;
 #endif
-
-	static SpriteGameManager g_SpriteGameManager;
 };
 
 #endif // SPRITE_GAME_MANAGER_HPP_INCLUDED

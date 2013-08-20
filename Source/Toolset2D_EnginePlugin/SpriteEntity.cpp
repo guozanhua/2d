@@ -6,58 +6,91 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
-V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
+#define CURRENT_SPRITE_VERSION 1
 
 #define PROP_TEXTURE_FILENAME TextureFilename
-
-Sprite::Sprite() :
-VisBaseEntity_cl(),
-m_currentFrame(-1),
-m_currentState(-1),
-m_spSpriteSheetTexture(NULL),
-m_spriteMeshBuffer(NULL),
-m_staticMesh(NULL),
-m_staticMeshInstance(NULL)
-{
-	CommonInit();
-}
-
-Sprite::Sprite(const char *spriteSheetFilename, const char *shoeBoxXml) :
-VisBaseEntity_cl(),
-	m_spSpriteSheetTexture(NULL),
-	m_spriteMeshBuffer(NULL),
-	m_staticMesh(NULL),
-	m_staticMeshInstance(NULL)
-{
-	CommonInit();
-	LoadShoeBox(spriteSheetFilename, shoeBoxXml);
-}
-
-Sprite::~Sprite()
-{
-	SpriteManager::GlobalManager().RemoveSprite(this);
-}
+#define PROP_TEXTURE_SCALE TextureScale
 
 // Called by the engine when entity is created. Not when it is de-serialized!
 void Sprite::InitFunction()
 {
+	VisBaseEntity_cl::InitFunction();
 	CommonInit();
 }
 
 // called by the engine when entity is destroyed
 void Sprite::DeInitFunction()
 {
+	VisBaseEntity_cl::DeInitFunction();
+	CommonDeInit();
+}
+
+// called by our InitFunction and our de-serialization code
+void Sprite::CommonInit()
+{
+	m_currentState = -1;
+	m_currentFrame = -1;
+	m_frameTime = 0.f;
+	m_spSpriteSheetTexture = NULL;
+	m_spriteMeshBuffer = NULL;
+	m_staticMesh = NULL;
+	m_staticMeshInstance = NULL;
+
+	// base class initialization (TODO: seems missing from base?)
+	m_pCustomTraceBBox = NULL;
+
+	SpriteManager::GlobalManager().AddSprite(this);
+
+	SetShoeBoxData(m_spriteSheetFilename, m_xmlDataFilename);
+
+	if ( Vision::Editor.IsPlaying() )
+	{
+		/* TODO
+		VDynamicMesh* pMesh = NULL;
+		{
+			VDynamicMeshBuilder b(4, 2, 0, 1);
+			const hkvVec3 n;
+			const hkvVec3 t;
+			const hkvVec2 uv;
+			VColorRef color;
+			b.AddVertex( hkvVec3(0, 30, 0), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 30, 30), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 0, 30), n, t, uv, color );
+			b.AddVertex( hkvVec3(0, 0, 0), n, t, uv, color );
+			b.AddTriangle(0, 1, 2);
+			b.AddTriangle(2, 1, 0);
+			pMesh = b.Finalize();
+		}
+
+		if (pMesh != NULL)
+		{
+			pMesh->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
+		}
+		*/
+	}
+}
+
+void Sprite::CommonDeInit()
+{ 
 	SpriteManager::GlobalManager().RemoveSprite(this);
 
 	// TODO: Shouldn't this be removed?
-	//m_spriteMeshBuffer->Remove;
 	m_spriteMeshBuffer = NULL;
+
+	m_cells.RemoveAll();
+	m_states.RemoveAll();
+	m_stateNameToIndex.Reset();
+
+	m_spSpriteSheetTexture = NULL;
 }
 
-bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilename)
+bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename)
 {
 	TiXmlDocument doc;
 	bool success = false;
+
+	m_spriteSheetFilename = spriteSheetFilename;
+	m_xmlDataFilename = xmlFilename;
 
 	m_spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
 
@@ -65,8 +98,8 @@ bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilenam
 	{
 		const char *szActionNode = "SubTexture";
 		for (TiXmlElement *pNode = doc.RootElement()->FirstChildElement(szActionNode);
-			 pNode != NULL;
-			 pNode = pNode->NextSiblingElement(szActionNode) )
+			pNode != NULL;
+			pNode = pNode->NextSiblingElement(szActionNode) )
 		{
 			SpriteCell cell;
 
@@ -76,15 +109,21 @@ bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilenam
 			int y;
 			int width;
 			int height;
+			int ox;
+			int oy;
 
 			pNode->QueryIntAttribute("x", &x);
 			pNode->QueryIntAttribute("y", &y);
 			pNode->QueryIntAttribute("width", &width);
 			pNode->QueryIntAttribute("height", &height);
+			pNode->QueryIntAttribute("ox", &ox);
+			pNode->QueryIntAttribute("oy", &oy);
 
 			cell.name = name;
 			cell.offset.x = static_cast<float>(x);
 			cell.offset.y = static_cast<float>(y);
+			cell.pivot.x = static_cast<float>(ox);
+			cell.pivot.y = static_cast<float>(oy);
 			cell.width = width;
 			cell.height = height;
 
@@ -144,51 +183,18 @@ bool Sprite::LoadShoeBox(const char *spriteSheetFilename, const char *xmlFilenam
 	return success;
 }
 
-// called by our InitFunction and our de-serialization code
-void Sprite::CommonInit()
-{ 
-	m_pCustomTraceBBox = NULL;
-	SpriteManager::GlobalManager().AddSprite(this);
-
-	if (Vision::Editor.IsPlaying())
-	{
-		VDynamicMesh* pMesh = NULL;
-
-		{
-			VDynamicMeshBuilder b(4, 2, 0, 1);
-			const hkvVec3 n;
-			const hkvVec3 t;
-			const hkvVec2 uv;
-			VColorRef color;
-			b.AddVertex( hkvVec3(0, 30, 0), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 30, 30), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 0, 30), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 0, 0), n, t, uv, color );
-			b.AddTriangle(0, 1, 2);
-			b.AddTriangle(2, 1, 0);
-			pMesh = b.Finalize();
-		}
-
-		if (pMesh != NULL)
-		{
-			pMesh->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
-		}
-	}
-}
-
 void Sprite::ThinkFunction()
 {
-	// TODO: Update the current cell being rendered
 	if (m_currentState != -1)
 	{
-		m_lastTime += Vision::GetTimer()->GetTimeDifference();
+		m_frameTime += Vision::GetTimer()->GetTimeDifference();
 		const SpriteState *s = &m_states[m_currentState];
 		const float dt = 1.0f / s->framerate;
-		if (m_lastTime >= dt)
+		if (m_frameTime >= dt)
 		{
 			const int numCells = s->cells.GetSize();
 			m_currentFrame = (m_currentFrame + 1) % numCells;
-			m_lastTime -= dt;
+			m_frameTime -= dt;
 		}
 	}
 }
@@ -200,7 +206,7 @@ bool Sprite::SetState(const char *state)
 	{
 		m_currentState = index;
 		m_currentFrame = 0;
-		m_lastTime = 0.f;
+		m_frameTime = 0.f;
 	}
 	return (index != -1);
 }
@@ -251,8 +257,6 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 
 		const SpriteState *spriteState = &m_states[m_currentState];
 		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
-		br.x = tl.x + cell->width;
-		br.y = tl.y + cell->height;
 
 		float w = (float)cell->width / width;
 		float h = (float)cell->height / height;
@@ -261,20 +265,25 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 
 		topLeft.x = x;
 		topLeft.y = y;
-		bottomRight.x = x + w;
-		bottomRight.y = y + h;
+		bottomRight.x = topLeft.x + w;
+		bottomRight.y = topLeft.y + h;
+
+		tl.x += cell->pivot.x;
+		tl.y += cell->pivot.y;
+		br.x = tl.x + cell->width;
+		br.y = tl.y + cell->height;
 
 		pRender->DrawTexturedQuad( tl, br, m_spSpriteSheetTexture, topLeft, bottomRight, V_RGBA_WHITE, state );
 	}
 	else
 	{
-		br.x = 150;
-		br.y = 150;
+		br.x = tl.x + 150;
+		br.y = tl.y + 150;
 		pRender->DrawTexturedQuad( tl, br, m_spSpriteSheetTexture, hkvVec2(0, 0), hkvVec2(1, 1), V_RGBA_WHITE, state );
 	}
 }
 
-void Sprite::Serialize( VArchive &ar )
+void Sprite::Serialize(VArchive &ar)
 {
 	VisBaseEntity_cl::Serialize(ar);
 
@@ -282,11 +291,18 @@ void Sprite::Serialize( VArchive &ar )
 
 	if (ar.IsLoading())
 	{
-		//m_vCenterPos.SerializeAsVisVector (ar);
+		char spriteVersion;
+		ar >> spriteVersion;
+		VASSERT(spriteVersion <= CURRENT_SPRITE_VERSION);
+
+		ar >> m_spriteSheetFilename;
+		ar >> m_xmlDataFilename;
 	} 
 	else
 	{
-		//m_vCenterPos.SerializeAsVisVector (ar);
+		ar << CURRENT_SPRITE_VERSION;
+		ar << m_spriteSheetFilename;
+		ar << m_xmlDataFilename;
 	}
 }
 
@@ -298,7 +314,9 @@ void Sprite::OnSerialized(VArchive &ar)
 	CommonInit();
 }
 
-// vartable; provide the following members to vForge. Although vPhysXEntity is the base class we use VisBaseEntity_cl here to hide physX properties
+V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
+
 START_VAR_TABLE(Sprite, VisBaseEntity_cl, "Sprite", 0, "")
 	DEFINE_VAR_STRING_CALLBACK(Sprite, PROP_TEXTURE_FILENAME, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
+	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(1e-6,1e6)");
 END_VAR_TABLE

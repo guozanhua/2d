@@ -114,7 +114,7 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100d.lib;BaseD.lib;VisionEnginePluginD.lib;VisionD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\debug_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -196,7 +196,7 @@
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>lua100.lib;Base.lib;Vision.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua100.lib;Base.lib;VisionEnginePlugin.lib;Vision.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(VISION_SDK)\Lib\win32_vs2010_anarchy\dev_dll;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;$(DXSDK_DIR)/Lib/x86</AdditionalLibraryDirectories>
       <AdditionalOptions> /ignore:4221</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -216,6 +216,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="SpriteEntity.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
@@ -225,6 +226,23 @@
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Lua\SpriteEntity.i">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -IToolset2D_Module.i</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua/Toolset2D_Module_wrapper.cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VColor.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VTypedObject.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VisApiTypedEngineObject.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VisApiObject3D.i;Lua\VFmodManager.i;Lua\VFmodSoundObject.i;Lua\VFmodEvent.i</AdditionalInputs>
+      <FileType>Document</FileType>
+    </None>
+    <CustomBuild Include="Toolset2D_Module.i">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i</AdditionalInputs>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VColor.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VTypedObject.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VisApiTypedEngineObject.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VisApiObject3D.i;$(VISION_SDK)\VisionEnginePlugin\Scripting\Lua\VisApiBaseEntity.i;Lua\SpriteEntity.i</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

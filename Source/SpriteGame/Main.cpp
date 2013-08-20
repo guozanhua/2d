@@ -80,7 +80,6 @@ VISION_INIT
 	// Use the following line to load a plugin. Remember that, except on Windows platform, in addition
 	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
 	// Properties, Linker, Additional Dependencies.
-	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
 	VISION_PLUGIN_ENSURE_LOADED(SpriteGamePlugin);
 
 	// Init the application and point it to the start up scene.

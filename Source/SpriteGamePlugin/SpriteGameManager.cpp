@@ -9,16 +9,16 @@
 #include <Vision/Runtime/EnginePlugins/RemoteInputEnginePlugin/IVRemoteInput.hpp>
 #endif
 
-// One global static instance
-SpriteGameManager SpriteGameManager::g_SpriteGameManager;
-
 void SpriteGameManager::OneTimeInit()
 {
+	Vision::Error.SystemMessage("SpriteGameManager:OneTimeInit()");
+
+	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
+
 	m_bPlayingTheGame = false;
 
 	// the game manager should listen to the following callbacks:
 	Vision::Callbacks.OnEditorModeChanged += this;
-	Vision::Callbacks.OnBeforeSceneLoaded += this;
 	Vision::Callbacks.OnAfterSceneLoaded += this;
 	Vision::Callbacks.OnWorldDeInit += this;
 	Vision::Callbacks.OnRenderHook += this;
@@ -36,9 +36,7 @@ void SpriteGameManager::OneTimeInit()
 
 void SpriteGameManager::OneTimeDeInit()
 {
-	/* TODO: en-enable this
 	Vision::Callbacks.OnEditorModeChanged -= this;
-	Vision::Callbacks.OnBeforeSceneLoaded -= this;
 	Vision::Callbacks.OnAfterSceneLoaded -= this;
 	Vision::Callbacks.OnWorldDeInit -= this;
 	Vision::Callbacks.OnRenderHook -= this;
@@ -46,7 +44,6 @@ void SpriteGameManager::OneTimeDeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
-	*/
 }
 
 void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
@@ -61,18 +58,8 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			SetPlayTheGame(false);
 		}
 	}
-	else if (pData->m_pSender == &Vision::Callbacks.OnBeforeSceneLoaded)
-	{
-		// We need accurate assignment because of nested VisZones
-		Vision::World.SetUseGeometryForVisibilityClassification(true);
-	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
-		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0,0,0));
-		m_pSprite->InitFunction();
-		m_pSprite->LoadShoeBox("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
-		m_pSprite->SetState("rollLeft");
-
 		// Init play-the-game only in this vForge mode (or outside vForge)
 		if (Vision::Editor.IsPlayingTheGame())
 		{
@@ -81,13 +68,8 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
-		V_SAFE_DISPOSEOBJECT(m_pSprite);
-
 		// This is important when running outside vForge
 		SetPlayTheGame(false);
-	}
-	else if(pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
-	{
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
 	{
@@ -128,6 +110,11 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		m_bPlayingTheGame = bStatus;
 		if (m_bPlayingTheGame)
 		{
+			m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+			m_pSprite->InitFunction();
+			m_pSprite->SetShoeBoxData("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
+			m_pSprite->SetState("rollLeft");
+
 			// TODO: Re-enable the HUD
 			//m_spHUD = new HUDGUIContext(NULL);
 			//m_spHUD->SetActivate(true);
@@ -142,6 +129,10 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		}
 		else
 		{
+			VASSERT(m_pSprite->GetRefCount() == 1);
+			Vision::Game.RemoveEntity(m_pSprite);
+			m_pSprite = NULL;
+
 			// Deactivate the HUD
 			if (m_spHUD)
 			{

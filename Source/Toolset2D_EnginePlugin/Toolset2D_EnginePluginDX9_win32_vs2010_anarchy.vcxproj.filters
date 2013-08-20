@@ -5,10 +5,28 @@
     <ClCompile Include="SpriteEntity.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
+    <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{86f92851-eb67-40b8-8cef-bedae8f446bf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Toolset2D_Module.i">
+      <Filter>Lua</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lua\SpriteEntity.i">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
