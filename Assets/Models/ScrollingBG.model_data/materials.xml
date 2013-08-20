@@ -1,0 +1,7 @@
+<root>
+    <Materials override="TRUE">
+        <Material name="02 - Default" diffuse="..\Textures\ScrollingBGSpace.tga" ambient="150,150,150,255" specmul="0" specexp="2" parallaxscale="-0.03" parallaxbias="-0.015" lightmapsize="512,512" lightmapID="0" userflags="0" sortingkey="0" alphathreshold="0.25" doublesided="FALSE" depthwrite="TRUE" zbias="0,0,0" Lighting="LightGrid" pass="Auto" transparency="opaque" lightmapgran="0">
+            <Shader library="..\Shaders\DynamicGlow.ShaderLib" effect="UVScroll_ModColor_VertexColorMask" paramstring="CullMode=back;DepthWrite=true;MaterialParams=0,2,-0.03,-0.015;AlphaThreshold=0.25;Color=1,1,1,1;UVSpeed=0,0.1;" />
+        </Material>
+    </Materials>
+</root>

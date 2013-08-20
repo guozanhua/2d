@@ -1,0 +1,1 @@
+vLux.exe "" -project "C:\projects\2DShooterNew\Assets" -tempfolder "C:\projects\2DShooterNew\Assets\Scenes\2DShooter.scene.Layers" -out "Scenes\2DShooter" -quiet -minimized -config "C:\projects\2DShooterNew\Assets\Scenes\2DShooter.scene.Layers\lighting.cfg"

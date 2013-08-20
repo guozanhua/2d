@@ -1,0 +1,7 @@
+<root>
+    <Materials override="TRUE">
+        <Material name="02 - Default" userflags="0" diffuse="..\Textures\ScrollingBGSpace.tga" Lighting="LightGrid" pass="Auto" transparency="opaque" doublesided="FALSE" depthwrite="TRUE" zbias="0,0,0" specmul="0" specexp="2" parallaxscale="-0.03" parallaxbias="-0.015" ambient="150,150,150,255" sortingkey="0" alphathreshold="0.25" lightmapsize="512,512" lightmapgran="0" lightmapID="0">
+            <Shader library="2DShooter.ShaderLib" effect="ScrollingBG.forward" paramstring="CullMode=back;DepthWrite=true;MaterialParams=0,2,-0.03,-0.015;AlphaThreshold=0.25;" />
+        </Material>
+    </Materials>
+</root>
