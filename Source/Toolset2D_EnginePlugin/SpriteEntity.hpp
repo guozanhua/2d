@@ -31,7 +31,7 @@ public:
 
 	IMPLEMENT_OBJ_CLASS(Sprite);
 	
-	// overridden entity functions
+	// Overridden entity functions
 	TOOLSET_2D_IMPEXP VOVERRIDE void InitFunction();
 	TOOLSET_2D_IMPEXP VOVERRIDE void DeInitFunction();
 	TOOLSET_2D_IMPEXP VOVERRIDE void ThinkFunction();
@@ -39,18 +39,26 @@ public:
 	TOOLSET_2D_IMPEXP VOVERRIDE void OnVariableValueChanged(VisVariable_cl *pVar, const char * value);
 	TOOLSET_2D_IMPEXP VOVERRIDE BOOL AddComponent(IVObjectComponent *pComponent);
 
-	// serialization and type management
+	// Serialization and type management
 	TOOLSET_2D_IMPEXP VOVERRIDE void Serialize( VArchive &ar );
 	TOOLSET_2D_IMPEXP VOVERRIDE void OnSerialized( VArchive &ar );
 
-	// render the shape in editor mode (or for debugging)
+	// Sender the shape in editor mode (or for debugging)
 	TOOLSET_2D_IMPEXP void DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections=false) const;
 
 	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
 
 	TOOLSET_2D_IMPEXP bool SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename);
 
+	//----- Utility functions exposed to LUA
+
 	TOOLSET_2D_IMPEXP bool SetState(const char *state);
+
+	// Specify a value between 0 and 1 and it will update the frame
+	TOOLSET_2D_IMPEXP void SetFramePercent(float percent);
+
+	TOOLSET_2D_IMPEXP void Pause();
+	TOOLSET_2D_IMPEXP void Play();
 
 protected:
 	void CommonInit();
@@ -58,22 +66,22 @@ protected:
 
 private:
 
-	// Properties
-	//-----
+	//----- Properties
 
 	float TextureScale;
 
-	// Member variables
-	//-----
+	//----- Member variables
+
+	int m_currentState;
+	int m_currentFrame;
+	float m_frameTime;
+	bool m_paused;
 
 	VTextureObjectPtr m_spSpriteSheetTexture;
 
 	VString m_spriteSheetFilename;
 	VString m_xmlDataFilename;
 
-	int m_currentState;
-	int m_currentFrame;
-	float m_frameTime;
 
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;

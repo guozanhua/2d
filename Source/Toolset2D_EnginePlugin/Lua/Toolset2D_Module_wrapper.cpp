@@ -1149,7 +1149,7 @@ SWIGINTERN void VisionLuaClassSet(lua_State *L)
   
   const char * pKey = lua_tostring(L, 2);
   const void * pPtr = lua_topointer(L, 1);
-
+  
   lua_pushfstring(L, "$node-%p-%s$", pPtr, pKey);   //stack: userdata, key, value, ..., new key, TOP
   
   lua_pushvalue(L, 3);                              //stack: userdata, key, value, ..., new key, value, TOP
@@ -1631,37 +1631,36 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 
 #define SWIGTYPE_p_IVObjectComponent swig_types[0]
 #define SWIGTYPE_p_Sprite swig_types[1]
-#define SWIGTYPE_p_SpriteManager swig_types[2]
-#define SWIGTYPE_p_VBitmask swig_types[3]
-#define SWIGTYPE_p_VColorRef swig_types[4]
-#define SWIGTYPE_p_VDynamicMesh swig_types[5]
-#define SWIGTYPE_p_VTextureObject swig_types[6]
-#define SWIGTYPE_p_VTypedObject swig_types[7]
-#define SWIGTYPE_p_VisBaseEntity_cl swig_types[8]
-#define SWIGTYPE_p_VisObject3D_cl swig_types[9]
-#define SWIGTYPE_p_VisObjectKey_cl swig_types[10]
-#define SWIGTYPE_p_VisSurface_cl swig_types[11]
-#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[12]
-#define SWIGTYPE_p___int64 swig_types[13]
-#define SWIGTYPE_p_char swig_types[14]
-#define SWIGTYPE_p_float swig_types[15]
-#define SWIGTYPE_p_hkvAlignedBBox swig_types[16]
-#define SWIGTYPE_p_hkvMat3 swig_types[17]
-#define SWIGTYPE_p_hkvVec3 swig_types[18]
-#define SWIGTYPE_p_int swig_types[19]
-#define SWIGTYPE_p_long swig_types[20]
-#define SWIGTYPE_p_p_char swig_types[21]
-#define SWIGTYPE_p_p_unsigned_long swig_types[22]
-#define SWIGTYPE_p_short swig_types[23]
-#define SWIGTYPE_p_signed___int64 swig_types[24]
-#define SWIGTYPE_p_signed_char swig_types[25]
-#define SWIGTYPE_p_unsigned___int64 swig_types[26]
-#define SWIGTYPE_p_unsigned_char swig_types[27]
-#define SWIGTYPE_p_unsigned_int swig_types[28]
-#define SWIGTYPE_p_unsigned_long swig_types[29]
-#define SWIGTYPE_p_unsigned_short swig_types[30]
-static swig_type_info *swig_types[32];
-static swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
+#define SWIGTYPE_p_VBitmask swig_types[2]
+#define SWIGTYPE_p_VColorRef swig_types[3]
+#define SWIGTYPE_p_VDynamicMesh swig_types[4]
+#define SWIGTYPE_p_VTextureObject swig_types[5]
+#define SWIGTYPE_p_VTypedObject swig_types[6]
+#define SWIGTYPE_p_VisBaseEntity_cl swig_types[7]
+#define SWIGTYPE_p_VisObject3D_cl swig_types[8]
+#define SWIGTYPE_p_VisObjectKey_cl swig_types[9]
+#define SWIGTYPE_p_VisSurface_cl swig_types[10]
+#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[11]
+#define SWIGTYPE_p___int64 swig_types[12]
+#define SWIGTYPE_p_char swig_types[13]
+#define SWIGTYPE_p_float swig_types[14]
+#define SWIGTYPE_p_hkvAlignedBBox swig_types[15]
+#define SWIGTYPE_p_hkvMat3 swig_types[16]
+#define SWIGTYPE_p_hkvVec3 swig_types[17]
+#define SWIGTYPE_p_int swig_types[18]
+#define SWIGTYPE_p_long swig_types[19]
+#define SWIGTYPE_p_p_char swig_types[20]
+#define SWIGTYPE_p_p_unsigned_long swig_types[21]
+#define SWIGTYPE_p_short swig_types[22]
+#define SWIGTYPE_p_signed___int64 swig_types[23]
+#define SWIGTYPE_p_signed_char swig_types[24]
+#define SWIGTYPE_p_unsigned___int64 swig_types[25]
+#define SWIGTYPE_p_unsigned_char swig_types[26]
+#define SWIGTYPE_p_unsigned_int swig_types[27]
+#define SWIGTYPE_p_unsigned_long swig_types[28]
+#define SWIGTYPE_p_unsigned_short swig_types[29]
+static swig_type_info *swig_types[31];
+static swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2873,8 +2872,7 @@ SWIGINTERN int VisBaseEntity_cl_GetPrimarySortingKey(VisBaseEntity_cl *self){
   }
 
 
-  #include "Toolset2D_EnginePluginPCH.h"
-  #include "SpriteManager.hpp"
+	#include "Toolset2D_EnginePluginPCH.h"
 
 
   #include "SpriteEntity.hpp"
@@ -9869,37 +9867,6 @@ static swig_lua_class *swig_VisBaseEntity_cl_bases[] = {0,0};
 static const char *swig_VisBaseEntity_cl_base_names[] = {"VisObject3D_cl *",0};
 static swig_lua_class _wrap_class_VisBaseEntity_cl = { "VisBaseEntity_cl", &SWIGTYPE_p_VisBaseEntity_cl,0,0, swig_VisBaseEntity_cl_methods, swig_VisBaseEntity_cl_attributes, swig_VisBaseEntity_cl_bases, swig_VisBaseEntity_cl_base_names };
 
-static int _wrap_new_SpriteManager(lua_State* L) {
-  int SWIG_arg = 0;
-  SpriteManager *result = 0 ;
-  
-  SWIG_check_num_args("SpriteManager::SpriteManager",0,0)
-  result = (SpriteManager *)new SpriteManager();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SpriteManager,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_SpriteManager(void *obj) {
-SpriteManager *arg1 = (SpriteManager *) obj;
-delete arg1;
-}
-static swig_lua_method swig_SpriteManager_methods[] = {
-    {0,0}
-};
-static swig_lua_attribute swig_SpriteManager_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_class *swig_SpriteManager_bases[] = {0};
-static const char *swig_SpriteManager_base_names[] = {0};
-static swig_lua_class _wrap_class_SpriteManager = { "SpriteManager", &SWIGTYPE_p_SpriteManager,_wrap_new_SpriteManager, swig_delete_SpriteManager, swig_SpriteManager_methods, swig_SpriteManager_attributes, swig_SpriteManager_bases, swig_SpriteManager_base_names };
-
 static int _wrap_Sprite_SetState(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
@@ -9917,6 +9884,78 @@ static int _wrap_Sprite_SetState(lua_State* L) {
   arg2 = (char *)lua_tostring(L, 2);
   result = (bool)(arg1)->SetState((char const *)arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_SetFramePercent(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("SetFramePercent",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetFramePercent",1,"Sprite *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetFramePercent",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetFramePercent",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  (arg1)->SetFramePercent(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_Pause(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  
+  SWIG_check_num_args("Pause",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Pause",1,"Sprite *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_Pause",1,SWIGTYPE_p_Sprite);
+  }
+  
+  (arg1)->Pause();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_Play(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  
+  SWIG_check_num_args("Play",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Play",1,"Sprite *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_Play",1,SWIGTYPE_p_Sprite);
+  }
+  
+  (arg1)->Play();
+  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -9953,6 +9992,9 @@ fail:
 
 static swig_lua_method swig_Sprite_methods[] = {
     {"SetState", _wrap_Sprite_SetState}, 
+    {"SetFramePercent", _wrap_Sprite_SetFramePercent}, 
+    {"Pause", _wrap_Sprite_Pause}, 
+    {"Play", _wrap_Sprite_Play}, 
     {0,0}
 };
 static swig_lua_attribute swig_Sprite_attributes[] = {
@@ -10031,7 +10073,6 @@ static void *_p_VisObject3D_clTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(
 }
 static swig_type_info _swigt__p_IVObjectComponent = {"_p_IVObjectComponent", "IVObjectComponent *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Sprite = {"_p_Sprite", "Sprite *", 0, 0, (void*)&_wrap_class_Sprite, 0};
-static swig_type_info _swigt__p_SpriteManager = {"_p_SpriteManager", "SpriteManager *", 0, 0, (void*)&_wrap_class_SpriteManager, 0};
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
 static swig_type_info _swigt__p_VDynamicMesh = {"_p_VDynamicMesh", "VDynamicMesh *", 0, 0, (void*)0, 0};
@@ -10064,7 +10105,6 @@ static swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "WORD *|U
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_IVObjectComponent,
   &_swigt__p_Sprite,
-  &_swigt__p_SpriteManager,
   &_swigt__p_VBitmask,
   &_swigt__p_VColorRef,
   &_swigt__p_VDynamicMesh,
@@ -10097,7 +10137,6 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_IVObjectComponent[] = {  {&_swigt__p_IVObjectComponent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Sprite[] = {  {&_swigt__p_Sprite, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SpriteManager[] = {  {&_swigt__p_SpriteManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
@@ -10130,7 +10169,6 @@ static swig_cast_info _swigc__p_unsigned_short[] = {  {&_swigt__p_unsigned_short
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_IVObjectComponent,
   _swigc__p_Sprite,
-  _swigc__p_SpriteManager,
   _swigc__p_VBitmask,
   _swigc__p_VColorRef,
   _swigc__p_VDynamicMesh,

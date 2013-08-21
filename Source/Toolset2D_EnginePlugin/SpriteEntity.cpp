@@ -35,6 +35,8 @@ void Sprite::CommonInit()
 	m_currentState = -1;
 	m_currentFrame = -1;
 	m_frameTime = 0.f;
+	m_paused = false;
+
 	m_spSpriteSheetTexture = NULL;
 	m_spriteMeshBuffer = NULL;
 	m_staticMesh = NULL;
@@ -192,7 +194,7 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 
 void Sprite::ThinkFunction()
 {
-	if (m_currentState != -1)
+	if (m_currentState != -1 && !m_paused)
 	{
 		m_frameTime += Vision::GetTimer()->GetTimeDifference();
 		const SpriteState *s = &m_states[m_currentState];
@@ -218,6 +220,28 @@ bool Sprite::SetState(const char *state)
 	return (index != -1);
 }
 
+void Sprite::SetFramePercent(float percent)
+{
+	if (m_currentState != -1)
+	{
+		m_paused = true;
+
+		const SpriteState *s = &m_states[m_currentState];
+		const int numCells = s->cells.GetSize();		
+		m_currentFrame = static_cast<int>( hkvMath::clamp(percent, 0.f, 1.f) * static_cast<float>(numCells - 1) );
+	}
+}
+
+void Sprite::Play()
+{
+	m_paused = false;
+}
+
+void Sprite::Pause()
+{
+	m_paused = true;
+}
+
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 {
 	if ( !strcmp(pVar->name, V_QUOTE(PROP_TEXTURE_FILENAME)) )
@@ -239,7 +263,6 @@ BOOL Sprite::AddComponent(IVObjectComponent *pComponent)
 	return success;
 }
 
-// render the node (and optionally the connections)
 void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections) const
 {
 	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
@@ -300,22 +323,25 @@ void Sprite::Serialize(VArchive &ar)
 {
 	VisBaseEntity_cl::Serialize(ar);
 
-	// TODO: Do we need to serialize the filename or is that handled automatically?
-
 	if (ar.IsLoading())
 	{
 		char spriteVersion;
 		ar >> spriteVersion;
 		VASSERT(spriteVersion <= CURRENT_SPRITE_VERSION);
 
-		ar >> m_spriteSheetFilename;
-		ar >> m_xmlDataFilename;
+		char spriteSheetBuffer[FS_MAX_PATH + 1];
+		ar.ReadStringBinary(spriteSheetBuffer, FS_MAX_PATH);
+		m_spriteSheetFilename = spriteSheetBuffer;
+
+		char xmlFilenameBuffer[FS_MAX_PATH + 1];
+		ar.ReadStringBinary(xmlFilenameBuffer, FS_MAX_PATH);
+		m_xmlDataFilename = xmlFilenameBuffer;
 	} 
 	else
 	{
-		ar << CURRENT_SPRITE_VERSION;
-		ar << m_spriteSheetFilename;
-		ar << m_xmlDataFilename;
+		ar << (char)CURRENT_SPRITE_VERSION;
+		ar.WriteStringBinary(m_spriteSheetFilename);
+		ar.WriteStringBinary(m_xmlDataFilename);
 	}
 }
 
@@ -323,7 +349,7 @@ void Sprite::OnSerialized(VArchive &ar)
 {
 	VisBaseEntity_cl::OnSerialized(ar);
 	
-	// call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
+	// Call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
 	CommonInit();
 }
 

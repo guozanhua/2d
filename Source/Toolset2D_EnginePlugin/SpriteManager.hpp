@@ -10,9 +10,7 @@ public:
 
 	VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
 
-  static void Ensure2dToolsetLuaRegistration();
-
-	// called when plugin is loaded/unloaded
+	// Called when plugin is loaded/unloaded
 	TOOLSET_2D_IMPEXP void OneTimeInit();
 	TOOLSET_2D_IMPEXP void OneTimeDeInit();
 
@@ -21,8 +19,11 @@ public:
 
 	TOOLSET_2D_IMPEXP void Render();
 
-	// access one global instance of the frame manager
+	// Access one global instance of the frame manager
 	static SpriteManager& GlobalManager() { return g_SpriteManager; }
+
+	// Register our LUA library with the script manager
+	static void RegisterLua();
 
 private:
 	VArray<Sprite*> m_sprites;

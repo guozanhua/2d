@@ -18,13 +18,7 @@
 //custom headers for generated source file
 %module Toolset2D
 %{
-  #include "Toolset2D_EnginePluginPCH.h"
-  #include "SpriteManager.hpp"
+	#include "Toolset2D_EnginePluginPCH.h"
 %}
-  
-class SpriteManager
-{
-public:
-};
-
+ 
 %include <SpriteEntity.i>

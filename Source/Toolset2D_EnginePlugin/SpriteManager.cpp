@@ -49,48 +49,7 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &IVScriptManager::OnRegisterScriptFunctions)
 	{
-		IVScriptManager* pSM = Vision::GetScriptManager();
-		if (pSM != NULL)
-		{
-			lua_State* pLuaState = ((VScriptResourceManager*)pSM)->GetMasterState();
-			if (pLuaState)
-			{
-				lua_getglobal(pLuaState, "T2D");
-				int iType = lua_type(pLuaState, -1);
-				lua_pop(pLuaState, 1);
-
-				if(iType!=LUA_TUSERDATA)
-				{
-					luaopen_Toolset2D(pLuaState);
-
-					int iRetParams = LUA_CallStaticFunction(
-						pLuaState, // our lua state
-						"Toolset2D", // the name of the module
-						"SpriteManager", // the name of the class
-						"Cast", // the name of the function
-						"v>v", // the function's signature
-						&SpriteManager::GlobalManager() //the input parameters (out instance to cast)
-						);
-
-					if (iRetParams==1)
-					{
-						if(lua_isnil(pLuaState, -1))
-						{
-							lua_pop(pLuaState, iRetParams);
-						}
-						else
-						{
-							lua_setglobal(pLuaState, "T2D");
-							return;
-						}
-					}
-				}
-			}
-			else
-			{
-				Vision::Error.Warning("Unable to create Lua Sprite Module, lua_State is NULL!");
-			}
-		}
+		RegisterLua();
 	}
 	else if (pData->m_pSender == &IVScriptManager::OnScriptProxyCreation)
 	{
@@ -167,19 +126,19 @@ void SpriteManager::RemoveSprite(Sprite *sprite)
 	}
 }
 
-void SpriteManager::Ensure2dToolsetLuaRegistration()
+void SpriteManager::RegisterLua()
 {
-  IVScriptManager* pSM = Vision::GetScriptManager();
-  if (pSM != NULL)
-  {
-    lua_State* pLuaState = ((VScriptResourceManager*)pSM)->GetMasterState();
-    if (pLuaState)
-    {
-      luaopen_Toolset2D(pLuaState);
-    }
-    else
-    {
-      Vision::Error.Warning("Unable to create Lua SpriteManager Module, lua_State is NULL!");
-    }
-  }
+	IVScriptManager* pSM = Vision::GetScriptManager();
+	if (pSM != NULL)
+	{
+		lua_State* pLuaState = static_cast<VScriptResourceManager*>(pSM)->GetMasterState();
+		if (pLuaState)
+		{
+			luaopen_Toolset2D(pLuaState);
+		}
+		else
+		{
+			Vision::Error.Warning("Unable to create Lua Sprite Module, lua_State is NULL!");
+		}
+	}
 }
