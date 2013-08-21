@@ -19,6 +19,12 @@
 %module Toolset2D
 %{
   #include "Toolset2D_EnginePluginPCH.h"
+  #include "SpriteManager.hpp"
 %}
   
+class SpriteManager
+{
+public:
+};
+
 %include <SpriteEntity.i>;

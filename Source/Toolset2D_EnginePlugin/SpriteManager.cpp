@@ -55,11 +55,40 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			lua_State* pLuaState = ((VScriptResourceManager*)pSM)->GetMasterState();
 			if (pLuaState)
 			{
-				luaopen_Toolset2D(pLuaState);
+				lua_getglobal(pLuaState, "T2D");
+				int iType = lua_type(pLuaState, -1);
+				lua_pop(pLuaState, 1);
+
+				if(iType!=LUA_TUSERDATA)
+				{
+					luaopen_Toolset2D(pLuaState);
+
+					int iRetParams = LUA_CallStaticFunction(
+						pLuaState, // our lua state
+						"Toolset2D", // the name of the module
+						"SpriteManager", // the name of the class
+						"Cast", // the name of the function
+						"v>v", // the function's signature
+						&SpriteManager::GlobalManager() //the input parameters (out instance to cast)
+						);
+
+					if (iRetParams==1)
+					{
+						if(lua_isnil(pLuaState, -1))
+						{
+							lua_pop(pLuaState, iRetParams);
+						}
+						else
+						{
+							lua_setglobal(pLuaState, "T2D");
+							return;
+						}
+					}
+				}
 			}
 			else
 			{
-				Vision::Error.Warning("Unable to create Lua Racer Module, lua_State is NULL!");
+				Vision::Error.Warning("Unable to create Lua Sprite Module, lua_State is NULL!");
 			}
 		}
 	}

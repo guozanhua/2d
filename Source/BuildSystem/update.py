@@ -101,8 +101,8 @@ def update_files(source_path, output_path):
                (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
                 shutil.copy2(source_file, output_path)
                 print('Updating %s...' % filename)
-            else:
-                print('Skipping %s...' % filename)
+
+    return True
 
 def main():
     """
@@ -118,7 +118,7 @@ def main():
     if not project_directory and len(sys.argv) > 1:
         project_directory = sys.argv[len(sys.argv) - 1]
 
-    success = False
+    success = True
 
     if not 'VISION_SDK' in os.environ:
         print("Missing VISION_SDK environment variable!")
@@ -133,11 +133,13 @@ def main():
 
     arch = 'win32_vs2010_anarchy'
 
+    print("Updating dev binaries...")
     conf_dev = 'Bin\%s\dev_dll\DX9' % arch
-    update_files( os.path.join(vision_directory, conf_dev), os.path.join(project_directory, conf_dev) )
+    success = success and update_files( os.path.join(vision_directory, conf_dev), os.path.join(project_directory, conf_dev) )
     
+    print("Updating debug binaries...")
     conf_debug = 'Bin\%s\debug_dll\DX9' % arch
-    update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
+    success = success and update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
     
     if options.assets:
         print('Updating assets...')
@@ -160,8 +162,7 @@ def main():
                 project_directory)
         except:
             print('Failed to update assets...')
-
-    success = True
+            success = False
 
     return success
 

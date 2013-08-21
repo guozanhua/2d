@@ -16,7 +16,7 @@ void SpriteGameManager::OneTimeInit()
 	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
 
 	m_bPlayingTheGame = false;
-
+	
 	// the game manager should listen to the following callbacks:
 	Vision::Callbacks.OnEditorModeChanged += this;
 	Vision::Callbacks.OnAfterSceneLoaded += this;

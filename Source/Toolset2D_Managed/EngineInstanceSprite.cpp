@@ -9,18 +9,20 @@ using namespace ManagedFramework;
 
 namespace Toolset2D_Managed
 {
-	// create the native instance in the constructor
 	EngineInstanceSprite::EngineInstanceSprite()
 	{
 		m_bIsVisible = true;
+
+		// #warning, #verify (jve) - It seems necessary to use CreateEntity since it calls Init/InitVars, which can't be
+		// called manually inside Sprite due to protected linkage.
 		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
 	}
 
-	// destroy the native instance of the node as well
 	void EngineInstanceSprite::DisposeObject()
 	{
 		if (m_pSprite)
 		{
+			// Make sure nobody accidentally started referencing this without our knowledge
 			VASSERT(m_pSprite->GetRefCount() == 1);
 			m_pSprite->DisposeObject();
 			m_pSprite = NULL;
@@ -49,11 +51,11 @@ namespace Toolset2D_Managed
 			case ShapeRenderMode::Normal:
 				if (m_bIsVisible)
 				{
-					m_pSprite->DebugRender(pRI,4.f,VColorRef(255,0,0,80), false);
+					m_pSprite->DebugRender(pRI, 4.f, VColorRef(255,0,0,80), false);
 				}
 				break;
 			case ShapeRenderMode::Selected:
-				m_pSprite->DebugRender(pRI,5.f,VColorRef(255,160,0,140), false);
+				m_pSprite->DebugRender(pRI, 5.f, VColorRef(255,160,0,140), false);
 				break;
 			}
 		}
@@ -63,7 +65,7 @@ namespace Toolset2D_Managed
 	{
 		// create a small bounding box for picking
 		float fSize = 5.f;
-		(*bbox).Set(-fSize,-fSize,-fSize,fSize,fSize,fSize);
+		(*bbox).Set(-fSize, -fSize, -fSize, fSize, fSize, fSize);
 		return true;
 	}
 

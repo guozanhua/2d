@@ -13,8 +13,8 @@
     <ProjectGuid>{8C897073-9C9E-4EFA-A0F6-317ACB479735}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Toolset2D_EditorPlugin</RootNamespace>
-    <AssemblyName>Toolset2D_EditorPlugin.EditorPlugin</AssemblyName>
+    <RootNamespace>Toolset2D</RootNamespace>
+    <AssemblyName>Toolset2D.EditorPlugin</AssemblyName>
     <ApplicationIcon>
     </ApplicationIcon>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -59,6 +59,11 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Toolset2D_Plugin.cs" />
     <Compile Include="AssemblyInfo.cs">
       <DeploymentContent>False</DeploymentContent>
@@ -109,6 +114,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=" " />
+    <EmbeddedResource Include="Resources\sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

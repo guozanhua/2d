@@ -2,13 +2,13 @@ using System;
 using CSharpFramework;
 using CSharpFramework.Serialization;
 
-namespace Toolset2D_EditorPlugin
+namespace Toolset2D
 {
     /// <summary>
-    /// EditorPlugin : this class must exist and implement the IEditorPluginModule functions to add the shape creators (for instance)
-    /// Also, the namespace (NodeEditorPlugin) must be the same as the plugin dll name, in ths case NodeEditorPlugin.EditorPlugin.dll
-    /// This is because the editor plugin manager searches for the Toolset2D_EditorPlugin.EditorPlugin class when opening the 
-    /// Toolset2D_EditorPlugin.EditorPlugin.dll assembly
+    /// EditorPlugin : this class must exist and implement the IEditorPluginModule functions to add the shape creators. The
+    /// namespace (Toolset2D) must be the same as the plugin dll name, in this case Toolset2D.EditorPlugin.dll
+    /// This is because the editor plugin manager searches for the Toolset2D.EditorPlugin class when opening the 
+    /// Toolset2D.EditorPlugin.dll assembly
     /// </summary>
     public class EditorPlugin : IEditorPluginModule
     {
@@ -17,8 +17,10 @@ namespace Toolset2D_EditorPlugin
         /// </summary>
         public EditorPlugin()
         {
-            _version = 1;                 //version used for serialization
-            _name = "Toolset2D_EditorPlugin";
+            // Used for serialization
+            _version = 1;
+
+            _name = "Toolset2D";
         }
 
         /// <summary>
@@ -28,22 +30,21 @@ namespace Toolset2D_EditorPlugin
         public static EditorPluginInfo EDITOR_PLUGIN_INFO = new EditorPluginInfo();
 
         /// <summary>
-        /// InitPluginModule : called at plugin initialisation time: Add the relevant shape creators here
+        /// InitPluginModule : called at plugin initialization time: Add the relevant shape m_shapeCreators here
         /// </summary>
         public override bool InitPluginModule()
         {
             Toolset2D_Managed.ManagedModule.InitManagedModule();
 
-            EDITOR_PLUGIN_INFO.NativePluginNames = new string[] { "Toolset2D_EditorPlugin" };
+            EDITOR_PLUGIN_INFO.NativePluginNames = new string[] { "Toolset2D" };
 
-            // we only have one type of shape in this plugin
-            creators = new IShapeCreatorPlugin[]
+            m_shapeCreators = new IShapeCreatorPlugin[]
                  {
-                   new NodeShapeCreator()
+                   new SpriteShapeCreator()
                  };
 
             // add them to the editor
-            foreach (IShapeCreatorPlugin plugin in creators)
+            foreach (IShapeCreatorPlugin plugin in m_shapeCreators)
             {
                 EditorManager.ShapeCreatorPlugins.Add(plugin);
             }
@@ -52,12 +53,12 @@ namespace Toolset2D_EditorPlugin
         }
 
         /// <summary>
-        /// DeInitPluginModule : called at plugin deinitialisation time: Remove relevant data
+        /// DeInitPluginModule : called at plugin de-initialization time: Remove relevant data
         /// </summary>
         public override bool DeInitPluginModule()
         {
             // deregister the creator plugins again
-            foreach (IShapeCreatorPlugin plugin in creators)
+            foreach (IShapeCreatorPlugin plugin in m_shapeCreators)
             {
                 EditorManager.ShapeCreatorPlugins.Remove(plugin);
             }
@@ -78,7 +79,7 @@ namespace Toolset2D_EditorPlugin
             }
         }
 
-        IShapeCreatorPlugin[] creators;
+        IShapeCreatorPlugin[] m_shapeCreators;
     }
 }
 

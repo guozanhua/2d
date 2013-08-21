@@ -19,8 +19,24 @@ using System.Runtime.Serialization;
 using ManagedFramework;
 using System.IO;
 
-namespace Toolset2D_EditorPlugin
+namespace Toolset2D
 {
+    public class IconManager
+    {
+        public static int m_SpriteIndex = -1;
+        public static int SpriteIndex
+        {
+            get
+            {
+                if (m_SpriteIndex == -1)
+                {
+                    m_SpriteIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Toolset2D.Resources.sprite, "SpriteIcon", Color.Magenta);
+                }
+                return m_SpriteIndex;
+            }
+        }
+    }
+
     #region class SpriteShape
     /// <summary>
     /// SpriteShape : This is the class that represents the shape in the editor. It has an engine instance that handles the
@@ -55,16 +71,11 @@ namespace Toolset2D_EditorPlugin
         #region Icon
 
         /// <summary>
-        /// Get an index once (executed the first time an instance of this shape is created)
-        /// </summary>
-        static int iIconIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Path.Combine(EditorManager.AppDataDir, @"bitmaps\Shapes\Node.bmp"), Color.Magenta);
-
-        /// <summary>
         /// Return the icon index in the image list for the shape tree view. For this, use a static variable for this class.
         /// </summary>
         public override int GetIconIndex()
         {
-            return iIconIndex;
+            return IconManager.SpriteIndex;
         }
 
         /// <summary>
@@ -73,7 +84,7 @@ namespace Toolset2D_EditorPlugin
         /// <returns></returns>
         public override int GetSelectedIconIndex()
         {
-            return iIconIndex;
+            return IconManager.SpriteIndex;
         }
 
         #endregion
@@ -132,7 +143,7 @@ namespace Toolset2D_EditorPlugin
 
             if (HasEngineInstance())
             {
-                EngineNode.SetShoeBoxData(m_SpriteSheetFilename, m_ShoeBoxData);
+                EngineNode.SetShoeBoxData(m_SpriteSheetFilename, m_ShoeBoxFilename);
             }
         }
 
@@ -161,7 +172,11 @@ namespace Toolset2D_EditorPlugin
         protected SpriteShape(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            //..nothing to do
+            if (SerializationHelper.HasElement(info, "_sheet_filename"))
+            {
+                SpriteSheetFilename = info.GetString("_sheet_filename");
+                ShoeBoxData = info.GetString("_shoebox_filename");
+            }
         }
 
         /// <summary>
@@ -181,7 +196,8 @@ namespace Toolset2D_EditorPlugin
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             base.GetObjectData(info, context);
-            // nothing else to do...
+            info.AddValue("_sheet_filename", m_SpriteSheetFilename);
+            info.AddValue("_shoebox_filename", m_ShoeBoxFilename);
         }
 
         /// <summary>
@@ -198,7 +214,7 @@ namespace Toolset2D_EditorPlugin
 
         #region Properties
         string m_SpriteSheetFilename;
-        string m_ShoeBoxData;
+        string m_ShoeBoxFilename;
 
         [SortedCategory(CAT_EVENTRES, CATORDER_EVENTRES), PropertyOrder(1)]
         [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
@@ -223,11 +239,11 @@ namespace Toolset2D_EditorPlugin
         [DependentProperties(new string[] { "SpriteSheetFilename" })]
         public string ShoeBoxData
         {
-            get { return m_ShoeBoxData; }
+            get { return m_ShoeBoxFilename; }
             set
             {
-                if (m_ShoeBoxData == value) return;
-                m_ShoeBoxData = value;
+                if (m_ShoeBoxFilename == value) return;
+                m_ShoeBoxFilename = value;
                 SetEngineInstanceBaseProperties();
             }
         }
@@ -239,17 +255,18 @@ namespace Toolset2D_EditorPlugin
 
 
     /// <summary>
-    /// Creator class. An instance of the creator is registerd in the plugin init function. Thus the creator shows
+    /// Creator class. An instance of the creator is registered in the plugin init function. Thus the creator shows
     /// up in the "Create" menu of the editor
     /// </summary>
-    class NodeShapeCreator : CSharpFramework.IShapeCreatorPlugin
+    class SpriteShapeCreator : CSharpFramework.IShapeCreatorPlugin
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public NodeShapeCreator()
+        public SpriteShapeCreator()
         {
-            IconIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Path.Combine(EditorManager.AppDataDir, @"bitmaps\Shapes\Node.bmp"), Color.Magenta);
+            IconIndex = IconManager.SpriteIndex;
+            CategoryIconIndex = IconManager.SpriteIndex;
         }
 
         /// <summary>
@@ -262,7 +279,7 @@ namespace Toolset2D_EditorPlugin
         }
 
         /// <summary>
-        /// Get the plugin category name to sort the plugin name. This is useful to group creators. A null string can
+        /// Get the plugin category name to sort the plugin name. This is useful to group m_shapeCreators. A null string can
         /// be returned to put the creator in the root
         /// </summary>
         /// <returns></returns>

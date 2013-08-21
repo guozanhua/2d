@@ -30,7 +30,7 @@ COMMAND_LINE_OPTIONS = (
       'default': True,
       'help': "Don't print out status updates"}))
 
-CUSTOM_PLUGINS = ['Toolset2D_EnginePlugin', 'Toolset2D_Managed', 'Toolset2D_EditorPlugin', 'SpriteGamePlugin']
+CUSTOM_PLUGINS = ['Toolset2D_EnginePlugin', 'Toolset2D_Managed', 'Toolset2D.EditorPlugin', 'SpriteGamePlugin']
 
 
 def main():
@@ -57,11 +57,13 @@ def main():
     if not source_directory:
         print("Didn't specify binary source directory!")
     else:
-        print("Deploying to %s" % destination_directory)
+        print("Deploying to %s\\..." % destination_directory)
         source_directory = os.path.abspath(source_directory)
         bin_index = source_directory.rfind('Bin')
         bin_path = source_directory[bin_index:]
         output_path = os.path.join(destination_directory, bin_path)
+        updated_files = []
+        had_error = False
 
         for filename in os.listdir(source_directory):
             for plugin in CUSTOM_PLUGINS:
@@ -73,10 +75,18 @@ def main():
                        (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
                         try:
                             shutil.copy2(source_file, output_path)
+                            updated_files.append(source_file)
                             print('Updating %s...' % destination_file)
                         except IOError:
                             print('Failed to update %s...' % destination_file)
-        success = True
+                            had_error = True
+
+        if len(updated_files) == 0:
+            print("Destination already up to date...")
+        else:
+            print("Successfully deployed %d updates to %s\\..." % (len(updated_files), destination_directory))
+
+        success = (not had_error)
 
     return success
 

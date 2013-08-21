@@ -11,6 +11,8 @@
 #define PROP_TEXTURE_FILENAME TextureFilename
 #define PROP_TEXTURE_SCALE TextureScale
 
+V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
+
 // Called by the engine when entity is created. Not when it is de-serialized!
 void Sprite::InitFunction()
 {
@@ -177,6 +179,11 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 			state->cells.Append(newCellIndex);
 		}
 
+		if (m_states.GetSize() > 0)
+		{
+			m_currentState = m_currentFrame = 0;
+		}
+
 		success = true;
 	}
 
@@ -315,14 +322,12 @@ void Sprite::Serialize(VArchive &ar)
 void Sprite::OnSerialized(VArchive &ar)
 {
 	VisBaseEntity_cl::OnSerialized(ar);
-
+	
 	// call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
 	CommonInit();
 }
 
-V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
-
 START_VAR_TABLE(Sprite, VisBaseEntity_cl, "Sprite", 0, "")
 	DEFINE_VAR_STRING_CALLBACK(Sprite, PROP_TEXTURE_FILENAME, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
-	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(1e-6,1e6)");
+	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(0, 1)");
 END_VAR_TABLE
