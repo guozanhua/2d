@@ -24,6 +24,10 @@ COMMAND_LINE_OPTIONS = (
      {'action': 'store',
       'dest': 'source',
       'help': "Source binary folder"}),
+    (('-d', '--destination',),
+     {'action': 'store',
+      'dest': 'destination',
+      'help': "Destination folder (override VISION_SDK)"}),
     (('-q', '--quiet',),
      {'action': 'store_false',
       'dest': 'verbose',
@@ -48,11 +52,13 @@ def main():
         source_directory = sys.argv[len(sys.argv) - 1]
 
     success = False
-
-    if not 'VISION_SDK' in os.environ:
-        print("Missing VISION_SDK environment variable!")
-
-    destination_directory = os.environ['VISION_SDK']
+    
+    destination_directory = options.destination
+    if (not destination_directory) or (not os.path.exists(destination_directory)):
+        if not 'VISION_SDK' in os.environ:
+            print("Missing VISION_SDK environment variable!")
+        else:
+            destination_directory = os.environ['VISION_SDK']
 
     if not source_directory:
         print("Didn't specify binary source directory!")
@@ -81,7 +87,9 @@ def main():
                             print('Failed to update %s...' % destination_file)
                             had_error = True
 
-        if len(updated_files) == 0:
+        if had_error:
+            print("Failed to deploy all files to destination!")
+        elif len(updated_files) == 0:
             print("Destination already up to date...")
         else:
             print("Successfully deployed %d updates to %s\\..." % (len(updated_files), destination_directory))

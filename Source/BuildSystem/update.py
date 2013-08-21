@@ -132,30 +132,31 @@ def main():
         project_directory = os.path.abspath(project_directory)
 
     arch = 'win32_vs2010_anarchy'
-
-    print("Updating dev binaries...")
     conf_dev = 'Bin\%s\dev_dll\DX9' % arch
+    conf_debug = 'Bin\%s\debug_dll\DX9' % arch
+
+    print("Updating dev binaries [%s]..." % conf_dev)
     success = success and update_files( os.path.join(vision_directory, conf_dev), os.path.join(project_directory, conf_dev) )
     
-    print("Updating debug binaries...")
-    conf_debug = 'Bin\%s\debug_dll\DX9' % arch
+    print("Updating debug binaries [%s]..." % conf_debug)
     success = success and update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
     
     if options.assets:
-        print('Updating assets...')
-
         try:
             base = 'Data\Vision\Base'
             base_src = os.path.join(project_directory, base)
+            print('Copying assets to %s...' % base)
             if not os.path.exists(base_src):
                 shutil.copytree( os.path.join(vision_directory, base), base_src )
         
             android = 'Data\Common\Android'
             android_src = os.path.join(project_directory, android)
+            print('Copying assets to %s...' % android)
             if not os.path.exists(android_src):
                 shutil.copytree( os.path.join(vision_directory, android), android_src )
 
             print('Processing assets...')
+            print('NOTE: vForge must be open for the assets to get updated!')
             asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
             run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
                 True,
