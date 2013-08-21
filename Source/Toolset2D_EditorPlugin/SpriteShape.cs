@@ -98,9 +98,9 @@ namespace Toolset2D
         /// <param name="bCreateChildren">relevant for the base class to create instances for children</param>
         public override void CreateEngineInstance(bool bCreateChildren)
         {
-            base.CreateEngineInstance(bCreateChildren);
             _engineInstance = new EngineInstanceSprite();
             SetEngineInstanceBaseProperties(); // sets the position etc.
+            base.CreateEngineInstance(bCreateChildren);
         }
 
         /// <summary>

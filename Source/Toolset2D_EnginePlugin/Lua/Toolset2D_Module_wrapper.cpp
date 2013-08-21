@@ -1149,7 +1149,7 @@ SWIGINTERN void VisionLuaClassSet(lua_State *L)
   
   const char * pKey = lua_tostring(L, 2);
   const void * pPtr = lua_topointer(L, 1);
-  
+
   lua_pushfstring(L, "$node-%p-%s$", pPtr, pKey);   //stack: userdata, key, value, ..., new key, TOP
   
   lua_pushvalue(L, 3);                              //stack: userdata, key, value, ..., new key, value, TOP
@@ -2879,6 +2879,12 @@ SWIGINTERN int VisBaseEntity_cl_GetPrimarySortingKey(VisBaseEntity_cl *self){
 
   #include "SpriteEntity.hpp"
 
+SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
+    if(pObject && pObject->IsOfType(Sprite::GetClassTypeId()))
+      return (Sprite *) pObject;
+    Vision::Error.Warning("[Lua] Cannot cast to %s!","Sprite");
+    return NULL;
+  }
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9921,6 +9927,30 @@ fail:
 }
 
 
+static int _wrap_Sprite_Cast(lua_State* L) {
+  int SWIG_arg = 0;
+  VTypedObject *arg1 = (VTypedObject *) 0 ;
+  Sprite *result = 0 ;
+  
+  SWIG_check_num_args("Sprite_Cast",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Sprite_Cast",1,"VTypedObject *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VTypedObject,0))){
+    SWIG_fail_ptr("Sprite_Cast",1,SWIGTYPE_p_VTypedObject);
+  }
+  
+  result = (Sprite *)Sprite_Cast(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_method swig_Sprite_methods[] = {
     {"SetState", _wrap_Sprite_SetState}, 
     {0,0}
@@ -9937,6 +9967,7 @@ static swig_lua_class _wrap_class_Sprite = { "Sprite", &SWIGTYPE_p_Sprite,0,0, s
 #endif
 
 static const struct luaL_reg swig_commands[] = {
+    { "Sprite_Cast", _wrap_Sprite_Cast},
     {0,0}
 };
 

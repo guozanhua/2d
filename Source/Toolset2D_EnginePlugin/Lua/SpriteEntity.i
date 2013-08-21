@@ -11,4 +11,8 @@ class Sprite : public VisBaseEntity_cl
 {
 public:
   bool SetState(const char *state);
+
+  %extend{
+    VSWIG_CREATE_CAST(Sprite)
+  }
 };
