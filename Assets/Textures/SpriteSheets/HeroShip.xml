@@ -1,0 +1,35 @@
+<TextureAtlas imagePath="HeroShip.png">
+	<SubTexture name="basePose.tga" x="0" y="175" width="234" height="173" ox="10" oy="52"/>
+	<SubTexture name="rollLeft_0000.tga" x="0" y="350" width="234" height="173" ox="10" oy="52"/>
+	<SubTexture name="rollLeft_0001.tga" x="0" y="525" width="234" height="173" ox="11" oy="52"/>
+	<SubTexture name="rollLeft_0002.tga" x="0" y="875" width="233" height="173" ox="12" oy="52"/>
+	<SubTexture name="rollLeft_0003.tga" x="0" y="1050" width="233" height="174" ox="13" oy="52"/>
+	<SubTexture name="rollLeft_0004.tga" x="0" y="1226" width="232" height="173" ox="15" oy="52"/>
+	<SubTexture name="rollLeft_0005.tga" x="0" y="1401" width="231" height="173" ox="17" oy="52"/>
+	<SubTexture name="rollLeft_0006.tga" x="0" y="1751" width="228" height="172" ox="20" oy="52"/>
+	<SubTexture name="rollLeft_0007.tga" x="233" y="1574" width="224" height="171" ox="24" oy="52"/>
+	<SubTexture name="rollLeft_0008.tga" x="235" y="875" width="219" height="170" ox="28" oy="52"/>
+	<SubTexture name="rollLeft_0009.tga" x="236" y="0" width="213" height="169" ox="32" oy="52"/>
+	<SubTexture name="rollLeft_0010.tga" x="236" y="342" width="207" height="168" ox="36" oy="52"/>
+	<SubTexture name="rollLeft_0011.tga" x="236" y="682" width="200" height="167" ox="40" oy="52"/>
+	<SubTexture name="rollLeft_0012.tga" x="445" y="342" width="195" height="166" ox="43" oy="52"/>
+	<SubTexture name="rollLeft_0013.tga" x="451" y="0" width="189" height="165" ox="46" oy="52"/>
+	<SubTexture name="rollLeft_0014.tga" x="456" y="851" width="187" height="165" ox="47" oy="52"/>
+	<SubTexture name="rollLeft_0015.tga" x="460" y="1713" width="185" height="164" ox="48" oy="52"/>
+	<SubTexture name="rollRight_0016.tga" x="0" y="0" width="234" height="173" ox="10" oy="52"/>
+	<SubTexture name="rollRight_0017.tga" x="0" y="700" width="234" height="173" ox="8" oy="52"/>
+	<SubTexture name="rollRight_0018.tga" x="0" y="1576" width="231" height="173" ox="7" oy="52"/>
+	<SubTexture name="rollRight_0019.tga" x="230" y="1751" width="228" height="172" ox="7" oy="52"/>
+	<SubTexture name="rollRight_0020.tga" x="233" y="1401" width="224" height="171" ox="7" oy="52"/>
+	<SubTexture name="rollRight_0021.tga" x="234" y="1226" width="220" height="171" ox="8" oy="52"/>
+	<SubTexture name="rollRight_0022.tga" x="235" y="1047" width="215" height="170" ox="9" oy="52"/>
+	<SubTexture name="rollRight_0023.tga" x="236" y="171" width="210" height="169" ox="11" oy="52"/>
+	<SubTexture name="rollRight_0024.tga" x="236" y="512" width="205" height="168" ox="13" oy="52"/>
+	<SubTexture name="rollRight_0025.tga" x="438" y="682" width="200" height="167" ox="15" oy="52"/>
+	<SubTexture name="rollRight_0026.tga" x="443" y="512" width="197" height="166" ox="16" oy="52"/>
+	<SubTexture name="rollRight_0027.tga" x="448" y="171" width="193" height="166" ox="18" oy="52"/>
+	<SubTexture name="rollRight_0028.tga" x="452" y="1047" width="189" height="165" ox="20" oy="52"/>
+	<SubTexture name="rollRight_0029.tga" x="456" y="1214" width="187" height="165" ox="21" oy="52"/>
+	<SubTexture name="rollRight_0030.tga" x="459" y="1381" width="186" height="164" ox="21" oy="52"/>
+	<SubTexture name="rollRight_0031.tga" x="459" y="1547" width="185" height="164" ox="22" oy="52"/>
+</TextureAtlas>
