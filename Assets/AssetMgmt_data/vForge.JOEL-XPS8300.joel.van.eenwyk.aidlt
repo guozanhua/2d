@@ -54,13 +54,13 @@ textures/decals/blubber_small.dds	textures/decals/blubber_small.dds	Usage="Undef
 textures/decals/machinegun.dds	textures/decals/machinegun.dds	Usage="Undefined",sRGB=false
 textures/decals/mgun_hole.dds	textures/decals/mgun_hole.dds	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds	textures/decals/wallmarksmoke.dds	Usage="Undefined",sRGB=false
-textures/fps/ammo_back.dds	textures/fps/ammo_back.dds	Usage="Undefined",sRGB=false
-textures/fps/crosshair.dds	textures/fps/crosshair.dds	Usage="Undefined",sRGB=false
-textures/fps/crouching.dds	textures/fps/crouching.dds	Usage="Undefined",sRGB=false
-textures/fps/machinegun.dds	textures/fps/machinegun.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_border.dds	textures/fps/sniper_border.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_scope.dds	textures/fps/sniper_scope.dds	Usage="Undefined",sRGB=false
-textures/fps/standing.dds	textures/fps/standing.dds	Usage="Undefined",sRGB=false
+textures/spritesheets/heroship.png	textures/spritesheets/heroship.png	Usage="Undefined",sRGB=false
+textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	Usage="Undefined",sRGB=false
+particles/smokesequence_a.dds	particles/smokesequence_a.dds	Usage="Undefined",sRGB=false
+particles/smoke_a.dds	particles/smoke_a.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-mdpi/icon.png	icons/android/drawable-mdpi/icon.png	Usage="Undefined",sRGB=false
+icons/android/drawable-ldpi/icon.png	icons/android/drawable-ldpi/icon.png	Usage="Undefined",sRGB=false
+icons/android/drawable-hdpi/icon.png	icons/android/drawable-hdpi/icon.png	Usage="Undefined",sRGB=false
 textures/grid01.jpg	textures/grid01.jpg	Usage="Undefined",sRGB=false
 textures/spritesheets/enemyship.png	textures/spritesheets/enemyship.png	Usage="Undefined",sRGB=false
 textures/ui/button.dds	textures/ui/button.dds	Usage="Undefined",sRGB=false
@@ -104,16 +104,3 @@ textures/ui/slidernorm.dds	textures/ui/slidernorm.dds	Usage="Undefined",sRGB=fal
 textures/ui/slidernorm.png	textures/ui/slidernorm.png	Usage="Undefined",sRGB=false
 textures/ui/white.dds	textures/ui/white.dds	Usage="Undefined",sRGB=false
 textures/water/water_n_01.dds	textures/water/water_n_01.dds	Usage="NormalMap",sRGB=false
-icons/android/drawable-hdpi/icon.png	icons/android/drawable-hdpi/icon.png	Usage="Undefined",sRGB=false
-icons/android/drawable-ldpi/icon.png	icons/android/drawable-ldpi/icon.png	Usage="Undefined",sRGB=false
-icons/android/drawable-mdpi/icon.png	icons/android/drawable-mdpi/icon.png	Usage="Undefined",sRGB=false
-models/heroship.anim	models/heroship.anim	
-models/heroship.model	models/heroship.model	
-models/heroship.vcolmesh	models/heroship.vcolmesh	
-models/scrollingbg.anim	models/scrollingbg.anim	
-models/scrollingbg.model	models/scrollingbg.model	
-models/scrollingbg.vcolmesh	models/scrollingbg.vcolmesh	
-particles/smoke_a.dds	particles/smoke_a.dds	Usage="Undefined",sRGB=false
-particles/smokesequence_a.dds	particles/smokesequence_a.dds	Usage="Undefined",sRGB=false
-textures/basepose.tga	textures/basepose.tga	Usage="Undefined",sRGB=false
-textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	Usage="Undefined",sRGB=false

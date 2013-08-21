@@ -3,6 +3,12 @@ fonts/arial_18_00.dds	Fonts/Arial_18_00.dds	Usage="Undefined",sRGB=false
 fonts/arial_22_00.dds	Fonts/Arial_22_00.dds	Usage="Undefined",sRGB=false
 fonts/couriernew_18_00.dds	Fonts/CourierNew_18_00.dds	Usage="Undefined",sRGB=false
 fonts/debugfont_00.dds	Fonts/DebugFont_00.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-hdpi/icon.png#android-default	AssetMgmt_data/transformed/icongn5#b4dclgdtc.rgba	Usage="Undefined",sRGB=false
+icons/android/drawable-hdpi/icon.png#android-pvr	AssetMgmt_data/transformed/icongn5#b4dclgdtc.pvr	Usage="Undefined",sRGB=false
+icons/android/drawable-ldpi/icon.png#android-default	AssetMgmt_data/transformed/icongn5#b4dclgdtc.rgba	Usage="Undefined",sRGB=false
+icons/android/drawable-ldpi/icon.png#android-pvr	AssetMgmt_data/transformed/icongn5#b4dclgdtc.pvr	Usage="Undefined",sRGB=false
+icons/android/drawable-mdpi/icon.png#android-default	AssetMgmt_data/transformed/icongn5#b4dclgdtc.rgba	Usage="Undefined",sRGB=false
+icons/android/drawable-mdpi/icon.png#android-pvr	AssetMgmt_data/transformed/icongn5#b4dclgdtc.pvr	Usage="Undefined",sRGB=false
 meshes/plane.vcolmesh	Meshes/Plane.vcolmesh	
 meshes/plane.vmesh	Meshes/Plane.VMESH	
 models/misc/charheight.model	Models/Misc/CharHeight.Model	
@@ -17,6 +23,10 @@ particles/groundfog.dds#android-default	AssetMgmt_data/transformed/groundfog96bt
 particles/groundfog.dds#android-pvr	AssetMgmt_data/transformed/groundfog96btc8jclgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smoke.dds#android-default	AssetMgmt_data/transformed/smokef0bryq4clgdtc.rgba	Usage="Undefined",sRGB=false
 particles/smoke.dds#android-pvr	AssetMgmt_data/transformed/smokef0bryq4clgdtc.pvr	Usage="Undefined",sRGB=false
+particles/smoke_a.dds#android-default	AssetMgmt_data/transformed/smoke_ah94k260clgdtc.rgba	Usage="Undefined",sRGB=false
+particles/smoke_a.dds#android-pvr	AssetMgmt_data/transformed/smoke_ah94k260clgdtc.pvr	Usage="Undefined",sRGB=false
+particles/smokesequence_a.dds#android-default	AssetMgmt_data/transformed/smokesequence_a1hnnds4clgdtc.rgba	Usage="Undefined",sRGB=false
+particles/smokesequence_a.dds#android-pvr	AssetMgmt_data/transformed/smokesequence_a1hnnds4clgdtc.pvr	Usage="Undefined",sRGB=false
 particles/sparkle.dds#android-default	AssetMgmt_data/transformed/sparklebk1kmw0clgdtc.etc	Usage="Undefined",sRGB=false
 particles/sparkle.dds#android-pvr	AssetMgmt_data/transformed/sparklebk1kmw0clgdtc.pvr	Usage="Undefined",sRGB=false
 particles/star.dds#android-default	AssetMgmt_data/transformed/star1v8889sclgdtc.etc	Usage="Undefined",sRGB=false
@@ -97,22 +107,14 @@ textures/decals/mgun_hole.dds#android-default	AssetMgmt_data/transformed/mgun_ho
 textures/decals/mgun_hole.dds#android-pvr	AssetMgmt_data/transformed/mgun_holecb#8nc4clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds#android-default	AssetMgmt_data/transformed/wallmarksmokebg32yjnclgdtc.rgba	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds#android-pvr	AssetMgmt_data/transformed/wallmarksmokebg32yjnclgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/ammo_back.dds#android-default	AssetMgmt_data/transformed/ammo_back3snbh0sclgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/ammo_back.dds#android-pvr	AssetMgmt_data/transformed/ammo_back3snbh0sclgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/crosshair.dds#android-default	AssetMgmt_data/transformed/crosshairc0v5t68clgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/crosshair.dds#android-pvr	AssetMgmt_data/transformed/crosshairc0v5t68clgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/crouching.dds#android-default	AssetMgmt_data/transformed/crouching0rjqclxclgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/crouching.dds#android-pvr	AssetMgmt_data/transformed/crouching0rjqclxclgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/machinegun.dds#android-default	AssetMgmt_data/transformed/machinegunhwfrh04clgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/machinegun.dds#android-pvr	AssetMgmt_data/transformed/machinegunhwfrh04clgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/sniper_border.dds#android-default	AssetMgmt_data/transformed/sniper_border7z9fznnclgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/sniper_border.dds#android-pvr	AssetMgmt_data/transformed/sniper_border7z9fznnclgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/sniper_scope.dds#android-default	AssetMgmt_data/transformed/sniper_scope10htqm4clgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/sniper_scope.dds#android-pvr	AssetMgmt_data/transformed/sniper_scope10htqm4clgdtc.pvr	Usage="Undefined",sRGB=false
-textures/fps/standing.dds#android-default	AssetMgmt_data/transformed/standingb26v47nclgdtc.rgba	Usage="Undefined",sRGB=false
-textures/fps/standing.dds#android-pvr	AssetMgmt_data/transformed/standingb26v47nclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-default	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.etc	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-pvr	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/scrollingbgspace.tga#android-default	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.etc	Usage="Undefined",sRGB=false
+textures/scrollingbgspace.tga#android-pvr	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.pvr	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png#android-default	AssetMgmt_data/transformed/enemyshipdt4sc90clgdtc.rgba	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png#android-pvr	AssetMgmt_data/transformed/enemyshipdt4sc90clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/spritesheets/heroship.png#android-default	AssetMgmt_data/transformed/heroship11vywjdclgdtc.rgba	Usage="Undefined",sRGB=false
+textures/spritesheets/heroship.png#android-pvr	AssetMgmt_data/transformed/heroship11vywjdclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/button.dds#android-default	AssetMgmt_data/transformed/button3kmwgwjclgdtc.rgba	Usage="Undefined",sRGB=false
 textures/ui/button.dds#android-pvr	AssetMgmt_data/transformed/button3kmwgwjclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_mouseover.tga#android-default	AssetMgmt_data/transformed/buttonquit_mouseoverf1f9p6jclgdtc.rgba	Usage="Undefined",sRGB=false

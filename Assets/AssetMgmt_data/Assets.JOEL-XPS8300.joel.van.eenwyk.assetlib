@@ -342,69 +342,6 @@
                 "TemplateName": "Default"
             }
         },
-        "Models/HeroShip.anim": {
-            "AssetType": "Animation",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 592976672,
-                "TimeStamp": 1376955419812656700,
-                "LastEditTime": 1377023090375792200
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Models/HeroShip.model": {
-            "AssetType": "Model",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-                    "Models/HeroShip.model_data/materials.xml",
-                    "Shaders/BaseShaders.ShaderLib",
-                    "Shaders/vMaterial.ShaderLib",
-                    "Textures/basePose.tga"
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 177620860,
-                "TimeStamp": 1376955419807656200,
-                "LastEditTime": 1377023090375792200
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Models/HeroShip.vcolmesh": {
-            "AssetType": "CollisionMesh",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 794362529,
-                "TimeStamp": 1376955313482024700,
-                "LastEditTime": 1377023090441792200
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
         "Models/Misc/CharHeight.Model": {
             "AssetType": "Model",
             "Common": {
@@ -436,7 +373,7 @@
                     "Models/Misc/Cube.Model_data/materials.xml",
                     "Shaders/BaseShaders.ShaderLib",
                     "Shaders/vMaterial.ShaderLib",
-                    "Textures/colors/Color_Orange.dds"
+                    "Textures/Colors/Color_Orange.dds"
                 ],
                 "Variants": [
 
@@ -537,69 +474,6 @@
                 "Hash": 3276996417,
                 "TimeStamp": 1376439470823704100,
                 "LastEditTime": 1376592252755880400
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Models/ScrollingBG.anim": {
-            "AssetType": "Animation",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 592976672,
-                "TimeStamp": 1376957921977848200,
-                "LastEditTime": 1377023090442792200
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Models/ScrollingBG.model": {
-            "AssetType": "Model",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-                    "Models/ScrollingBG.model_data/materials.xml",
-                    "Shaders/DynamicGlow.ShaderLib",
-                    "Shaders/vMaterial.ShaderLib",
-                    "Textures/ScrollingBGSpace.tga"
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 220703169,
-                "TimeStamp": 1376957921971847600,
-                "LastEditTime": 1377023090442792200
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Models/ScrollingBG.vcolmesh": {
-            "AssetType": "CollisionMesh",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 2888685809,
-                "TimeStamp": 1376957921979848400,
-                "LastEditTime": 1377023090486792200
             },
             "Transformations": {
                 "TemplateName": "Default"
@@ -857,34 +731,6 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/basePose.tga": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 3744789821,
-                "TimeStamp": 1366756728869994100,
-                "LastEditTime": 1377023089190792200
-            },
-            "Texture": {
-                "FileFormat": "TGA",
-                "Width": 256,
-                "Height": 256,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
         "Textures/Billboards/BillboardAtlas_Diffuse.dds": {
             "AssetType": "Texture",
             "Common": {
@@ -997,7 +843,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Black.png": {
+        "Textures/Colors/Black.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1025,7 +871,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Blue.png": {
+        "Textures/Colors/Blue.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1053,7 +899,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/BlueDark.png": {
+        "Textures/Colors/BlueDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1081,7 +927,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/BlueLight.png": {
+        "Textures/Colors/BlueLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1109,7 +955,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Color_Orange.dds": {
+        "Textures/Colors/Color_Orange.dds": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1137,7 +983,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Cyan.png": {
+        "Textures/Colors/Cyan.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1165,7 +1011,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/CyanDark.png": {
+        "Textures/Colors/CyanDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1193,7 +1039,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/CyanLight.png": {
+        "Textures/Colors/CyanLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1221,7 +1067,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Gray33.png": {
+        "Textures/Colors/Gray33.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1249,7 +1095,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Gray50.png": {
+        "Textures/Colors/Gray50.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1277,7 +1123,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Gray66.png": {
+        "Textures/Colors/Gray66.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1305,7 +1151,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Green.png": {
+        "Textures/Colors/Green.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1333,7 +1179,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/GreenDark.png": {
+        "Textures/Colors/GreenDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1361,7 +1207,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/GreenLight.png": {
+        "Textures/Colors/GreenLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1389,7 +1235,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Magenta.png": {
+        "Textures/Colors/Magenta.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1417,7 +1263,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/MagentaDark.png": {
+        "Textures/Colors/MagentaDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1445,7 +1291,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/MagentaLight.png": {
+        "Textures/Colors/MagentaLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1473,7 +1319,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Orange.png": {
+        "Textures/Colors/Orange.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1501,7 +1347,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/OrangeDark.png": {
+        "Textures/Colors/OrangeDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1529,7 +1375,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/OrangeLight.png": {
+        "Textures/Colors/OrangeLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1557,7 +1403,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Red.png": {
+        "Textures/Colors/Red.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1585,7 +1431,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/RedDark.png": {
+        "Textures/Colors/RedDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1613,7 +1459,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/RedLight.png": {
+        "Textures/Colors/RedLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1641,7 +1487,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/White.png": {
+        "Textures/Colors/White.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1669,7 +1515,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/Yellow.png": {
+        "Textures/Colors/Yellow.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1697,7 +1543,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/YellowDark.png": {
+        "Textures/Colors/YellowDark.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1725,7 +1571,7 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/colors/YellowLight.png": {
+        "Textures/Colors/YellowLight.png": {
             "AssetType": "Texture",
             "Common": {
                 "Tags": "__NEW_ASSET__",
@@ -1893,202 +1739,6 @@
                 "TemplateName": "Default"
             }
         },
-        "Textures/fps/ammo_back.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 1011961606,
-                "TimeStamp": 1376439471457704100,
-                "LastEditTime": 1376592253087913600
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 32,
-                "Height": 64,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/crosshair.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 2959653170,
-                "TimeStamp": 1376439471460704100,
-                "LastEditTime": 1376592253089913800
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 64,
-                "Height": 64,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/crouching.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 197315479,
-                "TimeStamp": 1376439471463704100,
-                "LastEditTime": 1376592253090913900
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 32,
-                "Height": 64,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/machinegun.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 4256624385,
-                "TimeStamp": 1376439471466704100,
-                "LastEditTime": 1376592253091914000
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 32,
-                "Height": 32,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/sniper_border.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 2133180069,
-                "TimeStamp": 1376439471468704100,
-                "LastEditTime": 1376592253092914100
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 64,
-                "Height": 64,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/sniper_scope.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 272578201,
-                "TimeStamp": 1376439471472704100,
-                "LastEditTime": 1376592253114916300
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 512,
-                "Height": 512,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
-        "Textures/fps/standing.dds": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 2702918717,
-                "TimeStamp": 1376439471475704100,
-                "LastEditTime": 1376592253116916500
-            },
-            "Texture": {
-                "FileFormat": "DDS",
-                "Width": 32,
-                "Height": 64,
-                "HasAlpha": true,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
         "Textures/grid01.jpg": {
             "AssetType": "Texture",
             "Common": {
@@ -2165,6 +1815,34 @@
                 "FileFormat": "PNG",
                 "Width": 2048,
                 "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/HeroShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 283884419,
+                "TimeStamp": 1377115378902984400,
+                "LastEditTime": 1377115380877984400
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
                 "HasAlpha": true,
                 "Usage": "Undefined",
                 "sRGB": false
@@ -3328,11 +3006,6 @@
             "TimeStamp": 1366968261284417700,
             "LastEditTime": 1367313597730715300
         },
-        "Models/HeroShip.model_data/materials.xml": {
-            "Hash": 0,
-            "TimeStamp": 1376955419809656400,
-            "LastEditTime": 1377023089170792200
-        },
         "Models/Misc/CharHeight.Model_data/materials.xml": {
             "Hash": 0,
             "TimeStamp": 1366968261302417700,
@@ -3362,16 +3035,6 @@
             "Hash": 0,
             "TimeStamp": 1366968261374417700,
             "LastEditTime": 1367313597729715300
-        },
-        "Models/ScrollingBG.model_data/materials.xml": {
-            "Hash": 0,
-            "TimeStamp": 1376987025021557500,
-            "LastEditTime": 1377023089166792200
-        },
-        "Shaders/DynamicGlow.ShaderLib": {
-            "Hash": 0,
-            "TimeStamp": 1372103556000000000,
-            "LastEditTime": 1377023089136792200
         },
         "Textures/blubber.dds": {
             "Hash": 0,

@@ -3,6 +3,9 @@ fonts/arial_18_00.dds	Fonts/Arial_18_00.dds	Usage="Undefined",sRGB=false
 fonts/arial_22_00.dds	Fonts/Arial_22_00.dds	Usage="Undefined",sRGB=false
 fonts/couriernew_18_00.dds	Fonts/CourierNew_18_00.dds	Usage="Undefined",sRGB=false
 fonts/debugfont_00.dds	Fonts/DebugFont_00.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-hdpi/icon.png	AssetMgmt_data/transformed/icongn5#b4dclgdtc.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-ldpi/icon.png	AssetMgmt_data/transformed/icongn5#b4dclgdtc.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-mdpi/icon.png	AssetMgmt_data/transformed/icongn5#b4dclgdtc.dds	Usage="Undefined",sRGB=false
 meshes/plane.vcolmesh	Meshes/Plane.vcolmesh	
 meshes/plane.vmesh	Meshes/Plane.VMESH	
 models/misc/charheight.model	Models/Misc/CharHeight.Model	
@@ -14,6 +17,8 @@ models/misc/torus.model	Models/Misc/Torus.Model
 particles/explosion_page.dds	AssetMgmt_data/transformed/explosion_page8ntjrzjclgdtc.dds	Usage="Undefined",sRGB=false
 particles/groundfog.dds	AssetMgmt_data/transformed/groundfog96btc8jclgdtc.dds	Usage="Undefined",sRGB=false
 particles/smoke.dds	AssetMgmt_data/transformed/smokef0bryq4clgdtc.dds	Usage="Undefined",sRGB=false
+particles/smoke_a.dds	AssetMgmt_data/transformed/smoke_ah94k260clgdtc.dds	Usage="Undefined",sRGB=false
+particles/smokesequence_a.dds	AssetMgmt_data/transformed/smokesequence_a1hnnds4clgdtc.dds	Usage="Undefined",sRGB=false
 particles/sparkle.dds	AssetMgmt_data/transformed/sparklebk1kmw0clgdtc.dds	Usage="Undefined",sRGB=false
 particles/star.dds	AssetMgmt_data/transformed/star1v8889sclgdtc.dds	Usage="Undefined",sRGB=false
 particles/steam.dds	AssetMgmt_data/transformed/steamgfc5ddjclgdtc.dds	Usage="Undefined",sRGB=false
@@ -54,14 +59,10 @@ textures/decals/blubber_small.dds	AssetMgmt_data/transformed/blubber_smallcygvf#
 textures/decals/machinegun.dds	AssetMgmt_data/transformed/machinegunhwfrh04clgdtc.dds	Usage="Undefined",sRGB=false
 textures/decals/mgun_hole.dds	AssetMgmt_data/transformed/mgun_holecb#8nc4clgdtc.dds	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds	AssetMgmt_data/transformed/wallmarksmokebg32yjnclgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/ammo_back.dds	AssetMgmt_data/transformed/ammo_back3snbh0sclgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/crosshair.dds	AssetMgmt_data/transformed/crosshairc0v5t68clgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/crouching.dds	AssetMgmt_data/transformed/crouching0rjqclxclgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/machinegun.dds	AssetMgmt_data/transformed/machinegunhwfrh04clgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_border.dds	AssetMgmt_data/transformed/sniper_border7z9fznnclgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_scope.dds	AssetMgmt_data/transformed/sniper_scope10htqm4clgdtc.dds	Usage="Undefined",sRGB=false
-textures/fps/standing.dds	AssetMgmt_data/transformed/standingb26v47nclgdtc.dds	Usage="Undefined",sRGB=false
 textures/grid01.jpg	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.dds	Usage="Undefined",sRGB=false
+textures/scrollingbgspace.tga	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.dds	Usage="Undefined",sRGB=false
+textures/spritesheets/enemyship.png	AssetMgmt_data/transformed/enemyshipdt4sc90clgdtc.dds	Usage="Undefined",sRGB=false
+textures/spritesheets/heroship.png	AssetMgmt_data/transformed/heroship11vywjdclgdtc.dds	Usage="Undefined",sRGB=false
 textures/ui/button.dds	AssetMgmt_data/transformed/button3kmwgwjclgdtc.dds	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_mouseover.tga	AssetMgmt_data/transformed/buttonquit_mouseoverf1f9p6jclgdtc.dds	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_normal.tga	AssetMgmt_data/transformed/buttonquit_normalhml1td0clgdtc.dds	Usage="Undefined",sRGB=false

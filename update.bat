@@ -2,7 +2,9 @@
 
 ::
 :: Call this the first time you sync to the source code or any time
-:: you update the Anarchy SDK
+:: you update the Anarchy SDK.
+::
+::   NOTE: You must have vForge open to update the assets!
 ::
 
 set _ROOT=%~dp0
