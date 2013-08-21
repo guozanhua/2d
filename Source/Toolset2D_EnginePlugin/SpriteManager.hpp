@@ -10,6 +10,8 @@ public:
 
 	VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
 
+  static void Ensure2dToolsetLuaRegistration();
+
 	// called when plugin is loaded/unloaded
 	TOOLSET_2D_IMPEXP void OneTimeInit();
 	TOOLSET_2D_IMPEXP void OneTimeDeInit();

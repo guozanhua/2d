@@ -12,6 +12,7 @@ public:
 	{
 		Vision::RegisterModule(&gToolset2D_EngineModule);
 		SpriteManager::GlobalManager().OneTimeInit();
+    SpriteManager::Ensure2dToolsetLuaRegistration();
 	}
 
 	// only called once

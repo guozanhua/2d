@@ -166,3 +166,20 @@ void SpriteManager::RemoveSprite(Sprite *sprite)
 		m_sprites.RemoveAt(spriteIndex);
 	}
 }
+
+void SpriteManager::Ensure2dToolsetLuaRegistration()
+{
+  IVScriptManager* pSM = Vision::GetScriptManager();
+  if (pSM != NULL)
+  {
+    lua_State* pLuaState = ((VScriptResourceManager*)pSM)->GetMasterState();
+    if (pLuaState)
+    {
+      luaopen_Toolset2D(pLuaState);
+    }
+    else
+    {
+      Vision::Error.Warning("Unable to create Lua SpriteManager Module, lua_State is NULL!");
+    }
+  }
+}

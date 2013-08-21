@@ -27,4 +27,4 @@ class SpriteManager
 public:
 };
 
-%include <SpriteEntity.i>;
+%include <SpriteEntity.i>
