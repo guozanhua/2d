@@ -34,7 +34,7 @@ private:
 	bool m_bPlayingTheGame;
 	HUDGUIContextPtr m_spHUD;
 
-	Sprite *m_pSprite;
+	Sprite *m_pPlayer;
 
 #ifdef WIN32
 	IVRemoteInput *m_pRemoteInput;

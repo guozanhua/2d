@@ -15,10 +15,14 @@ struct SpriteCell
 
 struct SpriteState
 {
-	SpriteState() : cells(100)
+	SpriteState() :
+	// Initialize the cells array to avoid allocations
+	//   TODO: This might be a bigger than it needs to be
+	cells(100)
 	{
 
 	}
+
 	VString name;
 	VArray<int> cells;
 	float framerate;
@@ -70,6 +74,9 @@ private:
 
 	float TextureScale;
 
+	hkvVec2 ScrollSpeed;
+	//int BlendMode;
+
 	//----- Member variables
 
 	int m_currentState;
@@ -81,8 +88,7 @@ private:
 
 	VString m_spriteSheetFilename;
 	VString m_xmlDataFilename;
-
-
+	
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;
 	VDictionary<int> m_stateNameToIndex;

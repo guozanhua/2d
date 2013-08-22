@@ -77,6 +77,10 @@
     <Reference Include="FmodManaged">
       <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\FmodManaged.dll</HintPath>
     </Reference>
+    <Reference Include="ManagedBase, Version=2013.1.1.3612, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\debug_dll\DX9\ManagedBase.dll</HintPath>
+    </Reference>
     <Reference Include="ManagedFramework">
       <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\ManagedFramework.dll</HintPath>
     </Reference>
@@ -114,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=" " />
+    <None Include="Resources\background.png" />
     <EmbeddedResource Include="Resources\sprite.png" />
   </ItemGroup>
   <ItemGroup>

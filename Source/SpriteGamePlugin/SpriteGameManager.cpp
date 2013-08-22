@@ -83,12 +83,6 @@ void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 
 void SpriteGameManager::Render()
 {
-	hkvVec2	tl(50, 200);
-	hkvVec2	br(150, 350);
-
-	hkvVec2 tl2(50, 400);
-	hkvVec2	br2(150, 650);
-
 	IVRender2DInterface *pRender = Vision::RenderLoopHelper.BeginOverlayRendering();
 	pRender->SetDepth(512.f);
 	pRender->SetScissorRect(NULL);
@@ -96,8 +90,9 @@ void SpriteGameManager::Render()
 	VSimpleRenderState_t state;
 	state.SetTransparency(VIS_TRANSP_ALPHA);
 
-	pRender->DrawSolidQuad(tl, br, VColorRef(255,0,255,100), state);
-	pRender->DrawSolidQuad(tl2, br2, VColorRef(0,255,0,128), state);
+	hkvVec2	tl(10, 10);
+	hkvVec2	br(60, 60);
+	pRender->DrawSolidQuad(tl, br, VColorRef(0, 255, 0, 128), state);
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
 }
@@ -110,12 +105,7 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		m_bPlayingTheGame = bStatus;
 		if (m_bPlayingTheGame)
 		{
-			if (m_pSprite == NULL)
-			{
-				m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
-				m_pSprite->SetShoeBoxData("Textures\\SpriteSheets\\EnemyShip.png", "Textures\\SpriteSheets\\EnemyShip.xml");
-				m_pSprite->SetState("rollLeft");
-			}
+			m_pPlayer = static_cast<Sprite *>( Vision::Game.SearchEntity("Player") );
 
 			m_spHUD = new HUDGUIContext(NULL);
 			m_spHUD->SetActivate(true);
@@ -131,7 +121,7 @@ void SpriteGameManager::SetPlayTheGame(bool bStatus)
 		else
 		{
 			// This is automatically deleted on scene unload
-			m_pSprite = NULL;
+			m_pPlayer = NULL;
 
 			// Deactivate the HUD
 			if (m_spHUD)

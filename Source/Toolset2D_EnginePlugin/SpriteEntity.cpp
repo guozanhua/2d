@@ -1,3 +1,26 @@
+//=======
+//
+// Author: Joel Van Eenwyk
+// Purpose: Handle sprite setup and rendering
+// TODO:
+//   * Add shader support
+//   * Add 3D mode more it just generates a plane
+//   * Add alpha test option
+//   * Add blending mode options (additive, blend, etc)
+//
+//=======
+//
+//       .-""""""-.
+//     .'          '.
+//    /   O    -=-   \
+//   :                :
+//   |                | 
+//   : ',          ,' :
+//    \  '-......-'  /
+//     '.          .'
+//       '-......-'
+//
+
 #include "Toolset2D_EnginePluginPCH.h"
 
 #include "SpriteEntity.hpp"
@@ -105,8 +128,6 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 			pNode != NULL;
 			pNode = pNode->NextSiblingElement(szActionNode) )
 		{
-			SpriteCell cell;
-
 			const char *name = pNode->Attribute("name");
 
 			int x;
@@ -122,17 +143,16 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 			pNode->QueryIntAttribute("height", &height);
 			pNode->QueryIntAttribute("ox", &ox);
 			pNode->QueryIntAttribute("oy", &oy);
-
-			cell.name = name;
-			cell.offset.x = static_cast<float>(x);
-			cell.offset.y = static_cast<float>(y);
-			cell.pivot.x = static_cast<float>(ox);
-			cell.pivot.y = static_cast<float>(oy);
-			cell.width = width;
-			cell.height = height;
-
-			const int newCellIndex = m_cells.Append(cell);
+			
+			const int newCellIndex = m_cells.Append(SpriteCell());
 			SpriteCell *currentCell = &m_cells[newCellIndex];
+			currentCell->name = name;
+			currentCell->offset.x = static_cast<float>(x);
+			currentCell->offset.y = static_cast<float>(y);
+			currentCell->pivot.x = static_cast<float>(ox);
+			currentCell->pivot.y = static_cast<float>(oy);
+			currentCell->width = width;
+			currentCell->height = height;
 
 			const char *result = strrchr(name, '_');
 			int index = -1;
@@ -185,6 +205,32 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 		{
 			m_currentState = m_currentFrame = 0;
 		}
+
+		success = true;
+	}
+	else if (m_spSpriteSheetTexture != NULL)
+	{
+		int stateIndex = m_states.Append(SpriteState());
+		SpriteState *state = &m_states[stateIndex];
+		state->name = spriteSheetFilename;
+		state->framerate = 30.0f;
+		state->cells.Add(0);
+		m_stateNameToIndex.Set(state->name, stateIndex);
+
+		const int newCellIndex = m_cells.Append(SpriteCell());
+		SpriteCell *currentCell = &m_cells[newCellIndex];
+
+		char buffer[FS_MAX_PATH];
+		VFileHelper::GetFilenameNoExt(buffer, spriteSheetFilename);
+		currentCell->name = buffer;
+		currentCell->offset.x = 0.f;
+		currentCell->offset.y = 0.f;
+		currentCell->pivot.x = 0.f;
+		currentCell->pivot.y = 0.f;
+		currentCell->width = m_spSpriteSheetTexture->GetTextureWidth();
+		currentCell->height = m_spSpriteSheetTexture->GetTextureHeight();
+
+		m_currentState = m_currentFrame = 0;
 
 		success = true;
 	}
