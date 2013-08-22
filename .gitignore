@@ -1,5 +1,7 @@
 ## Anarchy SDK files to ignore
 
+/External/Internal
+/Package/Output
 /Bin/*
 /Build/*
 /ChangeLogs/*
