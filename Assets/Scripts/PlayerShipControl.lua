@@ -10,6 +10,11 @@ function math.clamp(n, low, high)
     return math.min(math.max(n, low), high)
 end
 
+function FireWeapon(self)
+    -- TODO: Spawn and sprite and give it a velocity
+    Debug:PrintLine("Shot FIRED!")
+end
+
 function OnAfterSceneLoaded(self)
     local kDeadzone = {deadzone = 0.1}
  
@@ -23,7 +28,7 @@ function OnAfterSceneLoaded(self)
     self.playerInputMap:MapTrigger("KeyRight", "KEYBOARD", "CT_KB_D")
     self.playerInputMap:MapTrigger("KeyUp", "KEYBOARD", "CT_KB_W")
     self.playerInputMap:MapTrigger("KeyDown", "KEYBOARD", "CT_KB_S")
-    self.playerInputMap:MapTrigger("KeyFire", "KEYBOARD", "CT_KB_SPACE")
+    self.playerInputMap:MapTrigger("keyFire", "KEYBOARD", "CT_KB_SPACE")
 
     -- Create a virtual thumbstick then setup playerInputMap for it
     Input:CreateVirtualThumbStick()
@@ -31,7 +36,7 @@ function OnAfterSceneLoaded(self)
     self.playerInputMap:MapTriggerAxis("TouchRight", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
     self.playerInputMap:MapTriggerAxis("TouchUp", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
     self.playerInputMap:MapTriggerAxis("TouchDown", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
-    self.playerInputMap:MapTrigger("TouchFire", {(self.w*.5), (self.h*.5), self.w, self.h}, "CT_TOUCH_ANY")
+    self.playerInputMap:MapTrigger("touchFire", {(self.w*.5), (self.h*.5), self.w, self.h}, "CT_TOUCH_ANY")
 
     -- Calculate the starting position of the ship
     self.x = self.w * 0.5
@@ -51,54 +56,53 @@ function OnThink(self)
     local kMoveSpeed = 300 * kTimeDifference
     local kInvMoveSpeed = kMoveSpeed * -1
     local kRollSpeed = 5 * kTimeDifference
-    local kRollRecoverSpeed = 40 * kTimeDifference
+    local kRollRecoverSpeed = 4 * kTimeDifference
     
-    local isMoving = false
-
     -- Get keyboard state
-    local KeyGoLeft = self.playerInputMap:GetTrigger("KeyLeft")>0
-    local KeyGoRight = self.playerInputMap:GetTrigger("KeyRight")>0
-    local KeyGoUp = self.playerInputMap:GetTrigger("KeyUp")>0
-    local KeyGoDown = self.playerInputMap:GetTrigger("KeyDown")>0
-    local KeyFire = self.playerInputMap:GetTrigger("KeyFire")>0
+    local keyLeft = self.playerInputMap:GetTrigger("KeyLeft")>0
+    local keyRight = self.playerInputMap:GetTrigger("KeyRight")>0
+    local keyUp = self.playerInputMap:GetTrigger("KeyUp")>0
+    local keyDown = self.playerInputMap:GetTrigger("KeyDown")>0
+    local keyFire = self.playerInputMap:GetTrigger("keyFire")>0
 
     -- Get touch control state
-    local TouchGoLeft = self.playerInputMap:GetTrigger("TouchLeft")>0
-    local TouchGoRight = self.playerInputMap:GetTrigger("TouchRight")>0
-    local TouchGoUp = self.playerInputMap:GetTrigger("TouchUp")>0
-    local TouchGoDown = self.playerInputMap:GetTrigger("TouchDown")>0
-    local TouchFire = self.playerInputMap:GetTrigger("TouchFire")>0
+    local touchLeft = self.playerInputMap:GetTrigger("TouchLeft")>0
+    local touchRight = self.playerInputMap:GetTrigger("TouchRight")>0
+    local touchUp = self.playerInputMap:GetTrigger("TouchUp")>0
+    local touchDown = self.playerInputMap:GetTrigger("TouchDown")>0
+    local touchFire = self.playerInputMap:GetTrigger("touchFire")>0
     
-    if KeyGoUp or TouchGoUp then
+    local hasMovementY = false
+    local hasMovementX = false
+    
+    if keyUp or touchUp then
         self:IncPosition(0, kInvMoveSpeed, 0)
+        hasMovementY = true
     end
 
-    if KeyGoDown or TouchGoDown then
+    if keyDown or touchDown then
         self:IncPosition(0, kMoveSpeed, 0)
+        hasMovementY = true
     end
-
-    if KeyFire or TouchFire and TouchGoUp == false then
-        Debug:PrintLine("Shot FIRED!")
-    end 
     
-    if KeyGoLeft or TouchGoLeft then
+    if keyLeft or touchLeft then
         self:IncPosition(kInvMoveSpeed, 0, 0)
         self.roll = self.roll - kRollSpeed
-        isMoving = true
+        hasMovementX = true
     end
 
-    if KeyGoRight or TouchGoRight then
+    if keyRight or touchRight then
         self:IncPosition(kMoveSpeed, 0, 0)
         self.roll = self.roll + kRollSpeed
-        isMoving = true
+        hasMovementX = true
     end
     
     self.roll = math.clamp(self.roll, -1, 1)
-    local absoluteRoll = math.abs(self.roll)
     
     -- Adjust the roll back to flat over time if we're not moving
-    if not isMoving then
-        if absoluteRoll > 0 and (not isMoving) then
+    if not hasMovementX then
+        local absoluteRoll = math.abs(self.roll)
+        if absoluteRoll > 0 and (not hasMovementX) then
             local rollCorrection = (self.roll / absoluteRoll) * kRollRecoverSpeed
             
             -- Make sure we don't over-correct as that would cause wobbling
@@ -117,5 +121,9 @@ function OnThink(self)
         self:SetState("rollRight")
     end
  
-    self:SetFramePercent(absoluteRoll)
+    self:SetFramePercent(math.abs(self.roll))
+    
+    if keyFire or touchFire and touchUp == false then
+        FireWeapon(self)
+    end 
 end
