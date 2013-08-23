@@ -41,6 +41,14 @@ namespace Toolset2D_Managed
 
 		void SetShoeBoxData(String ^pFileName, String ^pXml);
 
+		array<String^>^ GetStateNames();
+
+		String^ GetCurrentState();
+		void SetCurrentState(String^ state);
+
+		int GetCurrentFrame();
+		void SetCurrentFrame(int frame);
+
 	private:
 		bool m_bIsVisible;
 		

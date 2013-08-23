@@ -53,7 +53,7 @@ namespace Toolset2D
         /// <summary>
         /// Category ID
         /// </summary>
-        protected const int CATORDER_EVENTRES = Shape3D.LAST_CATEGORY_ORDER_ID + 1;
+        protected const int CATORDER_SPRITE = Shape3D.LAST_CATEGORY_ORDER_ID + 1;
 
         #region Constructor
 
@@ -117,7 +117,8 @@ namespace Toolset2D
         /// <summary>
         /// Helper field to access the engine instance as casted class to perform specfic operations on it
         /// </summary>
-        EngineInstanceSprite EngineNode { get { return (EngineInstanceSprite)_engineInstance; } }
+        [Browsable(false)]
+        public EngineInstanceSprite EngineNode { get { return (EngineInstanceSprite)_engineInstance; } }
 
         /// <summary>
         /// Overridden render function: Let the engine instance render itself and render a box
@@ -216,7 +217,7 @@ namespace Toolset2D
         string m_SpriteSheetFilename;
         string m_ShoeBoxFilename;
 
-        [SortedCategory(CAT_EVENTRES, CATORDER_EVENTRES), PropertyOrder(1)]
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE), PropertyOrder(1)]
         [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
         [Description("Texture used for the sprite sheet.")]
         public string SpriteSheetFilename
@@ -231,8 +232,8 @@ namespace Toolset2D
         }
 
         [PrefabResolveFilename]
-        [SortedCategory(CAT_EVENTRES, CATORDER_EVENTRES),
-        PropertyOrder(1),
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(2),
         EditorAttribute(typeof(FilenameEditor), typeof(UITypeEditor)),
         FileDialogFilter(new string[] { ".xml" })]
         [Description("XML file output by ShoeBox that describes where the cells are in the sprite sheet")]
@@ -242,8 +243,38 @@ namespace Toolset2D
             get { return m_ShoeBoxFilename; }
             set
             {
-                if (m_ShoeBoxFilename == value) return;
-                m_ShoeBoxFilename = value;
+                if (m_ShoeBoxFilename != value)
+                {
+                    m_ShoeBoxFilename = value;
+                    SetEngineInstanceBaseProperties();
+                }
+            }
+        }
+
+
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(3)]
+        [Description("Current state")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public string State
+        {
+            get { return EngineNode.GetCurrentState(); }
+            set
+            {
+                EngineNode.SetCurrentState(value);
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(4)]
+        [Description("Current frame in the state")]
+        public int CurrentFrame
+        {
+            get { return EngineNode.GetCurrentFrame(); }
+            set
+            {
+                EngineNode.SetCurrentFrame(value);
                 SetEngineInstanceBaseProperties();
             }
         }

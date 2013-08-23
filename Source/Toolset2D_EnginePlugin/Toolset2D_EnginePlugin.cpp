@@ -1,3 +1,29 @@
+//=======
+//
+// Author: Joel Van Eenwyk
+// Purpose: Starting point for the 2D toolset plugin which handles initializing
+//          the sprite manager and ensuring LUA is registered properly with
+//          our plugin.
+//
+//=======
+//
+//  ##  ########  ##   
+//    #   ####   #    
+//     ##  ##   ##     
+//      ##     ##      
+//       ##   ##       
+//       ##  ##        
+//       ##  ##        
+//      ###  ###       
+//      ##    ##       
+//     ##      ##      
+//    ##        ##     
+//   ##          ##    
+//  ##            ##   
+//  #              #   
+// #                #  
+//
+
 #include "Toolset2D_EnginePluginPCH.h"
 
 #include "SpriteManager.hpp"

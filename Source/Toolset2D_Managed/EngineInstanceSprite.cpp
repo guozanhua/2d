@@ -111,4 +111,45 @@ namespace Toolset2D_Managed
 			m_pSprite->SetShoeBoxData(sFileName, sXml);
 		}
 	}
+
+	array<String^>^ EngineInstanceSprite::GetStateNames()
+	{
+		const VArray<VString> stateNames = m_pSprite->GetStateNames();
+
+		array<String^>^ names = gcnew array<String^>(stateNames.GetSize());
+		for (int i = 0; i < stateNames.GetSize(); i++)
+		{
+			names[i] = ConversionUtils::VStringToString(stateNames[i]);
+		}
+
+		return names;
+	}
+
+	String^ EngineInstanceSprite::GetCurrentState()
+	{
+		String^ stateName = "NONE";
+		const SpriteState *state = m_pSprite->GetCurrentState();
+		if (state != NULL)
+		{
+			stateName = ConversionUtils::VStringToString(state->name);
+		}
+		return stateName;
+	}
+
+	void EngineInstanceSprite::SetCurrentState(String^ state)
+	{
+		VString stateName;
+		ConversionUtils::StringToVString(state, stateName);
+		m_pSprite->SetState(stateName);
+	}
+
+	int EngineInstanceSprite::GetCurrentFrame()
+	{
+		return m_pSprite->GetCurrentFrame();
+	}
+
+	void EngineInstanceSprite::SetCurrentFrame(int frame)
+	{
+		m_pSprite->SetCurrentFrame(frame);
+	}
 }

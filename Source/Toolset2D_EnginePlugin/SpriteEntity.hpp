@@ -54,6 +54,12 @@ public:
 
 	TOOLSET_2D_IMPEXP bool SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename);
 
+	TOOLSET_2D_IMPEXP const VArray<VString> GetStateNames() const;
+	TOOLSET_2D_IMPEXP const SpriteState *GetCurrentState() const;
+
+	TOOLSET_2D_IMPEXP int GetCurrentFrame() const;
+	TOOLSET_2D_IMPEXP void SetCurrentFrame(int frame);
+
 	//----- Utility functions exposed to LUA
 
 	TOOLSET_2D_IMPEXP bool SetState(const char *state);
@@ -63,6 +69,8 @@ public:
 
 	TOOLSET_2D_IMPEXP void Pause();
 	TOOLSET_2D_IMPEXP void Play();
+
+	TOOLSET_2D_IMPEXP void SetScrollSpeed(hkvVec2 scrollSpeed);
 
 protected:
 	void CommonInit();
@@ -79,10 +87,13 @@ private:
 
 	//----- Member variables
 
+	bool m_loaded;
+
 	int m_currentState;
 	int m_currentFrame;
 	float m_frameTime;
 	bool m_paused;
+	hkvVec2 m_scrollOffset;
 
 	VTextureObjectPtr m_spSpriteSheetTexture;
 

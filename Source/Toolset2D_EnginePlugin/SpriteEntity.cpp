@@ -59,11 +59,14 @@ void Sprite::CommonInit()
 	m_currentFrame = -1;
 	m_frameTime = 0.f;
 	m_paused = false;
+	m_scrollOffset.setZero();
 
 	m_spSpriteSheetTexture = NULL;
 	m_spriteMeshBuffer = NULL;
 	m_staticMesh = NULL;
 	m_staticMeshInstance = NULL;
+
+	m_loaded = false;
 
 	// base class initialization (TODO: seems missing from base?)
 	m_pCustomTraceBBox = NULL;
@@ -104,6 +107,8 @@ void Sprite::CommonDeInit()
 	// TODO: Shouldn't this be removed?
 	m_spriteMeshBuffer = NULL;
 
+	m_loaded = false;
+
 	m_cells.RemoveAll();
 	m_states.RemoveAll();
 	m_stateNameToIndex.Reset();
@@ -115,6 +120,17 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 {
 	TiXmlDocument doc;
 	bool success = false;
+	
+	if (m_spriteSheetFilename == spriteSheetFilename &&
+		m_xmlDataFilename == xmlFilename &&
+		m_loaded)
+	{
+		return true;
+	}
+
+	// Remove existing states and cells
+	m_states.Reset();
+	m_cells.Reset();
 
 	m_spriteSheetFilename = spriteSheetFilename;
 	m_xmlDataFilename = xmlFilename;
@@ -163,9 +179,15 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 			int stateIndex = -1;
 			if (index == -1)
 			{
+				const char *extension = strrchr(name, '.');
+				int extensionIndex = -1;
+				if (extension != NULL)
+					extensionIndex = extension - name;
+				VString stateName = VString(name, extensionIndex);
+
 				stateIndex = m_states.Append(SpriteState());
 				state = &m_states[stateIndex];
-				state->name = name;
+				state->name = stateName;
 				state->framerate = 30.0f;
 				m_stateNameToIndex.Set(state->name, stateIndex);
 			}
@@ -235,19 +257,66 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 		success = true;
 	}
 
+	m_loaded = true;
+
 	return success;
+}
+
+const VArray<VString> Sprite::GetStateNames() const
+{
+	VArray<VString> names;
+
+	for (int i = 0; i < m_states.GetSize(); i++)
+	{
+		names.Add(m_states[i].name);
+	}
+
+	return names;
+}
+
+const SpriteState *Sprite::GetCurrentState() const
+{
+	const SpriteState *state = NULL;
+	if (m_currentState != -1)
+	{
+		state = &m_states[m_currentState];
+	}
+	return state;
+}
+
+int Sprite::GetCurrentFrame() const
+{
+	return m_currentFrame;
+}
+
+void Sprite::SetCurrentFrame(int currentFrame)
+{
+	if (m_currentState != -1)
+	{
+		m_paused = true;
+
+		const SpriteState *s = &m_states[m_currentState];
+		const int numCells = s->cells.GetSize();		
+		m_currentFrame = hkvMath::clamp(currentFrame, 0, numCells - 1);
+	}
 }
 
 void Sprite::ThinkFunction()
 {
 	if (m_currentState != -1 && !m_paused)
 	{
-		m_frameTime += Vision::GetTimer()->GetTimeDifference();
-		const SpriteState *s = &m_states[m_currentState];
-		const float dt = 1.0f / s->framerate;
-		if (m_frameTime >= dt)
+		const float dt = Vision::GetTimer()->GetTimeDifference();
+
+		m_frameTime += dt;
+
+		// TODO: update the offset
+		//m_scrollOffset += m_scrollOffset;
+
+		const SpriteState *state = &m_states[m_currentState];
+		const float inverseFramerate = 1.0f / state->framerate;
+		if (m_frameTime >= inverseFramerate)
 		{
-			const int numCells = s->cells.GetSize();
+			const int numCells = state->cells.GetSize();
 			m_currentFrame = (m_currentFrame + 1) % numCells;
 			m_frameTime -= dt;
 		}
@@ -286,6 +355,11 @@ void Sprite::Play()
 void Sprite::Pause()
 {
 	m_paused = true;
+}
+
+void Sprite::SetScrollSpeed(hkvVec2 scrollSpeed)
+{
+	ScrollSpeed = scrollSpeed;
 }
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)

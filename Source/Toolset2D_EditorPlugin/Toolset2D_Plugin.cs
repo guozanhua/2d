@@ -91,7 +91,9 @@ namespace Toolset2D
             EditorManager.ActiveView.Focus();
 
             Shape3D newShape = EditorManager.ActiveView.Gizmo.Shapes[0] as Shape3D;
-            newShape.Position = EditorManager.ActiveView.Gizmo.Position = GetPosition(e);     
+            newShape.Position = EditorManager.ActiveView.Gizmo.Position = GetPosition(e);
+   
+            //EditorManager.ActiveView.Gizmo
 
             // Cleanup
             DragLeave();
