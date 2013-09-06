@@ -10,14 +10,28 @@ public:
 	// this function is only called once since an external init counter takes care
 	VOVERRIDE void OnInitEnginePlugin()
 	{
+		Vision::Error.SystemMessage( "SpriteGamePlugin_cl:OnDeInitEnginePlugin()" );
+
 		Vision::RegisterModule(&gSpriteGameModule);
-		SpriteGameManager::GlobalManager().OneTimeInit();
+
+		SpriteGameManager *module = &SpriteGameManager::GlobalManager();
+		if (module != NULL)
+		{
+			module->OneTimeInit();
+		}
 	}
 
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
-		SpriteGameManager::GlobalManager().OneTimeDeInit();
+		Vision::Error.SystemMessage( "SpriteGamePlugin_cl:OnDeInitEnginePlugin()" );
+
+		SpriteGameManager *module = &SpriteGameManager::GlobalManager();
+		if (module != NULL)
+		{
+			module->OneTimeDeInit();
+		}
+
 		Vision::UnregisterModule(&gSpriteGameModule);
 	}
 

@@ -122,6 +122,8 @@ VISION_SAMPLEAPP_RUN
 
 VISION_DEINIT
 {
+	spApp->UnloadScene();
+
 	// Deinit the application
 	spApp->DeInitSample();
 	spApp = NULL;

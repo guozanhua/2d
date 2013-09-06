@@ -144,31 +144,6 @@ namespace Toolset2D
         /// </summary>
         public static EditorPluginInfo EDITOR_PLUGIN_INFO = new EditorPluginInfo();
 
-        /// <summary>
-        /// InitPluginModule : called at plugin initialization time: Add the relevant shape m_shapeCreators here
-        /// </summary>
-        public override bool InitPluginModule()
-        {
-            Toolset2D_Managed.ManagedModule.InitManagedModule();
-
-            EDITOR_PLUGIN_INFO.NativePluginNames = new string[] { "Toolset2D" };
-
-            m_shapeCreators = new IShapeCreatorPlugin[]
-                 {
-                   new SpriteShapeCreator()
-                 };
-
-            // add them to the editor
-            foreach (IShapeCreatorPlugin plugin in m_shapeCreators)
-            {
-                EditorManager.ShapeCreatorPlugins.Add(plugin);
-            }
-            
-            EditorManager.QueryDragDropContext += new QueryDragDropContextEventHandler(QueryDragDropContext);
-
-            return true;
-        }
-
         public void QueryDragDropContext(object sender, QueryDragDropContextArgs e)
         {
             bool dragdrop = false;
@@ -195,6 +170,31 @@ namespace Toolset2D
         }
 
         /// <summary>
+        /// InitPluginModule : called at plugin initialization time: Add the relevant shape m_shapeCreators here
+        /// </summary>
+        public override bool InitPluginModule()
+        {
+            Toolset2D_Managed.ManagedModule.InitManagedModule();
+
+            EDITOR_PLUGIN_INFO.NativePluginNames = new string[] { "Toolset2D" };
+
+            m_shapeCreators = new IShapeCreatorPlugin[]
+                 {
+                   new SpriteShapeCreator()
+                 };
+
+            // add them to the editor
+            foreach (IShapeCreatorPlugin plugin in m_shapeCreators)
+            {
+                EditorManager.ShapeCreatorPlugins.Add(plugin);
+            }
+            
+            EditorManager.QueryDragDropContext += new QueryDragDropContextEventHandler(QueryDragDropContext);
+
+            return true;
+        }
+
+        /// <summary>
         /// DeInitPluginModule : called at plugin de-initialization time: Remove relevant data
         /// </summary>
         public override bool DeInitPluginModule()
@@ -204,6 +204,8 @@ namespace Toolset2D
             {
                 EditorManager.ShapeCreatorPlugins.Remove(plugin);
             }
+
+            EditorManager.QueryDragDropContext -= new QueryDragDropContextEventHandler(QueryDragDropContext);
 
             Toolset2D_Managed.ManagedModule.DeInitManagedModule();
 

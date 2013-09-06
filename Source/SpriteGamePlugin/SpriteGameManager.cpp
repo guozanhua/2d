@@ -1,9 +1,7 @@
 #include "SpriteGamePluginPCH.h"
 
 #include "SpriteGameManager.hpp"
-
-#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
-#include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
+#include "SpriteEntity.hpp"
 
 #ifdef WIN32
 #include <Vision/Runtime/EnginePlugins/RemoteInputEnginePlugin/IVRemoteInput.hpp>
@@ -44,6 +42,12 @@ void SpriteGameManager::OneTimeDeInit()
 #if defined(WIN32) && !defined(_VISION_WINRT)
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 #endif
+
+	if (m_spHUD)
+	{
+		m_spHUD->SetActivate(false);
+		m_spHUD = NULL;
+	}
 }
 
 void SpriteGameManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)

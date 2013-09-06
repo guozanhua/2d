@@ -36,16 +36,6 @@
 
 extern "C" int luaopen_Toolset2D(lua_State *);
 
-// One global static instance
-SpriteManager SpriteManager::g_SpriteManager;
-
-SpriteManager::SpriteManager() :
-// TODO: Dynamic allocations seem to be failing, so perhaps this is the max (e.g. bad times)
-m_sprites(1000)
-{
-
-}
-
 void SpriteManager::OneTimeInit()
 {
 	FORCE_LINKDYNCLASS(Sprite);

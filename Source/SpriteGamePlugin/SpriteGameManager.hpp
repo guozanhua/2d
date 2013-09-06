@@ -1,9 +1,9 @@
 #ifndef SPRITE_GAME_MANAGER_HPP_INCLUDED
 #define SPRITE_GAME_MANAGER_HPP_INCLUDED
 
-#include <HUD.hpp>
+#include "HUD.hpp"
 
-#include "SpriteEntity.hpp"
+class Sprite;
 
 #ifdef WIN32
 class IVRemoteInput;

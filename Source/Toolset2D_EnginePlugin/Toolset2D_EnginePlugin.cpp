@@ -36,15 +36,30 @@ public:
 	// this function is only called once since an external init counter takes care
 	VOVERRIDE void OnInitEnginePlugin()
 	{
+		Vision::Error.SystemMessage( "Toolset2D_EnginePlugin_cl:OnInitEnginePlugin()" );
+
 		Vision::RegisterModule(&gToolset2D_EngineModule);
-		SpriteManager::GlobalManager().OneTimeInit();
+
+		SpriteManager *module = &SpriteManager::GlobalManager();
+		if (module != NULL)
+		{
+			module->OneTimeInit();
+		}
+		
 		SpriteManager::RegisterLua();
 	}
 
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
-		SpriteManager::GlobalManager().OneTimeDeInit();
+		Vision::Error.SystemMessage( "Toolset2D_EnginePlugin_cl:OnDeInitEnginePlugin()" );
+
+		SpriteManager *module = &SpriteManager::GlobalManager();
+		if (module != NULL)
+		{
+			module->OneTimeDeInit();
+		}
+
 		Vision::UnregisterModule(&gToolset2D_EngineModule);
 	}
 

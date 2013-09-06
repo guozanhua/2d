@@ -162,7 +162,24 @@ namespace Toolset2D
             }
         }        
         #endregion
+
+        public override void OnSelected()
+        {
+            base.OnSelected();
+
+            // TODO: Override the gizmo with our own custom 2D gizmo
+            //EditorManager.ActiveView.Gizmo
+            //EditorManager.ActiveView.ProjectionMode = VisionViewBase.ProjectionMode_e.Front;
+        }
         
+        public override void OnUnSelected()
+        {
+            base.OnUnSelected();
+
+            // TODO
+            //EditorManager.ActiveView.ProjectionMode = VisionViewBase.ProjectionMode_e.Perspective;
+        }
+
         #region Serialization and Export
 
         /// <summary>

@@ -6,8 +6,6 @@ class Sprite;
 class SpriteManager : public IVisCallbackHandler_cl
 {
 public:
-	SpriteManager();
-
 	VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
 
 	// Called when plugin is loaded/unloaded
@@ -20,15 +18,17 @@ public:
 	TOOLSET_2D_IMPEXP void Render();
 
 	// Access one global instance of the frame manager
-	static SpriteManager& GlobalManager() { return g_SpriteManager; }
+	static SpriteManager& GlobalManager()
+	{
+		static SpriteManager spriteManager;
+		return spriteManager;
+	}
 
 	// Register our LUA library with the script manager
 	static void RegisterLua();
 
 private:
 	VArray<Sprite*> m_sprites;
-
-	static SpriteManager g_SpriteManager;
 };
 
 #endif // SPRITE_MANAGER_HPP_INCLUDED
