@@ -1,8 +1,8 @@
 #include "Toolset2D_ManagedPCH.h"
 
 #include "EngineInstanceSprite.hpp"
-
-#include "Vision/Editor/vForge/EditorPlugins/VisionPlugin/VisionManaged/VisionManagedPCH.h"
+#include "Toolset2D_EnginePlugin/SpriteEntity.hpp"
+#include "Toolset2D_EnginePlugin/SpriteManager.hpp"
 
 using namespace ManagedFramework;
 #using <mscorlib.dll>
@@ -103,12 +103,22 @@ namespace Toolset2D_Managed
 		VString sFileName;
 		ConversionUtils::StringToVString(pFileName, sFileName);
 
-		VString sXml;
-		ConversionUtils::StringToVString(pXml, sXml);
+		hkStringBuf filename;
+		bool validFilename = convertToAssetPath(sFileName, filename);
 
-		if (!sFileName.IsEmpty())
+		if (validFilename)
 		{
-			m_pSprite->SetShoeBoxData(sFileName, sXml);
+			VString sXml;
+			ConversionUtils::StringToVString(pXml, sXml);
+
+			hkStringBuf xml;
+			bool validXml = convertToAssetPath(sXml, xml);
+			if (!validXml)
+			{
+				xml = "";
+			}
+
+			m_pSprite->SetShoeBoxData(filename, xml);
 		}
 	}
 
@@ -151,5 +161,30 @@ namespace Toolset2D_Managed
 	void EngineInstanceSprite::SetCurrentFrame(int frame)
 	{
 		m_pSprite->SetCurrentFrame(frame);
+	}
+
+	float EngineInstanceSprite::GetScrollX()
+	{
+		return m_pSprite->GetScrollSpeed().x;
+	}
+
+	float EngineInstanceSprite::GetScrollY()
+	{
+		return m_pSprite->GetScrollSpeed().y;
+	}
+
+	void EngineInstanceSprite::SetScroll(float x, float y)
+	{
+		m_pSprite->SetScrollSpeed(hkvVec2(x, y));
+	}
+
+	void EngineInstanceSprite::SetFullscreenMode(bool enabled)
+	{
+		m_pSprite->SetFullscreenMode(enabled);
+	}
+
+	bool EngineInstanceSprite::IsFullscreenMode()
+	{
+		return m_pSprite->IsFullscreenMode();
 	}
 }

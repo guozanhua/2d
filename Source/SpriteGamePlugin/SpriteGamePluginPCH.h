@@ -14,3 +14,4 @@
 
 extern VModule gSpriteGameModule; // declared below with DECLARE_THIS_MODULE macro
 
+#include "Toolset2D_EnginePluginPCH.h"

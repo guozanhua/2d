@@ -8,10 +8,10 @@ using namespace System::Runtime::CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("")];
+[assembly:AssemblyTitleAttribute("Toolset 2D Managed")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("")];
+[assembly:AssemblyCompanyAttribute("Havok")];
 [assembly:AssemblyProductAttribute("")];
 [assembly:AssemblyCopyrightAttribute("")];
 [assembly:AssemblyTrademarkAttribute("")];

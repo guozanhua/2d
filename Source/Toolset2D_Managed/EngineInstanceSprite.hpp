@@ -6,7 +6,7 @@ using namespace CSharpFramework::Math;
 using namespace CSharpFramework::Shapes;
 using namespace CSharpFramework::Scene;
 
-#include "Toolset2D_EnginePlugin/SpriteEntity.hpp"
+class Sprite;
 
 namespace Toolset2D_Managed
 {
@@ -48,6 +48,13 @@ namespace Toolset2D_Managed
 
 		int GetCurrentFrame();
 		void SetCurrentFrame(int frame);
+
+		float GetScrollX();
+		float GetScrollY();
+		void SetScroll(float x, float y);
+
+		void SetFullscreenMode(bool enabled);
+		bool IsFullscreenMode();
 
 	private:
 		bool m_bIsVisible;

@@ -30,15 +30,72 @@
 #include "SpriteManager.hpp"
 #include "SpriteEntity.hpp"
 
+#include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
+
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
+
 extern "C" int luaopen_Toolset2D(lua_State *);
+
+TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath)
+{
+	bool valid = !hkvStringHelper::isEmpty(absolutePath);
+
+	if (valid)
+	{
+		if (VPathHelper::IsAbsolutePath(absolutePath))
+		{
+			hkvAssetManager* assetManager = hkvAssetManager::getGlobalInstance();
+			hkvCriticalSectionLock lock(assetManager->acquireLock());
+
+			hkvAssetLibrary::RefPtr out_library;
+			valid = assetManager->makePathRelative(absolutePath, out_relativePath, out_library);
+		}
+		else
+		{
+			out_relativePath = absolutePath;
+		}
+	}
+
+	return valid;
+}
+
+// compare function for qsort
+static int CompareSprites(const void *arg1, const void *arg2)
+{
+	Sprite *pSort1 = *((Sprite **)arg1);
+	Sprite *pSort2 = *((Sprite **)arg2);
+
+	float a = pSort1->GetPosition().z;
+	float b = pSort2->GetPosition().z;
+
+	int result = 0;
+
+	if (hkvMath::isFloatEqual(a, b))
+	{
+		result = reinterpret_cast<int>(pSort2) - reinterpret_cast<int>(pSort1);
+	}
+	else
+	{
+		result = (b > a) ? -1 : 1;
+	}
+
+	return result;
+}
+
 
 void SpriteManager::OneTimeInit()
 {
 	FORCE_LINKDYNCLASS(Sprite);
+
+	VISION_PLUGIN_ENSURE_LOADED(vHavok);
+	VISION_HAVOK_SYNC_ALL_STATICS();
 
 	Vision::Callbacks.OnRenderHook += this;
 	IVScriptManager::OnRegisterScriptFunctions += this;
@@ -117,6 +174,8 @@ void SpriteManager::Render()
 	VSimpleRenderState_t state;
 	state.SetTransparency(VIS_TRANSP_ALPHA);
 	
+	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), CompareSprites);
+
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
 		m_sprites[spriteIndex]->Render(pRender, state);

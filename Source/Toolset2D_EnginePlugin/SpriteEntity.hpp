@@ -1,7 +1,5 @@
-#ifndef SpriteENTITY_HPP_INCLUDED
-#define SpriteENTITY_HPP_INCLUDED
-
-#include "Toolset2D_EnginePluginPCH.h"
+#ifndef SPRITE_ENTITY_HPP_INCLUDED
+#define SPRITE_ENTITY_HPP_INCLUDED
 
 struct SpriteCell
 {
@@ -71,10 +69,17 @@ public:
 	TOOLSET_2D_IMPEXP void Play();
 
 	TOOLSET_2D_IMPEXP void SetScrollSpeed(hkvVec2 scrollSpeed);
+	TOOLSET_2D_IMPEXP const hkvVec2 &GetScrollSpeed() const;
+
+	TOOLSET_2D_IMPEXP void SetFullscreenMode(bool enabled);
+	TOOLSET_2D_IMPEXP bool IsFullscreenMode() const;
 
 protected:
 	void CommonInit();
 	void CommonDeInit();
+
+	void Clear();
+	bool Update();
 
 private:
 
@@ -84,6 +89,7 @@ private:
 
 	hkvVec2 ScrollSpeed;
 	//int BlendMode;
+	bool Fullscreen;
 
 	//----- Member variables
 
@@ -96,6 +102,7 @@ private:
 	hkvVec2 m_scrollOffset;
 
 	VTextureObjectPtr m_spSpriteSheetTexture;
+	VisTextureAnimInstancePtr m_spTextureAnimation;
 
 	VString m_spriteSheetFilename;
 	VString m_xmlDataFilename;
@@ -109,4 +116,4 @@ private:
 	VisStaticMeshInstance_cl *m_staticMeshInstance;
 };
 
-#endif
+#endif // SPRITE_ENTITY_HPP_INCLUDED

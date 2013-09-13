@@ -3,6 +3,9 @@
 
 class Sprite;
 
+/// \brief Returns true if the given path is relative to one of the asset libraries (a.k.a. data directories).
+TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
+
 class SpriteManager : public IVisCallbackHandler_cl
 {
 public:
@@ -11,7 +14,7 @@ public:
 	// Called when plugin is loaded/unloaded
 	TOOLSET_2D_IMPEXP void OneTimeInit();
 	TOOLSET_2D_IMPEXP void OneTimeDeInit();
-
+	
 	TOOLSET_2D_IMPEXP void AddSprite(Sprite *sprite);
 	TOOLSET_2D_IMPEXP void RemoveSprite(Sprite *sprite);
 

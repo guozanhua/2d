@@ -1,10 +1,7 @@
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-
-// Include For Vision Engine
-#include <Vision/Runtime/Base/VBase.hpp>
-#include <Vision/Runtime/Engine/System/Vision.hpp>
+// Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN
 
 #ifdef TOOLSET_2D_ENGINE_PLUGIN_EXPORTS
 #define TOOLSET_2D_IMPEXP __declspec(dllexport)
@@ -12,5 +9,15 @@
 #define TOOLSET_2D_IMPEXP __declspec(dllimport)
 #endif
 
-extern VModule gToolset2D_EngineModule; // declared below with DECLARE_THIS_MODULE macro
+// Include For Vision Engine
+#include <Vision/Runtime/Base/VBase.hpp>
+#include <Vision/Runtime/Engine/System/Vision.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
 
+extern VModule gToolset2D_EngineModule;
+
+ANALYSIS_IGNORE_ALL_START
+#pragma managed(push, off)
+#include <Common/Base/hkBase.h>
+#pragma managed(pop)
+ANALYSIS_IGNORE_ALL_END

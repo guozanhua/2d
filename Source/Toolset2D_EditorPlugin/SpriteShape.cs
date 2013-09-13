@@ -141,10 +141,12 @@ namespace Toolset2D
         public override void SetEngineInstanceBaseProperties()
         {
             base.SetEngineInstanceBaseProperties();
-
             if (HasEngineInstance())
             {
                 EngineNode.SetShoeBoxData(m_SpriteSheetFilename, m_ShoeBoxFilename);
+                EngineNode.SetFullscreenMode(m_fullscreen);
+                EngineNode.SetScroll(m_scrollX, m_scrollY);
+                EngineNode.SetCurrentState(m_state);
             }
         }
 
@@ -232,8 +234,6 @@ namespace Toolset2D
 
         #region Properties
         string m_SpriteSheetFilename;
-        string m_ShoeBoxFilename;
-
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE), PropertyOrder(1)]
         [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
         [Description("Texture used for the sprite sheet.")]
@@ -248,6 +248,7 @@ namespace Toolset2D
             }
         }
 
+        string m_ShoeBoxFilename;
         [PrefabResolveFilename]
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
         PropertyOrder(2),
@@ -268,7 +269,7 @@ namespace Toolset2D
             }
         }
 
-
+        string m_state;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
         PropertyOrder(3)]
         [Description("Current state")]
@@ -278,20 +279,52 @@ namespace Toolset2D
             get { return EngineNode.GetCurrentState(); }
             set
             {
-                EngineNode.SetCurrentState(value);
+                m_state = value;
                 SetEngineInstanceBaseProperties();
             }
         }
 
+        float m_scrollX;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(4)]
-        [Description("Current frame in the state")]
-        public int CurrentFrame
+        PropertyOrder(3)]
+        [Description("")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public float ScrollX
         {
-            get { return EngineNode.GetCurrentFrame(); }
+            get { return EngineNode.GetScrollX(); }
             set
             {
-                EngineNode.SetCurrentFrame(value);
+                m_scrollX = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        float m_scrollY;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(3)]
+        [Description("")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public float ScrollY
+        {
+            get { return EngineNode.GetScrollY(); }
+            set
+            {
+                m_scrollY = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        bool m_fullscreen;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(3)]
+        [Description("Fullscreen")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public bool Fullscreen
+        {
+            get { return EngineNode.IsFullscreenMode(); }
+            set
+            {
+                m_fullscreen = value;
                 SetEngineInstanceBaseProperties();
             }
         }

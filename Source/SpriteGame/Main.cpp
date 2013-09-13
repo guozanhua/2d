@@ -84,10 +84,10 @@ VISION_INIT
 
 	// Init the application and point it to the start up scene.
 	if ( !spApp->InitSample("Sprite Game",
-		StartUpScene,
-		VSAMPLE_SPLASHSCREEN | VSAMPLE_USEDESKTOPRESOLUTION | VSAMPLE_SHOWEXITPROMPT | VSAMPLE_CUSTOMDATADIRECTORIES,
-		windowSizeX,
-		windowSizeY) )
+		 StartUpScene,
+		 VSAMPLE_SPLASHSCREEN | VSAMPLE_USEDESKTOPRESOLUTION | VSAMPLE_SHOWEXITPROMPT | VSAMPLE_CUSTOMDATADIRECTORIES,
+		 windowSizeX,
+		 windowSizeY) )
 	{
 		return false;
 	}

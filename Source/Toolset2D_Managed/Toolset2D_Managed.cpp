@@ -20,4 +20,3 @@ namespace Toolset2D_Managed
 		}
 	};
 }
-

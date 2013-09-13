@@ -29,7 +29,7 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
-#define CURRENT_SPRITE_VERSION 1
+#define CURRENT_SPRITE_VERSION 2
 
 #define PROP_TEXTURE_FILENAME TextureFilename
 #define PROP_TEXTURE_SCALE TextureScale
@@ -54,6 +54,9 @@ void Sprite::DeInitFunction()
 void Sprite::CommonInit()
 {
 	SpriteManager::GlobalManager().AddSprite(this);
+
+	Fullscreen = false;
+	ScrollSpeed.setZero();
 
 	m_currentState = -1;
 	m_currentFrame = -1;
@@ -103,161 +106,193 @@ void Sprite::CommonInit()
 void Sprite::CommonDeInit()
 { 
 	SpriteManager::GlobalManager().RemoveSprite(this);
-
-	// TODO: Shouldn't this be removed?
-	m_spriteMeshBuffer = NULL;
+	
+	Clear();
 
 	m_loaded = false;
-
-	m_cells.RemoveAll();
-	m_states.RemoveAll();
-	m_stateNameToIndex.Reset();
 
 	m_spSpriteSheetTexture = NULL;
 }
 
-bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename)
+void Sprite::Clear()
 {
-	TiXmlDocument doc;
+	m_cells.RemoveAll();
+	m_states.RemoveAll();
+	m_stateNameToIndex.Reset();
+
+	V_SAFE_DELETE(m_spriteMeshBuffer);
+	V_SAFE_RELEASE(m_spSpriteSheetTexture);
+
+	m_spTextureAnimation = NULL;
+}
+
+bool Sprite::Update()
+{
+	Clear();
+
 	bool success = false;
-	
-	if (m_spriteSheetFilename == spriteSheetFilename &&
-		m_xmlDataFilename == xmlFilename &&
-		m_loaded)
+
+	m_spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(m_spriteSheetFilename);
+	if (m_spSpriteSheetTexture)
 	{
-		return true;
-	}
+		// Go ahead and add a reference to this texture
+		m_spSpriteSheetTexture->AddRef();
 
-	// Remove existing states and cells
-	m_states.Reset();
-	m_cells.Reset();
+		// TODO: Perhaps it's a bit weird to have a spritesheet that also has animations on it--all of the cells
+		//       would have to be in the same places for each sheet, which is odd. Probably assert when there is
+		//       XML document AND a texture animation.
+		m_spTextureAnimation = Vision::TextureManager.GetAnimationInstance(m_spSpriteSheetTexture);
 
-	m_spriteSheetFilename = spriteSheetFilename;
-	m_xmlDataFilename = xmlFilename;
+		TiXmlDocument xmlDocument;
 
-	m_spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
-
-	if ( doc.LoadFile(xmlFilename, Vision::File.GetManager()) )
-	{
-		const char *szActionNode = "SubTexture";
-		for (TiXmlElement *pNode = doc.RootElement()->FirstChildElement(szActionNode);
-			pNode != NULL;
-			pNode = pNode->NextSiblingElement(szActionNode) )
+		// If we successfully load the XML, then there is data we can parse about the sprites in the sheet
+		if ( xmlDocument.LoadFile(m_xmlDataFilename, Vision::File.GetManager()) )
 		{
-			const char *name = pNode->Attribute("name");
+			const char *szActionNode = "SubTexture";
 
-			int x;
-			int y;
-			int width;
-			int height;
-			int ox;
-			int oy;
-
-			pNode->QueryIntAttribute("x", &x);
-			pNode->QueryIntAttribute("y", &y);
-			pNode->QueryIntAttribute("width", &width);
-			pNode->QueryIntAttribute("height", &height);
-			pNode->QueryIntAttribute("ox", &ox);
-			pNode->QueryIntAttribute("oy", &oy);
-			
-			const int newCellIndex = m_cells.Append(SpriteCell());
-			SpriteCell *currentCell = &m_cells[newCellIndex];
-			currentCell->name = name;
-			currentCell->offset.x = static_cast<float>(x);
-			currentCell->offset.y = static_cast<float>(y);
-			currentCell->pivot.x = static_cast<float>(ox);
-			currentCell->pivot.y = static_cast<float>(oy);
-			currentCell->width = width;
-			currentCell->height = height;
-
-			const char *result = strrchr(name, '_');
-			int index = -1;
-			if (result != NULL)
-				index = result - name;
-
-			SpriteState *state = NULL;
-			int stateIndex = -1;
-			if (index == -1)
+			for (TiXmlElement *pNode = xmlDocument.RootElement()->FirstChildElement(szActionNode);
+				pNode != NULL;
+				pNode = pNode->NextSiblingElement(szActionNode) )
 			{
-				const char *extension = strrchr(name, '.');
-				int extensionIndex = -1;
-				if (extension != NULL)
-					extensionIndex = extension - name;
-				VString stateName = VString(name, extensionIndex);
+				const char *name = pNode->Attribute("name");
 
-				stateIndex = m_states.Append(SpriteState());
-				state = &m_states[stateIndex];
-				state->name = stateName;
-				state->framerate = 30.0f;
-				m_stateNameToIndex.Set(state->name, stateIndex);
-			}
-			else
-			{
-				VString s = name;
-				VString stateName = VString(name, index);
-				VString last = VString(&name[index + 1], strlen(name) - index);
-				VString number = VString(last.GetChar(), last.Find("."));
-				currentCell->index = atoi(number);
+				int x;
+				int y;
+				int width;
+				int height;
+				int ox;
+				int oy;
 
-				for (int i = 0; i < m_states.GetSize(); i++)
+				pNode->QueryIntAttribute("x", &x);
+				pNode->QueryIntAttribute("y", &y);
+				pNode->QueryIntAttribute("width", &width);
+				pNode->QueryIntAttribute("height", &height);
+				pNode->QueryIntAttribute("ox", &ox);
+				pNode->QueryIntAttribute("oy", &oy);
+
+				const int newCellIndex = m_cells.Append(SpriteCell());
+				SpriteCell *currentCell = &m_cells[newCellIndex];
+				currentCell->name = name;
+				currentCell->offset.x = static_cast<float>(x);
+				currentCell->offset.y = static_cast<float>(y);
+				currentCell->pivot.x = static_cast<float>(ox);
+				currentCell->pivot.y = static_cast<float>(oy);
+				currentCell->width = width;
+				currentCell->height = height;
+
+				const char *result = strrchr(name, '_');
+				int index = -1;
+				if (result != NULL)
+					index = result - name;
+
+				SpriteState *state = NULL;
+				int stateIndex = -1;
+				if (index == -1)
 				{
-					if (m_states[i].name == stateName)
-					{
-						stateIndex = i;
-						state = &m_states[i];
-						break;
-					}
-				}
+					const char *extension = strrchr(name, '.');
+					int extensionIndex = -1;
+					if (extension != NULL)
+						extensionIndex = extension - name;
+					VString stateName = VString(name, extensionIndex);
 
-				if (stateIndex == -1)
-				{
 					stateIndex = m_states.Append(SpriteState());
 					state = &m_states[stateIndex];
 					state->name = stateName;
-					state->framerate = 10.f;
+					state->framerate = 30.0f;
 					m_stateNameToIndex.Set(state->name, stateIndex);
 				}
+				else
+				{
+					VString s = name;
+					VString stateName = VString(name, index);
+					VString last = VString(&name[index + 1], strlen(name) - index);
+					VString number = VString(last.GetChar(), last.Find("."));
+					currentCell->index = atoi(number);
 
+					for (int i = 0; i < m_states.GetSize(); i++)
+					{
+						if (m_states[i].name == stateName)
+						{
+							stateIndex = i;
+							state = &m_states[i];
+							break;
+						}
+					}
+
+					if (stateIndex == -1)
+					{
+						stateIndex = m_states.Append(SpriteState());
+						state = &m_states[stateIndex];
+						state->name = stateName;
+						state->framerate = 10.f;
+						m_stateNameToIndex.Set(state->name, stateIndex);
+					}
+				}
+
+				state->cells.Append(newCellIndex);
 			}
 
-			state->cells.Append(newCellIndex);
+			success = true;
+		}
+		// No XML describing the sprite sheet, but we do have a sprite texture
+		else if (m_spSpriteSheetTexture != NULL)
+		{
+			int stateIndex = m_states.Append(SpriteState());
+			SpriteState *state = &m_states[stateIndex];
+			state->name = m_spriteSheetFilename;
+			state->framerate = 30.0f;
+			state->cells.Add(0);
+			m_stateNameToIndex.Set(state->name, stateIndex);
+
+			const int newCellIndex = m_cells.Append(SpriteCell());
+			SpriteCell *currentCell = &m_cells[newCellIndex];
+
+			char buffer[FS_MAX_PATH];
+			VFileHelper::GetFilenameNoExt(buffer, m_spriteSheetFilename);
+			currentCell->name = buffer;
+			currentCell->offset.x = 0.f;
+			currentCell->offset.y = 0.f;
+			currentCell->pivot.x = 0.f;
+			currentCell->pivot.y = 0.f;
+			currentCell->width = m_spSpriteSheetTexture->GetTextureWidth();
+			currentCell->height = m_spSpriteSheetTexture->GetTextureHeight();
+
+			m_currentState = m_currentFrame = 0;
+
+			success = true;
 		}
 
 		if (m_states.GetSize() > 0)
 		{
 			m_currentState = m_currentFrame = 0;
 		}
-
-		success = true;
 	}
-	else if (m_spSpriteSheetTexture != NULL)
+
+	return success;
+}
+
+bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename)
+{
+	bool success = false;
+
+	if (m_spriteSheetFilename == spriteSheetFilename &&
+		m_xmlDataFilename == xmlFilename &&
+		m_loaded)
 	{
-		int stateIndex = m_states.Append(SpriteState());
-		SpriteState *state = &m_states[stateIndex];
-		state->name = spriteSheetFilename;
-		state->framerate = 30.0f;
-		state->cells.Add(0);
-		m_stateNameToIndex.Set(state->name, stateIndex);
-
-		const int newCellIndex = m_cells.Append(SpriteCell());
-		SpriteCell *currentCell = &m_cells[newCellIndex];
-
-		char buffer[FS_MAX_PATH];
-		VFileHelper::GetFilenameNoExt(buffer, spriteSheetFilename);
-		currentCell->name = buffer;
-		currentCell->offset.x = 0.f;
-		currentCell->offset.y = 0.f;
-		currentCell->pivot.x = 0.f;
-		currentCell->pivot.y = 0.f;
-		currentCell->width = m_spSpriteSheetTexture->GetTextureWidth();
-		currentCell->height = m_spSpriteSheetTexture->GetTextureHeight();
-
-		m_currentState = m_currentFrame = 0;
-
 		success = true;
 	}
+	else
+	{
+		m_spriteSheetFilename = spriteSheetFilename;
+		m_xmlDataFilename = xmlFilename;
 
-	m_loaded = true;
+		success = Update();
+
+		if (success)
+		{
+			m_loaded = true;
+		}
+	}
 
 	return success;
 }
@@ -309,8 +344,31 @@ void Sprite::ThinkFunction()
 
 		m_frameTime += dt;
 
-		// TODO: update the offset
-		//m_scrollOffset += m_scrollOffset;
+		m_scrollOffset += ScrollSpeed * dt;
+
+		if (!hkvMath::isFloatEqual(ScrollSpeed.x, 0.0f))
+		{
+			if (ScrollSpeed.x > 0 && m_scrollOffset.x > 1.0f)
+			{
+				m_scrollOffset.x -= 1.0f;
+			}
+			else if (ScrollSpeed.x < 0 && m_scrollOffset.x < 0.0f)
+			{
+				m_scrollOffset.x += 1.0f;
+			}
+		}
+
+		if (!hkvMath::isFloatEqual(ScrollSpeed.y, 0.0f))
+		{
+			if (ScrollSpeed.y > 0 && m_scrollOffset.y > 1.0f)
+			{
+				m_scrollOffset.y -= 1.0f;
+			}
+			else if (ScrollSpeed.y < 0 && m_scrollOffset.y < 0.0f)
+			{
+				m_scrollOffset.y += 1.0f;
+			}
+		}
 
 		const SpriteState *state = &m_states[m_currentState];
 		const float inverseFramerate = 1.0f / state->framerate;
@@ -362,17 +420,35 @@ void Sprite::SetScrollSpeed(hkvVec2 scrollSpeed)
 	ScrollSpeed = scrollSpeed;
 }
 
+const hkvVec2 &Sprite::GetScrollSpeed() const
+{
+	return ScrollSpeed;
+}
+
+void Sprite::SetFullscreenMode(bool enabled)
+{
+	Fullscreen = enabled;
+}
+
+bool Sprite::IsFullscreenMode() const
+{
+	return Fullscreen;
+}
+
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 {
 	if ( !strcmp(pVar->name, V_QUOTE(PROP_TEXTURE_FILENAME)) )
 	{
-		if (value && value[0])
+		if (value &&
+			value[0] &&
+			m_spriteSheetFilename != value)
 		{
-			m_spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(value);
+			m_spriteSheetFilename = value;
+			Update();
 		}
 		else
 		{
-			m_spSpriteSheetTexture = NULL;
+			Clear();
 		}
 	}
 }
@@ -387,11 +463,11 @@ void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iC
 {
 	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
 	hkvAlignedBBox bbox;
-	hkvVec3 vRad(fSize,fSize,fSize);
+	hkvVec3 vRad(fSize, fSize, fSize);
 	const hkvVec3 pos = GetPosition();
 	bbox.m_vMin = pos - vRad;
 	bbox.m_vMax = pos + vRad;
-	pRenderer->RenderAABox(bbox,iColor,state);
+	pRenderer->RenderAABox(bbox, iColor, state);
 }
 
 void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
@@ -402,40 +478,73 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 	hkvVec3 pos = GetPosition();
 	tl.x = pos.x;
 	tl.y = pos.y;
-
-	if (m_currentState != -1)
+	
+	VTextureObject *texture = m_spSpriteSheetTexture;
+	
+	if (m_spTextureAnimation)
 	{
-		hkvVec2 topLeft;
-		hkvVec2 bottomRight;
-
-		float width = static_cast<float>(m_spSpriteSheetTexture->GetTextureWidth());
-		float height = static_cast<float>(m_spSpriteSheetTexture->GetTextureHeight());
-
-		const SpriteState *spriteState = &m_states[m_currentState];
-		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
-
-		float w = (float)cell->width / width;
-		float h = (float)cell->height / height;
-		float x = cell->offset.x / width;
-		float y = cell->offset.y / height;
-
-		topLeft.x = x;
-		topLeft.y = y;
-		bottomRight.x = topLeft.x + w;
-		bottomRight.y = topLeft.y + h;
-
-		tl.x += cell->pivot.x;
-		tl.y += cell->pivot.y;
-		br.x = tl.x + cell->width;
-		br.y = tl.y + cell->height;
-
-		pRender->DrawTexturedQuad( tl, br, m_spSpriteSheetTexture, topLeft, bottomRight, V_RGBA_WHITE, state );
+		texture = m_spTextureAnimation->GetCurrentFrame();
 	}
-	else
+
+	if (texture != NULL)
 	{
-		br.x = tl.x + 150;
-		br.y = tl.y + 150;
-		pRender->DrawTexturedQuad( tl, br, m_spSpriteSheetTexture, hkvVec2(0, 0), hkvVec2(1, 1), V_RGBA_WHITE, state );
+		const float width = static_cast<float>(texture->GetTextureWidth());
+		const float height = static_cast<float>(texture->GetTextureHeight());
+
+		if (m_currentState != -1)
+		{
+			hkvVec2 topLeft;
+			hkvVec2 bottomRight;
+
+			const SpriteState *spriteState = &m_states[m_currentState];
+			const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
+
+			float w = (float)cell->width / width;
+			float h = (float)cell->height / height;
+			float x = cell->offset.x / width;
+			float y = cell->offset.y / height;
+
+			topLeft.x = x + m_scrollOffset.x;
+			topLeft.y = y + m_scrollOffset.y;
+			bottomRight.x = topLeft.x + w;
+			bottomRight.y = topLeft.y + h;
+
+			if (IsFullscreenMode())
+			{
+				tl.x = 0;
+				tl.y = 0;
+
+				int x, y, w, h;
+				Vision::Contexts.GetMainRenderContext()->GetViewport(x, y, w, h);
+				
+				if (w - width > h - height)
+				{
+					br.x = static_cast<float>(w);
+					br.y = static_cast<float>(w * height) / width;
+				}
+				else
+				{
+					br.y = static_cast<float>(h);
+					br.x = static_cast<float>(width * h) / height;
+				}
+			}
+			else
+			{
+				tl.x += cell->pivot.x;
+				tl.y += cell->pivot.y;
+				br.x = tl.x + cell->width;
+				br.y = tl.y + cell->height;
+			}
+
+			pRender->DrawTexturedQuad( tl, br, texture, topLeft, bottomRight, V_RGBA_WHITE, state );
+		}
+		else
+		{
+			br.x = tl.x + width;
+			br.y = tl.y + height;
+
+			pRender->DrawTexturedQuad( tl, br, texture, hkvVec2(0, 0), hkvVec2(1, 1), V_RGBA_WHITE, state );
+		}
 	}
 }
 
@@ -456,12 +565,25 @@ void Sprite::Serialize(VArchive &ar)
 		char xmlFilenameBuffer[FS_MAX_PATH + 1];
 		ar.ReadStringBinary(xmlFilenameBuffer, FS_MAX_PATH);
 		m_xmlDataFilename = xmlFilenameBuffer;
+
+		if (spriteVersion > 1)
+		{
+			ar >> TextureScale;
+			ar >> ScrollSpeed.x;
+			ar >> ScrollSpeed.y;
+			ar >> Fullscreen;
+		}
 	} 
 	else
 	{
 		ar << (char)CURRENT_SPRITE_VERSION;
 		ar.WriteStringBinary(m_spriteSheetFilename);
 		ar.WriteStringBinary(m_xmlDataFilename);
+
+		ar << TextureScale;
+		ar << ScrollSpeed.x;
+		ar << ScrollSpeed.y;
+		ar << Fullscreen;
 	}
 }
 
