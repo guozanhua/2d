@@ -79,7 +79,7 @@ static int CompareSprites(const void *arg1, const void *arg2)
 
 	if (hkvMath::isFloatEqual(a, b))
 	{
-		result = reinterpret_cast<int>(pSort2) - reinterpret_cast<int>(pSort1);
+		result = static_cast<int>(pSort2->GetUniqueID() - pSort1->GetUniqueID());
 	}
 	else
 	{
@@ -104,6 +104,8 @@ void SpriteManager::OneTimeInit()
 
 void SpriteManager::OneTimeDeInit()
 {
+	VISION_HAVOK_UNSYNC_ALL_STATICS();
+
 	Vision::Callbacks.OnRenderHook -= this;
 	IVScriptManager::OnRegisterScriptFunctions -= this;
 	IVScriptManager::OnScriptProxyCreation -= this;

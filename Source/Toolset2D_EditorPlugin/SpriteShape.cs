@@ -196,6 +196,10 @@ namespace Toolset2D
             {
                 SpriteSheetFilename = info.GetString("_sheet_filename");
                 ShoeBoxData = info.GetString("_shoebox_filename");
+                m_state = info.GetString("_state");
+                m_scrollX = info.GetSingle("_scroll_x");
+                m_scrollY = info.GetSingle("_scroll_y");
+                m_fullscreen = info.GetBoolean("_fullscreen");
             }
         }
 
@@ -218,6 +222,10 @@ namespace Toolset2D
             base.GetObjectData(info, context);
             info.AddValue("_sheet_filename", m_SpriteSheetFilename);
             info.AddValue("_shoebox_filename", m_ShoeBoxFilename);
+            info.AddValue("_state", m_state);
+            info.AddValue("_scroll_x", m_scrollX);
+            info.AddValue("_scroll_y", m_scrollY);
+            info.AddValue("_fullscreen", m_fullscreen);
         }
 
         /// <summary>

@@ -79,7 +79,9 @@ protected:
 	void CommonDeInit();
 
 	void Clear();
-	bool Update();
+
+	void ClearTextures();
+	bool UpdateTextures();
 
 private:
 
@@ -93,6 +95,7 @@ private:
 
 	//----- Member variables
 
+	// Tracks whether or not the spritesheet and XML data have been loaded
 	bool m_loaded;
 
 	int m_currentState;
@@ -110,10 +113,6 @@ private:
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;
 	VDictionary<int> m_stateNameToIndex;
-
-	VisMeshBuffer_cl *m_spriteMeshBuffer;
-	VisStaticMeshPtr m_staticMesh;
-	VisStaticMeshInstance_cl *m_staticMeshInstance;
 };
 
 #endif // SPRITE_ENTITY_HPP_INCLUDED

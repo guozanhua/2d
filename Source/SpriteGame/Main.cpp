@@ -25,11 +25,18 @@ VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
 		 
 VisSampleAppPtr spApp;
 
+void custom_pure_call_handler(void)
+{
+	cameraInitZ = 0;
+}
+
 //---------------------------------------------------------------------------------------------------------
 // Init function. Here we trigger loading our scene
 //---------------------------------------------------------------------------------------------------------
 VISION_INIT
 {
+	_set_purecall_handler(custom_pure_call_handler);
+
 	// Create our new application.
 	spApp = new VisSampleApp();
 

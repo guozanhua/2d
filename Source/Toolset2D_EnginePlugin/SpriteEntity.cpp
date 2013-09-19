@@ -40,6 +40,8 @@ V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 void Sprite::InitFunction()
 {
 	VisBaseEntity_cl::InitFunction();
+
+	Clear();
 	CommonInit();
 }
 
@@ -54,6 +56,18 @@ void Sprite::DeInitFunction()
 void Sprite::CommonInit()
 {
 	SpriteManager::GlobalManager().AddSprite(this);
+	SetShoeBoxData(m_spriteSheetFilename, m_xmlDataFilename);
+}
+
+void Sprite::CommonDeInit()
+{ 
+	SpriteManager::GlobalManager().RemoveSprite(this);	
+	Clear();
+}
+
+void Sprite::Clear()
+{
+	m_loaded = false;
 
 	Fullscreen = false;
 	ScrollSpeed.setZero();
@@ -64,71 +78,22 @@ void Sprite::CommonInit()
 	m_paused = false;
 	m_scrollOffset.setZero();
 
-	m_spSpriteSheetTexture = NULL;
-	m_spriteMeshBuffer = NULL;
-	m_staticMesh = NULL;
-	m_staticMeshInstance = NULL;
-
-	m_loaded = false;
-
-	// base class initialization (TODO: seems missing from base?)
-	m_pCustomTraceBBox = NULL;
-
-	SetShoeBoxData(m_spriteSheetFilename, m_xmlDataFilename);
-
-	/* TODO
-	if ( Vision::Editor.IsPlaying() )
-	{
-		VDynamicMesh* pMesh = NULL;
-		{
-			VDynamicMeshBuilder b(4, 2, 0, 1);
-			const hkvVec3 n;
-			const hkvVec3 t;
-			const hkvVec2 uv;
-			VColorRef color;
-			b.AddVertex( hkvVec3(0, 30, 0), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 30, 30), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 0, 30), n, t, uv, color );
-			b.AddVertex( hkvVec3(0, 0, 0), n, t, uv, color );
-			b.AddTriangle(0, 1, 2);
-			b.AddTriangle(2, 1, 0);
-			pMesh = b.Finalize();
-		}
-
-		if (pMesh != NULL)
-		{
-			pMesh->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
-		}
-	}
-	*/
+	ClearTextures();
 }
 
-void Sprite::CommonDeInit()
-{ 
-	SpriteManager::GlobalManager().RemoveSprite(this);
-	
-	Clear();
-
-	m_loaded = false;
-
-	m_spSpriteSheetTexture = NULL;
-}
-
-void Sprite::Clear()
+void Sprite::ClearTextures()
 {
+	// Remove any old cells, states, or textures
 	m_cells.RemoveAll();
 	m_states.RemoveAll();
 	m_stateNameToIndex.Reset();
-
-	V_SAFE_DELETE(m_spriteMeshBuffer);
-	V_SAFE_RELEASE(m_spSpriteSheetTexture);
-
 	m_spTextureAnimation = NULL;
+	V_SAFE_RELEASE(m_spSpriteSheetTexture);
 }
 
-bool Sprite::Update()
+bool Sprite::UpdateTextures()
 {
-	Clear();
+	ClearTextures();
 
 	bool success = false;
 
@@ -286,8 +251,7 @@ bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFile
 		m_spriteSheetFilename = spriteSheetFilename;
 		m_xmlDataFilename = xmlFilename;
 
-		success = Update();
-
+		success = UpdateTextures();
 		if (success)
 		{
 			m_loaded = true;
@@ -343,7 +307,6 @@ void Sprite::ThinkFunction()
 		const float dt = Vision::GetTimer()->GetTimeDifference();
 
 		m_frameTime += dt;
-
 		m_scrollOffset += ScrollSpeed * dt;
 
 		if (!hkvMath::isFloatEqual(ScrollSpeed.x, 0.0f))
@@ -444,7 +407,7 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 			m_spriteSheetFilename != value)
 		{
 			m_spriteSheetFilename = value;
-			Update();
+			UpdateTextures();
 		}
 		else
 		{
@@ -554,6 +517,8 @@ void Sprite::Serialize(VArchive &ar)
 
 	if (ar.IsLoading())
 	{
+		Clear();
+
 		char spriteVersion;
 		ar >> spriteVersion;
 		VASSERT(spriteVersion <= CURRENT_SPRITE_VERSION);
@@ -566,17 +531,15 @@ void Sprite::Serialize(VArchive &ar)
 		ar.ReadStringBinary(xmlFilenameBuffer, FS_MAX_PATH);
 		m_xmlDataFilename = xmlFilenameBuffer;
 
-		if (spriteVersion > 1)
-		{
-			ar >> TextureScale;
-			ar >> ScrollSpeed.x;
-			ar >> ScrollSpeed.y;
-			ar >> Fullscreen;
-		}
+		ar >> TextureScale;
+		ar >> ScrollSpeed.x;
+		ar >> ScrollSpeed.y;
+		ar >> Fullscreen;
 	} 
 	else
 	{
 		ar << (char)CURRENT_SPRITE_VERSION;
+
 		ar.WriteStringBinary(m_spriteSheetFilename);
 		ar.WriteStringBinary(m_xmlDataFilename);
 
@@ -590,8 +553,7 @@ void Sprite::Serialize(VArchive &ar)
 void Sprite::OnSerialized(VArchive &ar)
 {
 	VisBaseEntity_cl::OnSerialized(ar);
-	
-	// Call this after VisBaseEntity_cl::OnSerialized(ar) because in that function components are attached
+
 	CommonInit();
 }
 
