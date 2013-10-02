@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|hkAndroid">
+      <Configuration>Debug</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dev|hkAndroid">
+      <Configuration>Dev</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|hkAndroid">
+      <Configuration>Release</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HUD.hpp" />
+    <ClInclude Include="SpriteGameManager.hpp" />
+    <ClInclude Include="SpriteGamePluginPCH.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="SpriteGameManager.cpp" />
+    <ClCompile Include="SpriteGamePlugin.cpp" />
+    <ClCompile Include="SpriteGamePluginPCH.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectName>SpriteGamePlugin</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDev.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>libSpriteGamePlugin</TargetName>
+    <TargetExt>.a</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <TargetName>libSpriteGamePlugin</TargetName>
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <TargetName>libSpriteGamePlugin</TargetName>
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderFile>SpriteGamePluginPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePluginPCH.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>../Toolset2D_EnginePlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>SpriteGamePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePluginPCH.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>../Toolset2D_EnginePlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>SpriteGamePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePluginPCH.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>../Toolset2D_EnginePlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

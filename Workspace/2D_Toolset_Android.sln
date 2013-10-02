@@ -1,0 +1,110 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_EnginePlugin", "..\Source\Toolset2D_EnginePlugin\Toolset2D_EnginePlugin_Android_vs2010.vcxproj", "{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGamePlugin", "..\Source\SpriteGamePlugin\SpriteGamePlugin_Android_vs2010.vcxproj", "{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76} = {4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGame", "..\Source\SpriteGame\SpriteGame_Android_vs2010.vcxproj", "{FFF01464-7E45-4E08-8B74-3079100FCA8F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311} = {A6E1B5E6-409B-4A4C-B350-7C6068C8A311}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|hkAndroid = Debug|hkAndroid
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|win32 = Debug|win32
+		Debug|x86 = Debug|x86
+		Dev|Any CPU = Dev|Any CPU
+		Dev|hkAndroid = Dev|hkAndroid
+		Dev|Mixed Platforms = Dev|Mixed Platforms
+		Dev|win32 = Dev|win32
+		Dev|x86 = Dev|x86
+		Release|Any CPU = Release|Any CPU
+		Release|hkAndroid = Release|hkAndroid
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|win32 = Release|win32
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|Any CPU.ActiveCfg = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|Any CPU.Build.0 = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|hkAndroid.ActiveCfg = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|hkAndroid.Build.0 = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|Mixed Platforms.ActiveCfg = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|Mixed Platforms.Build.0 = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|win32.ActiveCfg = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Debug|x86.ActiveCfg = Debug|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|Any CPU.ActiveCfg = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|Any CPU.Build.0 = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|hkAndroid.ActiveCfg = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|hkAndroid.Build.0 = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|Mixed Platforms.ActiveCfg = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|Mixed Platforms.Build.0 = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|win32.ActiveCfg = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|x86.ActiveCfg = Dev|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|Any CPU.ActiveCfg = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|Any CPU.Build.0 = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|hkAndroid.ActiveCfg = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|hkAndroid.Build.0 = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|Mixed Platforms.ActiveCfg = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|Mixed Platforms.Build.0 = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|win32.ActiveCfg = Release|hkAndroid
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|x86.ActiveCfg = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|Any CPU.ActiveCfg = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|Any CPU.Build.0 = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|hkAndroid.ActiveCfg = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|hkAndroid.Build.0 = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|Mixed Platforms.ActiveCfg = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|Mixed Platforms.Build.0 = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|win32.ActiveCfg = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|x86.ActiveCfg = Debug|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|Any CPU.ActiveCfg = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|Any CPU.Build.0 = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|hkAndroid.ActiveCfg = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|hkAndroid.Build.0 = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|Mixed Platforms.ActiveCfg = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|Mixed Platforms.Build.0 = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|win32.ActiveCfg = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|x86.ActiveCfg = Dev|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|Any CPU.ActiveCfg = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|Any CPU.Build.0 = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|hkAndroid.ActiveCfg = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|hkAndroid.Build.0 = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|Mixed Platforms.ActiveCfg = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|Mixed Platforms.Build.0 = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|win32.ActiveCfg = Release|hkAndroid
+		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|x86.ActiveCfg = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|Any CPU.ActiveCfg = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|Any CPU.Build.0 = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|hkAndroid.ActiveCfg = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|hkAndroid.Build.0 = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|Mixed Platforms.ActiveCfg = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|Mixed Platforms.Build.0 = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|win32.ActiveCfg = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|x86.ActiveCfg = Debug|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|Any CPU.ActiveCfg = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|Any CPU.Build.0 = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|hkAndroid.ActiveCfg = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|hkAndroid.Build.0 = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|Mixed Platforms.ActiveCfg = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|Mixed Platforms.Build.0 = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|win32.ActiveCfg = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|x86.ActiveCfg = Dev|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|Any CPU.ActiveCfg = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|Any CPU.Build.0 = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|hkAndroid.ActiveCfg = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|hkAndroid.Build.0 = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|Mixed Platforms.ActiveCfg = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|Mixed Platforms.Build.0 = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|win32.ActiveCfg = Release|hkAndroid
+		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Release|x86.ActiveCfg = Release|hkAndroid
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

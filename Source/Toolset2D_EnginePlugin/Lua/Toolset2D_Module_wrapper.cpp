@@ -2871,6 +2871,95 @@ SWIGINTERN int VisBaseEntity_cl_GetPrimarySortingKey(VisBaseEntity_cl *self){
     return 1;
   }
 
+SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisTypedEngineObject_cl *typedObject){
+      VString sError;
+      bool bPossible = self->CanAttachToObject(typedObject, sError) == TRUE;
+      if(!bPossible) Vision::Error.Warning("%s", sError.AsChar());
+      return bPossible;
+    }
+
+  SWIGINTERN int IVObjectComponent_GetOwner(lua_State *L)
+  {
+
+    SWIG_CONVERT_POINTER(L, 1, IVObjectComponent, pSelf)
+
+    lua_settop(L, 0);
+    LUA_PushObjectProxy(L, pSelf->GetOwner()); //will handle NULL as well
+ 
+    return 1;
+  }
+
+
+  SWIGINTERN int IVObjectComponent_Concat(lua_State *L)
+  {
+    //this will move this function to the method table of the specified class
+    
+    bool ARGS_OK = true;
+    
+    const char *pszString = NULL;
+    int iIndex = -1;
+    
+    //The concat operator allows "foo"..self and self.."bar" so that
+    //we have to consider self as first and as second stack element.
+    
+    //handle string as first (top) element
+    if(lua_isstring(L,iIndex))
+    {
+      pszString = lua_tostring(L,iIndex);
+      iIndex--;
+    }
+    
+    SWIG_CONVERT_POINTER(L, iIndex, IVObjectComponent, self)
+    iIndex--;
+    
+    //handle string as second element
+    if(iIndex==-2)
+    {
+      pszString = lua_tostring(L,iIndex);
+    }
+        
+    unsigned int uiLen = (unsigned int) strlen(pszString);
+    char *pszBuffer = new char[uiLen+128];
+   
+    sprintf(pszBuffer, "%s",self->GetComponentName()==NULL?self->GetClassTypeId()->m_lpszClassName:self->GetComponentName()); //format as requested
+    
+    //the new buffer should have the size of the old string and the new format string
+    VASSERT_MSG(128>(strlen(pszBuffer)+uiLen), "Please increase your temp buffer size!");
+    
+    //append or prepend old buffer buffer (depending on the position inside the lua stack)
+    if(iIndex==-3) //append old string
+    {
+      memcpy(pszBuffer+strlen(pszBuffer),pszString,uiLen+1); //also copy the terminator at the end
+    }
+    else //prepend old string
+    {
+      memmove(pszBuffer+uiLen,pszBuffer, strlen(pszBuffer)+1); //also move the terminator at the end
+      memcpy(pszBuffer,pszString,uiLen); //insert the old string
+    }
+
+    lua_pushstring(L, pszBuffer);
+  
+    V_SAFE_DELETE_ARRAY(pszBuffer);
+
+    return 1;
+  }
+
+
+  SWIGINTERN int IVObjectComponent_ToString(lua_State *L)
+  {
+    //this will move this function to the method table of the specified class
+    
+    SWIG_CONVERT_POINTER(L, -1, IVObjectComponent, self)
+    
+    char pszBuffer[1024];
+    
+    sprintf(pszBuffer, "%s: %s",self->GetClassTypeId()->m_lpszClassName,self->GetComponentName()); //format as requested
+      
+    lua_pushstring(L, pszBuffer);
+    
+    return 1;
+  }
+
 
 	#include "Toolset2D_EnginePluginPCH.h"
 
@@ -9867,6 +9956,186 @@ static swig_lua_class *swig_VisBaseEntity_cl_bases[] = {0,0};
 static const char *swig_VisBaseEntity_cl_base_names[] = {"VisObject3D_cl *",0};
 static swig_lua_class _wrap_class_VisBaseEntity_cl = { "VisBaseEntity_cl", &SWIGTYPE_p_VisBaseEntity_cl,0,0, swig_VisBaseEntity_cl_methods, swig_VisBaseEntity_cl_attributes, swig_VisBaseEntity_cl_bases, swig_VisBaseEntity_cl_base_names };
 
+static int _wrap_IVObjectComponent_SetOwner(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
+  
+  SWIG_check_num_args("SetOwner",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetOwner",2,"VisTypedEngineObject_cl *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetOwner",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetOwner",2,SWIGTYPE_p_VisTypedEngineObject_cl);
+  }
+  
+  (arg1)->SetOwner(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_GetComponentID(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("GetComponentID",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_GetComponentID",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  result = (int)((IVObjectComponent const *)arg1)->GetComponentID();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_GetComponentName(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("GetComponentName",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_GetComponentName",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  result = (char *)(arg1)->GetComponentName();
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_SetComponentID(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("SetComponentID",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetComponentID",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetComponentID",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  (arg1)->SetComponentID(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_SetComponentName(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("SetComponentName",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetComponentName",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetComponentName",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  (arg1)->SetComponentName((char const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_CanAttachToObject(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("CanAttachToObject",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("CanAttachToObject",2,"VisTypedEngineObject_cl *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
+    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",2,SWIGTYPE_p_VisTypedEngineObject_cl);
+  }
+  
+  result = (bool)IVObjectComponent_CanAttachToObject(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static swig_lua_method swig_IVObjectComponent_methods[] = {
+    { "__tostring",IVObjectComponent_ToString},
+    { "GetOwner",IVObjectComponent_GetOwner},
+    { "__concat",IVObjectComponent_Concat},
+    {"SetOwner", _wrap_IVObjectComponent_SetOwner}, 
+    {"GetComponentID", _wrap_IVObjectComponent_GetComponentID}, 
+    {"GetComponentName", _wrap_IVObjectComponent_GetComponentName}, 
+    {"SetComponentID", _wrap_IVObjectComponent_SetComponentID}, 
+    {"SetComponentName", _wrap_IVObjectComponent_SetComponentName}, 
+    {"CanAttachToObject", _wrap_IVObjectComponent_CanAttachToObject}, 
+    {0,0}
+};
+static swig_lua_attribute swig_IVObjectComponent_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_IVObjectComponent_bases[] = {0,0};
+static const char *swig_IVObjectComponent_base_names[] = {"VisTypedEngineObject_cl *",0};
+static swig_lua_class _wrap_class_IVObjectComponent = { "IVObjectComponent", &SWIGTYPE_p_IVObjectComponent,0,0, swig_IVObjectComponent_methods, swig_IVObjectComponent_attributes, swig_IVObjectComponent_bases, swig_IVObjectComponent_base_names };
+
 static int _wrap_Sprite_SetState(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
@@ -10032,6 +10301,9 @@ static swig_lua_const_info swig_constants[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_IVObjectComponentTo_p_VisTypedEngineObject_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VisTypedEngineObject_cl *)  ((IVObjectComponent *) x));
+}
 static void *_p_VisBaseEntity_clTo_p_VisTypedEngineObject_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisTypedEngineObject_cl *) (VisObject3D_cl *) ((VisBaseEntity_cl *) x));
 }
@@ -10046,6 +10318,9 @@ static void *_p_VisBaseEntity_clTo_p_VisObject3D_cl(void *x, int *SWIGUNUSEDPARM
 }
 static void *_p_SpriteTo_p_VisObject3D_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObject3D_cl *) (VisBaseEntity_cl *) ((Sprite *) x));
+}
+static void *_p_IVObjectComponentTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VTypedObject *) (VisTypedEngineObject_cl *) ((IVObjectComponent *) x));
 }
 static void *_p_VisBaseEntity_clTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VTypedObject *) (VisTypedEngineObject_cl *)(VisObject3D_cl *) ((VisBaseEntity_cl *) x));
@@ -10071,7 +10346,7 @@ static void *_p_SpriteTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemor
 static void *_p_VisObject3D_clTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObjectKey_cl *)  ((VisObject3D_cl *) x));
 }
-static swig_type_info _swigt__p_IVObjectComponent = {"_p_IVObjectComponent", "IVObjectComponent *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_IVObjectComponent = {"_p_IVObjectComponent", "IVObjectComponent *", 0, 0, (void*)&_wrap_class_IVObjectComponent, 0};
 static swig_type_info _swigt__p_Sprite = {"_p_Sprite", "Sprite *", 0, 0, (void*)&_wrap_class_Sprite, 0};
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
@@ -10141,12 +10416,12 @@ static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTextureObject[] = {  {&_swigt__p_VTextureObject, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VTypedObject, 0, 0},  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisBaseEntity_cl[] = {  {&_swigt__p_VisBaseEntity_cl, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisBaseEntity_cl, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisObject3D_cl[] = {  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisObjectKey_cl[] = {  {&_swigt__p_VisObjectKey_cl, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisObjectKey_cl, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisSurface_cl[] = {  {&_swigt__p_VisSurface_cl, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VisTypedEngineObject_cl[] = {  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VisTypedEngineObject_cl[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p___int64[] = {  {&_swigt__p___int64, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};

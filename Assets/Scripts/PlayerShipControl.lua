@@ -11,8 +11,36 @@ function math.clamp(n, low, high)
 end
 
 function FireWeapon(self)
-    -- TODO: Spawn and sprite and give it a velocity
-    Debug:PrintLine("Shot FIRED!")
+    if self.fireDelay <= 0 then
+      local missilePosition = self:GetPosition()
+      local offset = Vision.hkvVec3(98, 65, 0)
+      local offset1 = offset + Vision.hkvVec3(80, 0, 0)
+      local offset2 = offset + Vision.hkvVec3(-80, 0, 0)
+      
+      -- Make the missiles appear above everything else
+      missilePosition.z = 7
+      
+      local missile = Game:CreateEntity(missilePosition + offset1, "Sprite", "", "Missile")
+      missile:UpdateProperty("TextureFilename", "Textures/missile.png")      
+      table.insert(self.missiles, missile)
+      
+      local missile2 = Game:CreateEntity(missilePosition + offset2, "Sprite", "", "Missile")
+      missile2:UpdateProperty("TextureFilename", "Textures/missile.png")      
+      table.insert(self.missiles, missile2)
+      
+      self.fireDelay = 0.1
+    else
+      self.fireDelay = self.fireDelay - Timer:GetTimeDiff()
+    end
+end
+
+function UpdateMissiles(self)
+    local dt = Timer:GetTimeDiff()
+    for index, missile in ipairs(self.missiles) do
+      local pos =  missile:GetPosition()
+      pos.y = pos.y - dt * 500
+      missile:SetPosition(pos)
+    end
 end
 
 function OnAfterSceneLoaded(self)
@@ -43,6 +71,9 @@ function OnAfterSceneLoaded(self)
     self.y = self.h * 0.8
     self.roll = 0
     self:SetPosition(self.x, self.y, 0) 
+    
+    self.missiles = {}
+    self.fireDelay = 0
 end
 
 function OnBeforeSceneUnloaded(self)
@@ -125,5 +156,7 @@ function OnThink(self)
     
     if keyFire or touchFire and touchUp == false then
         FireWeapon(self)
-    end 
+    end
+    
+    UpdateMissiles(self)
 end

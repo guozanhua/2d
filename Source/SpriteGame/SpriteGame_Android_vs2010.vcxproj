@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|hkAndroid">
+      <Configuration>Debug</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dev|hkAndroid">
+      <Configuration>Dev</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|hkAndroid">
+      <Configuration>Release</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FFF01464-7E45-4E08-8B74-3079100FCA8F}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectName>SpriteGame</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_vs2010_anarchyDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_vs2010_anarchyDev.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_vs2010_anarchyRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <OutDir>..\..\Bin\android_vs2010_anarchy\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>SpriteGame</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <TargetName>SpriteGame</TargetName>
+    <OutDir>..\..\Bin\android_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <TargetName>SpriteGame</TargetName>
+    <OutDir>..\..\Bin\android_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe" $(OutDir)$(TargetName)$(TargetExt) --pickleName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -e -i --asset ..\../Data/Vision/Base/ Data/Vision/Base/ --asset ..\../Assets/ Assets/</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>-lBaseD;-lVisionD;-lVisionEnginePlugin;-lvHavok;-lhkInternal;-lhkGeometryUtilities;-lhkVisualize;-lhkSerialize;-lhkCompat;-lhkSceneData;-lhkBase;-lhkcdCollide;-lhkcdInternal;-lhkpUtilities;-lhkpVehicle;-lhkpDynamics;-lhkpCollide;-lhkpInternal;-lhkpConstraintSolver;-lhkpConstraint;-lToolset2D_EnginePlugin;-lSpriteGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe" $(OutDir)$(TargetName)$(TargetExt) --pickleName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -e -i --asset ..\../Data/Vision/Base/ Data/Vision/Base/ --asset ..\../Assets/ Assets/</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lBase;-lVision;-lVisionEnginePlugin;-lvHavok;-lhkInternal;-lhkGeometryUtilities;-lhkVisualize;-lhkSerialize;-lhkCompat;-lhkSceneData;-lhkBase;-lhkcdCollide;-lhkcdInternal;-lhkpUtilities;-lhkpVehicle;-lhkpDynamics;-lhkpCollide;-lhkpInternal;-lhkpConstraintSolver;-lhkpConstraint;-lToolset2D_EnginePlugin;-lSpriteGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe" $(OutDir)$(TargetName)$(TargetExt) --pickleName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -e -i --asset ..\../Data/Vision/Base/ Data/Vision/Base/ --asset ..\../Assets/ Assets/</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lBase;-lVision;-lVisionEnginePlugin;-lvHavok;-lhkInternal;-lhkGeometryUtilities;-lhkVisualize;-lhkSerialize;-lhkCompat;-lhkSceneData;-lhkBase;-lhkcdCollide;-lhkcdInternal;-lhkpUtilities;-lhkpVehicle;-lhkpDynamics;-lhkpCollide;-lhkpInternal;-lhkpConstraintSolver;-lhkpConstraint;-lToolset2D_EnginePlugin;-lSpriteGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(ANDROID_NDK_ROOT)\sources\android\native_app_glue\android_native_app_glue.c" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SpriteGamePCH.cpp" />
+    <ClCompile Include="VisSampleApp.cpp" />
+    <ClCompile Include="VisSampleAppCallbacks.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpriteGamePCH.h" />
+    <ClInclude Include="VisSampleApp.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

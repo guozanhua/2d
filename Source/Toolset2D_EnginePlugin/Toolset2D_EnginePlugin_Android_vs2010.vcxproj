@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|hkAndroid">
+      <Configuration>Debug</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dev|hkAndroid">
+      <Configuration>Dev</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|hkAndroid">
+      <Configuration>Release</Configuration>
+      <Platform>hkAndroid</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectName>Toolset2D_EnginePlugin</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <PlatformToolset>arm-linux-androideabi-4.6</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <AndroidArch>armv7-a</AndroidArch>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDev.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>libToolset2D_EnginePlugin</TargetName>
+    <TargetExt>.a</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <TargetName>libToolset2D_EnginePlugin</TargetName>
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <TargetName>libToolset2D_EnginePlugin</TargetName>
+    <OutDir>..\..\Lib\android_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_vs2010_anarchy\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderFile>Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePluginPCH.h</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks/yajl/Source/;$(ANDROID_NDK_ROOT)/sources;$(ProjectDir)</AdditionalIncludeDirectories>
+      <Warnings>NormalWarnings</Warnings>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)..\Source\BuildSystem\update.py</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePluginPCH.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks/yajl/Source/;$(ANDROID_NDK_ROOT)/sources;$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
+    <ClCompile>
+      <PrecompiledHeader>Yes</PrecompiledHeader>
+      <PrecompiledHeaderFile>Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePluginPCH.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks/yajl/Source/;$(ANDROID_NDK_ROOT)/sources;$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lGamePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Yes</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SpriteEntity.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
+    <ClCompile Include="Toolset2D_EnginePluginPCH.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">$(IntDir)Toolset2D_EnginePluginPCH.h</PrecompiledHeaderOutputFile>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpriteEntity.hpp" />
+    <ClInclude Include="SpriteManager.hpp" />
+    <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

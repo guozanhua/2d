@@ -25,10 +25,14 @@ namespace Toolset2D_Managed
 		}
 
 		// overridden IEngineShapeInstance functions
-		VOVERRIDE void SetVisible(bool bStatus) override {m_bIsVisible=bStatus;}
+		VOVERRIDE void SetVisible(bool bStatus) override
+		{
+			m_bIsVisible = bStatus;
+		}
+
 		VOVERRIDE void SetPosition(float x,float y,float z) override;
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
-		VOVERRIDE void SetScaling(float /*x*/,float /*y*/, float /*z*/) override {}
+		VOVERRIDE void SetScaling(float x, float y, float z) override;
 		VOVERRIDE bool GetLocalBoundingBox(BoundingBox^ %bbox) override;
 		VOVERRIDE void TraceShape(Shape3D ^ownerShape, Vector3F rayStart,Vector3F rayEnd, ShapeTraceResult^ %result) override;
 		VOVERRIDE bool OnExport(SceneExportInfo ^info) override;

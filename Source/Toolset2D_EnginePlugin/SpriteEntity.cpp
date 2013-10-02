@@ -400,7 +400,7 @@ bool Sprite::IsFullscreenMode() const
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 {
-	if ( !strcmp(pVar->name, V_QUOTE(PROP_TEXTURE_FILENAME)) )
+	if ( !strcmp(pVar->name, "TextureFilename") )
 	{
 		if (value &&
 			value[0] &&
@@ -411,7 +411,7 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 		}
 		else
 		{
-			Clear();
+			ClearTextures();
 		}
 	}
 }
@@ -424,13 +424,13 @@ BOOL Sprite::AddComponent(IVObjectComponent *pComponent)
 
 void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections) const
 {
-	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
-	hkvAlignedBBox bbox;
-	hkvVec3 vRad(fSize, fSize, fSize);
-	const hkvVec3 pos = GetPosition();
-	bbox.m_vMin = pos - vRad;
-	bbox.m_vMax = pos + vRad;
-	pRenderer->RenderAABox(bbox, iColor, state);
+	//VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
+	//hkvAlignedBBox bbox;
+	//hkvVec3 vRad(fSize, fSize, fSize);
+	//const hkvVec3 pos = GetPosition();
+	//bbox.m_vMin = pos - vRad;
+	//bbox.m_vMax = pos + vRad;
+	//pRenderer->RenderAABox(bbox, iColor, state);
 }
 
 void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
@@ -438,10 +438,7 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 	hkvVec2 tl;
 	hkvVec2 br;
 
-	hkvVec3 pos = GetPosition();
-	tl.x = pos.x;
-	tl.y = pos.y;
-	
+	hkvVec3 pos = GetPosition();	
 	VTextureObject *texture = m_spSpriteSheetTexture;
 	
 	if (m_spTextureAnimation)
@@ -490,16 +487,61 @@ void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 					br.y = static_cast<float>(h);
 					br.x = static_cast<float>(width * h) / height;
 				}
+
+				topLeft.x += pos.x / width;
+				bottomRight.x += pos.x / width;
+				topLeft.y += pos.y / height;
+				bottomRight.y += pos.y / height;
+
+				pRender->DrawTexturedQuad( tl, br, texture, topLeft, bottomRight, V_RGBA_WHITE, state );
 			}
 			else
 			{
+				const hkvVec3 &scale = GetScaling();
 				tl.x += cell->pivot.x;
 				tl.y += cell->pivot.y;
-				br.x = tl.x + cell->width;
-				br.y = tl.y + cell->height;
-			}
+				br.x = tl.x + cell->width * scale.x;
+				br.y = tl.y + cell->height * scale.y;
 
-			pRender->DrawTexturedQuad( tl, br, texture, topLeft, bottomRight, V_RGBA_WHITE, state );
+				const float ww = br.x - tl.x;
+				const float hh = br.y - tl.y;
+				hkvVec2 offset(ww / 2.0f, hh / 2.0f);
+
+				// offset it so that we rotate around the center of the shape
+				tl -= offset;
+				br -= offset;
+
+				hkvVec2 tr = tl;
+				tr.x += ww;
+
+				hkvVec2 bl = br;
+				bl.x -= ww;
+
+				// rotate the corners
+				hkvMat3 rotation;
+				rotation.setRotationMatrixZ(m_vOrientation.z);
+				tl = (rotation * tl.getAsVec3(0.0f)).getAsVec2();
+				br = (rotation * br.getAsVec3(0.0f)).getAsVec2();
+				tr = (rotation * tr.getAsVec3(0.0f)).getAsVec2();
+				bl = (rotation * bl.getAsVec3(0.0f)).getAsVec2();
+
+				// offset it back to the corner
+				tl += pos.getAsVec2() + offset;
+				br += pos.getAsVec2() + offset;
+				tr += pos.getAsVec2() + offset;
+				bl += pos.getAsVec2() + offset;
+				Overlay2DVertex_t vertices[6];
+
+				vertices[0].Set(tl.x, tl.y, topLeft.x, topLeft.y);
+				vertices[1].Set(bl.x, bl.y, bottomRight.x - w, bottomRight.y);
+				vertices[2].Set(tr.x, tr.y, topLeft.x + w, topLeft.y);
+
+				vertices[3].Set(tr.x, tr.y, topLeft.x + w, topLeft.y);
+				vertices[4].Set(bl.x, bl.y, bottomRight.x - w, bottomRight.y);
+				vertices[5].Set(br.x, br.y, bottomRight.x, bottomRight.y);
+
+				pRender->Draw2DBuffer(6, vertices, texture, state);
+			}
 		}
 		else
 		{
@@ -558,6 +600,6 @@ void Sprite::OnSerialized(VArchive &ar)
 }
 
 START_VAR_TABLE(Sprite, VisBaseEntity_cl, "Sprite", 0, "")
-	DEFINE_VAR_STRING_CALLBACK(Sprite, PROP_TEXTURE_FILENAME, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
+	DEFINE_VAR_STRING_CALLBACK(Sprite, TextureFilename, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
 	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(0, 1)");
 END_VAR_TABLE

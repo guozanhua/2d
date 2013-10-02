@@ -9,7 +9,7 @@ using namespace ManagedFramework;
 
 namespace Toolset2D_Managed
 {
-	EngineInstanceSprite::EngineInstanceSprite()
+	EngineInstanceSprite::EngineInstanceSprite() : IEngineShapeInstance()
 	{
 		m_bIsVisible = true;
 
@@ -29,14 +29,19 @@ namespace Toolset2D_Managed
 		}
 	}
 
-	void EngineInstanceSprite::SetPosition(float x,float y,float z)
+	void EngineInstanceSprite::SetPosition(float x, float y, float z)
 	{
 		m_pSprite->SetPosition(x, y, z);
 	}
 
-	void EngineInstanceSprite::SetOrientation(float yaw,float pitch,float roll)
+	void EngineInstanceSprite::SetOrientation(float yaw, float pitch, float roll)
 	{
 		m_pSprite->SetOrientation(yaw, pitch, roll);
+	}
+
+	void EngineInstanceSprite::SetScaling(float x, float y, float z)
+	{
+		m_pSprite->SetScaling( hkvVec3(x, y, z) );
 	}
 
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
@@ -54,6 +59,7 @@ namespace Toolset2D_Managed
 					m_pSprite->DebugRender(pRI, 4.f, VColorRef(255,0,0,80), false);
 				}
 				break;
+
 			case ShapeRenderMode::Selected:
 				m_pSprite->DebugRender(pRI, 5.f, VColorRef(255,160,0,140), false);
 				break;

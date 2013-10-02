@@ -7,6 +7,8 @@
 #include <Vision/Runtime/EnginePlugins/RemoteInputEnginePlugin/IVRemoteInput.hpp>
 #endif
 
+VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
+
 void SpriteGameManager::OneTimeInit()
 {
 	Vision::Error.SystemMessage("SpriteGameManager:OneTimeInit()");

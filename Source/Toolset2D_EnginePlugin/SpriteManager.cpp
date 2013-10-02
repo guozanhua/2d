@@ -30,9 +30,10 @@
 #include "SpriteManager.hpp"
 #include "SpriteEntity.hpp"
 
+#if defined(WIN32)
 #include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
+#endif
 
-#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Particles/ParticleGroupManager.hpp>
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 
@@ -43,6 +44,7 @@
 
 extern "C" int luaopen_Toolset2D(lua_State *);
 
+#if defined(WIN32)
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath)
 {
 	bool valid = !hkvStringHelper::isEmpty(absolutePath);
@@ -65,6 +67,7 @@ TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf&
 
 	return valid;
 }
+#endif // WIN32
 
 // compare function for qsort
 static int CompareSprites(const void *arg1, const void *arg2)
@@ -88,7 +91,6 @@ static int CompareSprites(const void *arg1, const void *arg2)
 
 	return result;
 }
-
 
 void SpriteManager::OneTimeInit()
 {

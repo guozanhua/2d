@@ -22,21 +22,15 @@ float cameraInitZ = 170;                  // Set our camera above the ground so 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
 VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteGame_EnginePlugin();
 VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteGamePlugin();
 		 
 VisSampleAppPtr spApp;
-
-void custom_pure_call_handler(void)
-{
-	cameraInitZ = 0;
-}
 
 //---------------------------------------------------------------------------------------------------------
 // Init function. Here we trigger loading our scene
 //---------------------------------------------------------------------------------------------------------
 VISION_INIT
 {
-	_set_purecall_handler(custom_pure_call_handler);
-
 	// Create our new application.
 	spApp = new VisSampleApp();
 
@@ -50,7 +44,7 @@ VISION_INIT
 
 	// Set the executable directory the current directory
 	VisionAppHelpers::MakeEXEDirCurrent();
-
+	
 	// Set the paths to our stand alone version to override the VisSAampleApp paths.
 	// The paths are platform dependent
 #if defined(WIN32)

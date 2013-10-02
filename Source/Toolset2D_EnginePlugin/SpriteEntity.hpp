@@ -60,6 +60,8 @@ public:
 
 	//----- Utility functions exposed to LUA
 
+	TOOLSET_2D_IMPEXP void OnCollision(Sprite *other);
+
 	TOOLSET_2D_IMPEXP bool SetState(const char *state);
 
 	// Specify a value between 0 and 1 and it will update the frame
