@@ -7,25 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DE116401738FC2100E51293 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE116381738FC2100E51293 /* GameManager.cpp */; };
-		1DE116411738FC2100E51293 /* GamePluginPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */; };
-		1DE116421738FC2100E51293 /* myComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163D1738FC2100E51293 /* myComponent.cpp */; };
-		1DE116431738FC2100E51293 /* PluginMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163F1738FC2100E51293 /* PluginMain.cpp */; };
-		2D9B88301767841E008CDDEC /* TemplateAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D9B882E1767841E008CDDEC /* TemplateAction.cpp */; };
+		3439D97418036878002D7A5E /* SpriteEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D96D18036878002D7A5E /* SpriteEntity.cpp */; };
+		3439D97518036878002D7A5E /* SpriteManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D96F18036878002D7A5E /* SpriteManager.cpp */; };
+		3439D97618036878002D7A5E /* Toolset2D_EnginePlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */; };
+		3439D97718036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */; };
+		3439D97918036884002D7A5E /* Toolset2D_Module_wrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97818036884002D7A5E /* Toolset2D_Module_wrapper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1DE116361738FBE100E51293 /* libGamePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGamePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1DE116381738FC2100E51293 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
-		1DE116391738FC2100E51293 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		1DE1163A1738FC2100E51293 /* GamePluginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePluginModule.h; sourceTree = "<group>"; };
-		1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePluginPCH.cpp; sourceTree = "<group>"; };
-		1DE1163C1738FC2100E51293 /* GamePluginPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePluginPCH.h; sourceTree = "<group>"; };
-		1DE1163D1738FC2100E51293 /* myComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = myComponent.cpp; sourceTree = "<group>"; };
-		1DE1163E1738FC2100E51293 /* myComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myComponent.h; sourceTree = "<group>"; };
-		1DE1163F1738FC2100E51293 /* PluginMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginMain.cpp; sourceTree = "<group>"; };
-		2D9B882E1767841E008CDDEC /* TemplateAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TemplateAction.cpp; sourceTree = "<group>"; };
-		2D9B882F1767841E008CDDEC /* TemplateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateAction.h; sourceTree = "<group>"; };
+		3439D96D18036878002D7A5E /* SpriteEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteEntity.cpp; sourceTree = "<group>"; };
+		3439D96E18036878002D7A5E /* SpriteEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteEntity.hpp; sourceTree = "<group>"; };
+		3439D96F18036878002D7A5E /* SpriteManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteManager.cpp; sourceTree = "<group>"; };
+		3439D97018036878002D7A5E /* SpriteManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteManager.hpp; sourceTree = "<group>"; };
+		3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolset2D_EnginePlugin.cpp; sourceTree = "<group>"; };
+		3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolset2D_EnginePluginPCH.cpp; sourceTree = "<group>"; };
+		3439D97318036878002D7A5E /* Toolset2D_EnginePluginPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Toolset2D_EnginePluginPCH.h; sourceTree = "<group>"; };
+		3439D97818036884002D7A5E /* Toolset2D_Module_wrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Toolset2D_Module_wrapper.cpp; path = Lua/Toolset2D_Module_wrapper.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,17 +48,15 @@
 		3397870000000000017779 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2D9B882E1767841E008CDDEC /* TemplateAction.cpp */,
-				2D9B882F1767841E008CDDEC /* TemplateAction.h */,
-				1DE116381738FC2100E51293 /* GameManager.cpp */,
-				1DE116391738FC2100E51293 /* GameManager.h */,
-				1DE1163A1738FC2100E51293 /* GamePluginModule.h */,
-				1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */,
-				1DE1163C1738FC2100E51293 /* GamePluginPCH.h */,
-				1DE1163D1738FC2100E51293 /* myComponent.cpp */,
-				1DE1163E1738FC2100E51293 /* myComponent.h */,
-				1DE1163F1738FC2100E51293 /* PluginMain.cpp */,
 				1DE116371738FBE100E51293 /* Products */,
+				3439D96D18036878002D7A5E /* SpriteEntity.cpp */,
+				3439D96E18036878002D7A5E /* SpriteEntity.hpp */,
+				3439D96F18036878002D7A5E /* SpriteManager.cpp */,
+				3439D97018036878002D7A5E /* SpriteManager.hpp */,
+				3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */,
+				3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */,
+				3439D97318036878002D7A5E /* Toolset2D_EnginePluginPCH.h */,
+				3439D97818036884002D7A5E /* Toolset2D_Module_wrapper.cpp */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,7 +85,10 @@
 /* Begin PBXProject section */
 		9534450000000000018550 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 0033920000000000018546 /* Build configuration list for PBXProject "GamePlugin_ios" */;
+			attributes = {
+				LastUpgradeCheck = 0500;
+			};
+			buildConfigurationList = 0033920000000000018546 /* Build configuration list for PBXProject "Toolset2D_EnginePlugin_ios" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -111,11 +110,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DE116401738FC2100E51293 /* GameManager.cpp in Sources */,
-				1DE116411738FC2100E51293 /* GamePluginPCH.cpp in Sources */,
-				1DE116421738FC2100E51293 /* myComponent.cpp in Sources */,
-				1DE116431738FC2100E51293 /* PluginMain.cpp in Sources */,
-				2D9B88301767841E008CDDEC /* TemplateAction.cpp in Sources */,
+				3439D97918036884002D7A5E /* Toolset2D_Module_wrapper.cpp in Sources */,
+				3439D97618036878002D7A5E /* Toolset2D_EnginePlugin.cpp in Sources */,
+				3439D97718036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp in Sources */,
+				3439D97518036878002D7A5E /* SpriteManager.cpp in Sources */,
+				3439D97418036878002D7A5E /* SpriteEntity.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +169,6 @@
 		3547230000000000018540 /* distrib_v7 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -257,7 +255,6 @@
 		4798660000000000018538 /* dev_v7 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -343,7 +340,6 @@
 		5859800000000000018539 /* release_v7 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -445,7 +441,6 @@
 		9706640000000000018537 /* debug_v7 */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv7;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -534,7 +529,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0033920000000000018546 /* Build configuration list for PBXProject "GamePlugin_ios" */ = {
+		0033920000000000018546 /* Build configuration list for PBXProject "Toolset2D_EnginePlugin_ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7769500000000000018542 /* dev_v7 */,

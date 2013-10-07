@@ -225,6 +225,11 @@
 		8292950000000000022775 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				TargetAttributes = {
+					554879136751641900000159 = {
+						DevelopmentTeam = S79S84249S;
+					};
+				};
 			};
 			buildConfigurationList = 8895300000000000022769 /* Build configuration list for PBXProject "SpriteGame_ios" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -341,6 +346,7 @@
 			buildSettings = {
 				ARCHS = armv7;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -402,6 +408,7 @@
 					"-lVisionEnginePlugin",
 				);
 				PRODUCT_NAME = "ProjectTemplate_ios-xcode_debug_v7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -433,7 +440,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = armv7;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -493,6 +501,7 @@
 					"-lVisionEnginePlugin",
 				);
 				PRODUCT_NAME = "ProjectTemplate_ios-xcode_distrib_v7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -542,6 +551,7 @@
 			buildSettings = {
 				ARCHS = armv7;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -601,6 +611,7 @@
 					"-lVisionEnginePlugin",
 				);
 				PRODUCT_NAME = "ProjectTemplate_ios-xcode_release_v7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -684,6 +695,7 @@
 			buildSettings = {
 				ARCHS = armv7;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -742,6 +754,7 @@
 					"-lVisionEnginePlugin",
 				);
 				PRODUCT_NAME = "ProjectTemplate_ios-xcode_dev_v7";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = iphoneos;

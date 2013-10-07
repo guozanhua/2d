@@ -7,25 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DE116401738FC2100E51293 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE116381738FC2100E51293 /* GameManager.cpp */; };
-		1DE116411738FC2100E51293 /* GamePluginPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */; };
-		1DE116421738FC2100E51293 /* myComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163D1738FC2100E51293 /* myComponent.cpp */; };
-		1DE116431738FC2100E51293 /* PluginMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1163F1738FC2100E51293 /* PluginMain.cpp */; };
-		2D9B88301767841E008CDDEC /* TemplateAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D9B882E1767841E008CDDEC /* TemplateAction.cpp */; };
+		344CC24B18036D9E0049FDC0 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 344CC24418036D9E0049FDC0 /* HUD.cpp */; };
+		344CC24C18036D9E0049FDC0 /* SpriteGameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 344CC24618036D9E0049FDC0 /* SpriteGameManager.cpp */; };
+		344CC24D18036D9E0049FDC0 /* SpriteGamePlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 344CC24818036D9E0049FDC0 /* SpriteGamePlugin.cpp */; };
+		344CC24E18036D9E0049FDC0 /* SpriteGamePluginPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 344CC24918036D9E0049FDC0 /* SpriteGamePluginPCH.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1DE116361738FBE100E51293 /* libGamePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGamePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1DE116381738FC2100E51293 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
-		1DE116391738FC2100E51293 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		1DE1163A1738FC2100E51293 /* GamePluginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePluginModule.h; sourceTree = "<group>"; };
-		1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GamePluginPCH.cpp; sourceTree = "<group>"; };
-		1DE1163C1738FC2100E51293 /* GamePluginPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePluginPCH.h; sourceTree = "<group>"; };
-		1DE1163D1738FC2100E51293 /* myComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = myComponent.cpp; sourceTree = "<group>"; };
-		1DE1163E1738FC2100E51293 /* myComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myComponent.h; sourceTree = "<group>"; };
-		1DE1163F1738FC2100E51293 /* PluginMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginMain.cpp; sourceTree = "<group>"; };
-		2D9B882E1767841E008CDDEC /* TemplateAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TemplateAction.cpp; sourceTree = "<group>"; };
-		2D9B882F1767841E008CDDEC /* TemplateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateAction.h; sourceTree = "<group>"; };
+		344CC24418036D9E0049FDC0 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
+		344CC24518036D9E0049FDC0 /* HUD.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HUD.hpp; sourceTree = "<group>"; };
+		344CC24618036D9E0049FDC0 /* SpriteGameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGameManager.cpp; sourceTree = "<group>"; };
+		344CC24718036D9E0049FDC0 /* SpriteGameManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteGameManager.hpp; sourceTree = "<group>"; };
+		344CC24818036D9E0049FDC0 /* SpriteGamePlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGamePlugin.cpp; sourceTree = "<group>"; };
+		344CC24918036D9E0049FDC0 /* SpriteGamePluginPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGamePluginPCH.cpp; sourceTree = "<group>"; };
+		344CC24A18036D9E0049FDC0 /* SpriteGamePluginPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteGamePluginPCH.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,17 +46,14 @@
 		3397870000000000017779 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2D9B882E1767841E008CDDEC /* TemplateAction.cpp */,
-				2D9B882F1767841E008CDDEC /* TemplateAction.h */,
-				1DE116381738FC2100E51293 /* GameManager.cpp */,
-				1DE116391738FC2100E51293 /* GameManager.h */,
-				1DE1163A1738FC2100E51293 /* GamePluginModule.h */,
-				1DE1163B1738FC2100E51293 /* GamePluginPCH.cpp */,
-				1DE1163C1738FC2100E51293 /* GamePluginPCH.h */,
-				1DE1163D1738FC2100E51293 /* myComponent.cpp */,
-				1DE1163E1738FC2100E51293 /* myComponent.h */,
-				1DE1163F1738FC2100E51293 /* PluginMain.cpp */,
 				1DE116371738FBE100E51293 /* Products */,
+				344CC24418036D9E0049FDC0 /* HUD.cpp */,
+				344CC24518036D9E0049FDC0 /* HUD.hpp */,
+				344CC24618036D9E0049FDC0 /* SpriteGameManager.cpp */,
+				344CC24718036D9E0049FDC0 /* SpriteGameManager.hpp */,
+				344CC24818036D9E0049FDC0 /* SpriteGamePlugin.cpp */,
+				344CC24918036D9E0049FDC0 /* SpriteGamePluginPCH.cpp */,
+				344CC24A18036D9E0049FDC0 /* SpriteGamePluginPCH.h */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,11 +106,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DE116401738FC2100E51293 /* GameManager.cpp in Sources */,
-				1DE116411738FC2100E51293 /* GamePluginPCH.cpp in Sources */,
-				1DE116421738FC2100E51293 /* myComponent.cpp in Sources */,
-				1DE116431738FC2100E51293 /* PluginMain.cpp in Sources */,
-				2D9B88301767841E008CDDEC /* TemplateAction.cpp in Sources */,
+				344CC24C18036D9E0049FDC0 /* SpriteGameManager.cpp in Sources */,
+				344CC24B18036D9E0049FDC0 /* HUD.cpp in Sources */,
+				344CC24D18036D9E0049FDC0 /* SpriteGamePlugin.cpp in Sources */,
+				344CC24E18036D9E0049FDC0 /* SpriteGamePluginPCH.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +196,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(VISION_SDK)/Source",
 					"$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/",
+					../Toolset2D_EnginePlugin,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				LIBRARY_SEARCH_PATHS = "$(VISION_SDK)/Lib/ios_xcode_anarchy/$(CONFIGURATION)";
@@ -291,6 +284,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(VISION_SDK)/Source",
 					"$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/",
+					../Toolset2D_EnginePlugin,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				LIBRARY_SEARCH_PATHS = "$(VISION_SDK)/Lib/ios_xcode_anarchy/$(CONFIGURATION)";
@@ -377,6 +371,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(VISION_SDK)/Source",
 					"$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/",
+					../Toolset2D_EnginePlugin,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				LIBRARY_SEARCH_PATHS = "$(VISION_SDK)/Lib/ios_xcode_anarchy/$(CONFIGURATION)";
@@ -479,6 +474,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(VISION_SDK)/Source",
 					"$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/",
+					../Toolset2D_EnginePlugin,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				LIBRARY_SEARCH_PATHS = "$(VISION_SDK)/Lib/ios_xcode_anarchy/$(CONFIGURATION)";
