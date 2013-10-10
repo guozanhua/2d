@@ -14,7 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1DE116361738FBE100E51293 /* libGamePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGamePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DE116361738FBE100E51293 /* libSpriteGamePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSpriteGamePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		344CC24418036D9E0049FDC0 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
 		344CC24518036D9E0049FDC0 /* HUD.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HUD.hpp; sourceTree = "<group>"; };
 		344CC24618036D9E0049FDC0 /* SpriteGameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGameManager.cpp; sourceTree = "<group>"; };
@@ -38,7 +38,7 @@
 		1DE116371738FBE100E51293 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1DE116361738FBE100E51293 /* libGamePlugin.a */,
+				1DE116361738FBE100E51293 /* libSpriteGamePlugin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		504685136751641300000101 /* libGamePlugin */ = {
+		504685136751641300000101 /* libSpriteGamePlugin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9935150000000000018545 /* Build configuration list for PBXNativeTarget "libGamePlugin" */;
+			buildConfigurationList = 9935150000000000018545 /* Build configuration list for PBXNativeTarget "libSpriteGamePlugin" */;
 			buildPhases = (
 				1971080000000000018548 /* Sources */,
 				5140870000000000018549 /* Frameworks */,
@@ -72,9 +72,9 @@
 			);
 			dependencies = (
 			);
-			name = libGamePlugin;
+			name = libSpriteGamePlugin;
 			productName = libVisionEnginePlugin;
-			productReference = 1DE116361738FBE100E51293 /* libGamePlugin.a */;
+			productReference = 1DE116361738FBE100E51293 /* libSpriteGamePlugin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -96,7 +96,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				504685136751641300000101 /* libGamePlugin */,
+				504685136751641300000101 /* libSpriteGamePlugin */,
 			);
 		};
 /* End PBXProject section */
@@ -224,6 +224,7 @@
 					"-fno-implement-inlines",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SpriteGamePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -311,6 +312,7 @@
 					"-DHK_DEBUG",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SpriteGamePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -399,6 +401,7 @@
 					"-fno-implement-inlines",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SpriteGamePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -504,6 +507,7 @@
 					"-fno-inline",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SpriteGamePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -543,7 +547,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = dev_v7;
 		};
-		9935150000000000018545 /* Build configuration list for PBXNativeTarget "libGamePlugin" */ = {
+		9935150000000000018545 /* Build configuration list for PBXNativeTarget "libSpriteGamePlugin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4798660000000000018538 /* dev_v7 */,

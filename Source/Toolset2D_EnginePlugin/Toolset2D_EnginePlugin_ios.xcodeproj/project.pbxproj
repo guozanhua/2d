@@ -15,7 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1DE116361738FBE100E51293 /* libGamePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGamePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DE116361738FBE100E51293 /* libToolset2D_EnginePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libToolset2D_EnginePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3439D96D18036878002D7A5E /* SpriteEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteEntity.cpp; sourceTree = "<group>"; };
 		3439D96E18036878002D7A5E /* SpriteEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteEntity.hpp; sourceTree = "<group>"; };
 		3439D96F18036878002D7A5E /* SpriteManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteManager.cpp; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 		1DE116371738FBE100E51293 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1DE116361738FBE100E51293 /* libGamePlugin.a */,
+				1DE116361738FBE100E51293 /* libToolset2D_EnginePlugin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,9 +64,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		504685136751641300000101 /* libGamePlugin */ = {
+		504685136751641300000101 /* Toolset2D_EnginePlugin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9935150000000000018545 /* Build configuration list for PBXNativeTarget "libGamePlugin" */;
+			buildConfigurationList = 9935150000000000018545 /* Build configuration list for PBXNativeTarget "Toolset2D_EnginePlugin" */;
 			buildPhases = (
 				1971080000000000018548 /* Sources */,
 				5140870000000000018549 /* Frameworks */,
@@ -75,9 +75,9 @@
 			);
 			dependencies = (
 			);
-			name = libGamePlugin;
+			name = Toolset2D_EnginePlugin;
 			productName = libVisionEnginePlugin;
-			productReference = 1DE116361738FBE100E51293 /* libGamePlugin.a */;
+			productReference = 1DE116361738FBE100E51293 /* libToolset2D_EnginePlugin.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -100,7 +100,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				504685136751641300000101 /* libGamePlugin */,
+				504685136751641300000101 /* Toolset2D_EnginePlugin */,
 			);
 		};
 /* End PBXProject section */
@@ -227,6 +227,7 @@
 					"-fno-implement-inlines",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = Toolset2D_EnginePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -312,6 +313,7 @@
 					"-DHK_DEBUG",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = Toolset2D_EnginePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -398,6 +400,7 @@
 					"-fno-implement-inlines",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = Toolset2D_EnginePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -501,6 +504,7 @@
 					"-fno-inline",
 				);
 				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = Toolset2D_EnginePlugin;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -540,7 +544,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = dev_v7;
 		};
-		9935150000000000018545 /* Build configuration list for PBXNativeTarget "libGamePlugin" */ = {
+		9935150000000000018545 /* Build configuration list for PBXNativeTarget "Toolset2D_EnginePlugin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4798660000000000018538 /* dev_v7 */,

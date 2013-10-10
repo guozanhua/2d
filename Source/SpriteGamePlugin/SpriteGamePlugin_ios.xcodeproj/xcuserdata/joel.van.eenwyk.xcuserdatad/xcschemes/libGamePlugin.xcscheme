@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "504685136751641300000101"
-               BuildableName = "libGamePlugin.a"
-               BlueprintName = "libGamePlugin"
+               BuildableName = "libSpriteGamePlugin.a"
+               BlueprintName = "libSpriteGamePlugin"
                ReferencedContainer = "container:SpriteGamePlugin_ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

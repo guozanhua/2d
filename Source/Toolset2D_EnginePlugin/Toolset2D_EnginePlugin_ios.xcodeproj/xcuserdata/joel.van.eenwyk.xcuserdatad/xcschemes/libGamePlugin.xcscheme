@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "504685136751641300000101"
-               BuildableName = "libGamePlugin.a"
-               BlueprintName = "libGamePlugin"
+               BuildableName = "libToolset2D_EnginePlugin.a"
+               BlueprintName = "Toolset2D_EnginePlugin"
                ReferencedContainer = "container:Toolset2D_EnginePlugin_ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

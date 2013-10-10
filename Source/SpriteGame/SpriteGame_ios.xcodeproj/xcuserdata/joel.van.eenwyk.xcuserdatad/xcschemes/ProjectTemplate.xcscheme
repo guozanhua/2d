@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "554879136751641900000159"
-               BuildableName = "ProjectTemplate_ios-xcode_dev_v7.app"
-               BlueprintName = "ProjectTemplate"
+               BuildableName = "SpriteGame_ios-xcode_dev_v7.app"
+               BlueprintName = "SpriteGame"
                ReferencedContainer = "container:SpriteGame_ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "554879136751641900000159"
-            BuildableName = "ProjectTemplate_ios-xcode_dev_v7.app"
-            BlueprintName = "ProjectTemplate"
+            BuildableName = "SpriteGame_ios-xcode_dev_v7.app"
+            BlueprintName = "SpriteGame"
             ReferencedContainer = "container:SpriteGame_ios.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -52,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "554879136751641900000159"
-            BuildableName = "ProjectTemplate_ios-xcode_dev_v7.app"
-            BlueprintName = "ProjectTemplate"
+            BuildableName = "SpriteGame_ios-xcode_dev_v7.app"
+            BlueprintName = "SpriteGame"
             ReferencedContainer = "container:SpriteGame_ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "554879136751641900000159"
-            BuildableName = "ProjectTemplate_ios-xcode_dev_v7.app"
-            BlueprintName = "ProjectTemplate"
+            BuildableName = "SpriteGame_ios-xcode_dev_v7.app"
+            BlueprintName = "SpriteGame"
             ReferencedContainer = "container:SpriteGame_ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
