@@ -34,6 +34,11 @@ COMMAND_LINE_OPTIONS = (
       'dest': 'assets',
       'default': False,
       'help': "Transform assets"}),
+    (('-f', '--force',),
+     {'action': 'store_true',
+      'dest': 'force',
+      'default': False,
+      'help': "Force the data to be updated despite file dates"}),
     (('-q', '--quiet',),
      {'action': 'store_false',
       'dest': 'verbose',
@@ -82,7 +87,7 @@ def run(arguments, verbose=False, current_directory=""):
 
     return output
 
-def update_files(source_path, output_path):
+def update_files(source_path, output_path, force):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -97,10 +102,10 @@ def update_files(source_path, output_path):
         if copy_file:
             source_file = os.path.join(source_path, filename)
             destination_file = os.path.join(output_path, filename)
-            if not os.path.exists(destination_file) or\
+            if force or (not os.path.exists(destination_file)) or\
                (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
-                shutil.copy2(source_file, output_path)
                 print('Updating %s...' % filename)
+                shutil.copy2(source_file, output_path)
 
     return True
 
@@ -124,6 +129,7 @@ def main():
         print("Missing VISION_SDK environment variable!")
 
     vision_directory = os.environ['VISION_SDK']
+    print("Vision SDK directory: %s" % vision_directory)
 
     if not project_directory:
         project_directory = os.path.dirname(os.path.realpath(__file__))
@@ -136,10 +142,14 @@ def main():
     conf_debug = 'Bin\%s\debug_dll\DX9' % arch
 
     print("Updating dev binaries [%s]..." % conf_dev)
-    success = success and update_files( os.path.join(vision_directory, conf_dev), os.path.join(project_directory, conf_dev) )
+    success = success and update_files( os.path.join(vision_directory, conf_dev),\
+                                        os.path.join(project_directory, conf_dev),\
+                                        options.force )
     
     print("Updating debug binaries [%s]..." % conf_debug)
-    success = success and update_files( os.path.join(vision_directory, conf_debug), os.path.join(project_directory, conf_debug) )
+    success = success and update_files( os.path.join(vision_directory, conf_debug),\
+                                        os.path.join(project_directory, conf_debug),\
+                                        options.force )
     
     if options.assets:
         try:

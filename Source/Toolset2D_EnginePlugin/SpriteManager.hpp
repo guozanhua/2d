@@ -18,7 +18,8 @@ public:
 	TOOLSET_2D_IMPEXP void AddSprite(Sprite *sprite);
 	TOOLSET_2D_IMPEXP void RemoveSprite(Sprite *sprite);
 
-	TOOLSET_2D_IMPEXP void Render();
+	void Render();
+	void Update();
 
 	// Access one global instance of the frame manager
 	static SpriteManager& GlobalManager()

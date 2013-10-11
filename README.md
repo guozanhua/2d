@@ -6,6 +6,7 @@ Project Anarchy: 2D Toolset
 TODO
 ----
 
+- Add 2D physics component using Havok Physics
 - Add support for [Shoebox][2]. For more information about it check out the [Polycount thread][3]
 
 Reference

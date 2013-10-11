@@ -100,6 +100,7 @@ void SpriteManager::OneTimeInit()
 	VISION_HAVOK_SYNC_ALL_STATICS();
 
 	Vision::Callbacks.OnRenderHook += this;
+	Vision::Callbacks.OnUpdateSceneFinished += this;
 	IVScriptManager::OnRegisterScriptFunctions += this;
 	IVScriptManager::OnScriptProxyCreation += this;
 }
@@ -109,6 +110,7 @@ void SpriteManager::OneTimeDeInit()
 	VISION_HAVOK_UNSYNC_ALL_STATICS();
 
 	Vision::Callbacks.OnRenderHook -= this;
+	Vision::Callbacks.OnUpdateSceneFinished -= this;
 	IVScriptManager::OnRegisterScriptFunctions -= this;
 	IVScriptManager::OnScriptProxyCreation -= this;
 
@@ -124,6 +126,10 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		{
 			Render();
 		}
+	}
+	if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
+	{
+		Update();
 	}
 	else if (pData->m_pSender == &IVScriptManager::OnRegisterScriptFunctions)
 	{
@@ -177,15 +183,41 @@ void SpriteManager::Render()
 
 	VSimpleRenderState_t state;
 	state.SetTransparency(VIS_TRANSP_ALPHA);
-	
+
+	// Sort all the sprites by their Z order
 	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), CompareSprites);
 
+	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
 		m_sprites[spriteIndex]->Render(pRender, state);
 	}
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
+}
+
+void SpriteManager::Update()
+{
+	// Check to see if there are any overlaps and report it
+	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+	{
+		Sprite *sprite = m_sprites[spriteIndex];
+
+		sprite->Update();
+
+		if (!sprite->IsFullscreenMode())
+		{
+			for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
+			{
+				Sprite *otherSprite = m_sprites[otherSpriteIndex];
+				if (!otherSprite->IsFullscreenMode() && sprite->IsOverlapping(otherSprite))
+				{
+					sprite->OnCollision(otherSprite);
+					otherSprite->OnCollision(sprite);
+				}
+			}
+		}
+	}
 }
 
 void SpriteManager::AddSprite(Sprite *sprite)

@@ -10235,6 +10235,71 @@ fail:
 }
 
 
+static int _wrap_Sprite_GetPoint(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float arg2 ;
+  float arg3 ;
+  hkvVec3 result;
+  
+  SWIG_check_num_args("GetPoint",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetPoint",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("GetPoint",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_GetPoint",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  result = (arg1)->GetPoint(arg2,arg3);
+  {
+    hkvVec3 * resultptr = new hkvVec3((const hkvVec3 &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_hkvVec3,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_SetCenterPosition(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  hkvVec3 arg2 ;
+  hkvVec3 *argp2 ;
+  
+  SWIG_check_num_args("SetCenterPosition",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCenterPosition",1,"Sprite *");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetCenterPosition",2,"hkvVec3");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetCenterPosition",1,SWIGTYPE_p_Sprite);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_hkvVec3,0))){
+    SWIG_fail_ptr("Sprite_SetCenterPosition",2,SWIGTYPE_p_hkvVec3);
+  }
+  arg2 = *argp2;
+  
+  (arg1)->SetCenterPosition(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_Sprite_Cast(lua_State* L) {
   int SWIG_arg = 0;
   VTypedObject *arg1 = (VTypedObject *) 0 ;
@@ -10264,6 +10329,8 @@ static swig_lua_method swig_Sprite_methods[] = {
     {"SetFramePercent", _wrap_Sprite_SetFramePercent}, 
     {"Pause", _wrap_Sprite_Pause}, 
     {"Play", _wrap_Sprite_Play}, 
+    {"GetPoint", _wrap_Sprite_GetPoint}, 
+    {"SetCenterPosition", _wrap_Sprite_SetCenterPosition}, 
     {0,0}
 };
 static swig_lua_attribute swig_Sprite_attributes[] = {

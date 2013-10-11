@@ -21,6 +21,8 @@ particles/explosion_page.dds#android-default	AssetMgmt_data/transformed/explosio
 particles/explosion_page.dds#android-pvr	AssetMgmt_data/transformed/explosion_page8ntjrzjclgdtc.pvr	Usage="Undefined",sRGB=false
 particles/groundfog.dds#android-default	AssetMgmt_data/transformed/groundfog96btc8jclgdtc.rgba	Usage="Undefined",sRGB=false
 particles/groundfog.dds#android-pvr	AssetMgmt_data/transformed/groundfog96btc8jclgdtc.pvr	Usage="Undefined",sRGB=false
+particles/plume_2.dds#android-default	AssetMgmt_data/transformed/plume_2719k42dclgdtc.rgba	Usage="Undefined",sRGB=false
+particles/plume_2.dds#android-pvr	AssetMgmt_data/transformed/plume_2719k42dclgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smoke.dds#android-default	AssetMgmt_data/transformed/smokef0bryq4clgdtc.rgba	Usage="Undefined",sRGB=false
 particles/smoke.dds#android-pvr	AssetMgmt_data/transformed/smokef0bryq4clgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smoke_a.dds#android-default	AssetMgmt_data/transformed/smoke_ah94k260clgdtc.rgba	Usage="Undefined",sRGB=false
@@ -109,6 +111,8 @@ textures/decals/wallmarksmoke.dds#android-default	AssetMgmt_data/transformed/wal
 textures/decals/wallmarksmoke.dds#android-pvr	AssetMgmt_data/transformed/wallmarksmokebg32yjnclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-default	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.etc	Usage="Undefined",sRGB=false
 textures/grid01.jpg#android-pvr	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/missile.png#android-default	AssetMgmt_data/transformed/missilebqlxw8dclgdtc.rgba	Usage="Undefined",sRGB=false
+textures/missile.png#android-pvr	AssetMgmt_data/transformed/missilebqlxw8dclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/scrollingbgspace.tga#android-default	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.etc	Usage="Undefined",sRGB=false
 textures/scrollingbgspace.tga#android-pvr	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/spritesheets/enemyship.png#android-default	AssetMgmt_data/transformed/enemyshipdt4sc90clgdtc.rgba	Usage="Undefined",sRGB=false
@@ -195,5 +199,5 @@ textures/ui/slidernorm.png#android-default	AssetMgmt_data/transformed/slidernorm
 textures/ui/slidernorm.png#android-pvr	AssetMgmt_data/transformed/slidernormd1qp#qxclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/white.dds#android-default	AssetMgmt_data/transformed/white9sc4kv0clgdtc.etc	Usage="Undefined",sRGB=false
 textures/ui/white.dds#android-pvr	AssetMgmt_data/transformed/white9sc4kv0clgdtc.pvr	Usage="Undefined",sRGB=false
-textures/water/water_n_01.dds#android-default	AssetMgmt_data/transformed/water_n_017jmhtn0clgdtc.rgba	Usage="NormalMap",sRGB=false
-textures/water/water_n_01.dds#android-pvr	AssetMgmt_data/transformed/water_n_017jmhtn0clgdtc.pvr	Usage="NormalMap",sRGB=false
+textures/water/water_n_01.dds#android-default	AssetMgmt_data/transformed/water_n_0157jcnvjclgdtc.etc	Usage="Undefined",sRGB=false
+textures/water/water_n_01.dds#android-pvr	AssetMgmt_data/transformed/water_n_0157jcnvjclgdtc.pvr	Usage="Undefined",sRGB=false

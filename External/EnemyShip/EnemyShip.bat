@@ -1,11 +1,16 @@
 @echo off
 
-"C:\Program Files (x86)\ShoeBox\ShoeBox.exe" "plugin=shoebox.plugin.createSpriteSheet::PluginCreateSpriteSheet" "files=C:\Projects\ProjectAnarchy\2d\External\EnemyShip\basePose.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0001.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0002.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0003.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0004.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0005.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0006.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0007.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0008.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0009.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0010.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0011.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0012.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0013.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0014.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollLeft_0015.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0016.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0017.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0018.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0019.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0020.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0021.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0022.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0023.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0024.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0025.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0026.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0027.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0028.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0029.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0030.tga,C:\Projects\ProjectAnarchy\2d\External\EnemyShip\rollRight_0031.tga" "animationFrameIdStart=0" "animationNameIds=@name_####.png" "texExtrudeSize=1" "fileFormatOuter=<TextureAtlas imagePath=\"@TexName\">\n@loop</TextureAtlas>" "fileGenerate2xSize=false" "texPowerOfTwo=true" "texSquare=false" "useCssOverHack=false" "animationMaxFrames=100" "fileName=EnemyShip.xml" "texCropAlpha=true" "texPadding=2" "fileFormatLoop=\t<SubTexture name=\"@id\" x=\"@x\" y=\"@y\" width=\"@w\" height=\"@h\" ox=\"@fx\" oy=\"@fy\"/>\n" "scale=1" "texMaxSize=4096" "renderDebugLayer=false"
+set ROOT=%~dp0..\..
+set SHEETNAME=EnemyShip
+set SOURCE=%~dp0
+set DESTINATION=%ROOT%\Assets\Textures\SpriteSheets\
 
-set _NAME=EnemyShip
-set _ROOT=%~dp0..\..
-set _OUTPUT=%_ROOT%\Assets\Textures\SpriteSheets\
-xcopy /y /q %_NAME%.xml %_OUTPUT%
-xcopy /y /q %_NAME%.png %_OUTPUT%
-del %_NAME%.xml
-del %_NAME%.png
+set SHOEBOX="C:\Program Files (x86)\ShoeBox\ShoeBox.exe"
+set INPUT_FILES=%SOURCE%\basePose.tga,%SOURCE%\rollLeft_0001.tga,%SOURCE%\rollLeft_0002.tga,%SOURCE%\rollLeft_0003.tga,%SOURCE%\rollLeft_0004.tga,%SOURCE%\rollLeft_0005.tga,%SOURCE%\rollLeft_0006.tga,%SOURCE%\rollLeft_0007.tga,%SOURCE%\rollLeft_0008.tga,%SOURCE%\rollLeft_0009.tga,%SOURCE%\rollLeft_0010.tga,%SOURCE%\rollLeft_0011.tga,%SOURCE%\rollLeft_0012.tga,%SOURCE%\rollLeft_0013.tga,%SOURCE%\rollLeft_0014.tga,%SOURCE%\rollLeft_0015.tga,%SOURCE%\rollRight_0016.tga,%SOURCE%\rollRight_0017.tga,%SOURCE%\rollRight_0018.tga,%SOURCE%\rollRight_0019.tga,%SOURCE%\rollRight_0020.tga,%SOURCE%\rollRight_0021.tga,%SOURCE%\rollRight_0022.tga,%SOURCE%\rollRight_0023.tga,%SOURCE%\rollRight_0024.tga,%SOURCE%\rollRight_0025.tga,%SOURCE%\rollRight_0026.tga,%SOURCE%\rollRight_0027.tga,%SOURCE%\rollRight_0028.tga,%SOURCE%\rollRight_0029.tga,%SOURCE%\rollRight_0030.tga,%SOURCE%\rollRight_0031.tga
+
+%SHOEBOX% "plugin=shoebox.plugin.spriteSheet::PluginCreateSpriteSheet" "files=%INPUT_FILES%" "fileName=%SHEETNAME%.xml" "texPadding=2" "animationNameIds=@name_###.png" "useCssOverHack=false" "animationFrameIdStart=0" "fileFormatLoop=\t<SubTexture name=\"@id\" x=\"@x\" y=\"@y\" width=\"@w\" height=\"@h\" ox=\"@fx\" oy=\"@fy\" original_width=\"@fw\" original_height=\"@fh\"/>\n" "animationMaxFrames=100" "renderDebugLayer=false" "fileName=sheet.xml" "fileFormatOuter=<TextureAtlas imagePath=\"@TexName\">\n@loop</TextureAtlas>" "texPowerOfTwo=true" "fileGenerate2xSize=false" "texExtrudeSize=1" "texMaxSize=4096" "scale=1" "texSquare=false" "texCropAlpha=true"
+
+xcopy /y /q %SHEETNAME%.xml %DESTINATION%
+xcopy /y /q %SHEETNAME%.png %DESTINATION%
+del %SHEETNAME%.xml
+del %SHEETNAME%.png

@@ -8,6 +8,8 @@ struct SpriteCell
 	hkvVec2 pivot;
 	int width;
 	int height;
+	int originalWidth;
+	int originalHeight;
 	int index;
 };
 
@@ -32,7 +34,15 @@ public:
 	V_DECLARE_SERIAL_DLLEXP(Sprite, TOOLSET_2D_IMPEXP);
 
 	IMPLEMENT_OBJ_CLASS(Sprite);
-	
+
+	enum VERTEX_INDICES
+	{
+		VERTEX_TOP_LEFT = 0,
+		VERTEX_TOP_RIGHT = 1,
+		VERTEX_BOTTOM_LEFT = 2,
+		VERTEX_BOTTOM_RIGHT = 3
+	};
+
 	// Overridden entity functions
 	TOOLSET_2D_IMPEXP VOVERRIDE void InitFunction();
 	TOOLSET_2D_IMPEXP VOVERRIDE void DeInitFunction();
@@ -58,6 +68,10 @@ public:
 	TOOLSET_2D_IMPEXP int GetCurrentFrame() const;
 	TOOLSET_2D_IMPEXP void SetCurrentFrame(int frame);
 
+	TOOLSET_2D_IMPEXP bool IsOverlapping(Sprite *other) const;
+
+	TOOLSET_2D_IMPEXP void Update();
+
 	//----- Utility functions exposed to LUA
 
 	TOOLSET_2D_IMPEXP void OnCollision(Sprite *other);
@@ -76,6 +90,9 @@ public:
 	TOOLSET_2D_IMPEXP void SetFullscreenMode(bool enabled);
 	TOOLSET_2D_IMPEXP bool IsFullscreenMode() const;
 
+	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y) const;
+	TOOLSET_2D_IMPEXP void SetCenterPosition(const hkvVec3 &position);
+
 protected:
 	void CommonInit();
 	void CommonDeInit();
@@ -84,6 +101,10 @@ protected:
 
 	void ClearTextures();
 	bool UpdateTextures();
+	VTextureObject *GetTexture() const;
+	const hkvVec2 *GetVertices() const;
+
+	bool GetIntersection(const hkvVec2 &p1, const hkvVec2 &p2, const hkvVec2 &p3, const hkvVec2 &p4, hkvVec2 *result) const;
 
 private:
 
@@ -114,6 +135,9 @@ private:
 	
 	VArray<SpriteCell> m_cells;
 	VArray<SpriteState> m_states;
+	hkvVec2 m_vertices[4];
+	hkvVec2 m_texCoords[4];
+
 	VDictionary<int> m_stateNameToIndex;
 };
 

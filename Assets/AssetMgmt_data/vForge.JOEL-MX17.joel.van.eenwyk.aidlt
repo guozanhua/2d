@@ -3,6 +3,9 @@ fonts/arial_18_00.dds	fonts/arial_18_00.dds	Usage="Undefined",sRGB=false
 fonts/arial_22_00.dds	fonts/arial_22_00.dds	Usage="Undefined",sRGB=false
 fonts/couriernew_18_00.dds	fonts/couriernew_18_00.dds	Usage="Undefined",sRGB=false
 fonts/debugfont_00.dds	fonts/debugfont_00.dds	Usage="Undefined",sRGB=false
+icons/android/drawable-hdpi/icon.png	icons/android/drawable-hdpi/icon.png	Usage="Undefined",sRGB=false
+icons/android/drawable-ldpi/icon.png	icons/android/drawable-ldpi/icon.png	Usage="Undefined",sRGB=false
+icons/android/drawable-mdpi/icon.png	icons/android/drawable-mdpi/icon.png	Usage="Undefined",sRGB=false
 meshes/plane.vcolmesh	meshes/plane.vcolmesh	
 meshes/plane.vmesh	meshes/plane.vmesh	
 models/misc/charheight.model	models/misc/charheight.model	
@@ -13,7 +16,10 @@ models/misc/sphere.model	models/misc/sphere.model
 models/misc/torus.model	models/misc/torus.model	
 particles/explosion_page.dds	particles/explosion_page.dds	Usage="Undefined",sRGB=false
 particles/groundfog.dds	particles/groundfog.dds	Usage="Undefined",sRGB=false
+particles/plume_2.dds	particles/plume_2.dds	Usage="Undefined",sRGB=false
 particles/smoke.dds	particles/smoke.dds	Usage="Undefined",sRGB=false
+particles/smoke_a.dds	particles/smoke_a.dds	Usage="Undefined",sRGB=false
+particles/smokesequence_a.dds	particles/smokesequence_a.dds	Usage="Undefined",sRGB=false
 particles/sparkle.dds	particles/sparkle.dds	Usage="Undefined",sRGB=false
 particles/star.dds	particles/star.dds	Usage="Undefined",sRGB=false
 particles/steam.dds	particles/steam.dds	Usage="Undefined",sRGB=false
@@ -54,15 +60,11 @@ textures/decals/blubber_small.dds	textures/decals/blubber_small.dds	Usage="Undef
 textures/decals/machinegun.dds	textures/decals/machinegun.dds	Usage="Undefined",sRGB=false
 textures/decals/mgun_hole.dds	textures/decals/mgun_hole.dds	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds	textures/decals/wallmarksmoke.dds	Usage="Undefined",sRGB=false
-textures/fps/ammo_back.dds	textures/fps/ammo_back.dds	Usage="Undefined",sRGB=false
-textures/fps/crosshair.dds	textures/fps/crosshair.dds	Usage="Undefined",sRGB=false
-textures/fps/crouching.dds	textures/fps/crouching.dds	Usage="Undefined",sRGB=false
-textures/fps/machinegun.dds	textures/fps/machinegun.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_border.dds	textures/fps/sniper_border.dds	Usage="Undefined",sRGB=false
-textures/fps/sniper_scope.dds	textures/fps/sniper_scope.dds	Usage="Undefined",sRGB=false
-textures/fps/standing.dds	textures/fps/standing.dds	Usage="Undefined",sRGB=false
 textures/grid01.jpg	textures/grid01.jpg	Usage="Undefined",sRGB=false
+textures/missile.png	textures/missile.png	Usage="Undefined",sRGB=false
+textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	Usage="Undefined",sRGB=false
 textures/spritesheets/enemyship.png	textures/spritesheets/enemyship.png	Usage="Undefined",sRGB=false
+textures/spritesheets/heroship.png	textures/spritesheets/heroship.png	Usage="Undefined",sRGB=false
 textures/ui/button.dds	textures/ui/button.dds	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_mouseover.tga	textures/ui/buttonquit_mouseover.tga	Usage="Undefined",sRGB=false
 textures/ui/buttonquit_normal.tga	textures/ui/buttonquit_normal.tga	Usage="Undefined",sRGB=false
@@ -103,4 +105,4 @@ textures/ui/sliderhigh.png	textures/ui/sliderhigh.png	Usage="Undefined",sRGB=fal
 textures/ui/slidernorm.dds	textures/ui/slidernorm.dds	Usage="Undefined",sRGB=false
 textures/ui/slidernorm.png	textures/ui/slidernorm.png	Usage="Undefined",sRGB=false
 textures/ui/white.dds	textures/ui/white.dds	Usage="Undefined",sRGB=false
-textures/water/water_n_01.dds	textures/water/water_n_01.dds	Usage="NormalMap",sRGB=false
+textures/water/water_n_01.dds	textures/water/water_n_01.dds	Usage="Undefined",sRGB=false

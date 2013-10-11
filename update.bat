@@ -10,6 +10,6 @@
 set _ROOT=%~dp0
 set _UPDATE=%_ROOT%\Source\BuildSystem
 
-%_UPDATE%\update.py --project=%_ROOT% --assets
+%_UPDATE%\update.py --project=%_ROOT% --assets --force
 
 pause

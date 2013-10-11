@@ -16,6 +16,7 @@ models/misc/sphere.model	Models/Misc/Sphere.Model
 models/misc/torus.model	Models/Misc/Torus.Model	
 particles/explosion_page.dds	AssetMgmt_data/transformed/explosion_page8ntjrzjclgdtc.pvr	Usage="Undefined",sRGB=false
 particles/groundfog.dds	AssetMgmt_data/transformed/groundfog96btc8jclgdtc.pvr	Usage="Undefined",sRGB=false
+particles/plume_2.dds	AssetMgmt_data/transformed/plume_2719k42dclgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smoke.dds	AssetMgmt_data/transformed/smokef0bryq4clgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smoke_a.dds	AssetMgmt_data/transformed/smoke_ah94k260clgdtc.pvr	Usage="Undefined",sRGB=false
 particles/smokesequence_a.dds	AssetMgmt_data/transformed/smokesequence_a1hnnds4clgdtc.pvr	Usage="Undefined",sRGB=false
@@ -60,6 +61,7 @@ textures/decals/machinegun.dds	AssetMgmt_data/transformed/machinegunhwfrh04clgdt
 textures/decals/mgun_hole.dds	AssetMgmt_data/transformed/mgun_holecb#8nc4clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/decals/wallmarksmoke.dds	AssetMgmt_data/transformed/wallmarksmokebg32yjnclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/grid01.jpg	AssetMgmt_data/transformed/grid016ppcvq4clgdtc.pvr	Usage="Undefined",sRGB=false
+textures/missile.png	AssetMgmt_data/transformed/missilebqlxw8dclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/scrollingbgspace.tga	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/spritesheets/enemyship.png	AssetMgmt_data/transformed/enemyshipdt4sc90clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/spritesheets/heroship.png	AssetMgmt_data/transformed/heroship11vywjdclgdtc.pvr	Usage="Undefined",sRGB=false
@@ -103,4 +105,4 @@ textures/ui/sliderhigh.png	AssetMgmt_data/transformed/sliderhighdbblb#nclgdtc.pv
 textures/ui/slidernorm.dds	AssetMgmt_data/transformed/slidernormftvn634clgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/slidernorm.png	AssetMgmt_data/transformed/slidernormd1qp#qxclgdtc.pvr	Usage="Undefined",sRGB=false
 textures/ui/white.dds	AssetMgmt_data/transformed/white9sc4kv0clgdtc.pvr	Usage="Undefined",sRGB=false
-textures/water/water_n_01.dds	AssetMgmt_data/transformed/water_n_017jmhtn0clgdtc.pvr	Usage="NormalMap",sRGB=false
+textures/water/water_n_01.dds	AssetMgmt_data/transformed/water_n_0157jcnvjclgdtc.pvr	Usage="Undefined",sRGB=false

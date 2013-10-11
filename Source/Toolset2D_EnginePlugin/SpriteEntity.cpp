@@ -40,6 +40,7 @@ V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 void Sprite::InitFunction()
 {
 	VisBaseEntity_cl::InitFunction();
+	SetObjectKey(NULL);
 
 	Clear();
 	CommonInit();
@@ -125,6 +126,8 @@ bool Sprite::UpdateTextures()
 				int y;
 				int width;
 				int height;
+				int originalWidth;
+				int originalHeight;
 				int ox;
 				int oy;
 
@@ -132,6 +135,8 @@ bool Sprite::UpdateTextures()
 				pNode->QueryIntAttribute("y", &y);
 				pNode->QueryIntAttribute("width", &width);
 				pNode->QueryIntAttribute("height", &height);
+				pNode->QueryIntAttribute("original_width", &originalWidth);
+				pNode->QueryIntAttribute("original_height", &originalHeight);
 				pNode->QueryIntAttribute("ox", &ox);
 				pNode->QueryIntAttribute("oy", &oy);
 
@@ -144,6 +149,8 @@ bool Sprite::UpdateTextures()
 				currentCell->pivot.y = static_cast<float>(oy);
 				currentCell->width = width;
 				currentCell->height = height;
+				currentCell->originalWidth = originalWidth;
+				currentCell->originalHeight = originalHeight;
 
 				const char *result = strrchr(name, '_');
 				int index = -1;
@@ -219,8 +226,8 @@ bool Sprite::UpdateTextures()
 			currentCell->offset.y = 0.f;
 			currentCell->pivot.x = 0.f;
 			currentCell->pivot.y = 0.f;
-			currentCell->width = m_spSpriteSheetTexture->GetTextureWidth();
-			currentCell->height = m_spSpriteSheetTexture->GetTextureHeight();
+			currentCell->width = currentCell->originalWidth = m_spSpriteSheetTexture->GetTextureWidth();
+			currentCell->height = currentCell->originalHeight = m_spSpriteSheetTexture->GetTextureHeight();
 
 			m_currentState = m_currentFrame = 0;
 
@@ -234,6 +241,11 @@ bool Sprite::UpdateTextures()
 	}
 
 	return success;
+}
+
+const hkvVec2 *Sprite::GetVertices() const
+{
+	return m_vertices;
 }
 
 bool Sprite::SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename)
@@ -398,6 +410,62 @@ bool Sprite::IsFullscreenMode() const
 	return Fullscreen;
 }
 
+void Sprite::SetCenterPosition(const hkvVec3 &position)
+{
+	float width = 0.f;
+	float height = 0.f;
+	VTextureObject *texture = GetTexture();
+	const hkvVec3 &scale = GetScaling();
+
+	if (m_currentState != -1)
+	{
+		const SpriteState *spriteState = &m_states[m_currentState];
+		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
+		width = static_cast<float>(cell->originalWidth);
+		height = static_cast<float>(cell->originalHeight);
+	}
+	else if (texture != NULL)
+	{
+		width = static_cast<float>(texture->GetTextureWidth());
+		height = static_cast<float>(texture->GetTextureHeight());
+	}
+
+	width *= scale.x;
+	height *= scale.y;
+
+	SetPosition(position.x - width / 2.f, position.y - height / 2.f, position.z);
+}
+
+hkvVec3 Sprite::GetPoint(float x, float y) const
+{
+	hkvVec2 point(x, y);
+
+	if (m_currentState != -1)
+	{
+		const hkvVec2 &scale = GetScaling().getAsVec2();
+
+		const SpriteState *spriteState = &m_states[m_currentState];
+		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
+		const float width = static_cast<float>(cell->originalWidth);
+		const float height = static_cast<float>(cell->originalHeight);
+
+		hkvVec2 offset(width / 2.0f, height / 2.0f);
+
+		point -= offset;
+		point = point.compMul(scale);
+
+		// rotate the corners
+		hkvMat3 rotation;
+		rotation.setRotationMatrixZ(m_vOrientation.z);
+		point = (rotation * point.getAsVec3(0.0f)).getAsVec2();
+
+		// offset it back to the corner and final position
+		point += GetPosition().getAsVec2() + offset.compMul(scale);
+	}
+
+	return point.getAsVec3(0.f);
+}
+
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 {
 	if ( !strcmp(pVar->name, "TextureFilename") )
@@ -427,130 +495,254 @@ void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iC
 	//VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE);
 	//hkvAlignedBBox bbox;
 	//hkvVec3 vRad(fSize, fSize, fSize);
-	//const hkvVec3 pos = GetPosition();
-	//bbox.m_vMin = pos - vRad;
-	//bbox.m_vMax = pos + vRad;
+	//const hkvVec3 worldPosition = GetPosition();
+	//bbox.m_vMin = worldPosition - vRad;
+	//bbox.m_vMax = worldPosition + vRad;
 	//pRenderer->RenderAABox(bbox, iColor, state);
 }
 
-void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
+VTextureObject *Sprite::GetTexture() const
 {
-	hkvVec2 tl;
-	hkvVec2 br;
-
-	hkvVec3 pos = GetPosition();	
-	VTextureObject *texture = m_spSpriteSheetTexture;
-	
+	VTextureObject *texture = m_spSpriteSheetTexture;	
 	if (m_spTextureAnimation)
 	{
 		texture = m_spTextureAnimation->GetCurrentFrame();
 	}
+	return texture;
+}
+
+void Sprite::Update()
+{
+	const VTextureObject *texture = GetTexture();
+
+	float width = 5.0f;
+	float height = 5.0f;
 
 	if (texture != NULL)
 	{
-		const float width = static_cast<float>(texture->GetTextureWidth());
-		const float height = static_cast<float>(texture->GetTextureHeight());
+		width = static_cast<float>(texture->GetTextureWidth());
+		height = static_cast<float>(texture->GetTextureHeight());
+	}
 
-		if (m_currentState != -1)
+	hkvVec3 worldPosition = GetPosition();	
+	hkvVec2 topLeft;
+	hkvVec2 bottomRight;
+	hkvVec2 uvTopLeft(0, 0);
+	hkvVec2 uvBottomRight(1, 1);
+
+	if (m_currentState != -1)
+	{
+		const SpriteState *spriteState = &m_states[m_currentState];
+		const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
+
+		float w = (float)cell->width / width;
+		float h = (float)cell->height / height;
+		float x = cell->offset.x / width;
+		float y = cell->offset.y / height;
+
+		uvTopLeft.x = x + m_scrollOffset.x;
+		uvTopLeft.y = y + m_scrollOffset.y;
+		uvBottomRight.x = uvTopLeft.x + w;
+		uvBottomRight.y = uvTopLeft.y + h;
+
+		if (IsFullscreenMode())
 		{
-			hkvVec2 topLeft;
-			hkvVec2 bottomRight;
+			topLeft.x = 0;
+			topLeft.y = 0;
 
-			const SpriteState *spriteState = &m_states[m_currentState];
-			const SpriteCell *cell = &m_cells[spriteState->cells[m_currentFrame]];
-
-			float w = (float)cell->width / width;
-			float h = (float)cell->height / height;
-			float x = cell->offset.x / width;
-			float y = cell->offset.y / height;
-
-			topLeft.x = x + m_scrollOffset.x;
-			topLeft.y = y + m_scrollOffset.y;
-			bottomRight.x = topLeft.x + w;
-			bottomRight.y = topLeft.y + h;
-
-			if (IsFullscreenMode())
 			{
-				tl.x = 0;
-				tl.y = 0;
-
 				int x, y, w, h;
 				Vision::Contexts.GetMainRenderContext()->GetViewport(x, y, w, h);
-				
+
+				// Stretch it out to make sure it fits the screen
 				if (w - width > h - height)
 				{
-					br.x = static_cast<float>(w);
-					br.y = static_cast<float>(w * height) / width;
+					bottomRight.x = static_cast<float>(w);
+					bottomRight.y = static_cast<float>(w * height) / width;
 				}
 				else
 				{
-					br.y = static_cast<float>(h);
-					br.x = static_cast<float>(width * h) / height;
+					bottomRight.y = static_cast<float>(h);
+					bottomRight.x = static_cast<float>(width * h) / height;
 				}
-
-				topLeft.x += pos.x / width;
-				bottomRight.x += pos.x / width;
-				topLeft.y += pos.y / height;
-				bottomRight.y += pos.y / height;
-
-				pRender->DrawTexturedQuad( tl, br, texture, topLeft, bottomRight, V_RGBA_WHITE, state );
 			}
-			else
-			{
-				const hkvVec3 &scale = GetScaling();
-				tl.x += cell->pivot.x;
-				tl.y += cell->pivot.y;
-				br.x = tl.x + cell->width * scale.x;
-				br.y = tl.y + cell->height * scale.y;
 
-				const float ww = br.x - tl.x;
-				const float hh = br.y - tl.y;
-				hkvVec2 offset(ww / 2.0f, hh / 2.0f);
+			uvTopLeft.x += worldPosition.x / width;
+			uvBottomRight.x += worldPosition.x / width;
+			uvTopLeft.y += worldPosition.y / height;
+			uvBottomRight.y += worldPosition.y / height;
 
-				// offset it so that we rotate around the center of the shape
-				tl -= offset;
-				br -= offset;
-
-				hkvVec2 tr = tl;
-				tr.x += ww;
-
-				hkvVec2 bl = br;
-				bl.x -= ww;
-
-				// rotate the corners
-				hkvMat3 rotation;
-				rotation.setRotationMatrixZ(m_vOrientation.z);
-				tl = (rotation * tl.getAsVec3(0.0f)).getAsVec2();
-				br = (rotation * br.getAsVec3(0.0f)).getAsVec2();
-				tr = (rotation * tr.getAsVec3(0.0f)).getAsVec2();
-				bl = (rotation * bl.getAsVec3(0.0f)).getAsVec2();
-
-				// offset it back to the corner
-				tl += pos.getAsVec2() + offset;
-				br += pos.getAsVec2() + offset;
-				tr += pos.getAsVec2() + offset;
-				bl += pos.getAsVec2() + offset;
-				Overlay2DVertex_t vertices[6];
-
-				vertices[0].Set(tl.x, tl.y, topLeft.x, topLeft.y);
-				vertices[1].Set(bl.x, bl.y, bottomRight.x - w, bottomRight.y);
-				vertices[2].Set(tr.x, tr.y, topLeft.x + w, topLeft.y);
-
-				vertices[3].Set(tr.x, tr.y, topLeft.x + w, topLeft.y);
-				vertices[4].Set(bl.x, bl.y, bottomRight.x - w, bottomRight.y);
-				vertices[5].Set(br.x, br.y, bottomRight.x, bottomRight.y);
-
-				pRender->Draw2DBuffer(6, vertices, texture, state);
-			}
+			m_vertices[VERTEX_TOP_LEFT] = topLeft;
+			m_vertices[VERTEX_TOP_RIGHT] = hkvVec2(bottomRight.x, topLeft.y);
+			m_vertices[VERTEX_BOTTOM_LEFT] = hkvVec2(topLeft.x, bottomRight.y);
+			m_vertices[VERTEX_BOTTOM_RIGHT] = bottomRight;
 		}
 		else
 		{
-			br.x = tl.x + width;
-			br.y = tl.y + height;
+			const hkvVec3 &scale = GetScaling();
+			topLeft.x += cell->pivot.x;
+			topLeft.y += cell->pivot.y;
+			bottomRight.x = topLeft.x + cell->width * scale.x;
+			bottomRight.y = topLeft.y + cell->height * scale.y;
 
-			pRender->DrawTexturedQuad( tl, br, texture, hkvVec2(0, 0), hkvVec2(1, 1), V_RGBA_WHITE, state );
+			const float ww = bottomRight.x - topLeft.x;
+			const float hh = bottomRight.y - topLeft.y;
+			hkvVec2 offset(ww / 2.0f, hh / 2.0f);
+
+			// offset it so that we rotate around the center of the shape
+			topLeft -= offset;
+			bottomRight -= offset;
+
+			hkvVec2 tr = topLeft;
+			tr.x += ww;
+
+			hkvVec2 bl = bottomRight;
+			bl.x -= ww;
+
+			// rotate the corners
+			hkvMat3 rotation;
+			rotation.setRotationMatrixZ(m_vOrientation.z);
+			topLeft = (rotation * topLeft.getAsVec3(0.0f)).getAsVec2();
+			bottomRight = (rotation * bottomRight.getAsVec3(0.0f)).getAsVec2();
+			tr = (rotation * tr.getAsVec3(0.0f)).getAsVec2();
+			bl = (rotation * bl.getAsVec3(0.0f)).getAsVec2();
+
+			// offset it back to the corner and final position
+			topLeft += worldPosition.getAsVec2() + offset;
+			bottomRight += worldPosition.getAsVec2() + offset;
+			tr += worldPosition.getAsVec2() + offset;
+			bl += worldPosition.getAsVec2() + offset;
+
+			// save off the final position
+			m_vertices[VERTEX_TOP_LEFT] = topLeft;
+			m_vertices[VERTEX_TOP_RIGHT] = tr;
+			m_vertices[VERTEX_BOTTOM_LEFT] = bl;
+			m_vertices[VERTEX_BOTTOM_RIGHT] = bottomRight;
 		}
 	}
+	else
+	{
+		bottomRight.x = topLeft.x + width;
+		bottomRight.y = topLeft.y + height;
+
+		m_vertices[VERTEX_TOP_LEFT] = topLeft;
+		m_vertices[VERTEX_TOP_RIGHT] = hkvVec2(bottomRight.x, topLeft.y);
+		m_vertices[VERTEX_BOTTOM_LEFT] = hkvVec2(topLeft.x, bottomRight.y);
+		m_vertices[VERTEX_BOTTOM_RIGHT] = bottomRight;
+	}
+
+	m_texCoords[VERTEX_TOP_LEFT] = uvTopLeft;
+	m_texCoords[VERTEX_TOP_RIGHT] = hkvVec2(uvBottomRight.x, uvTopLeft.y);
+	m_texCoords[VERTEX_BOTTOM_LEFT] = hkvVec2(uvTopLeft.x, uvBottomRight.y);
+	m_texCoords[VERTEX_BOTTOM_RIGHT] = uvBottomRight;
+}
+
+void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
+{
+	Overlay2DVertex_t vertices[6];
+
+	vertices[0].Set(m_vertices[VERTEX_TOP_LEFT].x, m_vertices[VERTEX_TOP_LEFT].y, m_texCoords[VERTEX_TOP_LEFT].x, m_texCoords[VERTEX_TOP_LEFT].y);
+	vertices[1].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
+	vertices[2].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
+
+	vertices[3].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
+	vertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
+	vertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
+
+	pRender->Draw2DBuffer(6, vertices, GetTexture(), state);
+}
+
+void Sprite::OnCollision(Sprite *other)
+{
+	this->TriggerScriptEvent("OnSpriteCollision", "*o", other);
+}
+
+bool Sprite::GetIntersection(const hkvVec2 &p1, const hkvVec2 &p2, const hkvVec2 &p3, const hkvVec2 &p4, hkvVec2 *result) const
+{
+	bool intersecting = true;
+
+	// Store the values for fast access and easy
+	// equations-to-code conversion
+	float x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
+	float y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
+
+	float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+	// If d is zero, there is no intersection
+	if (hkvMath::isZero(d))
+	{
+		intersecting = false;
+	}
+	else
+	{
+		// Get the x and y
+		float pre = (x1 * y2 - y1 * x2), post = (x3 * y4 - y3 * x4);
+		float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
+		float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
+
+		// Check if the x and y coordinates are within both lines
+		if ( x < min(x1, x2) || x > max(x1, x2) ||
+			 x < min(x3, x4) || x > max(x3, x4) )
+		{
+			intersecting = false;
+		}
+		else if ( y < min(y1, y2) || y > max(y1, y2) ||
+			      y < min(y3, y4) || y > max(y3, y4) )
+		{
+			intersecting = false;
+		}
+
+		// Return the point of intersection4
+		if (intersecting && result != NULL)
+		{
+			result->x = x;
+			result->y = y;
+		}
+	}
+
+	return intersecting;
+}
+
+bool Sprite::IsOverlapping(Sprite *other) const
+{
+	const hkvVec2 *otherVertices = other->GetVertices();
+	bool inside = true;
+
+	int edges[8] = {0, 1,
+					1, 3,
+					3, 2,
+					2, 0};
+
+	// Loop through each vertex and see if any of them are inside all
+	// of the edges
+	for (int j = 0; j < 4; j++)
+	{
+		// Test each edge
+		for (int i = 0; i < 4; i++)
+		{
+			int p1 = edges[i * 2 + 0];
+			int p2 = edges[i * 2 + 1];
+
+			hkvVec3 e = (m_vertices[p2] - m_vertices[p1]).getAsVec3(0.f);
+			hkvVec3 l = (otherVertices[j] - m_vertices[p1]).getAsVec3(0.f);
+			e.normalize();
+			l.normalize();
+			hkvVec3 up = e.cross(l);
+
+			if (up.z < 0)
+			{
+				inside = false;
+				break;
+			}
+		}
+
+		if (inside)
+		{
+			break;
+		}
+	}
+
+	return inside;
 }
 
 void Sprite::Serialize(VArchive &ar)
