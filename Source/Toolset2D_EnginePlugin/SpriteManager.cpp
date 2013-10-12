@@ -190,7 +190,10 @@ void SpriteManager::Render()
 	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
-		m_sprites[spriteIndex]->Render(pRender, state);
+		if ((m_sprites[spriteIndex]->GetVisibleBitmask() & VIS_ENTITY_VISIBLE) != FALSE)
+		{
+			m_sprites[spriteIndex]->Render(pRender, state);
+		}
 	}
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
@@ -203,17 +206,20 @@ void SpriteManager::Update()
 	{
 		Sprite *sprite = m_sprites[spriteIndex];
 
-		sprite->Update();
-
-		if (!sprite->IsFullscreenMode())
+		if ((sprite->GetVisibleBitmask() & VIS_ENTITY_VISIBLE) != FALSE)
 		{
-			for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
+			sprite->Update();
+
+			if (!sprite->IsFullscreenMode())
 			{
-				Sprite *otherSprite = m_sprites[otherSpriteIndex];
-				if (!otherSprite->IsFullscreenMode() && sprite->IsOverlapping(otherSprite))
+				for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
 				{
-					sprite->OnCollision(otherSprite);
-					otherSprite->OnCollision(sprite);
+					Sprite *otherSprite = m_sprites[otherSpriteIndex];
+					if (!otherSprite->IsFullscreenMode() && sprite->IsOverlapping(otherSprite))
+					{
+						sprite->OnCollision(otherSprite);
+						otherSprite->OnCollision(sprite);
+					}
 				}
 			}
 		}

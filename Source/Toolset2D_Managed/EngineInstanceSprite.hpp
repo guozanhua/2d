@@ -30,6 +30,7 @@ namespace Toolset2D_Managed
 			m_bIsVisible = bStatus;
 		}
 
+		VOVERRIDE void SetObjectKey(String ^key) override;
 		VOVERRIDE void SetPosition(float x,float y,float z) override;
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
 		VOVERRIDE void SetScaling(float x, float y, float z) override;

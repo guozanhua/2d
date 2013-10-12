@@ -482,6 +482,20 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 			ClearTextures();
 		}
 	}
+	else if ( !strcmp(pVar->name, "XmlDataFilename") )
+	{
+		if (value &&
+			value[0] &&
+			m_xmlDataFilename != value)
+		{
+			m_xmlDataFilename = value;
+			UpdateTextures();
+		}
+		else
+		{
+			ClearTextures();
+		}
+	}
 }
 
 BOOL Sprite::AddComponent(IVObjectComponent *pComponent)
@@ -793,5 +807,6 @@ void Sprite::OnSerialized(VArchive &ar)
 
 START_VAR_TABLE(Sprite, VisBaseEntity_cl, "Sprite", 0, "")
 	DEFINE_VAR_STRING_CALLBACK(Sprite, TextureFilename, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
+	DEFINE_VAR_STRING_CALLBACK(Sprite, XmlDataFilename, "Xml Data", "", DISPLAY_HINT_CUSTOMFILE, NULL);
 	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(0, 1)");
 END_VAR_TABLE

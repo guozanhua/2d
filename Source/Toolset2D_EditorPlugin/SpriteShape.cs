@@ -43,7 +43,7 @@ namespace Toolset2D
     /// native code. The engine instance code in located in the Toolset2D_Managed project (managed C++ class library)
     /// </summary>
     [Serializable]
-    public class SpriteShape : Shape3D
+    public class SpriteShape : ShapeObject3D
     {
         /// <summary>
         /// Category string

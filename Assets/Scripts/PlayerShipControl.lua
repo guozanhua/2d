@@ -1,10 +1,7 @@
 --[[
 Author: Joel Van Eenwyk, Ryan Monday
-Purpose: Controls the sprite
+Purpose: Controls the player
 --]]
-
-Debug:Enable(true)
-Debug:SetupLines(20, 1)
 
 function math.clamp(n, low, high)
 	return math.min(math.max(n, low), high)
@@ -13,21 +10,23 @@ end
 function FireWeapon(self)
 	if self.fireDelay <= 0 then
 		local default = Vision.hkvVec3(0, 0, 0)
+		local layer = 7
+		local scale = 0.2
 		
 		local offset1 = self:GetPoint(171, 97)
-		offset1.z = 7
+		offset1.z = layer
 		
 		local offset2 = self:GetPoint(84, 97)
-		offset2.z = 7
+		offset2.z = layer
 				
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileLeft:UpdateProperty("TextureFilename", "Textures/missile.png")
-		missileLeft:SetScaling(0.3)
+		missileLeft:SetScaling(scale)
 		missileLeft:SetCenterPosition(offset1)
 		table.insert(self.missiles, missileLeft)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileRight:SetScaling(0.3)
+		missileRight:SetScaling(scale)
 		missileRight:SetCenterPosition(offset2)	
 		missileRight:UpdateProperty("TextureFilename", "Textures/missile.png")	
 		table.insert(self.missiles, missileRight)

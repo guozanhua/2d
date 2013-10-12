@@ -29,6 +29,23 @@ namespace Toolset2D_Managed
 		}
 	}
 
+	void EngineInstanceSprite::SetObjectKey(String ^key)
+	{
+		if (!m_pSprite)
+			return;
+
+		VString sKey;
+		ConversionUtils::StringToVString(key, sKey);
+
+		if (sKey.IsEmpty())
+			m_pSprite->SetObjectKey(NULL);
+		else
+			m_pSprite->SetObjectKey(sKey);
+
+		// inform owner object and its components, that the object key has changed
+		m_pSprite->SendMsg(m_pSprite, VIS_MSG_EDITOR_PROPERTYCHANGED, (INT_PTR)"ObjectKey", 0);
+	}
+
 	void EngineInstanceSprite::SetPosition(float x, float y, float z)
 	{
 		m_pSprite->SetPosition(x, y, z);
