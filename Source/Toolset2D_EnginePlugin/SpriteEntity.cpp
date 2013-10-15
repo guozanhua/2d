@@ -115,8 +115,12 @@ bool Sprite::UpdateTextures()
 		if ( xmlDocument.LoadFile(m_xmlDataFilename, Vision::File.GetManager()) )
 		{
 			const char *szActionNode = "SubTexture";
+			TiXmlElement *rootElement = xmlDocument.RootElement();
 
-			for (TiXmlElement *pNode = xmlDocument.RootElement()->FirstChildElement(szActionNode);
+			rootElement->QueryIntAttribute("width", &m_sourceWidth);
+			rootElement->QueryIntAttribute("height", &m_sourceHeight);
+
+			for (TiXmlElement *pNode = rootElement->FirstChildElement(szActionNode);
 				pNode != NULL;
 				pNode = pNode->NextSiblingElement(szActionNode) )
 			{
@@ -226,8 +230,8 @@ bool Sprite::UpdateTextures()
 			currentCell->offset.y = 0.f;
 			currentCell->pivot.x = 0.f;
 			currentCell->pivot.y = 0.f;
-			currentCell->width = currentCell->originalWidth = m_spSpriteSheetTexture->GetTextureWidth();
-			currentCell->height = currentCell->originalHeight = m_spSpriteSheetTexture->GetTextureHeight();
+			m_sourceWidth = currentCell->width = currentCell->originalWidth = m_spSpriteSheetTexture->GetTextureWidth();
+			m_sourceHeight = currentCell->height = currentCell->originalHeight = m_spSpriteSheetTexture->GetTextureHeight();
 
 			m_currentState = m_currentFrame = 0;
 
@@ -412,6 +416,22 @@ bool Sprite::IsFullscreenMode() const
 
 void Sprite::SetCenterPosition(const hkvVec3 &position)
 {
+	const hkvVec2 dimensions = GetDimensions();
+	SetPosition(position.x - dimensions.x / 2.f, position.y - dimensions.y / 2.f, position.z);
+}
+
+float Sprite::GetWidth() const
+{
+	return GetDimensions().x;
+}
+
+float Sprite::GetHeight() const
+{
+	return GetDimensions().y;
+}
+
+hkvVec2 Sprite::GetDimensions() const
+{
 	float width = 0.f;
 	float height = 0.f;
 	VTextureObject *texture = GetTexture();
@@ -433,10 +453,10 @@ void Sprite::SetCenterPosition(const hkvVec3 &position)
 	width *= scale.x;
 	height *= scale.y;
 
-	SetPosition(position.x - width / 2.f, position.y - height / 2.f, position.z);
+	return hkvVec2(width, height);
 }
 
-hkvVec3 Sprite::GetPoint(float x, float y) const
+hkvVec3 Sprite::GetPoint(float x, float y, float z) const
 {
 	hkvVec2 point(x, y);
 
@@ -463,7 +483,7 @@ hkvVec3 Sprite::GetPoint(float x, float y) const
 		point += GetPosition().getAsVec2() + offset.compMul(scale);
 	}
 
-	return point.getAsVec3(0.f);
+	return point.getAsVec3(z);
 }
 
 void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
@@ -529,14 +549,8 @@ void Sprite::Update()
 {
 	const VTextureObject *texture = GetTexture();
 
-	float width = 5.0f;
-	float height = 5.0f;
-
-	if (texture != NULL)
-	{
-		width = static_cast<float>(texture->GetTextureWidth());
-		height = static_cast<float>(texture->GetTextureHeight());
-	}
+	float width = static_cast<float>(m_sourceWidth);
+	float height = static_cast<float>(m_sourceHeight);
 
 	hkvVec3 worldPosition = GetPosition();	
 	hkvVec2 topLeft;

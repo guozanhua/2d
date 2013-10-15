@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="EnemyShip.png">
+<TextureAtlas imagePath="EnemyShip.png" width="2048" height="1024">
 	<SubTexture name="basePose.tga" x="0" y="354" width="229" height="175" ox="13" oy="47" original_width="256" original_height="256"/>
 	<SubTexture name="rollLeft_0001.tga" x="0" y="0" width="230" height="175" ox="13" oy="47" original_width="256" original_height="256"/>
 	<SubTexture name="rollLeft_0002.tga" x="0" y="531" width="229" height="175" ox="15" oy="47" original_width="256" original_height="256"/>

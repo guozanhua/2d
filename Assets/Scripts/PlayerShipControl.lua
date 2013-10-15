@@ -3,41 +3,49 @@ Author: Joel Van Eenwyk, Ryan Monday
 Purpose: Controls the player
 --]]
 
-function math.clamp(n, low, high)
-	return math.min(math.max(n, low), high)
-end
+-- Depth (Z-order) of the missile sprites
+kMissileLayer = 7
+
+-- Scale the missile sprite down
+kMissileScale = 0.2
+
+-- Add a delay (in milliseconds) to when you can fire
+kMissilemissileFireTimer = 0.1
+
+-- Velocity of the missile
+kMissileVelocity = Vision.hkvVec3(0, -600, 0)
+
+kMissileTexture = "Textures/missile.png"
 
 function FireWeapon(self)
-	if self.fireDelay <= 0 then
+	if self.missileFireTimer <= 0 then
 		local default = Vision.hkvVec3(0, 0, 0)
 		local layer = 7
 		local scale = 0.2
 		
-		local offset1 = self:GetPoint(171, 97)
-		offset1.z = layer
+		local offset1 = self:GetPoint(171, 97, kMissileLayer)
+		local offset2 = self:GetPoint(84, 97, kMissileLayer)
+		local velocity = Vision.hkvVec3(0, -600, 0)
 		
-		local offset2 = self:GetPoint(84, 97)
-		offset2.z = layer
-				
 		local removeFunc = function(entity)
-			return entity:GetPosition().y < 50
+			return entity:GetPosition().y < -entity:GetHeight()
 		end
 		
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileLeft:UpdateProperty("TextureFilename", "Textures/missile.png")
+		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
 		missileLeft:SetScaling(scale)
 		missileLeft:SetCenterPosition(offset1)
-		G.AddSprite(missileLeft, -600, removeFunc)
+		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileRight:SetScaling(scale)
 		missileRight:SetCenterPosition(offset2)	
-		missileRight:UpdateProperty("TextureFilename", "Textures/missile.png")
-		G.AddSprite(missileRight, -600, removeFunc)
+		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
+		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
 		
-		self.fireDelay = 0.1
+		self.missileFireTimer = kMissilemissileFireTimer
 	else
-		self.fireDelay = self.fireDelay - Timer:GetTimeDiff()
+		self.missileFireTimer = self.missileFireTimer - Timer:GetTimeDiff()
 	end
 end
 
@@ -46,9 +54,6 @@ function OnAfterSceneLoaded(self)
  
 	self.playerInputMap = Input:CreateMap("InputMap")
  
-	self.w, self.h = Screen:GetViewportSize()
-	Debug:PrintLine("width: " .. self.w .. " height: " .. self.h)
-	
 	-- Setup the WASD keyboard playerInputMap
 	self.playerInputMap:MapTrigger("KeyLeft", "KEYBOARD", "CT_KB_A")
 	self.playerInputMap:MapTrigger("KeyRight", "KEYBOARD", "CT_KB_D")
@@ -62,15 +67,23 @@ function OnAfterSceneLoaded(self)
 	self.playerInputMap:MapTriggerAxis("TouchRight", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
 	self.playerInputMap:MapTriggerAxis("TouchUp", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
 	self.playerInputMap:MapTriggerAxis("TouchDown", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
-	self.playerInputMap:MapTrigger("touchFire", {(self.w*.5), (self.h*.5), self.w, self.h}, "CT_TOUCH_ANY")
+	self.playerInputMap:MapTrigger(
+		"touchFire",
+		{ (G.screenWidth * 0.5), (G.screenHeight * 0.5), G.screenWidth, G.screenHeight },
+		"CT_TOUCH_ANY")
 
 	-- Calculate the starting position of the ship
-	self.x = self.w * 0.5
-	self.y = self.h * 0.8
+	self.x = G.screenWidth * 0.5
+	self.y = G.screenHeight * 0.8
 	self.roll = 0
-	self:SetPosition(self.x, self.y, 0) 
+	self:SetPosition(
+		Vision.hkvVec3(G.screenWidth * 0.5, G.screenHeight - self:GetHeight() - 10, 0) )
 	
-	self.fireDelay = 0
+	self.missileFireTimer = 0
+
+	math.clamp = function(n, low, high)
+		return math.min(math.max(n, low), high)
+	end
 end
 
 function OnBeforeSceneUnloaded(self)

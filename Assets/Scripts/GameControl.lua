@@ -3,8 +3,7 @@ Author: Joel Van Eenwyk, Ryan Monday
 Purpose: Controls the enemy and does other management
 --]]
 
-Debug:Enable(true)
-Debug:SetupLines(20, 1)
+kEnemyScale = 0.4
 
 function AddSprite(sprite, velocity, removeFunc)
 	local spriteEntry = {}
@@ -27,14 +26,24 @@ function RemoveSpriteDeferred(sprite)
 end
 
 function OnAfterSceneLoaded(self) 
-	self.enemy = Game:GetEntity("Enemy")
-	self.enemy:SetVisible(false)
-	self.time = 0
-	self.enemies = {}
+	Debug:Enable(true)
+	Debug:SetupLines(20, 1)
+
+	G.screenWidth, G.screenHeight = Screen:GetViewportSize()
+	Debug:PrintLine("Width: " .. G.screenWidth .. ", Height: " .. G.screenHeight)
 	
 	G.sprites = {}
 	G.AddSprite = AddSprite
 	G.RemoveSpriteDeferred = RemoveSpriteDeferred
+
+	math.clamp = function(n, low, high)
+		return math.min(math.max(n, low), high)
+	end
+
+	-- Hide the global enemy entity
+	self.enemy = Game:GetEntity("Enemy")
+	self.enemy:SetVisible(false)
+	self.enemySpawnTimer = 0
 end
 
 function UpdateSprites(self)
@@ -45,8 +54,7 @@ function UpdateSprites(self)
 		if sprite.remove or sprite.removeFunc(sprite.entity) then
 			table.insert(toDelete, sprite)
 		else
-			local position = sprite.entity:GetPosition()
-			position.y = position.y + (dt * sprite.velocity)
+			local position = sprite.entity:GetPosition() + (sprite.velocity * dt)
 			sprite.entity:SetPosition(position)
 		end
 	end
@@ -64,15 +72,20 @@ end
 
 function OnThink(self)
 	local kTimeDifference = Timer:GetTimeDiff()
-	self.time = self.time + kTimeDifference
+	self.enemySpawnTimer = self.enemySpawnTimer + kTimeDifference
 	
-	if self.time > 0.8 then
-		local enemy = Game:CreateEntity(Vision.hkvVec3(10,23,0), "Sprite", "", "Enemy")
-		local default = Vision.hkvVec3(Util:GetRandInt(500), 24, 0)
+	if self.enemySpawnTimer > 0.8 then
+		local enemy = Game:CreateEntity(Vision.hkvVec3(10, 23, 0), "Sprite", "", "Enemy")
 		
-		enemy:SetScaling(0.3)
-		enemy:SetCenterPosition(default)
+		enemy:SetScaling(kEnemyScale)
 		enemy:SetOrientation(0, 0, 180)
+
+		local default = Vision.hkvVec3(
+			enemy:GetWidth() + Util:GetRandInt(G.screenWidth - enemy:GetWidth() * 2),
+			-enemy:GetHeight(),
+			0)
+		enemy:SetCenterPosition(default)
+
 		enemy:UpdateProperty("TextureFilename", "Textures/SpriteSheets/EnemyShip.png")	
 		enemy:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/EnemyShip.xml")
 		
@@ -81,12 +94,12 @@ function OnThink(self)
 		enemy.EnemyControlScript:SetOwner(enemy)
 		
 		local removeFunc = function(entity)
-			return entity:GetPosition().y > 500
+			return entity:GetPosition().y > (G.screenHeight + entity:GetHeight())
 		end
 
-		G.AddSprite(enemy, 100, removeFunc)
+		G.AddSprite(enemy, Vision.hkvVec3(0, 100, 0), removeFunc)
 		
-		self.time = 0
+		self.enemySpawnTimer = 0
 	end
 	
 	UpdateSprites(self)

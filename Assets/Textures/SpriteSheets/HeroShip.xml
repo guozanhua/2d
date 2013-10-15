@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="HeroShip.png">
+<TextureAtlas imagePath="HeroShip.png" width="1024" height="2048">
 	<SubTexture name="basePose.tga" x="0" y="175" width="234" height="173" ox="10" oy="52" original_width="256" original_height="256"/>
 	<SubTexture name="rollLeft_0000.tga" x="0" y="350" width="234" height="173" ox="10" oy="52" original_width="256" original_height="256"/>
 	<SubTexture name="rollLeft_0001.tga" x="0" y="525" width="234" height="173" ox="11" oy="52" original_width="256" original_height="256"/>

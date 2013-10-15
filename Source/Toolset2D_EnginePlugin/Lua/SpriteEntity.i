@@ -15,9 +15,12 @@ public:
   void Pause();
   void Play();
 
+  float GetWidth();
+  float GetHeight();
+
   // Converts a pixel coordinate on the sprite to the new scaled/rotated/transformed
   // position, which is useful for attachment points
-  hkvVec3 GetPoint(float x, float y);
+  hkvVec3 GetPoint(float x, float y, float z = 0.0f);
 
   void SetCenterPosition(hkvVec3 position);
 

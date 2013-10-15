@@ -90,8 +90,11 @@ public:
 	TOOLSET_2D_IMPEXP void SetFullscreenMode(bool enabled);
 	TOOLSET_2D_IMPEXP bool IsFullscreenMode() const;
 
-	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y) const;
+	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y, float z = 0.0f) const;
 	TOOLSET_2D_IMPEXP void SetCenterPosition(const hkvVec3 &position);
+
+	TOOLSET_2D_IMPEXP float GetWidth() const;
+	TOOLSET_2D_IMPEXP float GetHeight() const;
 
 protected:
 	void CommonInit();
@@ -105,6 +108,8 @@ protected:
 	const hkvVec2 *GetVertices() const;
 
 	bool GetIntersection(const hkvVec2 &p1, const hkvVec2 &p2, const hkvVec2 &p3, const hkvVec2 &p4, hkvVec2 *result) const;
+	
+	hkvVec2 GetDimensions() const;
 
 private:
 
@@ -120,6 +125,9 @@ private:
 
 	// Tracks whether or not the spritesheet and XML data have been loaded
 	bool m_loaded;
+
+	int m_sourceWidth;
+	int m_sourceHeight;
 
 	int m_currentState;
 	int m_currentFrame;

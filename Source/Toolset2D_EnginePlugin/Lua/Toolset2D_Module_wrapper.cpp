@@ -10235,7 +10235,91 @@ fail:
 }
 
 
-static int _wrap_Sprite_GetPoint(lua_State* L) {
+static int _wrap_Sprite_GetWidth(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("GetWidth",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetWidth",1,"Sprite *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_GetWidth",1,SWIGTYPE_p_Sprite);
+  }
+  
+  result = (float)(arg1)->GetWidth();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_GetHeight(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("GetHeight",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetHeight",1,"Sprite *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_GetHeight",1,SWIGTYPE_p_Sprite);
+  }
+  
+  result = (float)(arg1)->GetHeight();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_GetPoint__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float arg2 ;
+  float arg3 ;
+  float arg4 ;
+  hkvVec3 result;
+  
+  SWIG_check_num_args("GetPoint",4,4)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetPoint",2,"float");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("GetPoint",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("GetPoint",4,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_GetPoint",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  arg4 = (float)lua_tonumber(L, 4);
+  result = (arg1)->GetPoint(arg2,arg3,arg4);
+  {
+    hkvVec3 * resultptr = new hkvVec3((const hkvVec3 &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_hkvVec3,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_GetPoint__SWIG_1(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
   float arg2 ;
@@ -10265,6 +10349,75 @@ static int _wrap_Sprite_GetPoint(lua_State* L) {
 fail:
   lua_error(L);
   return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_GetPoint(lua_State* L) {
+  int argc;
+  int argv[5]={
+    1,2,3,4,5
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 3) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Sprite, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isnumber(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isnumber(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_Sprite_GetPoint__SWIG_1(L);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Sprite, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isnumber(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isnumber(L,argv[2]);
+        }
+        if (_v) {
+          {
+            _v = lua_isnumber(L,argv[3]);
+          }
+          if (_v) {
+            return _wrap_Sprite_GetPoint__SWIG_0(L);
+          }
+        }
+      }
+    }
+  }
+  
+  lua_pushstring(L,"Wrong arguments for overloaded function 'Sprite_GetPoint'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    GetPoint(Sprite *,float,float,float)\n"
+    "    GetPoint(Sprite *,float,float)\n");
+  lua_error(L);return 0;
 }
 
 
@@ -10329,6 +10482,8 @@ static swig_lua_method swig_Sprite_methods[] = {
     {"SetFramePercent", _wrap_Sprite_SetFramePercent}, 
     {"Pause", _wrap_Sprite_Pause}, 
     {"Play", _wrap_Sprite_Play}, 
+    {"GetWidth", _wrap_Sprite_GetWidth}, 
+    {"GetHeight", _wrap_Sprite_GetHeight}, 
     {"GetPoint", _wrap_Sprite_GetPoint}, 
     {"SetCenterPosition", _wrap_Sprite_SetCenterPosition}, 
     {0,0}
