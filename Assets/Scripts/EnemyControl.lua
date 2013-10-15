@@ -4,6 +4,6 @@ Purpose: Controls the sprite
 --]]
 
 function OnSpriteCollision(self, sprite)
-	Debug:PrintLine("Collision2!")
-	self:Remove()
+	G.RemoveSpriteDeferred(sprite)
+	G.RemoveSpriteDeferred(self)
 end

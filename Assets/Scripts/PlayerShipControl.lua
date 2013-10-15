@@ -19,52 +19,26 @@ function FireWeapon(self)
 		local offset2 = self:GetPoint(84, 97)
 		offset2.z = layer
 				
+		local removeFunc = function(entity)
+			return entity:GetPosition().y < 50
+		end
+		
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileLeft:UpdateProperty("TextureFilename", "Textures/missile.png")
 		missileLeft:SetScaling(scale)
 		missileLeft:SetCenterPosition(offset1)
-		table.insert(self.missiles, missileLeft)
+		G.AddSprite(missileLeft, -600, removeFunc)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileRight:SetScaling(scale)
 		missileRight:SetCenterPosition(offset2)	
-		missileRight:UpdateProperty("TextureFilename", "Textures/missile.png")	
-		table.insert(self.missiles, missileRight)
+		missileRight:UpdateProperty("TextureFilename", "Textures/missile.png")
+		G.AddSprite(missileRight, -600, removeFunc)
 		
 		self.fireDelay = 0.1
 	else
 		self.fireDelay = self.fireDelay - Timer:GetTimeDiff()
 	end
-end
-
-function UpdateMissiles(self)
-	local dt = Timer:GetTimeDiff()
-	local toDelete = {}
-
-	for key, missile in ipairs(self.missiles) do
-		local pos =	missile:GetPosition()
-		pos.y = pos.y - (dt * 500)
-
-		if pos.y < 0 then
-			table.insert(toDelete, missile)
-		else
-			missile:SetPosition(pos)
-		end
-	end
-
-	for _, missileToDelete in ipairs(toDelete) do
-		for index, missile in ipairs(self.missiles) do
-			if missile == missileToDelete then
-				missile:Remove()
-				table.remove(self.missiles, index)
-				break
-			end
-		end
-	end
-end
-
-function OnSpriteCollision(self, sprite)
-	Debug:PrintLine("Collision!")
 end
 
 function OnAfterSceneLoaded(self)
@@ -96,7 +70,6 @@ function OnAfterSceneLoaded(self)
 	self.roll = 0
 	self:SetPosition(self.x, self.y, 0) 
 	
-	self.missiles = {}
 	self.fireDelay = 0
 end
 
@@ -181,6 +154,4 @@ function OnThink(self)
 	if keyFire or touchFire and touchUp == false then
 		FireWeapon(self)
 	end
-	
-	UpdateMissiles(self)
 end
