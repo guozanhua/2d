@@ -90,8 +90,15 @@ public:
 	TOOLSET_2D_IMPEXP void SetFullscreenMode(bool enabled);
 	TOOLSET_2D_IMPEXP bool IsFullscreenMode() const;
 
+	TOOLSET_2D_IMPEXP void SetPlayOnce(bool enabled);
+	TOOLSET_2D_IMPEXP bool IsPlayOnce() const;
+
+	TOOLSET_2D_IMPEXP void SetCollision(bool enabled);
+	TOOLSET_2D_IMPEXP bool IsColliding() const;
+
 	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y, float z = 0.0f) const;
 	TOOLSET_2D_IMPEXP void SetCenterPosition(const hkvVec3 &position);
+	TOOLSET_2D_IMPEXP hkvVec3 GetCenterPosition();
 
 	TOOLSET_2D_IMPEXP float GetWidth() const;
 	TOOLSET_2D_IMPEXP float GetHeight() const;
@@ -107,8 +114,6 @@ protected:
 	VTextureObject *GetTexture() const;
 	const hkvVec2 *GetVertices() const;
 
-	bool GetIntersection(const hkvVec2 &p1, const hkvVec2 &p2, const hkvVec2 &p3, const hkvVec2 &p4, hkvVec2 *result) const;
-	
 	hkvVec2 GetDimensions() const;
 
 private:
@@ -133,6 +138,8 @@ private:
 	int m_currentFrame;
 	float m_frameTime;
 	bool m_paused;
+	bool m_playOnce;
+	bool m_collide;
 	hkvVec2 m_scrollOffset;
 
 	VTextureObjectPtr m_spSpriteSheetTexture;

@@ -61,6 +61,12 @@ namespace Toolset2D_Managed
 		void SetFullscreenMode(bool enabled);
 		bool IsFullscreenMode();
 
+		void SetPlayOnce(bool enabled);
+		bool IsPlayOnce();
+
+		void SetCollision(bool enabled);
+		bool IsColliding();
+
 	private:
 		bool m_bIsVisible;
 		

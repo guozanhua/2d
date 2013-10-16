@@ -396,8 +396,8 @@
             },
             "File": {
                 "Hash": 2880460491,
-                "TimeStamp": 1381868985117942200,
-                "LastEditTime": 1381868987843301200
+                "TimeStamp": 1381873578622792400,
+                "LastEditTime": 1381886510180566700
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -440,6 +440,62 @@
                 }
             }
         },
+        "Textures/SpriteSheets/Explosion_v1.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2352928804,
+                "TimeStamp": 1381885241728849400,
+                "LastEditTime": 1381886511473566700
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/Explosion_v2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2692573523,
+                "TimeStamp": 1381885249426619100,
+                "LastEditTime": 1381886511928566700
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
         "Textures/SpriteSheets/HeroShip.png": {
             "AssetType": "Texture",
             "Common": {
@@ -453,8 +509,8 @@
             },
             "File": {
                 "Hash": 1964070483,
-                "TimeStamp": 1381868980232262000,
-                "LastEditTime": 1381868982909702600
+                "TimeStamp": 1381873572362166400,
+                "LastEditTime": 1381886512244566700
             },
             "Texture": {
                 "FileFormat": "PNG",

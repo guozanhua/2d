@@ -210,4 +210,24 @@ namespace Toolset2D_Managed
 	{
 		return m_pSprite->IsFullscreenMode();
 	}
+
+	void EngineInstanceSprite::SetPlayOnce(bool enabled)
+	{
+		m_pSprite->SetPlayOnce(enabled);
+	}
+
+	bool EngineInstanceSprite::IsPlayOnce()
+	{
+		return m_pSprite->IsPlayOnce();
+	}
+
+	void EngineInstanceSprite::SetCollision(bool enabled)
+	{
+		m_pSprite->SetCollision(enabled);
+	}
+
+	bool EngineInstanceSprite::IsColliding()
+	{
+		return m_pSprite->IsColliding();
+	}
 }

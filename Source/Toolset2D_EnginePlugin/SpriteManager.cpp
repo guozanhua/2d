@@ -210,12 +210,12 @@ void SpriteManager::Update()
 		{
 			sprite->Update();
 
-			if (!sprite->IsFullscreenMode())
+			if (sprite->IsColliding())
 			{
 				for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
 				{
 					Sprite *otherSprite = m_sprites[otherSpriteIndex];
-					if (!otherSprite->IsFullscreenMode() && sprite->IsOverlapping(otherSprite))
+					if (otherSprite->IsColliding() && sprite->IsOverlapping(otherSprite))
 					{
 						sprite->OnCollision(otherSprite);
 						otherSprite->OnCollision(sprite);

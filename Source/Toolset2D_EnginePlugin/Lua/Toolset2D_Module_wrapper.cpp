@@ -10453,6 +10453,85 @@ fail:
 }
 
 
+static int _wrap_Sprite_GetCenterPosition(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  hkvVec3 result;
+  
+  SWIG_check_num_args("GetCenterPosition",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCenterPosition",1,"Sprite *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_GetCenterPosition",1,SWIGTYPE_p_Sprite);
+  }
+  
+  result = (arg1)->GetCenterPosition();
+  {
+    hkvVec3 * resultptr = new hkvVec3((const hkvVec3 &) result);
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_hkvVec3,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_SetPlayOnce(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  bool arg2 ;
+  
+  SWIG_check_num_args("SetPlayOnce",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetPlayOnce",1,"Sprite *");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetPlayOnce",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetPlayOnce",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  (arg1)->SetPlayOnce(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_SetCollision(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  bool arg2 ;
+  
+  SWIG_check_num_args("SetCollision",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCollision",1,"Sprite *");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetCollision",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetCollision",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  (arg1)->SetCollision(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_Sprite_Cast(lua_State* L) {
   int SWIG_arg = 0;
   VTypedObject *arg1 = (VTypedObject *) 0 ;
@@ -10486,6 +10565,9 @@ static swig_lua_method swig_Sprite_methods[] = {
     {"GetHeight", _wrap_Sprite_GetHeight}, 
     {"GetPoint", _wrap_Sprite_GetPoint}, 
     {"SetCenterPosition", _wrap_Sprite_SetCenterPosition}, 
+    {"GetCenterPosition", _wrap_Sprite_GetCenterPosition}, 
+    {"SetPlayOnce", _wrap_Sprite_SetPlayOnce}, 
+    {"SetCollision", _wrap_Sprite_SetCollision}, 
     {0,0}
 };
 static swig_lua_attribute swig_Sprite_attributes[] = {

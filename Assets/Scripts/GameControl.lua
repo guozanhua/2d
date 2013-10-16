@@ -3,7 +3,7 @@ Author: Joel Van Eenwyk, Ryan Monday
 Purpose: Controls the enemy and does other management
 --]]
 
-kEnemyScale = 0.4
+--[[ Below is used for game script --]]
 
 function AddSprite(sprite, velocity, removeFunc)
 	local spriteEntry = {}
@@ -16,6 +16,10 @@ function AddSprite(sprite, velocity, removeFunc)
 	table.insert(G.sprites, spriteEntry)
 end
 
+function GetNumSprites()
+	return table.getn(G.sprites)
+end
+
 function RemoveSpriteDeferred(sprite)
 	for _, spriteEntry in ipairs(G.sprites) do		
 		if spriteEntry.entity == sprite then
@@ -25,33 +29,24 @@ function RemoveSpriteDeferred(sprite)
 	end
 end
 
-function OnAfterSceneLoaded(self) 
-	Debug:Enable(true)
-	Debug:SetupLines(20, 1)
-
-	G.screenWidth, G.screenHeight = Screen:GetViewportSize()
-	Debug:PrintLine("Width: " .. G.screenWidth .. ", Height: " .. G.screenHeight)
-	
-	G.sprites = {}
-	G.AddSprite = AddSprite
-	G.RemoveSpriteDeferred = RemoveSpriteDeferred
-
-	math.clamp = function(n, low, high)
-		return math.min(math.max(n, low), high)
+function IsSpriteRemoved(sprite)
+	local removed = true
+	for _, spriteEntry in ipairs(G.sprites) do		
+		if spriteEntry.entity == sprite then
+			removed = spriteEntry.remove
+			break
+		end
 	end
-
-	-- Hide the global enemy entity
-	self.enemy = Game:GetEntity("Enemy")
-	self.enemy:SetVisible(false)
-	self.enemySpawnTimer = 0
+	return removed
 end
 
-function UpdateSprites(self)
+function UpdateSprites()
 	local dt = Timer:GetTimeDiff()
 	local toDelete = {}
 
 	for _, sprite in ipairs(G.sprites) do		
-		if sprite.remove or sprite.removeFunc(sprite.entity) then
+		if sprite.remove or
+		   (sprite.removeFunc ~= nil and sprite.removeFunc(sprite.entity)) then
 			table.insert(toDelete, sprite)
 		else
 			local position = sprite.entity:GetPosition() + (sprite.velocity * dt)
@@ -67,6 +62,39 @@ function UpdateSprites(self)
 				break
 			end
 		end
+	end
+end
+
+function InitializeScene()
+	Debug:Enable(true)
+	Debug:SetupLines(20, 1)
+
+	G.screenWidth, G.screenHeight = Screen:GetViewportSize()
+	Debug:PrintLine("Width: " .. G.screenWidth .. ", Height: " .. G.screenHeight)
+	
+	G.sprites = {}
+	G.AddSprite = AddSprite
+	G.RemoveSpriteDeferred = RemoveSpriteDeferred
+	G.IsSpriteRemoved = IsSpriteRemoved
+	G.GetNumSprites = GetNumSprites
+
+	math.clamp = function(n, low, high)
+		return math.min(math.max(n, low), high)
+	end
+end
+
+--[[ Below is used for the entity update --]]
+
+kEnemyScale = 0.4
+
+function OnAfterSceneLoaded(self)
+	if self == nil then
+		InitializeScene()
+	else
+		-- Hide the global enemy entity
+		self.enemy = Game:GetEntity("Enemy")
+		self.enemy:SetVisible(false)
+		self.enemySpawnTimer = 0
 	end
 end
 
@@ -102,5 +130,6 @@ function OnThink(self)
 		self.enemySpawnTimer = 0
 	end
 	
-	UpdateSprites(self)
+	UpdateSprites()
 end
+

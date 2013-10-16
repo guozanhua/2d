@@ -10,4 +10,6 @@ shaders/misc_00/multassigned.bmp	AssetMgmt_data/transformed/multassigned824c8cnc
 textures/missile.png	AssetMgmt_data/transformed/missilebqlxw8dclgdtc.dds	Usage="Undefined",sRGB=false
 textures/scrollingbgspace.tga	AssetMgmt_data/transformed/scrollingbgspace172fdhxclgdtc.dds	Usage="Undefined",sRGB=false
 textures/spritesheets/enemyship.png	AssetMgmt_data/transformed/enemyshipbrd2qtdclgdtc.dds	Usage="Undefined",sRGB=false
+textures/spritesheets/explosion_v1.png	AssetMgmt_data/transformed/explosion_v18shqs4jclgdtc.dds	Usage="Undefined",sRGB=false
+textures/spritesheets/explosion_v2.png	AssetMgmt_data/transformed/explosion_v2b0#c9bdclgdtc.dds	Usage="Undefined",sRGB=false
 textures/spritesheets/heroship.png	AssetMgmt_data/transformed/heroship7b4bqbdclgdtc.dds	Usage="Undefined",sRGB=false

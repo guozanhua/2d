@@ -23,6 +23,11 @@ public:
   hkvVec3 GetPoint(float x, float y, float z = 0.0f);
 
   void SetCenterPosition(hkvVec3 position);
+  hkvVec3 GetCenterPosition();
+
+  void SetPlayOnce(bool enabled);
+  
+  void SetCollision(bool enabled);
 
   %extend{
     VSWIG_CREATE_CAST(Sprite)

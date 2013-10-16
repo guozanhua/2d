@@ -73,10 +73,15 @@ void Sprite::Clear()
 	Fullscreen = false;
 	ScrollSpeed.setZero();
 
+	m_spSpriteSheetTexture = NULL;
+	m_spTextureAnimation = NULL;
+	m_sourceWidth = m_sourceHeight = -1;
 	m_currentState = -1;
 	m_currentFrame = -1;
 	m_frameTime = 0.f;
 	m_paused = false;
+	m_playOnce = false;
+	m_collide = true;
 	m_scrollOffset.setZero();
 
 	ClearTextures();
@@ -354,8 +359,20 @@ void Sprite::ThinkFunction()
 		if (m_frameTime >= inverseFramerate)
 		{
 			const int numCells = state->cells.GetSize();
-			m_currentFrame = (m_currentFrame + 1) % numCells;
+			const int lastFrame = m_currentFrame;
+
+			m_currentFrame = (lastFrame + 1) % numCells;
 			m_frameTime -= dt;
+
+			if (m_currentFrame < lastFrame)
+			{
+				this->TriggerScriptEvent("OnSpriteStateEnd");
+				if (m_playOnce)
+				{
+					m_currentFrame = numCells - 1;
+					Pause();
+				}
+			}
 		}
 	}
 }
@@ -391,6 +408,7 @@ void Sprite::Play()
 
 void Sprite::Pause()
 {
+	m_frameTime = 0.f;
 	m_paused = true;
 }
 
@@ -414,10 +432,37 @@ bool Sprite::IsFullscreenMode() const
 	return Fullscreen;
 }
 
+void Sprite::SetPlayOnce(bool enabled)
+{
+	m_playOnce = enabled;
+}
+
+bool Sprite::IsPlayOnce() const
+{
+	return m_playOnce;
+}
+
+void Sprite::SetCollision(bool enabled)
+{
+	m_collide = enabled;
+}
+
+bool Sprite::IsColliding() const
+{
+	return m_collide && !IsFullscreenMode();
+}
+
 void Sprite::SetCenterPosition(const hkvVec3 &position)
 {
 	const hkvVec2 dimensions = GetDimensions();
 	SetPosition(position.x - dimensions.x / 2.f, position.y - dimensions.y / 2.f, position.z);
+}
+
+hkvVec3 Sprite::GetCenterPosition()
+{
+	const hkvVec2 dimensions = GetDimensions();
+	const hkvVec3 &position = GetPosition();
+	return hkvVec3(position.x + dimensions.x / 2.f, position.y + dimensions.y / 2.f, position.z);
 }
 
 float Sprite::GetWidth() const
@@ -685,52 +730,6 @@ void Sprite::OnCollision(Sprite *other)
 	this->TriggerScriptEvent("OnSpriteCollision", "*o", other);
 }
 
-bool Sprite::GetIntersection(const hkvVec2 &p1, const hkvVec2 &p2, const hkvVec2 &p3, const hkvVec2 &p4, hkvVec2 *result) const
-{
-	bool intersecting = true;
-
-	// Store the values for fast access and easy
-	// equations-to-code conversion
-	float x1 = p1.x, x2 = p2.x, x3 = p3.x, x4 = p4.x;
-	float y1 = p1.y, y2 = p2.y, y3 = p3.y, y4 = p4.y;
-
-	float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-
-	// If d is zero, there is no intersection
-	if (hkvMath::isZero(d))
-	{
-		intersecting = false;
-	}
-	else
-	{
-		// Get the x and y
-		float pre = (x1 * y2 - y1 * x2), post = (x3 * y4 - y3 * x4);
-		float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
-		float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d;
-
-		// Check if the x and y coordinates are within both lines
-		if ( x < min(x1, x2) || x > max(x1, x2) ||
-			 x < min(x3, x4) || x > max(x3, x4) )
-		{
-			intersecting = false;
-		}
-		else if ( y < min(y1, y2) || y > max(y1, y2) ||
-			      y < min(y3, y4) || y > max(y3, y4) )
-		{
-			intersecting = false;
-		}
-
-		// Return the point of intersection4
-		if (intersecting && result != NULL)
-		{
-			result->x = x;
-			result->y = y;
-		}
-	}
-
-	return intersecting;
-}
-
 bool Sprite::IsOverlapping(Sprite *other) const
 {
 	const hkvVec2 *otherVertices = other->GetVertices();
@@ -797,6 +796,8 @@ void Sprite::Serialize(VArchive &ar)
 		ar >> ScrollSpeed.x;
 		ar >> ScrollSpeed.y;
 		ar >> Fullscreen;
+		ar >> m_playOnce;
+		ar >> m_collide;
 	} 
 	else
 	{
@@ -809,6 +810,8 @@ void Sprite::Serialize(VArchive &ar)
 		ar << ScrollSpeed.x;
 		ar << ScrollSpeed.y;
 		ar << Fullscreen;
+		ar << m_playOnce;
+		ar << m_collide;
 	}
 }
 

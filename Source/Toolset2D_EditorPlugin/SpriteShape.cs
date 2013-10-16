@@ -147,6 +147,8 @@ namespace Toolset2D
                 EngineNode.SetFullscreenMode(m_fullscreen);
                 EngineNode.SetScroll(m_scrollX, m_scrollY);
                 EngineNode.SetCurrentState(m_state);
+                EngineNode.SetPlayOnce(m_playOnce);
+                EngineNode.SetCollision(m_collision);
             }
         }
 
@@ -318,6 +320,36 @@ namespace Toolset2D
             set
             {
                 m_scrollY = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        bool m_playOnce;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(3)]
+        [Description("PlayOnce")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public bool PlayOnce
+        {
+            get { return EngineNode.IsPlayOnce(); }
+            set
+            {
+                m_playOnce = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+        
+        bool m_collision;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(3)]
+        [Description("Collide")]
+        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
+        public bool Collide
+        {
+            get { return EngineNode.IsColliding(); }
+            set
+            {
+                m_collision = value;
                 SetEngineInstanceBaseProperties();
             }
         }

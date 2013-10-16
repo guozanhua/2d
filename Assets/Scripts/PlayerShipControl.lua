@@ -10,7 +10,7 @@ kMissileLayer = 7
 kMissileScale = 0.2
 
 -- Add a delay (in milliseconds) to when you can fire
-kMissilemissileFireTimer = 0.1
+kMissileFireTimer = 0.1
 
 -- Velocity of the missile
 kMissileVelocity = Vision.hkvVec3(0, -600, 0)
@@ -19,10 +19,7 @@ kMissileTexture = "Textures/missile.png"
 
 function FireWeapon(self)
 	if self.missileFireTimer <= 0 then
-		local default = Vision.hkvVec3(0, 0, 0)
-		local layer = 7
-		local scale = 0.2
-		
+		local default = Vision.hkvVec3(0, 0, 0)		
 		local offset1 = self:GetPoint(171, 97, kMissileLayer)
 		local offset2 = self:GetPoint(84, 97, kMissileLayer)
 		local velocity = Vision.hkvVec3(0, -600, 0)
@@ -32,18 +29,18 @@ function FireWeapon(self)
 		end
 		
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
-		missileLeft:SetScaling(scale)
+		missileLeft:SetScaling(kMissileScale)
 		missileLeft:SetCenterPosition(offset1)
+		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
 		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileRight:SetScaling(scale)
+		missileRight:SetScaling(kMissileScale)
 		missileRight:SetCenterPosition(offset2)	
 		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
 		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
 		
-		self.missileFireTimer = kMissilemissileFireTimer
+		self.missileFireTimer = kMissileFireTimer
 	else
 		self.missileFireTimer = self.missileFireTimer - Timer:GetTimeDiff()
 	end
@@ -80,10 +77,6 @@ function OnAfterSceneLoaded(self)
 		Vision.hkvVec3(G.screenWidth * 0.5, G.screenHeight - self:GetHeight() - 10, 0) )
 	
 	self.missileFireTimer = 0
-
-	math.clamp = function(n, low, high)
-		return math.min(math.max(n, low), high)
-	end
 end
 
 function OnBeforeSceneUnloaded(self)
