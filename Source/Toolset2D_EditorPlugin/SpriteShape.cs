@@ -6,12 +6,13 @@ using System.Drawing.Design;
 using System.Collections.Generic;
 using CSharpFramework;
 using CSharpFramework.Math;
+using CSharpFramework.Scene;
 using CSharpFramework.Shapes;
 using CSharpFramework.Actions;
 using CSharpFramework.PropertyEditors;
 using CSharpFramework.DynamicProperties;
 using CSharpFramework.UndoRedo;
-using CSharpFramework.Scene;
+using CSharpFramework.Controls;
 using CSharpFramework.View;
 using CSharpFramework.Serialization;
 using Toolset2D_Managed;
@@ -64,6 +65,7 @@ namespace Toolset2D
         public SpriteShape(string name)
             : base(name)
         {
+            AddHint(HintFlags_e.HideGizmo);
         }
 
         #endregion
@@ -167,23 +169,6 @@ namespace Toolset2D
         }        
         #endregion
 
-        public override void OnSelected()
-        {
-            base.OnSelected();
-
-            // TODO: Override the gizmo with our own custom 2D gizmo
-            //EditorManager.ActiveView.Gizmo
-            //EditorManager.ActiveView.ProjectionMode = VisionViewBase.ProjectionMode_e.Front;
-        }
-        
-        public override void OnUnSelected()
-        {
-            base.OnUnSelected();
-
-            // TODO
-            //EditorManager.ActiveView.ProjectionMode = VisionViewBase.ProjectionMode_e.Perspective;
-        }
-
         #region Serialization and Export
 
         /// <summary>
@@ -240,6 +225,11 @@ namespace Toolset2D
             return base.OnExport(info);
         }
 
+        public override void OnDeserialization()
+        {
+            base.OnDeserialization();
+            AddHint(HintFlags_e.HideGizmo);
+        }
         #endregion
 
         #region Properties
@@ -339,7 +329,7 @@ namespace Toolset2D
             }
         }
         
-        bool m_collision;
+        bool m_collision = true;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
         PropertyOrder(3)]
         [Description("Collide")]

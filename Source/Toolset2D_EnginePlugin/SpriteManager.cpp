@@ -178,11 +178,11 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 void SpriteManager::Render()
 {
 	IVRender2DInterface *pRender = Vision::RenderLoopHelper.BeginOverlayRendering();	
+
 	pRender->SetDepth(512.f);
 	pRender->SetScissorRect(NULL);
-
-	VSimpleRenderState_t state;
-	state.SetTransparency(VIS_TRANSP_ALPHA);
+	
+	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_ALWAYSVISIBLE | RENDERSTATEFLAG_FILTERING | RENDERSTATEFLAG_DOUBLESIDED);
 
 	// Sort all the sprites by their Z order
 	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), CompareSprites);
@@ -190,10 +190,7 @@ void SpriteManager::Render()
 	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
-		if ((m_sprites[spriteIndex]->GetVisibleBitmask() & VIS_ENTITY_VISIBLE) != FALSE)
-		{
-			m_sprites[spriteIndex]->Render(pRender, state);
-		}
+		m_sprites[spriteIndex]->Render(pRender, state);
 	}
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
@@ -201,25 +198,30 @@ void SpriteManager::Render()
 
 void SpriteManager::Update()
 {
+	// Update all the sprites first so we're sure their vertices are up to date
+	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+	{
+		Sprite *sprite = m_sprites[spriteIndex];
+		sprite->Update();
+	}
+
 	// Check to see if there are any overlaps and report it
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
 		Sprite *sprite = m_sprites[spriteIndex];
 
-		if ((sprite->GetVisibleBitmask() & VIS_ENTITY_VISIBLE) != FALSE)
+		// Only worry about sprites that have collision enabled
+		if (sprite->IsColliding())
 		{
-			sprite->Update();
-
-			if (sprite->IsColliding())
+			// Check this sprite against 
+			for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
 			{
-				for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
+				Sprite *otherSprite = m_sprites[otherSpriteIndex];
+				if (otherSprite->IsColliding() &&
+					(sprite->IsOverlapping(otherSprite) || otherSprite->IsOverlapping(sprite)))
 				{
-					Sprite *otherSprite = m_sprites[otherSpriteIndex];
-					if (otherSprite->IsColliding() && sprite->IsOverlapping(otherSprite))
-					{
-						sprite->OnCollision(otherSprite);
-						otherSprite->OnCollision(sprite);
-					}
+					sprite->OnCollision(otherSprite);
+					otherSprite->OnCollision(sprite);
 				}
 			}
 		}

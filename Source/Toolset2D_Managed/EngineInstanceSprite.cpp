@@ -66,6 +66,9 @@ namespace Toolset2D_Managed
 		if (m_pSprite != NULL)
 		{
 			IVRenderInterface* pRI = Vision::Contexts.GetCurrentContext()->GetRenderInterface();
+			VColorRef color;
+			bool render = false;
+			float width = 1.f;
 
 			// render this shape as a small bounding box. Use a slightly larger bounding box if it is selected
 			switch (mode)
@@ -73,13 +76,36 @@ namespace Toolset2D_Managed
 			case ShapeRenderMode::Normal:
 				if (m_bIsVisible)
 				{
-					m_pSprite->DebugRender(pRI, 4.f, VColorRef(255,0,0,80), false);
+					color = VColorRef(255, 0, 0, 80);
+					render = true;
 				}
 				break;
 
 			case ShapeRenderMode::Selected:
-				m_pSprite->DebugRender(pRI, 5.f, VColorRef(255,160,0,140), false);
+				color = VColorRef(255, 160, 0, 140);
+				render = true;
 				break;
+			}
+
+			if (render)
+			{
+				int edges[8] = {0, 1,
+					1, 3,
+					3, 2,
+					2, 0};
+
+				m_pSprite->Update();
+				const hkvVec2 *vertices = m_pSprite->GetVertices();
+
+				for (int i = 0; i < 4; i++)
+				{
+					const int p1 = edges[i * 2 + 0];
+					const int p2 = edges[i * 2 + 1];
+					Vision::Game.DrawSingleLine2D(
+						vertices[p1].x, vertices[p1].y,
+						vertices[p2].x, vertices[p2].y,
+						color, width);
+				}
 			}
 		}
 	}

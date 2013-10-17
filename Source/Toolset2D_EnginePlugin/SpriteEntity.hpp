@@ -6,23 +6,15 @@ struct SpriteCell
 	VString name;
 	hkvVec2 offset;
 	hkvVec2 pivot;
-	int width;
-	int height;
-	int originalWidth;
-	int originalHeight;
+	float width;
+	float height;
+	float originalWidth;
+	float originalHeight;
 	int index;
 };
 
 struct SpriteState
 {
-	SpriteState() :
-	// Initialize the cells array to avoid allocations
-	//   TODO: This might be a bigger than it needs to be
-	cells(100)
-	{
-
-	}
-
 	VString name;
 	VArray<int> cells;
 	float framerate;
@@ -72,6 +64,8 @@ public:
 
 	TOOLSET_2D_IMPEXP void Update();
 
+	TOOLSET_2D_IMPEXP const hkvVec2 *GetVertices() const;
+
 	//----- Utility functions exposed to LUA
 
 	TOOLSET_2D_IMPEXP void OnCollision(Sprite *other);
@@ -112,7 +106,6 @@ protected:
 	void ClearTextures();
 	bool UpdateTextures();
 	VTextureObject *GetTexture() const;
-	const hkvVec2 *GetVertices() const;
 
 	hkvVec2 GetDimensions() const;
 
@@ -131,8 +124,8 @@ private:
 	// Tracks whether or not the spritesheet and XML data have been loaded
 	bool m_loaded;
 
-	int m_sourceWidth;
-	int m_sourceHeight;
+	float m_sourceWidth;
+	float m_sourceHeight;
 
 	int m_currentState;
 	int m_currentFrame;
