@@ -1,0 +1,672 @@
+{
+    "Configuration": {
+        "Name": "Assets",
+        "FormatVersion": 2,
+        "LastEditTime": 1379700010234661700
+    },
+    "Assets": {
+        "Fonts/Arial32_00.dds": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3915487704,
+                "TimeStamp": 1377121002342535000,
+                "LastEditTime": 1381367647579595500
+            },
+            "Texture": {
+                "FileFormat": "DDS",
+                "Width": 256,
+                "Height": 256,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Fonts/Arial_18_00.dds": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1201484646,
+                "TimeStamp": 1377121002362535000,
+                "LastEditTime": 1381367647613598900
+            },
+            "Texture": {
+                "FileFormat": "DDS",
+                "Width": 256,
+                "Height": 128,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Fonts/Arial_22_00.dds": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1037186940,
+                "TimeStamp": 1377121002368535000,
+                "LastEditTime": 1381367647685606100
+            },
+            "Texture": {
+                "FileFormat": "DDS",
+                "Width": 256,
+                "Height": 128,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Fonts/CourierNew_18_00.dds": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1705425836,
+                "TimeStamp": 1377121002373535000,
+                "LastEditTime": 1381367647749612500
+            },
+            "Texture": {
+                "FileFormat": "DDS",
+                "Width": 128,
+                "Height": 128,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Fonts/DebugFont_00.dds": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 345883119,
+                "TimeStamp": 1377121002384535000,
+                "LastEditTime": 1381367647806618200
+            },
+            "Texture": {
+                "FileFormat": "DDS",
+                "Width": 256,
+                "Height": 64,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Icons/Android/drawable-hdpi/icon.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3927435811,
+                "TimeStamp": 1377121002388535000,
+                "LastEditTime": 1379959954247240200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 128,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Icons/Android/drawable-ldpi/icon.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3927435811,
+                "TimeStamp": 1377121002389535000,
+                "LastEditTime": 1379959954283240200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 128,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Icons/Android/drawable-mdpi/icon.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3927435811,
+                "TimeStamp": 1377121002390535000,
+                "LastEditTime": 1379959954319240200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 128,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Shaders/Misc_00/MultAssigned.bmp": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2165401693,
+                "TimeStamp": 1377121002858535000,
+                "LastEditTime": 1381367647138551400
+            },
+            "Texture": {
+                "FileFormat": "BMP",
+                "Width": 128,
+                "Height": 128,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/missile.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2388659172,
+                "TimeStamp": 1382048175856667800,
+                "LastEditTime": 1382048176863768500
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 64,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/missile_evil.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2846252400,
+                "TimeStamp": 1382052821835219200,
+                "LastEditTime": 1382052822440279700
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 64,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/ScrollingBGSpace.tga": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3629514254,
+                "TimeStamp": 1382045893198410700,
+                "LastEditTime": 1382045894256516500
+            },
+            "Texture": {
+                "FileFormat": "TGA",
+                "Width": 512,
+                "Height": 1024,
+                "HasAlpha": false,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/EnemyShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2880460491,
+                "TimeStamp": 1382043759151241600,
+                "LastEditTime": 1382044221154272700
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 0
+                    }
+                },
+                "ios": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 1024
+                    }
+                },
+                "android": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 1024
+                    }
+                }
+            }
+        },
+        "Textures/SpriteSheets/EnemyShipV2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1580412404,
+                "TimeStamp": 1382052689102947300,
+                "LastEditTime": 1382052691015138500
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/Explosion_v1.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2352928804,
+                "TimeStamp": 1382043759191250000,
+                "LastEditTime": 1382044221384298000
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/Explosion_v2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2692573523,
+                "TimeStamp": 1382043759231258400,
+                "LastEditTime": 1382044221674329900
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/HeroShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1964070483,
+                "TimeStamp": 1382043759261264700,
+                "LastEditTime": 1382044221914356300
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 0
+                    }
+                },
+                "ios": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 1024
+                    }
+                },
+                "android": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 1024
+                    }
+                }
+            }
+        },
+        "Textures/starfield.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1664956884,
+                "TimeStamp": 1382045528914986000,
+                "LastEditTime": 1382045529723066800
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/starfieldClose.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 465688833,
+                "TimeStamp": 1382052147285771000,
+                "LastEditTime": 1382052148092851700
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        }
+    },
+    "TrackedFiles": {
+
+    }
+}

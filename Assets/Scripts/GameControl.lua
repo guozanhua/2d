@@ -3,7 +3,7 @@ Author: Joel Van Eenwyk, Ryan Monday
 Purpose: Controls the enemy and does other management
 --]]
 
-kEnemyScale = 0.4
+kEnemyScale = 0.6
 kEnemySpawnTimeRangeStart = 0.7
 kEnemySpawnTimeRangeEnd = 1.2
 
@@ -127,8 +127,8 @@ function OnThink(self)
 		enemy:SetScaling(kEnemyScale)
 		enemy:SetOrientation(0, 0, 180)
 
-		enemy:UpdateProperty("TextureFilename", "Textures/SpriteSheets/EnemyShip.png")	
-		enemy:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/EnemyShip.xml")
+		enemy:UpdateProperty("TextureFilename", "Textures/SpriteSheets/EnemyShipV2.png")	
+		enemy:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/EnemyShipV2.xml")
 		
 		local default = Vision.hkvVec3(
 			enemy:GetWidth() / 2.0 + Util:GetRandInt(G.screenWidth - enemy:GetWidth()),
