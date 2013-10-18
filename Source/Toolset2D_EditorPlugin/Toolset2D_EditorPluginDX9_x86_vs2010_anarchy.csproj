@@ -75,10 +75,7 @@
     <Reference Include="CSharpFramework">
       <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\CSharpFramework.dll</HintPath>
     </Reference>
-    <Reference Include="FmodManaged">
-      <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\dev_dll\DX9\FmodManaged.dll</HintPath>
-    </Reference>
-    <Reference Include="ManagedBase, Version=2013.1.1.3612, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="ManagedBase">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Havok\AnarchySDK\Bin\win32_vs2010_anarchy\debug_dll\DX9\ManagedBase.dll</HintPath>
     </Reference>

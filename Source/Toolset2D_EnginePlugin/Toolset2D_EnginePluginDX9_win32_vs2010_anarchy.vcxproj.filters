@@ -28,5 +28,8 @@
     <None Include="Lua\SpriteEntity.i">
       <Filter>Lua</Filter>
     </None>
+    <None Include="Lua\SpriteManager.i">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>

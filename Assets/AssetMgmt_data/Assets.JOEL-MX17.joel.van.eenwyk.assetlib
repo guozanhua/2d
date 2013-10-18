@@ -299,34 +299,6 @@
                 "TemplateName": "Default"
             }
         },
-        "Shaders/Misc_00/MultAssigned.bmp": {
-            "AssetType": "Texture",
-            "Common": {
-                "Tags": "__NEW_ASSET__",
-                "Dependencies": [
-
-                ],
-                "Variants": [
-
-                ]
-            },
-            "File": {
-                "Hash": 2165401693,
-                "TimeStamp": 1376439471601704100,
-                "LastEditTime": 1381367647138551400
-            },
-            "Texture": {
-                "FileFormat": "BMP",
-                "Width": 128,
-                "Height": 128,
-                "HasAlpha": false,
-                "Usage": "Undefined",
-                "sRGB": false
-            },
-            "Transformations": {
-                "TemplateName": "Default"
-            }
-        },
         "Textures/missile.png": {
             "AssetType": "Texture",
             "Common": {
@@ -339,14 +311,42 @@
                 ]
             },
             "File": {
-                "Hash": 2873858883,
-                "TimeStamp": 1380055201298621500,
-                "LastEditTime": 1380055202302721900
+                "Hash": 2388659172,
+                "TimeStamp": 1382055291477875700,
+                "LastEditTime": 1382057018095749500
             },
             "Texture": {
                 "FileFormat": "PNG",
                 "Width": 64,
-                "Height": 64,
+                "Height": 128,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/missile_evil.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2846252400,
+                "TimeStamp": 1382055291479875900,
+                "LastEditTime": 1382057019231839900
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 64,
+                "Height": 128,
                 "HasAlpha": true,
                 "Usage": "Undefined",
                 "sRGB": false
@@ -367,9 +367,9 @@
                 ]
             },
             "File": {
-                "Hash": 327789695,
-                "TimeStamp": 1376969941135996600,
-                "LastEditTime": 1379959954657240200
+                "Hash": 3629514254,
+                "TimeStamp": 1382055291452873200,
+                "LastEditTime": 1382057019296787900
             },
             "Texture": {
                 "FileFormat": "TGA",
@@ -397,7 +397,7 @@
             "File": {
                 "Hash": 2880460491,
                 "TimeStamp": 1381873578622792400,
-                "LastEditTime": 1381886510180566700
+                "LastEditTime": 1382044221154272700
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -440,6 +440,34 @@
                 }
             }
         },
+        "Textures/SpriteSheets/EnemyShipV2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1580412404,
+                "TimeStamp": 1382055291469874900,
+                "LastEditTime": 1382057019454661500
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
         "Textures/SpriteSheets/Explosion_v1.png": {
             "AssetType": "Texture",
             "Common": {
@@ -454,7 +482,7 @@
             "File": {
                 "Hash": 2352928804,
                 "TimeStamp": 1381885241728849400,
-                "LastEditTime": 1381886511473566700
+                "LastEditTime": 1382044221384298000
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -482,7 +510,7 @@
             "File": {
                 "Hash": 2692573523,
                 "TimeStamp": 1381885249426619100,
-                "LastEditTime": 1381886511928566700
+                "LastEditTime": 1382044221674329900
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -510,7 +538,7 @@
             "File": {
                 "Hash": 1964070483,
                 "TimeStamp": 1381873572362166400,
-                "LastEditTime": 1381886512244566700
+                "LastEditTime": 1382044221914356300
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -551,6 +579,62 @@
                         "MaximumSize": 1024
                     }
                 }
+            }
+        },
+        "Textures/starfield.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1664956884,
+                "TimeStamp": 1382055291480876000,
+                "LastEditTime": 1382057019323766300
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/starfieldClose.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 465688833,
+                "TimeStamp": 1382055291482876200,
+                "LastEditTime": 1382057019369729500
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "Usage": "Undefined",
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
             }
         }
     },

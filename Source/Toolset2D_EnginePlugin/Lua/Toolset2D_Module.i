@@ -21,5 +21,6 @@
 %{
 	#include "Toolset2D_EnginePluginPCH.h"
 %}
- 
+
 %include <SpriteEntity.i>
+%include <SpriteManager.i>

@@ -34,8 +34,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir))
 
 TOOL_NAME = "Toolset2D"
 
-IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user"]
-IGNORE_FOLDER_LIST = ["obj", "thumbnails", "transformed"]
+IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user", ".sdf", ".opensdf", ".ipch"]
+IGNORE_FOLDER_LIST = ["obj", "thumbnails", "AndroidTemp"]
 
 # (src, dest) pairs for packaging
 # src is relative to package root, dest is the path in the zip to place the file at.
@@ -43,7 +43,16 @@ IGNORE_FOLDER_LIST = ["obj", "thumbnails", "transformed"]
 PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
                  "Source": ("Tools/%s/Source" % TOOL_NAME),
                  "Assets": ("Tools/%s/Assets" % TOOL_NAME),
+                 ("Bin/win32_vs2010_anarchy/debug_dll/DX9/SpriteGame.exe"): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/SpriteGame.exe"),
+                 ("Bin/win32_vs2010_anarchy/debug_dll/DX9/SpriteGamePlugin.vPluginD"): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/SpriteGamePlugin.vPluginD"),
+                 ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME),
+                 ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME),
+                 ("Bin/win32_vs2010_anarchy/dev_dll/DX9/SpriteGame.exe"): ("Bin/win32_vs2010_anarchy/dev_dll/DX9/SpriteGame.exe"),
+                 ("Bin/win32_vs2010_anarchy/dev_dll/DX9/SpriteGamePlugin.vPlugin"): ("Bin/win32_vs2010_anarchy/dev_dll/DX9/SpriteGamePlugin.vPlugin"),
+                 ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s_Managed.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s_Managed.dll" % TOOL_NAME),
+                 ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s_EnginePlugin.vPlugin" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s_EnginePlugin.vPlugin" % TOOL_NAME),
+                 ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/dev_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME),
                  "Workspace": ("Tools/%s/Workspace" % TOOL_NAME)}
 
 # Define the command line options. Need to put this after getDatestamp
@@ -125,7 +134,7 @@ def makePackage(packagePath):
         includes text from any of them
         """
         for ignore in IGNORE_FOLDER_LIST:
-            if ('\\%s' % ignore) in folder.lower():
+            if ('\\%s' % ignore.lower()) in folder.lower():
                 return True
         return False
 

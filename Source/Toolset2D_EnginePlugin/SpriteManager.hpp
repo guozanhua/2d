@@ -17,6 +17,7 @@ public:
 	
 	TOOLSET_2D_IMPEXP void AddSprite(Sprite *sprite);
 	TOOLSET_2D_IMPEXP void RemoveSprite(Sprite *sprite);
+	TOOLSET_2D_IMPEXP int GetNumSprites();
 
 	void Render();
 	void Update();

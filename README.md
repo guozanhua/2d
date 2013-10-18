@@ -3,11 +3,22 @@ Project Anarchy: 2D Toolset
 
 ![alt text](http://www.projectanarchy.com/sites/default/files/Project%20Anarchy%20Logo.png "Project Anarchy")
 
+Features
+--------
+
+- Support for [Shoebox][2]. For more information about it check out the [Polycount thread][3]
+
 TODO
 ----
 
+- Extra blending modes for Sprite
+- Shader support for Sprite
+- Optimzied rendering that uses actual meshes
+- Add a SetDirection LUA call for setting orientation of sprite
+- Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:AddSprite
+- Add a Clone LUA call
 - Add 2D physics component using Havok Physics
-- Add support for [Shoebox][2]. For more information about it check out the [Polycount thread][3]
+- Add support for using particle effects
 
 Reference
 ---------

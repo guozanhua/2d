@@ -11,6 +11,7 @@
 #include <Toolset2D_EnginePluginPCH.h>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 #include <Vision/Runtime/Base/System/Memory/VMemDbg.hpp>
+#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/Toolset2D_Module_wrapper.hpp>
 
 #ifndef _VISION_DOC
 
@@ -345,38 +346,6 @@ SWIGINTERNINLINE int SWIG_CheckState(int r) {
 extern "C" {
 #endif
 
-typedef void *(*swig_converter_func)(void *, int *);
-typedef struct swig_type_info *(*swig_dycast_func)(void **);
-
-/* Structure to store information on one type */
-typedef struct swig_type_info {
-  const char             *name;			/* mangled name of this type */
-  const char             *str;			/* human readable name of this type */
-  swig_dycast_func        dcast;		/* dynamic cast function down a hierarchy */
-  struct swig_cast_info  *cast;			/* linked list of types that can cast into this type */
-  void                   *clientdata;		/* language specific type data */
-  int                    owndata;		/* flag if the structure owns the clientdata */
-} swig_type_info;
-
-/* Structure to store a type and conversion function used for casting */
-typedef struct swig_cast_info {
-  swig_type_info         *type;			/* pointer to type that is equivalent to this type */
-  swig_converter_func     converter;		/* function to cast the void pointers */
-  struct swig_cast_info  *next;			/* pointer to next cast in linked list */
-  struct swig_cast_info  *prev;			/* pointer to the previous cast */
-} swig_cast_info;
-
-/* Structure used to store module information
- * Each module generates one structure like this, and the runtime collects
- * all of these structures and stores them in a circularly linked list.*/
-typedef struct swig_module_info {
-  swig_type_info         **types;		/* Array of pointers to swig_type_info structures that are in this module */
-  size_t                 size;		        /* Number of types in this module */
-  struct swig_module_info *next;		/* Pointer to next element in circularly linked list */
-  swig_type_info         **type_initial;	/* Array of initially generated type structures */
-  swig_cast_info         **cast_initial;	/* Array of initially generated casting structures */
-  void                    *clientdata;		/* Language specific module data */
-} swig_module_info;
 
 /* 
   Compare two type names skipping the space characters, therefore
@@ -759,80 +728,6 @@ SWIG_UnpackDataName(const char *c, void *ptr, size_t sz, const char *name) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "lua.h"
-#include "lauxlib.h"
-#include <stdlib.h>  /* for malloc */
-#include <assert.h>  /* for a few sanity tests */
-
-/* -----------------------------------------------------------------------------
- * global swig types
- * ----------------------------------------------------------------------------- */
-/* Constant table */
-#define SWIG_LUA_INT     1
-#define SWIG_LUA_FLOAT   2
-#define SWIG_LUA_STRING  3
-#define SWIG_LUA_POINTER 4
-#define SWIG_LUA_BINARY  5
-#define SWIG_LUA_CHAR    6
-
-/* Structure for variable linking table */
-typedef struct {
-  const char *name;
-  lua_CFunction get;
-  lua_CFunction set;
-} swig_lua_var_info;
-
-/* Constant information structure */
-typedef struct {
-    int type;
-    char *name;
-    long lvalue;
-    double dvalue;
-    void   *pvalue;
-    swig_type_info **ptype;
-} swig_lua_const_info;
-
-typedef struct {
-  const char     *name;
-  lua_CFunction   method;
-} swig_lua_method;
-
-typedef struct {
-  const char     *name;
-  lua_CFunction   getmethod;
-  lua_CFunction   setmethod;
-} swig_lua_attribute;
-
-typedef struct swig_lua_class {
-  const char    *name;
-  swig_type_info   **type;
-  lua_CFunction  constructor;
-  void    (*destructor)(void *);
-  swig_lua_method   *methods;
-  swig_lua_attribute     *attributes;
-  struct swig_lua_class **bases;
-  const char **base_names;
-} swig_lua_class;
-
-/* this is the struct for wrappering all pointers in SwigLua
-*/
-typedef struct {
-  swig_type_info   *type;
-  int     own;  /* 1 if owned & must be destroyed */
-  void        *ptr;
-} swig_lua_userdata;
-
-/* this is the struct for wrapping arbitary packed binary data
-(currently it is only used for member function pointers)
-the data ordering is similar to swig_lua_userdata, but it is currently not possible
-to tell the two structures apart within SWIG, other than by looking at the type
-*/
-typedef struct {
-  swig_type_info   *type;
-  int     own;  /* 1 if owned & must be destroyed */
-  char data[1];       /* arbitary amount of data */    
-} swig_lua_rawdata;
 
 /* Common SWIG API */
 #define SWIG_NewPointerObj(L, ptr, type, owner)       SWIG_Lua_NewPointerObj(L, (void *)ptr, type, owner)
@@ -1627,44 +1522,8 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 /* ------------------------------ end luarun.swg  ------------------------------ */
 
 
-/* -------- TYPES TABLE (BEGIN) -------- */
-
-#define SWIGTYPE_p_IVObjectComponent swig_types[0]
-#define SWIGTYPE_p_Sprite swig_types[1]
-#define SWIGTYPE_p_VBitmask swig_types[2]
-#define SWIGTYPE_p_VColorRef swig_types[3]
-#define SWIGTYPE_p_VDynamicMesh swig_types[4]
-#define SWIGTYPE_p_VTextureObject swig_types[5]
-#define SWIGTYPE_p_VTypedObject swig_types[6]
-#define SWIGTYPE_p_VisBaseEntity_cl swig_types[7]
-#define SWIGTYPE_p_VisObject3D_cl swig_types[8]
-#define SWIGTYPE_p_VisObjectKey_cl swig_types[9]
-#define SWIGTYPE_p_VisSurface_cl swig_types[10]
-#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[11]
-#define SWIGTYPE_p___int64 swig_types[12]
-#define SWIGTYPE_p_char swig_types[13]
-#define SWIGTYPE_p_float swig_types[14]
-#define SWIGTYPE_p_hkvAlignedBBox swig_types[15]
-#define SWIGTYPE_p_hkvMat3 swig_types[16]
-#define SWIGTYPE_p_hkvVec3 swig_types[17]
-#define SWIGTYPE_p_int swig_types[18]
-#define SWIGTYPE_p_long swig_types[19]
-#define SWIGTYPE_p_p_char swig_types[20]
-#define SWIGTYPE_p_p_unsigned_long swig_types[21]
-#define SWIGTYPE_p_short swig_types[22]
-#define SWIGTYPE_p_signed___int64 swig_types[23]
-#define SWIGTYPE_p_signed_char swig_types[24]
-#define SWIGTYPE_p_unsigned___int64 swig_types[25]
-#define SWIGTYPE_p_unsigned_char swig_types[26]
-#define SWIGTYPE_p_unsigned_int swig_types[27]
-#define SWIGTYPE_p_unsigned_long swig_types[28]
-#define SWIGTYPE_p_unsigned_short swig_types[29]
-static swig_type_info *swig_types[31];
-static swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
-#define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
-#define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-
-/* -------- TYPES TABLE (END) -------- */
+swig_type_info *swig_types[32];
+swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
 
 #define SWIG_name      "Toolset2D"
 #define SWIG_init      luaopen_Toolset2D
@@ -2972,6 +2831,9 @@ SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
     Vision::Error.Warning("[Lua] Cannot cast to %s!","Sprite");
     return NULL;
   }
+
+  #include "SpriteManager.hpp"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10577,6 +10439,37 @@ static swig_lua_class *swig_Sprite_bases[] = {0,0};
 static const char *swig_Sprite_base_names[] = {"VisBaseEntity_cl *",0};
 static swig_lua_class _wrap_class_Sprite = { "Sprite", &SWIGTYPE_p_Sprite,0,0, swig_Sprite_methods, swig_Sprite_attributes, swig_Sprite_bases, swig_Sprite_base_names };
 
+static int _wrap_new_SpriteManager(lua_State* L) {
+  int SWIG_arg = 0;
+  SpriteManager *result = 0 ;
+  
+  SWIG_check_num_args("SpriteManager::SpriteManager",0,0)
+  result = (SpriteManager *)new SpriteManager();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SpriteManager,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_SpriteManager(void *obj) {
+SpriteManager *arg1 = (SpriteManager *) obj;
+delete arg1;
+}
+static swig_lua_method swig_SpriteManager_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_SpriteManager_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_SpriteManager_bases[] = {0};
+static const char *swig_SpriteManager_base_names[] = {0};
+static swig_lua_class _wrap_class_SpriteManager = { "SpriteManager", &SWIGTYPE_p_SpriteManager,_wrap_new_SpriteManager, swig_delete_SpriteManager, swig_SpriteManager_methods, swig_SpriteManager_attributes, swig_SpriteManager_bases, swig_SpriteManager_base_names };
+
 #ifdef __cplusplus
 }
 #endif
@@ -10652,6 +10545,7 @@ static void *_p_VisObject3D_clTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(
 }
 static swig_type_info _swigt__p_IVObjectComponent = {"_p_IVObjectComponent", "IVObjectComponent *", 0, 0, (void*)&_wrap_class_IVObjectComponent, 0};
 static swig_type_info _swigt__p_Sprite = {"_p_Sprite", "Sprite *", 0, 0, (void*)&_wrap_class_Sprite, 0};
+static swig_type_info _swigt__p_SpriteManager = {"_p_SpriteManager", "SpriteManager *", 0, 0, (void*)&_wrap_class_SpriteManager, 0};
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
 static swig_type_info _swigt__p_VDynamicMesh = {"_p_VDynamicMesh", "VDynamicMesh *", 0, 0, (void*)0, 0};
@@ -10684,6 +10578,7 @@ static swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "WORD *|U
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_IVObjectComponent,
   &_swigt__p_Sprite,
+  &_swigt__p_SpriteManager,
   &_swigt__p_VBitmask,
   &_swigt__p_VColorRef,
   &_swigt__p_VDynamicMesh,
@@ -10716,6 +10611,7 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_IVObjectComponent[] = {  {&_swigt__p_IVObjectComponent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Sprite[] = {  {&_swigt__p_Sprite, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_SpriteManager[] = {  {&_swigt__p_SpriteManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
@@ -10748,6 +10644,7 @@ static swig_cast_info _swigc__p_unsigned_short[] = {  {&_swigt__p_unsigned_short
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_IVObjectComponent,
   _swigc__p_Sprite,
+  _swigc__p_SpriteManager,
   _swigc__p_VBitmask,
   _swigc__p_VColorRef,
   _swigc__p_VDynamicMesh,
@@ -11019,15 +10916,11 @@ SWIG_PropagateClientData(void) {
 
 /* Forward declaration of where the user's %init{} gets inserted */
 void SWIG_init_user(lua_State* L );
-    
-#ifdef __cplusplus
-extern "C" {
-#endif
 /* this is the initialization function
   added at the very end of the code
   the function is always called SWIG_init, but an eariler #define will rename it
 */
-SWIGEXPORT int SWIG_init(lua_State* L)
+int SWIG_init(lua_State* L)
 {
   int i;
 
@@ -11143,10 +11036,6 @@ SWIGEXPORT int SWIG_init(lua_State* L)
   return 1;
 }
 
-#ifdef __cplusplus
-}
-#endif
-
 
 const char* SWIG_LUACODE=
   "";
@@ -11157,6 +11046,15 @@ void SWIG_init_user(lua_State* L)
   SWIG_Lua_dostring(L,SWIG_LUACODE);
 }
 
+void VSWIG_Lua_get_class_registry(lua_State* L){ SWIG_Lua_get_class_registry(L); }
+int  VSWIG_Lua_ConvertPtr(lua_State* L,int index,void** ptr,swig_type_info *type,int flags){ return SWIG_Lua_ConvertPtr(L,index,ptr,type,flags); }
+void VSWIG_Lua_NewPointerObj(lua_State* L,void* ptr,swig_type_info *type, int own){ SWIG_Lua_NewPointerObj(L,ptr,type,own); }
+void * VSWIG_TypeCast(swig_cast_info *ty, void *ptr, int *newmemory){ return SWIG_TypeCast(ty,ptr,newmemory); }
+swig_cast_info *VSWIG_TypeCheckStruct(swig_type_info *from, swig_type_info *ty){ return SWIG_TypeCheckStruct(from,ty); }
+void VSWIG_VisionLuaClassSet(lua_State* L) { VisionLuaClassSet(L); }
+void VSWIG_VisionLuaClassGet(lua_State* L) { VisionLuaClassGet(L); }
+swig_cast_info *VSWIG_TypeCheck(const char * fromName, swig_type_info *ty) { return SWIG_TypeCheck(fromName,ty); }
+const char *VSWIG_Lua_typename(lua_State *L, int tp){ return SWIG_Lua_typename(L, tp); }
 
 #if defined (__SNC__)
 #pragma diag_pop

@@ -36,13 +36,16 @@
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
+#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VLuaHelpers.hpp>
 
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
 
-extern "C" int luaopen_Toolset2D(lua_State *);
+#include "Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/Toolset2D_Module_wrapper.hpp"
+
+int luaopen_Toolset2D(lua_State *);
 
 #if defined(WIN32)
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath)
@@ -246,6 +249,11 @@ void SpriteManager::RemoveSprite(Sprite *sprite)
 	}
 }
 
+int SpriteManager::GetNumSprites()
+{
+	return m_sprites.GetLength();
+}
+
 void SpriteManager::RegisterLua()
 {
 	IVScriptManager* pSM = Vision::GetScriptManager();
@@ -255,6 +263,9 @@ void SpriteManager::RegisterLua()
 		if (pLuaState)
 		{
 			luaopen_Toolset2D(pLuaState);
+
+			VSWIG_PUSH_PROXY(pLuaState, SpriteManager, &SpriteManager::GlobalManager());
+			lua_setglobal(pLuaState, "SpriteManager");
 		}
 		else
 		{
