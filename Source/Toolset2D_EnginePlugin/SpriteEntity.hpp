@@ -1,24 +1,8 @@
 #ifndef SPRITE_ENTITY_HPP_INCLUDED
 #define SPRITE_ENTITY_HPP_INCLUDED
 
-struct SpriteCell
-{
-	VString name;
-	hkvVec2 offset;
-	hkvVec2 pivot;
-	float width;
-	float height;
-	float originalWidth;
-	float originalHeight;
-	int index;
-};
-
-struct SpriteState
-{
-	VString name;
-	VArray<int> cells;
-	float framerate;
-};
+struct SpriteState;
+struct SpriteData;
 
 class Sprite : public VisBaseEntity_cl
 {
@@ -52,7 +36,7 @@ public:
 
 	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
 
-	TOOLSET_2D_IMPEXP bool SetShoeBoxData(const char *spriteSheetFilename, const char *xmlFilename);
+	TOOLSET_2D_IMPEXP bool SetSpriteSheetData(const char *spriteSheetFilename, const char *xmlFilename);
 
 	TOOLSET_2D_IMPEXP const VArray<VString> GetStateNames() const;
 	TOOLSET_2D_IMPEXP const SpriteState *GetCurrentState() const;
@@ -103,7 +87,6 @@ protected:
 
 	void Clear();
 
-	void ClearTextures();
 	bool UpdateTextures();
 	VTextureObject *GetTexture() const;
 
@@ -124,9 +107,6 @@ private:
 	// Tracks whether or not the spritesheet and XML data have been loaded
 	bool m_loaded;
 
-	float m_sourceWidth;
-	float m_sourceHeight;
-
 	int m_currentState;
 	int m_currentFrame;
 	float m_frameTime;
@@ -135,18 +115,13 @@ private:
 	bool m_collide;
 	hkvVec2 m_scrollOffset;
 
-	VTextureObjectPtr m_spSpriteSheetTexture;
-	VisTextureAnimInstancePtr m_spTextureAnimation;
+	const SpriteData *m_spriteData;
 
-	VString m_spriteSheetFilename;
-	VString m_xmlDataFilename;
-	
-	VArray<SpriteCell> m_cells;
-	VArray<SpriteState> m_states;
 	hkvVec2 m_vertices[4];
 	hkvVec2 m_texCoords[4];
 
-	VDictionary<int> m_stateNameToIndex;
+	VString m_spriteSheetFilename;
+	VString m_xmlDataFilename;
 };
 
 #endif // SPRITE_ENTITY_HPP_INCLUDED

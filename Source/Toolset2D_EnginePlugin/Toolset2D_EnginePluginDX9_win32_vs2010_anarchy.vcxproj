@@ -80,10 +80,8 @@
       <OmitFramePointers>
       </OmitFramePointers>
       <Optimization>disabled</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePlugin.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;_DEBUG;HK_ANARCHY;HK_DEBUG;HK_DEBUG_SLOW;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;TOOLSET_2D_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;USE_HAVOK;VHAVOKMODULE_IMPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
@@ -162,10 +160,8 @@
       <OmitFramePointers>
       </OmitFramePointers>
       <Optimization>Full</Optimization>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)Toolset2D_EnginePlugin.pch</PrecompiledHeaderOutputFile>
       <PreprocessorDefinitions>_WINDOWS;WIN32;_WIN32;HK_ANARCHY;HK_DEBUG;_CONSOLE;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PROFILING;_VISION_WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_VR_DX9;TOOLSET_2D_ENGINE_PLUGIN_EXPORTS;HK_CONFIG_SIMD=1;USE_HAVOK;VHAVOKMODULE_IMPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>
@@ -220,7 +216,10 @@
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="SpriteEntity.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
-    <ClCompile Include="Toolset2D_EnginePluginPCH.cpp" />
+    <ClCompile Include="Toolset2D_EnginePluginPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
@@ -240,7 +239,10 @@ xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Run
 del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
+xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
+del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>
     </CustomBuild>

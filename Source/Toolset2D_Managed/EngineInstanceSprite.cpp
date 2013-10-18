@@ -11,8 +11,6 @@ namespace Toolset2D_Managed
 {
 	EngineInstanceSprite::EngineInstanceSprite() : IEngineShapeInstance()
 	{
-		m_bIsVisible = true;
-
 		// #warning, #verify (jve) - It seems necessary to use CreateEntity since it calls Init/InitVars, which can't be
 		// called manually inside Sprite due to protected linkage.
 		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
@@ -26,6 +24,14 @@ namespace Toolset2D_Managed
 			VASSERT(m_pSprite->GetRefCount() == 1);
 			m_pSprite->DisposeObject();
 			m_pSprite = NULL;
+		}
+	}
+
+	void EngineInstanceSprite::SetVisible(bool bStatus)
+	{
+		if (m_pSprite)
+		{
+			m_pSprite->SetVisibleBitmask(bStatus ? VIS_ENTITY_VISIBLE : VIS_ENTITY_INVISIBLE);
 		}
 	}
 
@@ -74,7 +80,7 @@ namespace Toolset2D_Managed
 			switch (mode)
 			{
 			case ShapeRenderMode::Normal:
-				if (m_bIsVisible)
+				if (m_pSprite->GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
 				{
 					color = VColorRef(255, 0, 0, 80);
 					render = true;
@@ -147,7 +153,7 @@ namespace Toolset2D_Managed
 		ConversionUtils::OnAttachComponent(m_pSprite, component);
 	}
 
-	void EngineInstanceSprite::SetShoeBoxData(String ^pFileName, String ^pXml)
+	void EngineInstanceSprite::SetSpriteSheetData(String ^pFileName, String ^pXml)
 	{
 		VString sFileName;
 		ConversionUtils::StringToVString(pFileName, sFileName);
@@ -167,7 +173,7 @@ namespace Toolset2D_Managed
 				xml = "";
 			}
 
-			m_pSprite->SetShoeBoxData(filename, xml);
+			m_pSprite->SetSpriteSheetData(filename, xml);
 		}
 	}
 

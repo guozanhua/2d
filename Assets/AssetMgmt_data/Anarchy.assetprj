@@ -57,7 +57,7 @@
                         "CreateMipMaps": true,
                         "DownscaleLevel": 0,
                         "MinimumSize": 0,
-                        "MaximumSize": 0
+                        "MaximumSize": 1024
                     }
                 },
                 "StaticMesh": {
@@ -94,7 +94,7 @@
                         "CreateMipMaps": true,
                         "DownscaleLevel": 0,
                         "MinimumSize": 0,
-                        "MaximumSize": 0
+                        "MaximumSize": 1024
                     }
                 },
                 "StaticMesh": {

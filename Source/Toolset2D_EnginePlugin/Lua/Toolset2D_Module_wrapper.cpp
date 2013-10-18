@@ -1536,6 +1536,9 @@ namespace swig {
 typedef struct{} LANGUAGE_OBJ;
 }
 
+
+	#include "Toolset2D_EnginePluginPCH.h"
+
 SWIGINTERN VColorRef *new_VColorRef__SWIG_3(VColorRef const &other){
       return new VColorRef(other.r, other.g, other.b, other.a);
     }
@@ -2820,7 +2823,7 @@ SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisT
   }
 
 
-	#include "Toolset2D_EnginePluginPCH.h"
+  #include "SpriteManager.hpp"
 
 
   #include "SpriteEntity.hpp"
@@ -2831,9 +2834,6 @@ SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
     Vision::Error.Warning("[Lua] Cannot cast to %s!","Sprite");
     return NULL;
   }
-
-  #include "SpriteManager.hpp"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9998,6 +9998,37 @@ static swig_lua_class *swig_IVObjectComponent_bases[] = {0,0};
 static const char *swig_IVObjectComponent_base_names[] = {"VisTypedEngineObject_cl *",0};
 static swig_lua_class _wrap_class_IVObjectComponent = { "IVObjectComponent", &SWIGTYPE_p_IVObjectComponent,0,0, swig_IVObjectComponent_methods, swig_IVObjectComponent_attributes, swig_IVObjectComponent_bases, swig_IVObjectComponent_base_names };
 
+static int _wrap_new_SpriteManager(lua_State* L) {
+  int SWIG_arg = 0;
+  SpriteManager *result = 0 ;
+  
+  SWIG_check_num_args("SpriteManager::SpriteManager",0,0)
+  result = (SpriteManager *)new SpriteManager();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SpriteManager,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_SpriteManager(void *obj) {
+SpriteManager *arg1 = (SpriteManager *) obj;
+delete arg1;
+}
+static swig_lua_method swig_SpriteManager_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_SpriteManager_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_SpriteManager_bases[] = {0};
+static const char *swig_SpriteManager_base_names[] = {0};
+static swig_lua_class _wrap_class_SpriteManager = { "SpriteManager", &SWIGTYPE_p_SpriteManager,_wrap_new_SpriteManager, swig_delete_SpriteManager, swig_SpriteManager_methods, swig_SpriteManager_attributes, swig_SpriteManager_bases, swig_SpriteManager_base_names };
+
 static int _wrap_Sprite_SetState(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
@@ -10438,37 +10469,6 @@ static swig_lua_attribute swig_Sprite_attributes[] = {
 static swig_lua_class *swig_Sprite_bases[] = {0,0};
 static const char *swig_Sprite_base_names[] = {"VisBaseEntity_cl *",0};
 static swig_lua_class _wrap_class_Sprite = { "Sprite", &SWIGTYPE_p_Sprite,0,0, swig_Sprite_methods, swig_Sprite_attributes, swig_Sprite_bases, swig_Sprite_base_names };
-
-static int _wrap_new_SpriteManager(lua_State* L) {
-  int SWIG_arg = 0;
-  SpriteManager *result = 0 ;
-  
-  SWIG_check_num_args("SpriteManager::SpriteManager",0,0)
-  result = (SpriteManager *)new SpriteManager();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SpriteManager,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_SpriteManager(void *obj) {
-SpriteManager *arg1 = (SpriteManager *) obj;
-delete arg1;
-}
-static swig_lua_method swig_SpriteManager_methods[] = {
-    {0,0}
-};
-static swig_lua_attribute swig_SpriteManager_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_class *swig_SpriteManager_bases[] = {0};
-static const char *swig_SpriteManager_base_names[] = {0};
-static swig_lua_class _wrap_class_SpriteManager = { "SpriteManager", &SWIGTYPE_p_SpriteManager,_wrap_new_SpriteManager, swig_delete_SpriteManager, swig_SpriteManager_methods, swig_SpriteManager_attributes, swig_SpriteManager_bases, swig_SpriteManager_base_names };
 
 #ifdef __cplusplus
 }

@@ -118,6 +118,23 @@ void SpriteManager::OneTimeDeInit()
 	IVScriptManager::OnScriptProxyCreation -= this;
 
 	VASSERT(m_sprites.GetSize() == 0);
+
+	for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
+	{
+		SpriteData *spriteData = m_spriteData[spriteDataIndex];
+
+		spriteData->cells.RemoveAll();
+		spriteData->states.RemoveAll();
+		spriteData->stateNameToIndex.Reset();
+		spriteData->spTextureAnimation = NULL;
+
+		V_SAFE_RELEASE(spriteData->spriteSheetTexture);
+		V_SAFE_RELEASE(spriteData->spTextureAnimation);
+
+		delete spriteData;
+		m_spriteData[spriteDataIndex] = NULL;
+	}
+	m_spriteData.RemoveAll();
 }
 
 void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
@@ -252,6 +269,176 @@ void SpriteManager::RemoveSprite(Sprite *sprite)
 int SpriteManager::GetNumSprites()
 {
 	return m_sprites.GetLength();
+}
+
+const SpriteData *SpriteManager::GetSpriteData(const VString &spriteSheetFilename, const VString &xmlDataFilename)
+{
+	for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
+	{
+		const SpriteData *data = m_spriteData[spriteDataIndex];
+		if (data->spriteSheetFilename == spriteSheetFilename &&
+			data->xmlDataFilename == xmlDataFilename)
+		{
+			return data;
+		}
+	}
+
+	SpriteData *spriteData = NULL;
+
+	VTextureObjectPtr spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
+	if (spSpriteSheetTexture)
+	{
+		spriteData = new SpriteData();
+		m_spriteData.Append(spriteData);
+
+		spriteData->sourceWidth = 0.f;
+		spriteData->sourceHeight = 0.f;
+
+		spriteData->spriteSheetFilename = spriteSheetFilename;
+		spriteData->xmlDataFilename = xmlDataFilename;
+
+		// Go ahead and add a reference to this texture
+		spriteData->spriteSheetTexture = spSpriteSheetTexture;
+		spriteData->spriteSheetTexture->AddRef();
+
+		// TODO: Perhaps it's a bit weird to have a spritesheet that also has animations on it--all of the cells
+		//       would have to be in the same places for each sheet, which is odd. Probably assert when there is
+		//       XML document AND a texture animation.
+		spriteData->spTextureAnimation = Vision::TextureManager.GetAnimationInstance(spriteData->spriteSheetTexture);
+		if (spriteData->spTextureAnimation)
+		{
+			spriteData->spTextureAnimation->AddRef();
+		}
+
+		TiXmlDocument xmlDocument;
+
+		// If we successfully load the XML, then there is data we can parse about the sprites in the sheet
+		if ( xmlDocument.LoadFile(xmlDataFilename, Vision::File.GetManager()) )
+		{
+			const char *szActionNode = "SubTexture";
+			TiXmlElement *rootElement = xmlDocument.RootElement();
+
+			rootElement->QueryFloatAttribute("width", &spriteData->sourceWidth);
+			rootElement->QueryFloatAttribute("height", &spriteData->sourceHeight);
+
+			for (TiXmlElement *pNode = rootElement->FirstChildElement(szActionNode);
+				pNode != NULL;
+				pNode = pNode->NextSiblingElement(szActionNode) )
+			{
+				const char *name = pNode->Attribute("name");
+
+				int x;
+				int y;
+				int width;
+				int height;
+				int originalWidth;
+				int originalHeight;
+				int ox;
+				int oy;
+
+				pNode->QueryIntAttribute("x", &x);
+				pNode->QueryIntAttribute("y", &y);
+				pNode->QueryIntAttribute("width", &width);
+				pNode->QueryIntAttribute("height", &height);
+				pNode->QueryIntAttribute("original_width", &originalWidth);
+				pNode->QueryIntAttribute("original_height", &originalHeight);
+				pNode->QueryIntAttribute("ox", &ox);
+				pNode->QueryIntAttribute("oy", &oy);
+
+				const int newCellIndex = spriteData->cells.Append(SpriteCell());
+				SpriteCell *currentCell = &spriteData->cells[newCellIndex];
+				currentCell->name = name;
+				currentCell->offset.x = static_cast<float>(x);
+				currentCell->offset.y = static_cast<float>(y);
+				currentCell->pivot.x = static_cast<float>(ox);
+				currentCell->pivot.y = static_cast<float>(oy);
+				currentCell->width = static_cast<float>(width);
+				currentCell->height = static_cast<float>(height);
+				currentCell->originalWidth = static_cast<float>(originalWidth);
+				currentCell->originalHeight = static_cast<float>(originalHeight);
+
+				const char *result = strrchr(name, '_');
+				int index = -1;
+				if (result != NULL)
+					index = result - name;
+
+				SpriteState *state = NULL;
+				int stateIndex = -1;
+				if (index == -1)
+				{
+					const char *extension = strrchr(name, '.');
+					int extensionIndex = -1;
+					if (extension != NULL)
+						extensionIndex = extension - name;
+					VString stateName = VString(name, extensionIndex);
+
+					stateIndex = spriteData->states.Append(SpriteState());
+					state = &spriteData->states[stateIndex];
+					state->name = stateName;
+					state->framerate = 30.0f;
+					spriteData->stateNameToIndex.Set(state->name, stateIndex);
+				}
+				else
+				{
+					VString s = name;
+					VString stateName = VString(name, index);
+					VString last = VString(&name[index + 1], strlen(name) - index);
+					VString number = VString(last.GetChar(), last.Find("."));
+					currentCell->index = atoi(number);
+
+					for (int i = 0; i < spriteData->states.GetSize(); i++)
+					{
+						if (spriteData->states[i].name == stateName)
+						{
+							stateIndex = i;
+							state = &spriteData->states[i];
+							break;
+						}
+					}
+
+					if (stateIndex == -1)
+					{
+						stateIndex = spriteData->states.Append(SpriteState());
+						state = &spriteData->states[stateIndex];
+						state->name = stateName;
+						state->framerate = 10.f;
+						spriteData->stateNameToIndex.Set(state->name, stateIndex);
+					}
+				}
+
+				state->cells.Append(newCellIndex);
+			}
+		}
+		// No XML describing the sprite sheet, but we do have a sprite texture
+		else if (spriteData->spriteSheetTexture != NULL)
+		{
+			int stateIndex = spriteData->states.Append(SpriteState());
+			SpriteState *state = &spriteData->states[stateIndex];
+			state->name = spriteData->spriteSheetFilename;
+			state->framerate = 30.0f;
+			state->cells.Add(0);
+			spriteData->stateNameToIndex.Set(state->name, stateIndex);
+
+			const int newCellIndex = spriteData->cells.Append(SpriteCell());
+			SpriteCell *currentCell = &spriteData->cells[newCellIndex];
+
+			char buffer[FS_MAX_PATH];
+			VFileHelper::GetFilenameNoExt(buffer, spriteData->spriteSheetFilename);
+			currentCell->name = buffer;
+			currentCell->offset.x = 0.f;
+			currentCell->offset.y = 0.f;
+			currentCell->pivot.x = 0.f;
+			currentCell->pivot.y = 0.f;
+
+			float textureWidth = static_cast<float>(spriteData->spriteSheetTexture->GetTextureWidth());
+			float textureHeight = static_cast<float>(spriteData->spriteSheetTexture->GetTextureHeight());
+
+			spriteData->sourceWidth = currentCell->width = currentCell->originalWidth = textureWidth;
+			spriteData->sourceHeight = currentCell->height = currentCell->originalHeight = textureHeight;
+		}
+	}
+
+	return spriteData;
 }
 
 void SpriteManager::RegisterLua()

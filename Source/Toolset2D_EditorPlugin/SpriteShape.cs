@@ -145,7 +145,7 @@ namespace Toolset2D
             base.SetEngineInstanceBaseProperties();
             if (HasEngineInstance())
             {
-                EngineNode.SetShoeBoxData(m_SpriteSheetFilename, m_ShoeBoxFilename);
+                EngineNode.SetSpriteSheetData(m_SpriteSheetFilename, m_ShoeBoxFilename);
                 EngineNode.SetFullscreenMode(m_fullscreen);
                 EngineNode.SetScroll(m_scrollX, m_scrollY);
                 EngineNode.SetCurrentState(m_state);

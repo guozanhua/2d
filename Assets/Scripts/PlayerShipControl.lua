@@ -17,6 +17,10 @@ kMissileVelocity = Vision.hkvVec3(0, -600, 0)
 
 kMissileTexture = "Textures/missile.png"
 
+kMoveSpeed = 300
+kRollSpeed = 5
+kRollRecoverSpeed = 4
+
 function FireWeapon(self)
 	if self.missileFireTimer <= 0 then
 		local default = Vision.hkvVec3(0, 0, 0)		
@@ -56,26 +60,27 @@ function OnAfterSceneLoaded(self)
 	self.playerInputMap:MapTrigger("KeyRight", "KEYBOARD", "CT_KB_D")
 	self.playerInputMap:MapTrigger("KeyUp", "KEYBOARD", "CT_KB_W")
 	self.playerInputMap:MapTrigger("KeyDown", "KEYBOARD", "CT_KB_S")
-	self.playerInputMap:MapTrigger("keyFire", "KEYBOARD", "CT_KB_SPACE")
+	self.playerInputMap:MapTrigger("KeyFire", "KEYBOARD", "CT_KB_SPACE")
 
 	-- Create a virtual thumbstick then setup playerInputMap for it
-	Input:CreateVirtualThumbStick()
-	self.playerInputMap:MapTriggerAxis("TouchLeft", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_LEFT", kDeadzone)
-	self.playerInputMap:MapTriggerAxis("TouchRight", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
-	self.playerInputMap:MapTriggerAxis("TouchUp", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
-	self.playerInputMap:MapTriggerAxis("TouchDown", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
-	self.playerInputMap:MapTrigger(
-		"touchFire",
-		{ (G.screenWidth * 0.5), (G.screenHeight * 0.5), G.screenWidth, G.screenHeight },
-		"CT_TOUCH_ANY")
+	if Application:GetPlatformName() ~= "WIN32DX9" and
+	   Application:GetPlatformName() ~= "WIN32DX11" then	
+		Input:CreateVirtualThumbStick()
+		self.playerInputMap:MapTriggerAxis("TouchLeft", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_LEFT", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("TouchRight", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("TouchUp", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("TouchDown", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
+		self.playerInputMap:MapTrigger(
+			"TouchFire",
+			{ (G.screenWidth * 0.5), (G.screenHeight * 0.5), G.screenWidth, G.screenHeight },
+			"CT_TOUCH_ANY")
+	end
 
 	-- Calculate the starting position of the ship
-	self.x = G.screenWidth * 0.5
-	self.y = G.screenHeight * 0.8
-	self.roll = 0
-	self:SetPosition(
+	self:SetCenterPosition(
 		Vision.hkvVec3(G.screenWidth * 0.5, G.screenHeight - self:GetHeight() - 10, 0) )
 	
+	self.roll = 0
 	self.missileFireTimer = 0
 end
 
@@ -84,50 +89,39 @@ function OnBeforeSceneUnloaded(self)
 	Input:DestroyMap(self.playerInputMap)
 end
 
-function OnThink(self)
-	-- Constants based off delta time
-	local kTimeDifference = Timer:GetTimeDiff()
-	local kMoveSpeed = 300 * kTimeDifference
-	local kInvMoveSpeed = kMoveSpeed * -1
-	local kRollSpeed = 5 * kTimeDifference
-	local kRollRecoverSpeed = 4 * kTimeDifference
-	
-	-- Get keyboard state
-	local keyLeft = self.playerInputMap:GetTrigger("KeyLeft")>0
-	local keyRight = self.playerInputMap:GetTrigger("KeyRight")>0
-	local keyUp = self.playerInputMap:GetTrigger("KeyUp")>0
-	local keyDown = self.playerInputMap:GetTrigger("KeyDown")>0
-	local keyFire = self.playerInputMap:GetTrigger("keyFire")>0
+function IsTriggered(self, key)
+	return (self.playerInputMap:GetTrigger(key) > 0)
+end
 
-	-- Get touch control state
-	local touchLeft = self.playerInputMap:GetTrigger("TouchLeft")>0
-	local touchRight = self.playerInputMap:GetTrigger("TouchRight")>0
-	local touchUp = self.playerInputMap:GetTrigger("TouchUp")>0
-	local touchDown = self.playerInputMap:GetTrigger("TouchDown")>0
-	local touchFire = self.playerInputMap:GetTrigger("touchFire")>0
-	
+function OnThink(self)
+	local dt = Timer:GetTimeDiff()
+	local moveSpeed = kMoveSpeed * dt
+	local invMoveSpeed = moveSpeed * -1
+	local rollSpeed = kRollSpeed * dt
+	local rollRecoverSpeed = kRollRecoverSpeed * dt
+
 	local hasMovementY = false
 	local hasMovementX = false
 	
-	if keyUp or touchUp then
-		self:IncPosition(0, kInvMoveSpeed, 0)
+	if IsTriggered(self, "KeyUp") or IsTriggered(self, "TouchUp") then
+		self:IncPosition(0, invMoveSpeed, 0)
 		hasMovementY = true
 	end
 
-	if keyDown or touchDown then
-		self:IncPosition(0, kMoveSpeed, 0)
+	if IsTriggered(self, "KeyDown") or IsTriggered(self, "TouchDown") then
+		self:IncPosition(0, moveSpeed, 0)
 		hasMovementY = true
 	end
 	
-	if keyLeft or touchLeft then
-		self:IncPosition(kInvMoveSpeed, 0, 0)
-		self.roll = self.roll - kRollSpeed
+	if IsTriggered(self, "KeyLeft") or IsTriggered(self, "TouchLeft") then
+		self:IncPosition(invMoveSpeed, 0, 0)
+		self.roll = self.roll - rollSpeed
 		hasMovementX = true
 	end
 
-	if keyRight or touchRight then
-		self:IncPosition(kMoveSpeed, 0, 0)
-		self.roll = self.roll + kRollSpeed
+	if IsTriggered(self, "KeyRight") or IsTriggered(self, "TouchRight") then
+		self:IncPosition(moveSpeed, 0, 0)
+		self.roll = self.roll + rollSpeed
 		hasMovementX = true
 	end
 	
@@ -137,7 +131,7 @@ function OnThink(self)
 	if not hasMovementX then
 		local absoluteRoll = math.abs(self.roll)
 		if absoluteRoll > 0 and (not hasMovementX) then
-			local rollCorrection = (self.roll / absoluteRoll) * kRollRecoverSpeed
+			local rollCorrection = (self.roll / absoluteRoll) * rollRecoverSpeed
 			
 			-- Make sure we don't over-correct as that would cause wobbling
 			if math.abs(rollCorrection) > absoluteRoll then
@@ -157,7 +151,8 @@ function OnThink(self)
  
 	self:SetFramePercent(math.abs(self.roll))
 	
-	if keyFire or touchFire and touchUp == false then
+	if (IsTriggered(self, "KeyFire") or IsTriggered(self, "TouchFire")) and
+	   not IsTriggered(self, "TouchUp") then
 		FireWeapon(self)
 	end
 end

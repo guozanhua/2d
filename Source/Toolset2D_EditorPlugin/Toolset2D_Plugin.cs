@@ -26,39 +26,81 @@ namespace Toolset2D
     {
         #region Dragging functions
 
-        private void createShape(System.Windows.Forms.DragEventArgs e)
+        public struct SpriteDropData
         {
-            _filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-            _sheet = "";
-            _xml = "";
-            _name = "";
+            public string _sheet;
+            public string _xml;
+            public string _name;
+        }
 
-            string[] extensions = ImageLoader.GetSupportedFileExtensions().ToArray();
-            foreach (string filename in _filenames)
+        static public Nullable<SpriteDropData> GetData(System.Windows.Forms.DragEventArgs e)
+        {
+            SpriteDropData data;
+
+            data._sheet = "";
+            data._xml = "";
+            data._name = "";
+
+            Nullable<SpriteDropData> result = null;
+
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string extension = Path.GetExtension(filename);
-                if (string.IsNullOrEmpty(_sheet) && extensions.Contains(extension))
+                string[] filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+
+                string[] extensions = ImageLoader.GetSupportedFileExtensions().ToArray();
+                foreach (string filename in filenames)
                 {
-                    _sheet = filename;
-                    _name = Path.GetFileNameWithoutExtension(filename);
+                    string extension = Path.GetExtension(filename);
+                    if (string.IsNullOrEmpty(data._sheet) && extensions.Contains(extension))
+                    {
+                        data._sheet = filename;
+                        data._name = Path.GetFileNameWithoutExtension(filename);
+                    }
+                    if (string.IsNullOrEmpty(data._xml) && extension == ".xml")
+                    {
+                        data._xml = filename;
+                    }
                 }
-                if (string.IsNullOrEmpty(_xml) && extension == ".xml")
+
+                result = data;
+            }
+            else if (e.Data.GetDataPresent("application/assetPath"))
+            {
+                string[] assetPaths = CSharpFramework.Contexts.IDropContext.GetAssetPaths(e);
+                string[] assetTypes = CSharpFramework.Contexts.IDropContext.GetAssetTypes(e);
+
+                for (int i = 0; i < assetPaths.Length; i++)
                 {
-                    _xml = filename;
+                    if (assetTypes[i] == "Texture")
+                    {
+                        data._sheet = assetPaths[i];
+                        data._name = Path.GetFileNameWithoutExtension(assetPaths[i]);
+                        result = data;
+                        break;
+                    }
                 }
             }
 
+            return result;
+        }
 
-            SpriteShape entity = new SpriteShape(_name);
-            entity.SpriteSheetFilename = _sheet;
-            entity.ShoeBoxData = _xml;
-            entity.SetHint(ShapeBase.HintFlags_e.RetainPositionAtCreation, true);
-            _dummyShape = entity;
+        private void CreateShape(System.Windows.Forms.DragEventArgs e)
+        {
+            Nullable<SpriteDropData> data = GetData(e);
+
+            if (data != null)
+            {
+                SpriteShape entity = new SpriteShape(data.Value._name);
+                entity.SpriteSheetFilename = data.Value._sheet;
+                entity.ShoeBoxData = data.Value._xml;
+                entity.SetHint(ShapeBase.HintFlags_e.RetainPositionAtCreation, true);
+                _dummyShape = entity;
+            }
         }
 
         public override void DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            createShape(e);
+            CreateShape(e);
         }
 
         public override void DragLeave()
@@ -84,7 +126,7 @@ namespace Toolset2D
 
         public override void DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            createShape(e);
+            CreateShape(e);
 
             // Clones the dummy and places it correctly into the scene.
             EditorManager.ActiveView.DropObject(_dummyShape, e);
@@ -109,10 +151,6 @@ namespace Toolset2D
 
         #region Member variables
 
-        private string[] _filenames;
-        private string _sheet;
-        private string _xml;
-        private string _name;
         private SpriteShape _dummyShape;
         #endregion
     }
@@ -146,24 +184,7 @@ namespace Toolset2D
 
         public void QueryDragDropContext(object sender, QueryDragDropContextArgs e)
         {
-            bool dragdrop = false;
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
-            {
-                string[] filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-                string[] extensions = ImageLoader.GetSupportedFileExtensions().ToArray();
-
-                foreach (string filename in filenames)
-                {
-                    string extension = Path.GetExtension(filename);
-                    if (extensions.Contains(extension))
-                    {
-                        dragdrop = true;
-                        break;
-                    }
-                }
-            }
-
-            if (dragdrop)
+            if (SpriteDropContext.GetData(e) != null)
             {
                 e._context = new SpriteDropContext();
             }

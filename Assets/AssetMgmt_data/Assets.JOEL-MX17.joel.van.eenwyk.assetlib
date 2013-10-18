@@ -397,7 +397,7 @@
             "File": {
                 "Hash": 2880460491,
                 "TimeStamp": 1381873578622792400,
-                "LastEditTime": 1382044221154272700
+                "LastEditTime": 1382119934583836000
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -408,36 +408,7 @@
                 "sRGB": false
             },
             "Transformations": {
-                "pcdx9": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 0
-                    }
-                },
-                "ios": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 1024
-                    }
-                },
-                "android": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 1024
-                    }
-                }
+                "TemplateName": "Default"
             }
         },
         "Textures/SpriteSheets/EnemyShipV2.png": {
@@ -538,7 +509,7 @@
             "File": {
                 "Hash": 1964070483,
                 "TimeStamp": 1381873572362166400,
-                "LastEditTime": 1382044221914356300
+                "LastEditTime": 1382119947959173400
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -549,36 +520,7 @@
                 "sRGB": false
             },
             "Transformations": {
-                "pcdx9": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 0
-                    }
-                },
-                "ios": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 1024
-                    }
-                },
-                "android": {
-                    "TextureTransformationRule": {
-                        "Compression": "Quality",
-                        "RemoveAlphaChannel": false,
-                        "CreateMipMaps": true,
-                        "DownscaleLevel": 0,
-                        "MinimumSize": 0,
-                        "MaximumSize": 1024
-                    }
-                }
+                "TemplateName": "Default"
             }
         },
         "Textures/starfield.png": {

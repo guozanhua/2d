@@ -79,13 +79,16 @@ def main():
 
                     if not os.path.exists(destination_file) or\
                        (os.stat(source_file).st_mtime - os.stat(destination_file).st_mtime) > 1:
-                        try:
-                            shutil.copy2(source_file, output_path)
-                            updated_files.append(source_file)
-                            print('Updating %s...' % destination_file)
-                        except IOError:
-                            print('Failed to update %s...' % destination_file)
-                            had_error = True
+                        for i in range(0, 5):
+                            try:
+                                shutil.copy2(source_file, output_path)
+                                updated_files.append(source_file)
+                                print('Updating %s...' % destination_file)
+                                had_error = False
+                                break
+                            except IOError:
+                                print('Failed to update %s...' % destination_file)
+                                had_error = True
 
         if had_error:
             print("Failed to deploy all files to destination!")

@@ -24,12 +24,7 @@ namespace Toolset2D_Managed
 			return System::IntPtr((void *)m_pSprite);
 		}
 
-		// overridden IEngineShapeInstance functions
-		VOVERRIDE void SetVisible(bool bStatus) override
-		{
-			m_bIsVisible = bStatus;
-		}
-
+		VOVERRIDE void SetVisible(bool bStatus) override;
 		VOVERRIDE void SetObjectKey(String ^key) override;
 		VOVERRIDE void SetPosition(float x,float y,float z) override;
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
@@ -44,7 +39,7 @@ namespace Toolset2D_Managed
 		// special functions
 		void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
 
-		void SetShoeBoxData(String ^pFileName, String ^pXml);
+		void SetSpriteSheetData(String ^pFileName, String ^pXml);
 
 		array<String^>^ GetStateNames();
 
@@ -67,9 +62,7 @@ namespace Toolset2D_Managed
 		void SetCollision(bool enabled);
 		bool IsColliding();
 
-	private:
-		bool m_bIsVisible;
-		
+	private:		
 		// pointer to native engine object
 		Sprite *m_pSprite;
 	};
