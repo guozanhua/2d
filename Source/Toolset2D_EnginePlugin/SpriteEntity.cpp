@@ -518,13 +518,13 @@ void Sprite::Update()
 		{
 			const hkvVec2 &scale = GetScaling().getAsVec2();
 
-			topLeft = cell->pivot.compMul(scale);
-			bottomRight.x = topLeft.x + cell->width * scale.x;
-			bottomRight.y = topLeft.y + cell->height * scale.y;
+			topLeft = cell->pivot;
+			bottomRight.x = topLeft.x + cell->width;
+			bottomRight.y = topLeft.y + cell->height;
 
 			const float ww = bottomRight.x - topLeft.x;
 			const float hh = bottomRight.y - topLeft.y;
-			hkvVec2 offset(ww / 2.0f, hh / 2.0f);
+			hkvVec2 offset(cell->originalWidth / 2.0f, cell->originalHeight / 2.0f);
 
 			// offset it so that we rotate around the center of the shape
 			topLeft -= offset;
@@ -539,13 +539,13 @@ void Sprite::Update()
 			// generate a matrix that rotates around Z
 			hkvMat3 rotation;
 			rotation.setRotationMatrixZ(m_vOrientation.z);
-
+			
 			// rotate all the corners
-			topLeft = (rotation * topLeft.getAsVec3(0.0f)).getAsVec2();
-			bottomRight = (rotation * bottomRight.getAsVec3(0.0f)).getAsVec2();
-			topRight = (rotation * topRight.getAsVec3(0.0f)).getAsVec2();
-			bottomLeft = (rotation * bottomLeft.getAsVec3(0.0f)).getAsVec2();
-
+			topLeft = (rotation * topLeft.getAsVec3(0.0f)).getAsVec2().compMul(scale);
+			bottomRight = (rotation * bottomRight.getAsVec3(0.0f)).getAsVec2().compMul(scale);
+			topRight = (rotation * topRight.getAsVec3(0.0f)).getAsVec2().compMul(scale);
+			bottomLeft = (rotation * bottomLeft.getAsVec3(0.0f)).getAsVec2().compMul(scale);
+			
 			// offset it back to the corner and final position
 			topLeft += worldPosition + offset;
 			bottomRight += worldPosition + offset;

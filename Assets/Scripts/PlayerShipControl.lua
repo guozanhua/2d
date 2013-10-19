@@ -26,7 +26,6 @@ function FireWeapon(self)
 		local default = Vision.hkvVec3(0, 0, 0)		
 		local offset1 = self:GetPoint(171, 97, kMissileLayer)
 		local offset2 = self:GetPoint(84, 97, kMissileLayer)
-		local velocity = Vision.hkvVec3(0, -600, 0)
 		
 		local removeFunc = function(entity)
 			return entity:GetPosition().y < -entity:GetHeight()

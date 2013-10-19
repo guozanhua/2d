@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{a3532733-0ff5-4d49-9b6a-797012d1bd48}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>update.py</StartupFile>
+    <StartupFile>spritesheet.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -16,7 +16,7 @@
     <Name>BuildSystem</Name>
     <RootNamespace>BuildSystem</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>--source C:\Projects\ProjectAnarchy\2d\Bin\win32_vs2010_anarchy\debug_dll</CommandLineArguments>
+    <CommandLineArguments>C:\Havok\ProjectAnarchy\2d\External\EnemyShipV2</CommandLineArguments>
     <InterpreterPath />
     <InterpreterArguments />
     <IsWindowsApplication>False</IsWindowsApplication>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="deploy.py" />
+    <Compile Include="spritesheet.py" />
     <Compile Include="update.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

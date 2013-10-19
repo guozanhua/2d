@@ -65,6 +65,7 @@ namespace Toolset2D
         public SpriteShape(string name)
             : base(name)
         {
+            m_collision = true;
             AddHint(HintFlags_e.HideGizmo);
         }
 
@@ -329,7 +330,7 @@ namespace Toolset2D
             }
         }
         
-        bool m_collision = true;
+        bool m_collision;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
         PropertyOrder(3)]
         [Description("Collide")]
