@@ -77,15 +77,15 @@ function FireWeapon(self)
 		
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileLeft:SetScaling(kMissileScale)
-		missileLeft:SetCenterPosition(offset1)
 		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
+		missileLeft:SetCenterPosition(offset1)
 		missileLeft:SetCollision(false)
 		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileRight:SetScaling(kMissileScale)
-		missileRight:SetCenterPosition(offset2)	
 		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
+		missileRight:SetCenterPosition(offset2)	
 		missileRight:SetCollision(false)
 		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
 		

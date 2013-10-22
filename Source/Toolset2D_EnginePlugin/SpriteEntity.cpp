@@ -173,6 +173,26 @@ void Sprite::SetCurrentFrame(int currentFrame)
 	}
 }
 
+float Sprite::GetCellWidth() const
+{
+	return ( GetCurretCell() ? GetCurretCell()->width : 0.f );
+}
+
+float Sprite::GetCellHeight() const
+{
+	return ( GetCurretCell() ? GetCurretCell()->height : 0.f );
+}
+
+float Sprite::GetOriginalCellWidth() const
+{
+	return ( GetCurretCell() ? GetCurretCell()->originalWidth : 0.f );
+}
+
+float Sprite::GetOriginalCellHeight() const
+{
+	return ( GetCurretCell() ? GetCurretCell()->originalHeight : 0.f );
+}
+
 void Sprite::ThinkFunction()
 {
 	if (m_currentState != -1 && !m_paused)
@@ -337,7 +357,6 @@ hkvVec2 Sprite::GetDimensions() const
 	float width = 0.f;
 	float height = 0.f;
 	VTextureObject *texture = GetTexture();
-	const hkvVec3 &scale = GetScaling();
 
 	if (m_currentState != -1)
 	{
@@ -351,11 +370,18 @@ hkvVec2 Sprite::GetDimensions() const
 		width = static_cast<float>(texture->GetTextureWidth());
 		height = static_cast<float>(texture->GetTextureHeight());
 	}
-
-	width *= scale.x;
-	height *= scale.y;
-
+	
 	return hkvVec2(width, height);
+}
+
+const SpriteCell *Sprite::GetCurretCell() const
+{
+	const SpriteCell *cell = NULL;
+	if (m_spriteData)
+	{
+		cell = &m_spriteData->cells[m_spriteData->states[m_currentState].cells[m_currentFrame]];
+	}
+	return cell;
 }
 
 hkvVec3 Sprite::GetPoint(float x, float y, float z) const
@@ -364,8 +390,6 @@ hkvVec3 Sprite::GetPoint(float x, float y, float z) const
 
 	if (m_currentState != -1)
 	{
-		const hkvVec2 &scale = GetScaling().getAsVec2();
-
 		const SpriteState *spriteState = &m_spriteData->states[m_currentState];
 		const SpriteCell *cell = &m_spriteData->cells[spriteState->cells[m_currentFrame]];
 		const float width = static_cast<float>(cell->originalWidth);
@@ -374,15 +398,19 @@ hkvVec3 Sprite::GetPoint(float x, float y, float z) const
 		hkvVec2 offset(width / 2.0f, height / 2.0f);
 
 		point -= offset;
-		point = point.compMul(scale);
 
 		// rotate the corners
 		hkvMat3 rotation;
 		rotation.setRotationMatrixZ(m_vOrientation.z);
-		point = (rotation * point.getAsVec3(0.0f)).getAsVec2();
+
+		const hkvVec2 &scale = GetScaling().getAsVec2();
+
+		point = (rotation * point.getAsVec3(0.0f)).getAsVec2().compMul(scale);
 
 		// offset it back to the corner and final position
-		point += GetPosition().getAsVec2() + offset.compMul(scale);
+		point += offset;
+
+		point += GetPosition().getAsVec2();
 	}
 
 	return point.getAsVec3(z);

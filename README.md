@@ -19,6 +19,7 @@ TODO
 - Add a Clone LUA call
 - Add 2D physics component using Havok Physics
 - Add support for using particle effects
+- Add support for hkvVec2 (see Source\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\hkvVec3.i)
 
 Reference
 ---------

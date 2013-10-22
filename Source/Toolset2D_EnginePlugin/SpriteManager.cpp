@@ -3,8 +3,6 @@
 // Author: Joel Van Eenwyk
 // Purpose: Maintains a list of sprites in the scene and calls their
 //          render function appropriately
-// TODO:
-//   * Make accessible through LUA
 //
 //=======
 //         _____           _____

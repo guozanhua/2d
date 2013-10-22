@@ -3,6 +3,7 @@
 
 struct SpriteState;
 struct SpriteData;
+struct SpriteCell;
 
 class Sprite : public VisBaseEntity_cl
 {
@@ -43,6 +44,12 @@ public:
 
 	TOOLSET_2D_IMPEXP int GetCurrentFrame() const;
 	TOOLSET_2D_IMPEXP void SetCurrentFrame(int frame);
+
+	TOOLSET_2D_IMPEXP float GetCellWidth() const;
+	TOOLSET_2D_IMPEXP float GetCellHeight() const;
+
+	TOOLSET_2D_IMPEXP float GetOriginalCellWidth() const;
+	TOOLSET_2D_IMPEXP float GetOriginalCellHeight() const;
 
 	TOOLSET_2D_IMPEXP bool IsOverlapping(Sprite *other) const;
 
@@ -91,6 +98,8 @@ protected:
 	VTextureObject *GetTexture() const;
 
 	hkvVec2 GetDimensions() const;
+
+	const SpriteCell *GetCurretCell() const;
 
 private:
 

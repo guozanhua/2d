@@ -24,8 +24,8 @@ kRollRecoverSpeed = 4
 function FireWeapon(self)
 	if self.missileFireTimer <= 0 then
 		local default = Vision.hkvVec3(0, 0, 0)		
-		local offset1 = self:GetPoint(171, 97, kMissileLayer)
-		local offset2 = self:GetPoint(84, 97, kMissileLayer)
+		local offset1 = self:GetPoint(215, 106, kMissileLayer)
+		local offset2 = self:GetPoint(40, 106, kMissileLayer)
 		
 		local removeFunc = function(entity)
 			return entity:GetPosition().y < -entity:GetHeight()
@@ -33,14 +33,14 @@ function FireWeapon(self)
 		
 		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileLeft:SetScaling(kMissileScale)
-		missileLeft:SetCenterPosition(offset1)
 		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
+		missileLeft:SetCenterPosition(offset1)
 		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
 		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
 		missileRight:SetScaling(kMissileScale)
-		missileRight:SetCenterPosition(offset2)	
 		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
+		missileRight:SetCenterPosition(offset2)	
 		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
 		
 		self.missileFireTimer = kMissileFireTimer

@@ -93,24 +93,48 @@ namespace Toolset2D_Managed
 				break;
 			}
 
-			if (render)
+			if (render && !m_pSprite->IsFullscreenMode())
 			{
-				int edges[8] = {0, 1,
+				// Make sure the vertices are updated before rendering
+				m_pSprite->Update();
+
+				const int edges[8] = {
+					0, 1,
 					1, 3,
 					3, 2,
 					2, 0};
 
-				m_pSprite->Update();
 				const hkvVec2 *vertices = m_pSprite->GetVertices();
 
-				for (int i = 0; i < 4; i++)
+				for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
 				{
-					const int p1 = edges[i * 2 + 0];
-					const int p2 = edges[i * 2 + 1];
+					const int p1 = edges[edgeIndex * 2 + 0];
+					const int p2 = edges[edgeIndex * 2 + 1];
 					Vision::Game.DrawSingleLine2D(
 						vertices[p1].x, vertices[p1].y,
 						vertices[p2].x, vertices[p2].y,
 						color, width);
+				}
+
+				hkvVec2 position = m_pSprite->GetPosition().getAsVec2();
+				hkvVec2 topLeft = position;
+				hkvVec2 topRight = topLeft + hkvVec2(m_pSprite->GetOriginalCellWidth(), 0);
+				hkvVec2 bottomLeft = topLeft + hkvVec2(0, m_pSprite->GetOriginalCellHeight());
+				hkvVec2 bottomRight = bottomLeft + hkvVec2(m_pSprite->GetOriginalCellWidth(), 0);
+				const hkvVec2 border[8] = {
+					topLeft, topRight,
+					topRight, bottomRight,
+					bottomRight, bottomLeft,
+					bottomLeft, topLeft};
+
+				for (int borderEdgeIndex = 0; borderEdgeIndex < 4; borderEdgeIndex++)
+				{
+					const hkvVec2 p1 = border[borderEdgeIndex * 2 + 0];
+					const hkvVec2 p2 = border[borderEdgeIndex * 2 + 1];
+					Vision::Game.DrawSingleLine2D(
+						p1.x, p1.y,
+						p2.x, p2.y,
+						VColorRef(255, 255, 0, 30), width);
 				}
 			}
 		}
