@@ -1,6 +1,16 @@
+/*
+ *
+ * Confidential Information of Telekinesys Research Limited (t/a Havok). Not for disclosure or distribution without Havok's
+ * prior written consent. This software contains code, techniques and know-how which is confidential and proprietary to Havok.
+ * Product and Trade Secret source code contains trade secrets of Havok. Havok Software (C) Copyright 1999-2013 Telekinesys Research Limited t/a Havok. All Rights Reserved. Use of this software is subject to the terms of an end user license agreement.
+ *
+ */
+
 #include "SpriteGamePCH.h"
 
 #include <Vision/Runtime/Base/VBase.hpp>
+
+#include <Vision/Runtime/Common/VisSampleApp.hpp>
 
 #include <Vision/Runtime/Base/System/IO/Stream/IVFileStream.hpp>
 #include <Vision/Runtime/Base/System/Memory/Manager/VSmallBlockMemoryManager.hpp>
@@ -17,13 +27,13 @@
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/RenderingHelpers/BufferResolver.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/Postprocessing/ToneMapping.hpp>
 
-#if defined(_VISION_MOBILE)
+#if defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   #include <Vision/Runtime/Common/VisMobileExitDialog.hpp>
 #endif
 
 #ifdef SUPPORTS_SHADOW_MAPS
   #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/ShadowMapping/IVShadowMapComponent.hpp>
-  #if defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+  #if defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
     #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/ShadowMapping/VMobileShadowMapComponentSpotDirectional.hpp>
   #else
     #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/ShadowMapping/VShadowMapComponentPoint.hpp>
@@ -31,7 +41,7 @@
 #endif
 #endif
 
-#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/MobileForwardRenderer/VMobileForwardRenderer.hpp>
 #elif defined( SUPPORTS_RENDERERNODES )
   #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Rendering/ForwardRenderer/ForwardRenderer.hpp>
@@ -65,7 +75,15 @@ char VisSampleApp::m_szCommonDataDirectory[FS_MAX_PATH];
 char VisSampleApp::m_szCacheDirectory[FS_MAX_PATH];
 char VisSampleApp::m_szSDCardDirectory[FS_MAX_PATH];
 char VisSampleApp::m_szAPKDirectory[FS_MAX_PATH];
+char VisSampleApp::m_szDataRootDirectory[FS_MAX_PATH];
 #include <Vision/Runtime/Common/VisSampleAppAndroid.inl>
+#elif defined(_VISION_TIZEN)
+  char VisSampleApp::m_szBaseDataDirectory[FS_MAX_PATH];
+  char VisSampleApp::m_szCommonDataDirectory[FS_MAX_PATH];
+  char VisSampleApp::m_szDataRootDirectory[FS_MAX_PATH];
+  char VisSampleApp::m_szCacheDirectory[FS_MAX_PATH];
+  char VisSampleApp::m_szSDCardDirectory[FS_MAX_PATH];
+  #include <Vision/Runtime/Common/VisSampleAppTizen.inl>
 #elif defined(_VISION_WIIU)
 #else
   #error "Missing platform!"
@@ -104,7 +122,7 @@ VisSampleApp::VisSampleApp()
   , m_iLastCameraPositionEntityIndex(-1)
   , m_pszHelpText(16,NULL)
   , m_iNumHelpLines(0)
-  , m_fFPSPos(0.f)
+  , m_uiFPSPos( 0 )
   , m_fCurrentFPS(0.f)
   , m_fCurrentFrameTime(0.f)
   , m_sceneLoader()
@@ -127,15 +145,22 @@ VisSampleApp::VisSampleApp()
   , m_spLogoOverlay(NULL)
   , m_fCurrentFadeOutTime(1.f)
   , m_fFadeInTime(0.f)
-  , m_iXDist(10)
   , m_bLogoFadeInDone(false)
   , m_bSampleInitialized(false)
   , m_bTripleHead(false)
+  , m_iXDist(10)
   , m_spProgressBar(NULL)
   , m_spProgressBack(NULL)
   , m_pTimeStepGraph(NULL)
   , m_iUnfilteredTimeStepCurveIndex(-1)
   , m_iTimeStepCurveIndex(-1)
+  , m_spBackupRendererNode(NULL)
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+  , m_spDebugShadingShaderLib(NULL)
+  , m_spDebugShadingRenderLoop(NULL)
+  , m_iCurrentDebugShadingMode(-1)
+#endif
+  , m_bTouchAreaDebug(false)
 {
 #ifdef _VR_DX11
   memset( m_FeatureLevels, 0, sizeof( m_FeatureLevels ) );
@@ -172,9 +197,11 @@ VisSampleApp::VisSampleApp()
 #endif
 
   Vision::Callbacks.OnVideoChanged += this;
+  Vision::Callbacks.OnRenderHook += this;
   Vision::Callbacks.OnBeforeSwapBuffers += this;
+  Vision::Callbacks.OnAfterSceneLoaded += this;
   
-#if defined(_VISION_MOBILE)
+#if defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   Vision::Callbacks.OnLeaveForeground += this;
   Vision::Callbacks.OnEnterBackground += this;
   Vision::Callbacks.OnBackgroundRestore += this;
@@ -185,9 +212,11 @@ VisSampleApp::VisSampleApp()
 VisSampleApp::~VisSampleApp()
 { 
   Vision::Callbacks.OnVideoChanged -= this;
+  Vision::Callbacks.OnRenderHook -= this;
   Vision::Callbacks.OnBeforeSwapBuffers -= this;
+  Vision::Callbacks.OnAfterSceneLoaded -= this;
 
-#if defined(_VISION_MOBILE)
+#if defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   Vision::Callbacks.OnLeaveForeground -= this;
   Vision::Callbacks.OnEnterBackground -= this;
   Vision::Callbacks.OnBackgroundRestore -= this;
@@ -219,7 +248,7 @@ VisSampleApp::~VisSampleApp()
 //////////////////////////////////////////////////////////////////////////////
 
 
-bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSampleScene, int iSampleFlags, int iX, int iY, int iEngineFlags, int iNumThreads)
+bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSampleScene, uint64 iSampleFlags, int iX, int iY, int iEngineFlags, int iNumThreads)
 {
   FORCE_LINKDYNCLASS(VisMouseCamera_cl);
 
@@ -229,12 +258,12 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
   
   m_iSampleFlags = iSampleFlags;
 
-  if(iSampleFlags & VSAMPLE_HEADLESS)
+  if(iSampleFlags & VSampleFlags::VSAMPLE_HEADLESS)
   {
     VVideo::SetHeadlessModeEnabled(true);
   }
 
-  LoadHelpFile(NULL, (m_iSampleFlags&VSAMPLE_DISABLEDEFAULTKEYS) ? false : true);  
+  LoadHelpFile(NULL, (m_iSampleFlags&VSampleFlags::VSAMPLE_DISABLEDEFAULTKEYS) ? false : true);  
 
   // Set the current directory to the EXE dir so the sample can find it's data files
   //(We need to do this since VC2003 sets the project file dir as the default
@@ -250,27 +279,28 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
 #if defined(WIN32) && !defined(_VISION_WINRT)
   const char *szCaption = pszSampleDataDir ? pszSampleDataDir : "Engine Sample";
 
-  if(iSampleFlags & VSAMPLE_HEADLESS)
+  if(iSampleFlags & VSampleFlags::VSAMPLE_HEADLESS)
   {
-    iSampleFlags &= ~VSAMPLE_ASKFULLSCREEN;
+    iSampleFlags &= ~VSampleFlags::VSAMPLE_ASKFULLSCREEN;
   }
 
   // Show dialog asking the user if he wants to go fullscreen
-  if (iSampleFlags & VSAMPLE_ASKFULLSCREEN)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_ASKFULLSCREEN)
   {
-	  // the question is negated, so that just pressing enter will stay in windowed mode, the return value is true
-	  if ( MessageBoxA (NULL, "Do you want to run in windowed mode?",szCaption, MB_ICONQUESTION | MB_YESNO ) == IDNO) 
-	  {
-		  iSampleFlags |= VSAMPLE_FORCEFULLSCREEN;
-	  }
-	  else
-	  {
-		  iSampleFlags &= ~VSAMPLE_FORCEFULLSCREEN;
-	  }
+    // the question is negated, so that just pressing enter will stay in windowed mode, the return value is true
+    if ( MessageBoxA (NULL, "Do you want to run in windowed mode?",szCaption, MB_ICONQUESTION | MB_YESNO ) == IDNO) 
+    {
+      iSampleFlags |= VSampleFlags::VSAMPLE_FORCEFULLSCREEN;
+    }
+    else
+    {
+      iSampleFlags &= ~VSampleFlags::VSAMPLE_FORCEFULLSCREEN;
+    }
 
   }
+  //m_appConfig.m_videoConfig.m_iAdapter = 0;
 
-  if ((iSampleFlags & VSAMPLE_FORCEFULLSCREEN) && (iSampleFlags & VSAMPLE_USEDESKTOPRESOLUTION))
+  if ((iSampleFlags & VSampleFlags::VSAMPLE_FORCEFULLSCREEN) && (iSampleFlags & VSampleFlags::VSAMPLE_USEDESKTOPRESOLUTION))
   {
     DEVMODEA deviceMode;
 
@@ -287,25 +317,25 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
     m_bTripleHead = (fAspect > 3.f);  //More than a 3:1 ratio ?
   }
 
-  if (iSampleFlags & VSAMPLE_ENABLE_IHV_PROFILING)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_ENABLE_IHV_PROFILING)
     m_appConfig.m_videoConfig.m_bEnableNVPerfHUD = true;
 
   #ifdef _VR_DX11
     // For DX11, we allow manually selecting lower feature levels
-    if (iSampleFlags & VSAMPLE_DX11_FEATURE_LEVEL_MASK)
+    if (iSampleFlags & VSampleFlags::VSAMPLE_DX11_FEATURE_LEVEL_MASK)
     {
       int iNumFeatureLevels = 0;
-      if ( iSampleFlags & VSAMPLE_DX11_0_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX11_0_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_11_0;
-      if ( iSampleFlags & VSAMPLE_DX10_1_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX10_1_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_10_1;
-      if ( iSampleFlags & VSAMPLE_DX10_0_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX10_0_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_10_0;
-      if ( iSampleFlags & VSAMPLE_DX9_3_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX9_3_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_9_3;
-      if ( iSampleFlags & VSAMPLE_DX9_2_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX9_2_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_9_2;
-      if ( iSampleFlags & VSAMPLE_DX9_1_ON_DX11 )
+      if ( iSampleFlags & VSampleFlags::VSAMPLE_DX9_1_ON_DX11 )
         m_FeatureLevels[ iNumFeatureLevels++ ] = D3D_FEATURE_LEVEL_9_1;
 
       m_appConfig.m_videoConfig.m_iNumFeatureLevels = iNumFeatureLevels;
@@ -315,52 +345,41 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
  
 #elif defined(_VISION_APOLLO) && !defined(_M_ARM)
 
-  iSampleFlags |= VSAMPLE_DX9_ON_DX11; // Force on X86 emu so that more like current h/w
+  iSampleFlags |= VSampleFlags::VSAMPLE_DX9_3_ON_DX11; // Force on X86 emu so that more like current h/w
   m_appConfig.m_videoConfig.m_iNumFeatureLevels = 1;
-  m_appConfig.m_videoConfig.m_pFeatureLevels = &m_FeatureLevel;
-  m_FeatureLevel = D3D_FEATURE_LEVEL_9_3; 
+  m_appConfig.m_videoConfig.m_pFeatureLevels = m_FeatureLevels;
+  m_FeatureLevels[0] = D3D_FEATURE_LEVEL_9_3; 
 
 #elif defined (_VISION_XENON) 
   
-  if (iSampleFlags & VSAMPLE_XBOX360_BUFFER_2_FRAMES)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_XBOX360_BUFFER_2_FRAMES)
     m_appConfig.m_videoConfig.m_iCreateDeviceBehaviorFlags |= D3DCREATE_BUFFER_2_FRAMES;
 
-#elif defined (_VISION_WINRT)
-  
-	if (iSampleFlags & (VSAMPLE_DX10_ON_DX11 | VSAMPLE_DX9_ON_DX11))
-	{
-		m_appConfig.m_videoConfig.m_iNumFeatureLevels = 1;
-		m_appConfig.m_videoConfig.m_pFeatureLevels = &m_FeatureLevel;
-		if (iSampleFlags & VSAMPLE_DX10_ON_DX11)
-			m_FeatureLevel = D3D_FEATURE_LEVEL_10_0;
-		if (iSampleFlags & VSAMPLE_DX9_ON_DX11)
-			m_FeatureLevel = D3D_FEATURE_LEVEL_9_3;
-	}
 #endif
 
-  if (iSampleFlags & VSAMPLE_NO_DEPTHBUFFER)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_NO_DEPTHBUFFER)
     m_appConfig.m_videoConfig.m_iFBDepthStencilBits = 0;
 
-  if (iSampleFlags & VSAMPLE_MULTISAMPLE8X)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_MULTISAMPLE8X)
     m_appConfig.m_videoConfig.m_eMultiSample = VVIDEO_MULTISAMPLE_8TIMES;
-  else if (iSampleFlags & VSAMPLE_MULTISAMPLE4X)
+  else if (iSampleFlags & VSampleFlags::VSAMPLE_MULTISAMPLE4X)
     m_appConfig.m_videoConfig.m_eMultiSample = VVIDEO_MULTISAMPLE_4TIMES;
-  else if (iSampleFlags & VSAMPLE_MULTISAMPLE2X)
+  else if (iSampleFlags & VSampleFlags::VSAMPLE_MULTISAMPLE2X)
     m_appConfig.m_videoConfig.m_eMultiSample = VVIDEO_MULTISAMPLE_2TIMES;
   else
     m_appConfig.m_videoConfig.m_eMultiSample = VVIDEO_MULTISAMPLE_OFF;
 
-  m_appConfig.m_videoConfig.m_bFullScreen = (iSampleFlags & VSAMPLE_FORCEFULLSCREEN) != 0;
+  m_appConfig.m_videoConfig.m_bFullScreen = (iSampleFlags & VSampleFlags::VSAMPLE_FORCEFULLSCREEN) != 0;
   m_appConfig.m_videoConfig.m_iXRes = iX;
   m_appConfig.m_videoConfig.m_iYRes = iY;  
 
-  if (iSampleFlags & VSAMPLE_WAITRETRACE)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_WAITRETRACE)
     m_appConfig.m_videoConfig.m_bWaitVRetrace = true;
 
 #if defined(_VISION_PS3)
-  if (iSampleFlags & VSAMPLE_FLIPMODE30FPS)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_FLIPMODE30FPS)
 	  m_appConfig.m_videoConfig.m_AdaptiveFlipMode = VVideoConfig::FlipMode30FPS;
-  else if (iSampleFlags & VSAMPLE_FLIPMODE60FPS)
+  else if (iSampleFlags & VSampleFlags::VSAMPLE_FLIPMODE60FPS)
 	  m_appConfig.m_videoConfig.m_AdaptiveFlipMode = VVideoConfig::FlipMode60FPS;
 #endif
 
@@ -401,7 +420,7 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
 #if defined(WIN32) && !defined(_VISION_WINRT)
 
   // Enum adapter modes to check the best fit in fullscreen
-  if ( m_appConfig.m_videoConfig.m_bFullScreen && (iSampleFlags & VSAMPLE_CHECKFULLSCREENMODE)!=0 )
+  if ( m_appConfig.m_videoConfig.m_bFullScreen && (iSampleFlags & VSampleFlags::VSAMPLE_CHECKFULLSCREENMODE)!=0 )
   {
     int newX, newY;
     bool supported = CheckFullscreenResolution( m_appConfig.m_videoConfig.m_iAdapter, m_appConfig.m_videoConfig.m_iXRes, 
@@ -429,7 +448,7 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
   Vision::Renderer.SetDefaultIndexBufferSize(USHRT_MAX);
 #endif
 
-  if (!(iSampleFlags & VSAMPLE_CUSTOMDATADIRECTORIES))
+  if (!(iSampleFlags & VSampleFlags::VSAMPLE_CUSTOMDATADIRECTORIES))
   {
     //Setup the data directories
     if (!SetupSampleData(pszSampleDataDir))
@@ -443,7 +462,7 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
     }
   }
 
-  if (iSampleFlags & VSAMPLE_SPLASHSCREEN)
+  if (iSampleFlags & VSampleFlags::VSAMPLE_SPLASHSCREEN)
   {
     LoadingScreenSettings settings;
     settings.fFadeOutTime = 2.0f;
@@ -493,37 +512,44 @@ bool VisSampleApp::InitSample( const char *pszSampleDataDir, const char *pszSamp
     // The computed horizontal FOV will be around 140)
     VisRenderContext_cl::GetMainRenderContext()->SetFOV(0.0f, 73.739792f);
   }
+
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+  if ((iSampleFlags & VSampleFlags::VSAMPLE_ENABLE_DEBUG_SHADING) != 0)
+  {
+    InitDebugShadingModes();
+  }
+#endif
  
   m_bSampleInitialized = true;
 
   Vision::Renderer.SetShowBenignRuntimeWarnings(false);
 
-#if (defined(_VISION_MOBILE) && defined(HK_DEBUG)) || defined(_VISION_ANDROID)
+#if (defined(_VISION_MOBILE) && defined(HK_DEBUG)) || defined(_VISION_ANDROID) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   // force the resources for the mobile menus to be loaded right here
   VGUIManager::GlobalManager().LoadResourceFile("GUI/MenuSystemMobile.xml");
 #endif
 
 #if defined(_VISION_WIIU)
 
-  if((iSampleFlags & VSAMPLE_WIIU_DRCDEMO) != 0 && (iSampleFlags & VSAMPLE_WIIU_DRCCOPY) != 0)
+  if((iSampleFlags & VSampleFlags::VSAMPLE_WIIU_DRCDEMO) != 0 && (iSampleFlags & VSampleFlags::VSAMPLE_WIIU_DRCCOPY) != 0)
   {
     Vision::Error.Warning("Both DRC demo and copy not possible at the same time, falling back to DRC demo!");
-    iSampleFlags &= ~VSAMPLE_WIIU_DRCCOPY;
+    iSampleFlags &= ~VSampleFlags::VSAMPLE_WIIU_DRCCOPY;
   }
   
   // Show something on the DRC controller
-  if((iSampleFlags & VSAMPLE_WIIU_DRCDEMO) != 0)
+  if((iSampleFlags & VSampleFlags::VSAMPLE_WIIU_DRCDEMO) != 0)
   {
     InitDRCDemo();
   }
-  else if((iSampleFlags & VSAMPLE_WIIU_DRCCOPY) != 0)
+  else if((iSampleFlags & VSampleFlags::VSAMPLE_WIIU_DRCCOPY) != 0)
   {
     InitDRCCopyMode();
   }
 
 #endif
 
-  return LoadScene(pszSampleScene, 0, (iSampleFlags & VSAMPLE_NO_FALLBACK_ASSETPROFILE) == 0);
+  return LoadScene(pszSampleScene, 0, (iSampleFlags & VSampleFlags::VSAMPLE_NO_FALLBACK_ASSETPROFILE) == 0);
 }
 
 void VisSampleApp::InitThreadManager(int iWorkerThreadCount, bool bFixedCPUAssignment)
@@ -649,12 +675,12 @@ void VisSampleApp::SetupDirectories(bool bLoadFromDocuments)
 #endif
 
 #ifdef _VISION_ANDROID
-
 // static
 void VisSampleApp::SetAndroidDirectories(const char* szAPKDirectory, const char* szSDCardDirectory, const char* szCacheDirectory)
 {
   sprintf(m_szBaseDataDirectory, "%s?assets/Data/Vision/Base/", szAPKDirectory);
   sprintf(m_szCommonDataDirectory, "%s?assets/Data/Vision/Samples/Engine/", szAPKDirectory); 
+  sprintf(m_szDataRootDirectory, "%s?assets/", szAPKDirectory);
 
   strcpy(m_szAPKDirectory, szAPKDirectory);
   strcpy(m_szSDCardDirectory, szSDCardDirectory);
@@ -698,7 +724,45 @@ bool VisSampleApp::ExtractFileFromAPKToCache(const char* pszFileName)
 
   return true;
 }
+#endif
 
+#if defined(_VISION_TIZEN)
+// static
+void VisSampleApp::SetTizenDirectories(const char* pszAlternativeCacheDir)
+{
+  Tizen::Base::String resPath = Tizen::App::App::GetInstance()->GetAppResourcePath().GetPointer();
+  char* asciiResPath = new char[wcslen(resPath.GetPointer()) + 1];
+  memset(asciiResPath, 0, wcslen(resPath.GetPointer()) + 1);
+  wcstombs(asciiResPath, resPath.GetPointer(), wcslen(resPath.GetPointer()));
+
+  Tizen::Base::String dataPath = Tizen::App::App::GetInstance()->GetAppDataPath().GetPointer();
+  char* ascii = new char[wcslen(dataPath.GetPointer()) + 1];
+  memset(ascii, 0, wcslen(dataPath.GetPointer()) + 1);
+  wcstombs(ascii, dataPath.GetPointer(), wcslen(dataPath.GetPointer()));
+
+  Tizen::Base::String sdPath = Tizen::System::Environment::GetExternalStoragePath().GetPointer();
+  char* asciiSD = new char[wcslen(sdPath.GetPointer()) + 1];
+  memset(asciiSD, 0, wcslen(sdPath.GetPointer()) + 1);
+  wcstombs(asciiSD, sdPath.GetPointer(), wcslen(sdPath.GetPointer()));
+
+  const char* pDataDirectory = ascii;
+  const char* pResDirectory = asciiResPath;
+
+  sprintf(m_szBaseDataDirectory, "%sData/Vision/Base/", pResDirectory);
+  sprintf(m_szCommonDataDirectory, "%sData/Vision/Samples/Engine/", pResDirectory);
+  sprintf(m_szDataRootDirectory, "%s", pResDirectory);
+
+  strcpy(m_szSDCardDirectory, asciiSD);
+  if(pszAlternativeCacheDir == NULL)
+  {
+    strcpy(m_szCacheDirectory, pDataDirectory);
+  }
+  else
+  {
+    strcpy(m_szCacheDirectory, pszAlternativeCacheDir);
+    printf("Using alternative cache directory: %s\n", m_szCacheDirectory);
+  }
+}
 #endif
 
 #if defined(_VISION_APOLLO) || defined(_VISION_METRO)
@@ -744,7 +808,7 @@ void VisSampleApp::DeInitSample()
 
   DisableMouseCamera();
 
-#if defined(_VISION_MOBILE)
+#if defined(EMULATE_DEVICE) || defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   m_spProfilingDlg = NULL;
   m_spExitDlg = NULL;
   if (m_spGUIContext != NULL)
@@ -768,10 +832,35 @@ void VisSampleApp::DeInitSample()
   CleanupDRC();
 #endif
 
+  m_spBackupRendererNode = NULL;
+
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+  Vision::RenderLoopHelper.SetReplacementRenderLoop(NULL);
+  m_spDebugShadingRenderLoop = NULL;
+  m_debugShadingEffects.Clear();
+  m_spDebugShadingShaderLib = NULL;
+#endif
+
   m_bSampleInitialized = false; 
 
   DeInitEngine();
-  Vision::SetApplication(NULL);  
+  Vision::SetApplication(NULL);
+  
+  
+  #ifdef _VISION_PS3
+    #ifdef VSTREAMPROCESS_RUN_IN_SPURS
+      VStreamProcessor::DeInitialize();
+    #endif
+
+    VSpursHandler *pSpursHandler = Vision::GetSpursHandler();
+    #ifdef HK_DEBUG
+      VSpuPrintfService::Finalize();
+    #endif
+    bool bRet = pSpursHandler->DeInitializeSpurs();
+    VASSERT(bRet);
+    V_SAFE_DELETE(pSpursHandler);
+  #endif
+  
 
   //Unload any plugins
   //Remember: This can unload the application object's code if it's in a plugin.
@@ -795,8 +884,14 @@ void VisSampleApp::ClearScene()
   DisableMouseCamera();
 
   m_iLastCameraPositionEntityIndex = -1;
+  
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+  Vision::RenderLoopHelper.SetReplacementRenderLoop(NULL);
+  m_iCurrentDebugShadingMode = -1;
+  m_spBackupRendererNode = NULL;
+#endif
 
-  // removes the scene and prepares a clean world
+  // Removes the scene and prepares a clean world.
   VSceneLoader::ClearScene();
 }
 
@@ -813,17 +908,21 @@ bool VisSampleApp::LoadScene(const char *pszSampleScene, int iAdditionalLoadingF
   char szSceneFile[FS_MAX_PATH];
   m_appState = AS_UNKNOWN;
 
+  // Set back loading screen state.
+  m_fFadeInTime = 0.0f;
+  m_bLogoFadeInDone = false;
+
   if (VFileHelper::HasExtension(pszSampleScene, "vscene"))
   {
-    sprintf(szSceneFile,"%s", pszSampleScene);
+    sprintf(szSceneFile, "%s", pszSampleScene);
   }
   else
   {
-    sprintf(szSceneFile,"%s.vscene", pszSampleScene);
+    sprintf(szSceneFile, "%s.vscene", pszSampleScene);
   }
 
   int iLoadingFlags = VSceneLoader::LF_PlatformDefault | iAdditionalLoadingFlags;
-  if (m_iSampleFlags & VSAMPLE_FORCEMOBILEMODE)
+  if (m_iSampleFlags & VSampleFlags::VSAMPLE_FORCEMOBILEMODE)
     iLoadingFlags |= VSceneLoader::LF_ForceMobileMode;
   
   if (!m_sceneLoader.LoadScene(szSceneFile, iLoadingFlags))
@@ -845,7 +944,7 @@ VisSampleApp::ApplicationState VisSampleApp::GetApplicationState()
     return m_appState;
 
   if (m_appState >= AS_AFTER_LOADING)
-{
+  {
     m_appState = AS_RUNNING;
     return m_appState;
   }
@@ -858,7 +957,7 @@ VisSampleApp::ApplicationState VisSampleApp::GetApplicationState()
   }
   // Check scene loading state
   else if (!m_sceneLoader.IsFinished())
-{
+  {
     m_sceneLoader.Tick();
     m_appState = AS_LOADING;
   }
@@ -873,8 +972,8 @@ VisSampleApp::ApplicationState VisSampleApp::GetApplicationState()
   // Refresh screen when loading
   if (m_appState == AS_LOADING)
   {
-#if defined(_VISION_ANDROID)
-    // Always allow the application to exit on android if the app is loading
+#if defined(_VISION_ANDROID) || defined(_VISION_TIZEN)
+    // Always allow the application to exit on Android/Tizen if the app is loading
     if (GetInputMap()->GetTrigger(EXIT)) 
     {
       m_sceneLoader.Close();
@@ -890,7 +989,7 @@ VisSampleApp::ApplicationState VisSampleApp::GetApplicationState()
 
     VisRenderContext_cl::GetMainRenderContext()->Activate();
     Vision::RenderScreenMasks();
-	#endif
+#endif
     Vision::Video.UpdateScreen();
   }
 
@@ -913,14 +1012,6 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
       VPathHelper::BackToFrontSlash(szPlatformDataDir);
     #endif
 
-    // The common/root paths used in AppData mode are not compatible with the paths the file server uses.
-    // In fact, the file server prepends the standard data directories anyway.
-    if (s_bIsFileserverInstalled)
-    {
-      bool bRes = Vision::File.AddDataDirectory(pszDataDir);
-      return bRes;
-    }
-
     //trim ? away for:
     //blah?SubDir
     char * szSubArchiveMark = strchr(szPlatformDataDir, '?');
@@ -933,7 +1024,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .v file in the root directory
     sprintf(szFilename, "%s.v", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_ROOT_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -945,7 +1036,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .zip file in the root directory
     sprintf(szFilename, "%s.zip", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_ROOT_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -957,7 +1048,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .varc file in the root directory
     sprintf(szFilename, "%s.varc", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_ROOT_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -980,7 +1071,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .v file in the common sample directory
     sprintf(szFilename, "%s.v", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_COMMON_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -992,7 +1083,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .zip file in the common sample directory
     sprintf(szFilename, "%s.zip", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_COMMON_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -1004,7 +1095,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a .varc file in the common sample directory
     sprintf(szFilename, "%s.varc", szPlatformDataDir);
     VPathHelper::CombineDirAndFile(szTemp, VISION_COMMON_DATA, szFilename);
-    if (VFileHelper::Exists(szTemp))
+    if (Vision::File.Exists(szTemp))
     {
       if(szSubArchiveMark!=NULL)
         sprintf(szTemp, "%s?%s", szTemp, &szSubArchiveMark[1]);
@@ -1016,7 +1107,7 @@ bool VisSampleApp::AddSampleDataDir(const char *pszDataDir)
     // is there a directory in the common sample directory
     VPathHelper::CombineDirAndDir(szTemp, VISION_COMMON_DATA, szPlatformDataDir);
 #if !defined(_VISION_ANDROID) // Problematic with apk loading
-    if (VFileHelper::ExistsDir(szTemp))
+    if (s_bIsFileserverInstalled || VFileHelper::ExistsDir(szTemp))
 #endif
     {
       if(szSubArchiveMark!=NULL)
@@ -1056,27 +1147,19 @@ bool VisSampleApp::AddSampleDataDirPackage(const char* szPackageName)
   // all the dependencies are given relative to this folder, so we need to combine those paths
   const VString sPackageFolder = VPathHelper::GetFileDir(szPackageName);
 
-  // read the number of dependencies that are stored in the file
-  hkUint8 uiDependencies = 0;
-  pFile->Read(&uiDependencies, sizeof(hkUint8));
-
-  // for each dependency
-  for (hkUint32 dep = 0; dep < uiDependencies; ++dep)
+  while (!pFile->IsEOF())
   {
-    // read the string length
-    hkUint16 uiStrLen = 0;
-    pFile->Read(&uiStrLen, sizeof(hkUint16));
+    char szLine[1024];
+    VStreamHelper::ReadLine(pFile, szLine, 1023);
 
-    // read the string, terminate it with 0
-    char szRelPath[FS_MAX_PATH];
-    pFile->Read(&szRelPath[0], sizeof(char) * uiStrLen);
-    szRelPath[uiStrLen] = '\0';
+    if (szLine[0] != '\0')
+    {
+      // combine the folder to this package with the relative path to the dependent package
+      const VString sOtherPackagePath = VPathHelper::CombineDirAndFile(sPackageFolder.AsChar(), szLine);
 
-    // combine the folder to this package with the relative path to the dependent package
-    const VString sOtherPackagePath = VPathHelper::CombineDirAndFile(sPackageFolder.AsChar(), szRelPath);
-
-    // try to mount that package as a data directory as well (recursive)
-    AddSampleDataDirPackage(sOtherPackagePath.AsChar());
+      // try to mount that package as a data directory as well (recursive)
+      AddSampleDataDirPackage(sOtherPackagePath.AsChar());
+    }
   }
 
   pFile->Close();
@@ -1189,130 +1272,114 @@ bool VisSampleApp::RemoveSampleDataDir(const char *pszDataDir)
 void VisSampleApp::SetupBaseDataDir()
 {
   //Engine Base Data
-/*  char szBaseData[FS_MAX_PATH];
-  sprintf(szBaseData,"%s.v",VISION_BASE_DATA);
-  // see if we have a .v archive file for base data
-  if (VFileHelper::Exists(szBaseData))
+  if(Vision::File.AddDataDirectory(VISION_BASE_DATA, true))
   {
-    Vision::File.AddDataDirectory(szBaseData);
-    Vision::Error.SystemMessage("Adding base data directory \"%s\"", szBaseData);
+    Vision::Error.SystemMessage("Adding base data directory \"%s\"", VISION_BASE_DATA);
   }
-  else*/
+  else
   {
-    // No .v file, use the directory instead
-    #ifndef _VISION_ANDROID // Problematic with apk loading
-    if (VFileHelper::ExistsDir(VISION_BASE_DATA) || VFileHelper::Exists(VISION_BASE_DATA))
-    #endif
-    {
-      Vision::File.AddDataDirectory(VISION_BASE_DATA, true);
-      Vision::Error.SystemMessage("Adding base data directory \"%s\"", VISION_BASE_DATA);
-    }
-    #ifndef _VISION_ANDROID // Problematic with apk loading
-    else
-    {
-      // No Base Data directory found (make this fatal?)
-      Vision::Error.Warning("Base Data directory (%s) not found", VISION_BASE_DATA);
-    }
-    #endif
+    // No Base Data directory found (make this fatal?)
+    Vision::Error.Warning("Base Data directory (%s) not found", VISION_BASE_DATA);
+  }
 
-    #ifdef WIN32
+  #ifdef WIN32
+  {
+    // on PC platform, also add the Data\Vision\Simulation data folder, if available
+    char szDir[FS_MAX_PATH];
+    VFileHelper::CombineDirAndDir(szDir, VISION_BASE_DATA, "..\\Simulation");
+    if (VFileHelper::ExistsDir(szDir))
     {
-      // on PC platform, also add the Data\Vision\Simulation data folder, if available
-      char szDir[FS_MAX_PATH];
-      VFileHelper::CombineDirAndDir(szDir, VISION_BASE_DATA, "..\\Simulation");
-      if (VFileHelper::ExistsDir(szDir))
-      {
-        Vision::File.AddDataDirectory(szDir, false);
-        Vision::Error.SystemMessage("Adding simulation data directory \"%s\"", szDir);
-      }
+      Vision::File.AddDataDirectory(szDir, false);
+      Vision::Error.SystemMessage("Adding simulation data directory \"%s\"", szDir);
     }
-    #endif
   }
+  #endif
 }
 
 void VisSampleApp::SelectAssetProfile(const char* szScene, bool bAllowFallbackProfile)
 {
-  Vision::File.SetAssetProfile(VTargetDeviceName[TARGETDEVICE_THIS]); // set the intended default asset profile
-
-  if (!bAllowFallbackProfile)
-    return;
-
-  if (!szScene)
-    return;
-  
-  char szAbsPath[FS_MAX_PATH];
-  char szTemp[FS_MAX_PATH];
-
-  // we try to find a valid scene name, because VFileHelper::GetAbsolutePath will only return an absolute path, if the given file really exists
-  VPathHelper::GetFilenameNoExt(szTemp, szScene);
-
-  // first try it with "bla.vscene"
-  VString sTestName = szTemp;
-  sTestName += ".vscene";
-
-  if (VFileHelper::GetAbsolutePath(sTestName.AsChar(), szAbsPath, Vision::File.GetManager()))
-    szScene = szAbsPath;
-  else
+  if (!bAllowFallbackProfile || (szScene == NULL) || !AssetProfile::IsProfileNameSet())
   {
-    // if that did not succeed, try it with every variant of "bla.profilexyz.vscene"
-    // we do not care which file is really found, any of those files will do, we only need the absolute path to a valid scene folder
+    return;
+  }
 
-    for (int i = 0; i < TARGETDEVICE_COUNT; ++i)
+  // Find the data directory of a scene file with the base name of the scene to open. It doesn't matter whether
+  // that file is for a profile we're interested in - we just need it to find out the correct data directory.
+  char szSceneBaseName[FS_MAX_PATH];
+  VPathHelper::GetFilenameNoExt(szSceneBaseName, szScene);
+
+  VString sDataDirectory;
+  for (int i = -1; i < TARGETDEVICE_COUNT; ++i)
+  {
+    VString sSceneFileName;
+    sSceneFileName.Format("%s%s%s.vscene", szSceneBaseName,
+      i >= 0 ? "." : "",
+      i >= 0 ? VTargetDeviceName[i] : "");
+
+    VScopedFileStream<IVFileInStream> fileStream(Vision::File.Open(sSceneFileName));
+    if (fileStream == NULL)
     {
-      sTestName = szTemp;
-      sTestName += ".";
-      sTestName += VTargetDeviceName[i];
-      sTestName += ".vscene";
+      continue;
+    }
 
-      if (VFileHelper::GetAbsolutePath(sTestName.AsChar(), szAbsPath, Vision::File.GetManager()))
-      {
-        szScene = szAbsPath;
-        break;
-      }
+    sDataDirectory = fileStream->GetInitialDataDir();
+
+    if (!sDataDirectory.IsEmpty())
+    {
+      break;
     }
   }
 
-  char szProjectDir[FS_MAX_PATH];
-  strcpy(szProjectDir, szScene);
-
-  // now we have the scene folder (probably), but we need the project directory
-  // this can be any number of folders up from where the scene is located
-  // so we will just try every possible parent directory
-  while (true)
+  // If we couldn't find out the data directory, give up.
+  if (sDataDirectory.IsEmpty())
   {
-    VFileHelper::GetParentDir(szProjectDir);
+    return;
+  }
 
-    if (szProjectDir[0] == '\0')
-      break;
+  // If we support the asset profile we intend to open, no further action is required.
+  if (Vision::File.GetManager()->IsAssetProfileSupported(AssetProfile::GetProfileName(), sDataDirectory))
+  {
+    return;
+  }
 
-    // build the path to the default aidlt file in the project directory
-
-    VString sResult = VFileHelper::CombineDirAndDir(szProjectDir, "AssetMgmt_data");
-    sResult = VFileHelper::CombineDirAndDir(sResult.AsChar(), AssetProfile::GetProfileName());
-    sResult += ".aidlt";
-
-    // if we can open that file, all is fine
-    if (Vision::File.Exists(sResult.AsChar()) == TRUE)
-      return;
-
-    // otherwise, if this is one of the platforms that is compatible with the pcdx9 profile, try that instead
-
-    if ((VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_DX11]) == 0) ||
-        (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_PS3]) == 0) ||
-        (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_XBOX360]) == 0) ||
-        (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_PSP2]) == 0) ||
-        (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_WIIU]) == 0))
+  // Are we on a platform that can fall back to DX9? If yes, try to do so.
+  if ((VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_DX11]) == 0) ||
+    (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_PS3]) == 0) ||
+    (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_XBOX360]) == 0) ||
+    (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_PSP2]) == 0) ||
+    (VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_WIIU]) == 0))
+  {
+    if (Vision::File.GetManager()->IsAssetProfileSupported(VTargetDeviceName[TARGETDEVICE_DX9], sDataDirectory))
     {
-      sResult = VFileHelper::CombineDirAndDir(szProjectDir, "AssetMgmt_data");
-      sResult = VFileHelper::CombineDirAndDir(sResult.AsChar(), VTargetDeviceName[TARGETDEVICE_DX9]);
-      sResult += ".aidlt";
+      Vision::File.SetAssetProfile(VTargetDeviceName[TARGETDEVICE_DX9]);
+      return;
+    }
+  }
 
-      // if the pcdx9 profile exists, switch to that
-      if (Vision::File.Exists(sResult.AsChar()) == TRUE)
+  // Tizen may fall back to Android
+  if ((VStringHelper::SafeCompare(AssetProfile::GetProfileName(), VTargetDeviceName[TARGETDEVICE_TIZEN]) == 0))
+  {
+    if (Vision::File.GetManager()->IsAssetProfileSupported(VTargetDeviceName[TARGETDEVICE_ANDROID], sDataDirectory))
+    {
+      printf("Falling back to Android profile!");
+
+      // Set the corresponding variant keys for Android first...
+      const int numVariantKeys = AssetVariantKeys::GetCount();
+      for (int i = 0; i < numVariantKeys; ++i)
       {
-        Vision::File.SetAssetProfile(VTargetDeviceName[TARGETDEVICE_DX9]);
-        return;
+        if (VStringHelper::SafeCompare(AssetVariantKeys::Get(i), "Tizen-Default") == 0)
+        {
+          AssetVariantKeys::Add("Android-Default");
+        }
+        else if (VStringHelper::SafeCompare(AssetVariantKeys::Get(i), "Tizen-PVR") == 0)
+        {
+          AssetVariantKeys::Add("Android-PVR");
+        }
       }
+
+      // ...then switch the profile over.
+      Vision::File.SetAssetProfile(VTargetDeviceName[TARGETDEVICE_ANDROID]);
+      return;
     }
   }
 
@@ -1376,20 +1443,14 @@ bool VisSampleApp::SetupSampleData(const char *pszDataDir)
   SetupBaseDataDir();
 
   //The common sample data files
-  #if !defined(_VISION_ANDROID) // Problematic with apk loading
-  if (VFileHelper::ExistsDir(VISION_COMMON_DATA) || VFileHelper::Exists(VISION_COMMON_DATA))
-  #endif
+  if(Vision::File.AddDataDirectory(VISION_COMMON_DATA))
   {
-    Vision::File.AddDataDirectory(VISION_COMMON_DATA);
     Vision::Error.SystemMessage("Adding common data directory \"%s\"", VISION_COMMON_DATA);
   }
-  #if !defined(_VISION_ANDROID) // Problematic with apk loading
   else
   {
-    // No common data directory found (make this fatal?)
     Vision::Error.Warning("Common Data directory (%s) not found", VISION_COMMON_DATA);
   }
-  #endif
   
   //The sample specific data files
   if (pszDataDir && pszDataDir[0])
@@ -1417,7 +1478,7 @@ bool VisSampleApp::SetupSampleData(const char *pszDataDir)
   else
     Vision::Error.SystemMessage("Failed to set output directory; Defaulting to standard output dir");
   
-  if ((m_iSampleFlags & VSAMPLE_DONT_LOAD_MANIFESTFILE) == 0)
+  if ((m_iSampleFlags & VSampleFlags::VSAMPLE_DONT_LOAD_MANIFESTFILE) == 0)
   {
     // Add the data directories from the manifest file (the engine plugins must have been
     // handled earlier; at this point, it's too late to initialize them properly.
@@ -1431,14 +1492,20 @@ bool VisSampleApp::SetupSampleData(const char *pszDataDir)
 
 void VisSampleApp::UpdateFPS()
 {
+  static const uint64 uiTimerFrequency = VGLGetTimerResolution();
+  static const float fTimerPeriod = 1.0f / uiTimerFrequency;
+
+  uint64 uiCurrentTimer = VGLGetTimer();
   m_iFrameCtr++;
-  m_fFPSPos += Vision::GetUITimer()->GetTimeDifference();
-  if (m_fFPSPos>=1.f)
+
+  if ( uiCurrentTimer > m_uiFPSPos + uiTimerFrequency )
   {
-    m_fCurrentFrameTime = (float)m_fFPSPos/m_iFrameCtr;
-    m_fCurrentFPS = (float)m_iFrameCtr/m_fFPSPos;
-    m_fFPSPos     = 0.f;
-    m_iFrameCtr   = 0;
+    float fDeltaTime = ( uiCurrentTimer - m_uiFPSPos ) * fTimerPeriod;
+    m_fCurrentFrameTime = fDeltaTime / m_iFrameCtr;
+    m_fCurrentFPS = m_iFrameCtr / fDeltaTime;
+
+    m_uiFPSPos = uiCurrentTimer;
+    m_iFrameCtr = 0;
   }
 }
 
@@ -1448,7 +1515,7 @@ void VisSampleApp::UpdateFPS()
 //Update the screen overlays like the splash screen and text
 void VisSampleApp::UpdateOverlays()
 {
-  float fDelta = Vision::GetTimer()->GetTimeDifference();
+  float fDelta = Vision::GetUITimer()->GetTimeDifference();
 
   //Update the splash screen fading
   if (m_fCurrentFadeOutTime > 0.0f && m_fFadeOutPos > 0.0f)
@@ -1505,15 +1572,14 @@ void VisSampleApp::UpdateOverlays()
   // Help text overlay
   if (m_bShowHelp)
     PrintHelpText();
-
 }
 
 
 void VisSampleApp::CreateForwardRenderer()
 {
-#if defined( SUPPORTS_RENDERERNODES ) || defined( _VISION_MOBILE )
+#if defined( SUPPORTS_RENDERERNODES ) || defined( _VISION_MOBILE ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
 
-#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   VRendererNodeCommon *pRenderer = new VMobileForwardRenderingSystem(Vision::Contexts.GetMainRenderContext());
 #else
   VRendererNodeCommon *pRenderer = new VForwardRenderingSystem(Vision::Contexts.GetMainRenderContext());
@@ -1527,7 +1593,13 @@ void VisSampleApp::CreateForwardRenderer()
   pRenderer->InitializeRenderer();
 
   // Apply renderer node at last
+  VSmartPtr<IVRendererNode> spOldRenderer = Vision::Renderer.GetRendererNode(0);
   Vision::Renderer.SetRendererNode(0, pRenderer);
+
+  if (spOldRenderer != NULL)
+  {
+    spOldRenderer->DeInitializeRenderer();
+  }
 
   // Disable depth fog
   VFogParameters fog = Vision::World.GetFogParameters();
@@ -1538,7 +1610,7 @@ void VisSampleApp::CreateForwardRenderer()
 
 void VisSampleApp::DestroyForwardRenderer()
 {
-#if defined( SUPPORTS_RENDERERNODES ) || defined( _VISION_MOBILE )
+#if defined( SUPPORTS_RENDERERNODES ) || defined( _VISION_MOBILE ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   VSimpleRendererNode* pRenderer = new VSimpleRendererNode(Vision::Contexts.GetMainRenderContext());
   pRenderer->InitializeRenderer();
   Vision::Renderer.SetRendererNode(0, pRenderer);
@@ -1572,7 +1644,7 @@ void VisSampleApp::SetShadowsForLight(VisLightSource_cl *pLight, bool bStatus)
     unsigned int nShadowMapSize = 1024;
     VShadowMappingMode_e shadowMapMode = SHADOW_MAPPING_MODE_PCF8;
 
-#if defined(_VISION_PSP2) || defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined(_VISION_PSP2) || defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
     nShadowMapSize = 512;
     shadowMapMode = SHADOW_MAPPING_MODE_PCF4;
 #endif
@@ -1581,7 +1653,7 @@ void VisSampleApp::SetShadowsForLight(VisLightSource_cl *pLight, bool bStatus)
     {
       if (pLight->GetType() == VIS_LIGHT_DIRECTED)
       {
-#if defined(  _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined(  _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
         VMobileShadowMapComponentSpotDirectional *pSpotDirComponent = new VMobileShadowMapComponentSpotDirectional(0);
 #else
         VShadowMapComponentSpotDirectional *pSpotDirComponent = new VShadowMapComponentSpotDirectional(0);
@@ -1594,7 +1666,7 @@ void VisSampleApp::SetShadowsForLight(VisLightSource_cl *pLight, bool bStatus)
       }
       else if (pLight->GetType() == VIS_LIGHT_POINT)
       {
-#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
         pComponent = NULL;
 #else
         pComponent = new VShadowMapComponentPoint(0);
@@ -1603,7 +1675,7 @@ void VisSampleApp::SetShadowsForLight(VisLightSource_cl *pLight, bool bStatus)
       }
       else if (pLight->GetType() == VIS_LIGHT_SPOTLIGHT)
       {
-#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY )
+#if defined( _VISION_MOBILE ) || defined( HK_ANARCHY ) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
         pComponent = new VMobileShadowMapComponentSpotDirectional(0);
 #else
         pComponent = new VShadowMapComponentSpotDirectional(0);
@@ -1627,6 +1699,18 @@ bool VisSampleApp::Run()
   VASSERT(m_bSampleInitialized);
   if (!m_bSampleInitialized)
     return false;
+
+  if ( IsLoadSceneRequestPending() )
+  {
+    const VLoadSceneRequest& request = GetPendingLoadSceneRequest();
+    LoadScene( request.sSceneFileName.AsChar(), request.iAdditionalLoadingFlags, request.bAllowProfileFallback );
+    ClearLoadSceneRequest();
+  }
+
+  // Run can only be called if the Vision Sample app is currently not loading.
+  // (The sample might load other scenes while already running)
+  if (m_iInsideLoadWorldCounter > 0)
+    return true;
 
   // handle default keys (if not disabled)
   ProcessKeys();
@@ -1670,7 +1754,11 @@ bool VisSampleApp::Run()
 
 VisBaseEntity_cl* VisSampleApp::EnableMouseCamera(const char* szCameraRefObjectKey, float fMoveSpeed)
 {
-  m_spCamera = (VisMouseCamera_cl*)Vision::Game.CreateEntity("VisMouseCamera_cl", hkvVec3(0.0f, 0.0f, 0.0f));
+  if (m_spCamera == NULL)
+  {
+    m_spCamera = (VisMouseCamera_cl*)Vision::Game.CreateEntity("VisMouseCamera_cl", hkvVec3(0.0f, 0.0f, 0.0f));
+    m_spCamera->SetObjectFlag(VObjectFlag_AutoDispose);
+  }
 
   if (m_spCamera != NULL)
   {
@@ -1690,12 +1778,13 @@ VisBaseEntity_cl* VisSampleApp::EnableMouseCamera(const char* szCameraRefObjectK
     }
   }
 
+  Vision::Camera.AttachToEntity(m_spCamera, hkvVec3::ZeroVector());
   return m_spCamera;
 }
 
 void VisSampleApp::DisableMouseCamera()
 {
-  if (m_spCamera)
+  if (m_spCamera != NULL)
     m_spCamera->DetachFromParent();
   m_spCamera = NULL;
 }
@@ -1801,7 +1890,8 @@ bool VisSampleApp::LoadHelpFile( const char * szHelpfile, bool bAddDefaultKeys )
     AddHelpText ("F10 - Next profiling chart");
     AddHelpText ("F11 - Reset profiling max values");
     AddHelpText ("KP -/+ - Increase/decrease fov");       
-    AddHelpText ("KP . - Cycle through exported camera locations");
+    AddHelpText ("KP .   - Cycle through exported camera locations");
+    AddHelpText ("V   - Next debug shading mode");
     AddHelpText ("ESC - Quit");
   }  
 
@@ -1809,16 +1899,18 @@ bool VisSampleApp::LoadHelpFile( const char * szHelpfile, bool bAddDefaultKeys )
 #elif defined(_VISION_XENON) || defined(_VISION_WINRT)
   if ( bAddDefaultKeys ) 
   {    
-    AddHelpText ("PAD1 - BACK   : Help");               
-    AddHelpText ("PAD1 - START  : Enable Console (debug version only)");   
+    AddHelpText ("PAD1 - BACK          : Help");               
+    AddHelpText ("PAD1 - START         : Enable Console (debug version only)");   
     AddHelpText ("");
-    AddHelpText ("PAD2 - BACK   : Toggle frame rate");
-    AddHelpText ("PAD2 - START  : Toggle Wireframe");
+    AddHelpText ("PAD2 - BACK          : Toggle frame rate");
+    AddHelpText ("PAD2 - START         : Toggle Wireframe");
     AddHelpText ("");
-    AddHelpText ("PAD2 - A : Toggle polygon count");
-    AddHelpText ("PAD2 - B : Save Screenshot");
-    AddHelpText ("PAD2 - X : Next profiling page");
-    AddHelpText ("PAD2 - Y : Previous profiling page");
+    AddHelpText ("PAD2 - A             : Toggle polygon count");
+    AddHelpText ("PAD2 - B             : Save Screenshot");
+    AddHelpText ("PAD2 - X             : Next profiling page");
+    AddHelpText ("PAD2 - Y             : Previous profiling page");
+    AddHelpText ("");
+    AddHelpText ("PAD1 - SELECT + B    : Next debug shading mode");
     AddHelpText ("");
     AddHelpText ("PAD2 - Digital DOWN  : Toggle object debug info");
     AddHelpText ("PAD2 - Digital UP    : Reload modified resources");
@@ -1840,16 +1932,18 @@ bool VisSampleApp::LoadHelpFile( const char * szHelpfile, bool bAddDefaultKeys )
 #elif defined(_VISION_PS3)
   if ( bAddDefaultKeys ) 
   {    
-    AddHelpText ("PAD1 - SELECT : Help");               
-    AddHelpText ("PAD1 - START  : Enable Console (debug version only)");   
+    AddHelpText ("PAD1 - SELECT        : Help");               
+    AddHelpText ("PAD1 - START         : Enable Console (debug version only)");   
     AddHelpText ("");
-    AddHelpText ("PAD2 - SELECT : Toggle frame rate");
-    AddHelpText ("PAD2 - START  : Toggle Wireframe");
+    AddHelpText ("PAD2 - SELECT        : Toggle frame rate");
+    AddHelpText ("PAD2 - START         : Toggle Wireframe");
     AddHelpText ("");
-    AddHelpText ("PAD2 - CROSS    : Toggle polygon count");
-    AddHelpText ("PAD2 - CIRCLE   : Save Screenshot");
-    AddHelpText ("PAD2 - SQUARE   : Next profiling page");
-    AddHelpText ("PAD2 - TRIANGLE : Previous profiling page");
+    AddHelpText ("PAD2 - CROSS         : Toggle polygon count");
+    AddHelpText ("PAD2 - CIRCLE        : Save Screenshot");
+    AddHelpText ("PAD2 - SQUARE        : Next profiling page");
+    AddHelpText ("PAD2 - TRIANGLE      : Previous profiling page");
+    AddHelpText ("");
+    AddHelpText ("PAD1 - SELECT + X    : Next debug shading mode");
     AddHelpText ("");
     AddHelpText ("PAD2 - Digital DOWN  : Toggle object debug info");
     AddHelpText ("PAD2 - Digital UP    : Reload modified resources");
@@ -1868,16 +1962,18 @@ bool VisSampleApp::LoadHelpFile( const char * szHelpfile, bool bAddDefaultKeys )
 #elif defined(_VISION_WIIU)
   if ( bAddDefaultKeys )
   {
-    AddHelpText ("DRC  - SELECT : Help");               
-    AddHelpText ("DRC  - START  : Enable Console (debug version only)");   
+    AddHelpText ("DRC  - SELECT        : Help");               
+    AddHelpText ("DRC  - START         : Enable Console (debug version only)");   
     AddHelpText ("");
-    AddHelpText ("DRC  - SELECT : Toggle frame rate");
-    AddHelpText ("DRC  - START  : Toggle Wireframe");
+    AddHelpText ("DRC  - SELECT        : Toggle frame rate");
+    AddHelpText ("DRC  - START         : Toggle Wireframe");
     AddHelpText ("");
-    AddHelpText ("PAD1 - B      : Toggle polygon count");
-    AddHelpText ("PAD1 - A      : Save Screenshot");
-    AddHelpText ("PAD1 - Y      : Next profiling page");
-    AddHelpText ("PAD1 - X      : Previous profiling page");
+    AddHelpText ("PAD1 - B             : Toggle polygon count");
+    AddHelpText ("PAD1 - A             : Save Screenshot");
+    AddHelpText ("PAD1 - Y             : Next profiling page");
+    AddHelpText ("PAD1 - X             : Previous profiling page");
+    AddHelpText ("");
+    AddHelpText ("DRC  - SELECT + B    : Next debug shading mode");
     AddHelpText ("");
     AddHelpText ("PAD1 - Digital DOWN  : Toggle object debug info");
     AddHelpText ("PAD1 - Digital UP    : Reload modified resources");
@@ -1905,7 +2001,7 @@ bool VisSampleApp::LoadHelpFile( const char * szHelpfile, bool bAddDefaultKeys )
 // Input functions
 /////////////////////////////////////////////////////////////////////////////////
 
-#if defined(_VISION_MOBILE)
+#if defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
 
 #include <Vision/Runtime/Common/VisMobileExitDialog.inl>
 #include <Vision/Runtime/Engine/Application/VisProfilingMenu.inl>
@@ -1916,8 +2012,7 @@ void VisSampleApp::ShowProfilingMenu()
   {
     EnsureGUIContextCreated();
     
-    m_spProfilingDlg = m_spGUIContext->GetManager()->CreateDialogInstance(
-      "GUI/ProfilingMenu.xml", m_spGUIContext);
+    m_spProfilingDlg = m_spGUIContext->GetManager()->CreateDialogInstance("GUI/ProfilingMenu.xml", m_spGUIContext);
     VASSERT(m_spProfilingDlg);    
     m_spProfilingDlg->SetVisible(false); // track visibility state
   }
@@ -1952,6 +2047,10 @@ void VisSampleApp::ShowExitDialog()
   }
 }
 
+#endif
+
+#if defined(EMULATE_DEVICE) || defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
+
 void VisSampleApp::EnsureGUIContextCreated()
 {
   if (m_spGUIContext == NULL)
@@ -1960,18 +2059,74 @@ void VisSampleApp::EnsureGUIContextCreated()
 
 #endif
 
-void VisSampleApp::ProcessKeys ()
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+void VisSampleApp::NextDebugShadingMode()
 {
-  // F1: Toggle help
-  if (GetInputMap()->GetTrigger(SHOW_HELP))
+  if ((m_iSampleFlags & VSampleFlags::VSAMPLE_ENABLE_DEBUG_SHADING) == 0)
   {
-    m_bShowHelp = !m_bShowHelp;    
+    Vision::Message.Add("Debug shading modes not enabled!");
+    return;
   }
 
-  if (!(m_iSampleFlags&VSAMPLE_DISABLEDEFAULTKEYS))
+  if(m_iCurrentDebugShadingMode == -1)
+  {
+    // Backup render node so that the debug rendering can be restored to the original rendering
+    m_spBackupRendererNode = Vision::Renderer.GetRendererNode(0);
+  }
+
+  // Advance shading mode
+  m_iCurrentDebugShadingMode++;
+
+  // Switch back to original rendering when reaching the end of the collection
+  if (m_iCurrentDebugShadingMode >= m_debugShadingEffects.Count())
+  {
+    m_iCurrentDebugShadingMode = -1;
+    Vision::RenderLoopHelper.SetReplacementRenderLoop(NULL);
+    Vision::Renderer.SetRendererNode(0, m_spBackupRendererNode);
+    Vision::Message.Add("Switched back to standard scene rendering");
+  } 
+  else
+  {
+    // The debug shading works by replacing the current render loop by a debug shading one which applies the different effects
+    if (m_spDebugShadingRenderLoop == NULL)
+      m_spDebugShadingRenderLoop = new VisDebugShadingRenderLoop_cl();
+
+    m_spDebugShadingRenderLoop->SetEffect(m_debugShadingEffects.GetAt(m_iCurrentDebugShadingMode));
+
+    // Simple render node base on the main render context which encapsulates the debug shading render loop
+    VSimpleRendererNode* pSimpleRendererNode = new VSimpleRendererNode(Vision::Contexts.GetMainRenderContext());
+    pSimpleRendererNode->InitializeRenderer();
+    
+    Vision::Renderer.SetRendererNode(0, pSimpleRendererNode);
+    Vision::RenderLoopHelper.SetReplacementRenderLoop(m_spDebugShadingRenderLoop);
+  }
+
+  if (m_iCurrentDebugShadingMode >= 0)
+  {
+    const char *szNiceName = (const char *)m_debugShadingEffects.GetAt(m_iCurrentDebugShadingMode)->GetUserData();
+    VASSERT(szNiceName);
+    Vision::Message.Add(1, "Debug shading mode %02d of %02d: %s", (m_iCurrentDebugShadingMode + 1), m_debugShadingEffects.Count(), szNiceName);
+  }
+}
+#endif
+
+void VisSampleApp::EnableTouchAreaRendering(bool bEnabled)
+{
+  m_bTouchAreaDebug = bEnabled;
+}
+
+void VisSampleApp::ProcessKeys ()
+{
+  // F1: Toggle help (select on consoles)
+  if (GetInputMap()->GetTrigger(SHOW_HELP) || PRESSHOLD_ISPRESSED(GetInputMap()->GetTrigger(SHOW_HELP_PAD)))
+  {
+    m_bShowHelp = !m_bShowHelp;
+  }
+
+  if (!(m_iSampleFlags & VSampleFlags::VSAMPLE_DISABLEDEFAULTKEYS))
   {
     // F2: Frame rate
-    if (GetInputMap()->GetTrigger(SHOW_FRAME_RATE))
+    if (GetInputMap()->GetTrigger(SHOW_FRAME_RATE) || PRESSHOLD_ISPRESSED(GetInputMap()->GetTrigger(SHOW_FRAME_RATE_PAD)))
       m_bShowFrameRate = !m_bShowFrameRate;
 
     // F3: Line mode
@@ -2035,20 +2190,22 @@ void VisSampleApp::ProcessKeys ()
     // F5: Reload modified resources
     if (GetInputMap()->GetTrigger(RELOAD_MODIFIED_RESOURCES))
     {
-      int iCount = Vision::ResourceSystem.ReloadModifiedResourceFiles(NULL, TRUE,TRUE);       
+      int iCount = Vision::ResourceSystem.ReloadModifiedResourceFiles(NULL, VURO_HOT_RELOAD);       
 
-      // reassign all shaders
+      // Clear effect caches so that material shaders will be re-created (not re-used).
       Vision::Shaders.GetShaderFXLibManager().ResetCompiledEffectCaches();
+
+      // Reassign all material shaders.
       Vision::Shaders.ReloadAllShaderAssignmentFiles();
 
-      Vision::Message.Add(1, "%i resources were outdated and have been reloaded",iCount);
+      Vision::Message.Add(1, "%i resources were outdated and have been reloaded.", iCount);
     }
 
     // F6: Show the polygon count
     if (GetInputMap()->GetTrigger(SHOW_POLYGON_COUNT))
     {
-      Vision::Profiling.ToggleObjectTriangleCounts();
-      Vision::Profiling.ToggleOverallPolygons();
+      Vision::Profiling.ToggleDebugRenderFlags(DEBUGRENDERFLAG_OBJECT_TRIANGLECOUNT);
+      Vision::Profiling.ToggleDebugRenderFlags(DEBUGRENDERFLAG_POLYGONCOUNT);
     }
     
     // F8: Save screenshot
@@ -2083,7 +2240,7 @@ void VisSampleApp::ProcessKeys ()
       {
         // Setup graph for displaying un-/ filtered time steps
         VGraphProps timeStepGraphProps;
-        timeStepGraphProps.vPosition.set(-0.65f, 0.0f);  
+        timeStepGraphProps.vPosition.set(-0.85f, -0.3f);  
         timeStepGraphProps.fWidth = 0.25f;
         timeStepGraphProps.fHeight = 0.25f;  
         timeStepGraphProps.iResolution = 64; 
@@ -2099,8 +2256,16 @@ void VisSampleApp::ProcessKeys ()
       }
     }
 
+    // V: Show next debug shading mode (select + X/A on consoles)
+    if (GetInputMap()->GetTrigger(SHOW_NEXT_DEBUG_SHADING_MODE) || (GetInputMap()->GetTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_PAD) && PRESSHOLD_ISHOLD(GetInputMap()->GetTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_COMBO))))
+    {
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+      NextDebugShadingMode();
+#endif
+    }
+
     // keypad  . : Attach the mouse camera (if it is initialized) to the location of
-	//             the next CameraPositionEntity in the scene, if any are found.
+	  //             the next CameraPositionEntity in the scene, if any are found.
     if (m_spCamera && GetInputMap()->GetTrigger(ATTACH_TO_NEXT_CAMERA_POSITION))
     {
       const int iCount = VisBaseEntity_cl::ElementManagerGetSize();
@@ -2148,7 +2313,7 @@ void VisSampleApp::ProcessKeys ()
   }
   
   // Profiling Menu for TouchScreen only devices
-#if defined(_VISION_MOBILE) && defined(HK_DEBUG)
+#if ( defined(_VISION_MOBILE)  || defined( _VISION_APOLLO ) ) && defined(HK_DEBUG)   // TODO: Have Apollo define _VISION_MOBILE.
   if (GetInputMap()->GetTrigger(SHOW_PROFILING_MENU1) && GetInputMap()->GetTrigger(SHOW_PROFILING_MENU2))
   {
     ShowProfilingMenu();
@@ -2156,7 +2321,7 @@ void VisSampleApp::ProcessKeys ()
 #endif
 
   // Exit
-#if (defined(WIN32) && !defined(_VISION_WINRT)) || defined(_VISION_ANDROID) || defined(_VISION_IOS)
+#if (defined(WIN32) && !defined(_VISION_WINRT)) || defined(_VISION_ANDROID) || defined(_VISION_IOS) || defined(_VISION_TIZEN)
   if (GetInputMap()->GetTrigger(EXIT)) 
 #elif defined(_VISION_XENON) || defined(_VISION_PS3) || defined(_VISION_PSP2) || defined(_VISION_WIIU) || defined(_VISION_WINRT)
   if (GetInputMap()->GetTrigger(EXIT_COMBO) && GetInputMap()->GetTrigger(EXIT)) 
@@ -2164,19 +2329,19 @@ void VisSampleApp::ProcessKeys ()
   #error Undefined platform!
 #endif
   {
-#if defined(_VISION_ANDROID)
+#if defined(_VISION_ANDROID) || defined( _VISION_TIZEN )
     // Check if button is handled by a derived class
-    if (!OnAndroidBackButtonPressed())
+    if (!OnMobileBackButtonPressed())
     {
       // On Android, show exit dialog first.
-      if ((m_iSampleFlags & VSAMPLE_SHOWEXITPROMPT) != 0 && m_appState == AS_RUNNING)
+      if ((m_iSampleFlags & VSampleFlags::VSAMPLE_SHOWEXITPROMPT) != 0 && m_appState == AS_RUNNING)
         ShowExitDialog();
       else
         Quit();
     }
   }
 
-  // Check exit dialog on Android
+  // Check exit dialog on Android and Tizen
   if (m_spGUIContext != NULL && m_spGUIContext->IsActive() &&
     m_spExitDlg != NULL && static_cast<VisMobileExitDialog*>(m_spExitDlg.GetPtr())->IsExitTriggered())
   {
@@ -2194,27 +2359,28 @@ void VisSampleApp::ProcessKeys ()
 
 }
 
-void VisSampleApp::DefineKeys ()
+void VisSampleApp::DefineKeys()
 {
 
 #if defined(SUPPORTS_KEYBOARD)
-
   Vision::GetConsoleManager()->SetAllowed(true); // debug console is always available
   //The following keys should only trigger once (former known as 'single hit') and not repeat when we press them
 
-  GetInputMap()->MapTrigger(EXIT,               V_KEYBOARD, CT_KB_ESC, VInputOptions::Once());
-  GetInputMap()->MapTrigger(EXIT_COMBO,         V_KEYBOARD, CT_KB_ESC, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_HELP,          V_KEYBOARD, CT_KB_F1 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_FRAME_RATE,    V_KEYBOARD, CT_KB_F2 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-  GetInputMap()->MapTrigger(WIREFRAME_MODE,     V_KEYBOARD, CT_KB_F3 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT,  V_KEYBOARD, CT_KB_F4 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(EXIT, V_KEYBOARD, CT_KB_ESC, VInputOptions::Once());
+  GetInputMap()->MapTrigger(EXIT_COMBO, V_KEYBOARD, CT_KB_ESC, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_HELP, V_KEYBOARD, CT_KB_F1 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_FRAME_RATE, V_KEYBOARD, CT_KB_F2 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(WIREFRAME_MODE, V_KEYBOARD, CT_KB_F3 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT, V_KEYBOARD, CT_KB_F4 | EXCLUDE_MODIFIERS, VInputOptions::Once());
   GetInputMap()->MapTrigger(RELOAD_MODIFIED_RESOURCES, V_KEYBOARD, CT_KB_F5 | EXCLUDE_MODIFIERS, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_POLYGON_COUNT, V_KEYBOARD, CT_KB_F6 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SAVE_SCREEN_SHOT,   V_KEYBOARD, CT_KB_F8 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART,  V_KEYBOARD, CT_KB_F9 | EXCLUDE_MODIFIERS,  VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART,  V_KEYBOARD, CT_KB_F10 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SAVE_SCREEN_SHOT, V_KEYBOARD, CT_KB_F8 | EXCLUDE_MODIFIERS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART, V_KEYBOARD, CT_KB_F9 | EXCLUDE_MODIFIERS,  VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART, V_KEYBOARD, CT_KB_F10 | EXCLUDE_MODIFIERS, VInputOptions::Once());
   GetInputMap()->MapTrigger(RESET_MAX_PROFILING_VALUES, V_KEYBOARD, CT_KB_F11, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_TIME_STEPS, V_KEYBOARD, CT_KB_TAB | EXCLUDE_MODIFIERS, VInputOptions::Once());
+
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE, V_KEYBOARD, CT_KB_V | EXCLUDE_MODIFIERS, VInputOptions::Once());
 
   GetInputMap()->MapTrigger(ATTACH_TO_NEXT_CAMERA_POSITION, V_KEYBOARD, CT_KB_KP_PERIOD | EXCLUDE_MODIFIERS, VInputOptions::Once());
 
@@ -2224,12 +2390,11 @@ void VisSampleApp::DefineKeys ()
 #endif
   
 #if defined(_VISION_XENON) || ( defined(_VISION_WINRT) && !defined(_VISION_METRO) && !defined(_VISION_APOLLO) )
-
   GetInputMap()->MapTrigger(EXIT, V_XENON_PAD(0), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(EXIT_COMBO, V_XENON_PAD(0), CT_PAD_RIGHT_TRIGGER, VInputOptions::DeadZone(0.6f));
 
-  GetInputMap()->MapTrigger(SHOW_HELP, V_XENON_PAD(0), CT_PAD_BACK, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_FRAME_RATE, V_XENON_PAD(1), CT_PAD_BACK, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_HELP_PAD, V_XENON_PAD(0), CT_PAD_BACK, VInputOptions::HoldTime());
+  GetInputMap()->MapTrigger(SHOW_FRAME_RATE_PAD, V_XENON_PAD(1), CT_PAD_BACK, VInputOptions::HoldTime());
   GetInputMap()->MapTrigger(WIREFRAME_MODE, V_XENON_PAD(1), CT_PAD_START, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT, V_XENON_PAD(1), CT_PAD_DOWN, VInputOptions::Once());
   GetInputMap()->MapTrigger(RELOAD_MODIFIED_RESOURCES, V_XENON_PAD(1), CT_PAD_UP, VInputOptions::Once());
@@ -2240,33 +2405,21 @@ void VisSampleApp::DefineKeys ()
   GetInputMap()->MapTrigger(RESET_MAX_PROFILING_VALUES, V_XENON_PAD(1), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_TIME_STEPS, V_XENON_PAD(1), CT_PAD_LEFT, VInputOptions::Once());
 
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_PAD, V_XENON_PAD(0), CT_PAD_A, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_COMBO, V_XENON_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
+
   GetInputMap()->MapTrigger(FOV_DECREASE, V_XENON_PAD(1), CT_PAD_LEFT_THUMB_STICK_UP, VInputOptions::DeadZone(0.4f));
   GetInputMap()->MapTrigger(FOV_INCREASE, V_XENON_PAD(1), CT_PAD_LEFT_THUMB_STICK_DOWN, VInputOptions::DeadZone(0.4f));
-  #if defined(SUPPORTS_KEYBOARD)
-    GetInputMap()->MapTrigger(EXIT, VInputManagerXenon::GetKeyboard(), CT_KB_ESC, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_HELP, VInputManagerXenon::GetKeyboard(), CT_KB_F1 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_FRAME_RATE, VInputManagerXenon::GetKeyboard(), CT_KB_F2 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(WIREFRAME_MODE, VInputManagerXenon::GetKeyboard(), CT_KB_F3 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT, VInputManagerXenon::GetKeyboard(), CT_KB_F4 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(RELOAD_MODIFIED_RESOURCES, VInputManagerXenon::GetKeyboard(), CT_KB_F5 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_POLYGON_COUNT, VInputManagerXenon::GetKeyboard(), CT_KB_F6 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SAVE_SCREEN_SHOT, VInputManagerXenon::GetKeyboard(), CT_KB_F8 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART, VInputManagerXenon::GetKeyboard(), CT_KB_F9 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART, VInputManagerXenon::GetKeyboard(), CT_KB_F10 | EXCLUDE_MODIFIERS, VInputOptions::Once());
-    GetInputMap()->MapTrigger(RESET_MAX_PROFILING_VALUES, VInputManagerXenon::GetKeyboard(), CT_KB_F11, VInputOptions::Once());
 
-    GetInputMap()->MapTrigger(FOV_DECREASE, VInputManagerXenon::GetKeyboard(), CT_KB_KP_PLUS);
-    GetInputMap()->MapTrigger(FOV_INCREASE, VInputManagerXenon::GetKeyboard(), CT_KB_KP_MINUS);
-  #endif
 #endif  
 
 #if defined(_VISION_PS3)
-
   GetInputMap()->MapTrigger(EXIT, V_PS3_PAD(0), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(EXIT_COMBO, V_PS3_PAD(0), CT_PAD_RIGHT_TRIGGER, VInputOptions::DeadZone(0.6f));
 
-  GetInputMap()->MapTrigger(SHOW_HELP, V_PS3_PAD(0), CT_PAD_SELECT, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_FRAME_RATE, V_PS3_PAD(1), CT_PAD_SELECT, VInputOptions::Once());
+  // Note: select button is used for showing help and also triggering other stuff (see below)
+  GetInputMap()->MapTrigger(SHOW_HELP_PAD, V_PS3_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
+  GetInputMap()->MapTrigger(SHOW_FRAME_RATE_PAD, V_PS3_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
   GetInputMap()->MapTrigger(WIREFRAME_MODE, V_PS3_PAD(1), CT_PAD_START, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT, V_PS3_PAD(1), CT_PAD_DOWN, VInputOptions::Once());
   GetInputMap()->MapTrigger(RELOAD_MODIFIED_RESOURCES, V_PS3_PAD(1), CT_PAD_UP, VInputOptions::Once());
@@ -2277,28 +2430,36 @@ void VisSampleApp::DefineKeys ()
   GetInputMap()->MapTrigger(RESET_MAX_PROFILING_VALUES, V_PS3_PAD(1), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_TIME_STEPS, V_PS3_PAD(1), CT_PAD_LEFT, VInputOptions::Once());
 
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_PAD, V_PS3_PAD(0), CT_PAD_CROSS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_COMBO, V_PS3_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
+
   GetInputMap()->MapTrigger(FOV_DECREASE, V_PS3_PAD(1), CT_PAD_LEFT_THUMB_STICK_UP, VInputOptions::DeadZone(0.4f));
   GetInputMap()->MapTrigger(FOV_INCREASE, V_PS3_PAD(1), CT_PAD_LEFT_THUMB_STICK_DOWN, VInputOptions::DeadZone(0.4f));
+
 #endif
 
 #if defined(_VISION_PSP2)
   GetInputMap()->MapTrigger(EXIT, V_PSP2_PAD(0), CT_PAD_SELECT);
   GetInputMap()->MapTrigger(EXIT_COMBO, V_PSP2_PAD(0), CT_PAD_START, VInputOptions::Once());
 
-  GetInputMap()->MapTrigger(SHOW_FRAME_RATE, V_PSP2_PAD(0), CT_PAD_SELECT, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_FRAME_RATE_PAD, V_PSP2_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
   GetInputMap()->MapTrigger(WIREFRAME_MODE, V_PSP2_PAD(0), CT_PAD_START, VInputOptions::Once());
-  //GetInputMap()->MapTrigger(SHOW_TIME_STEPS, V_PSP2_PAD(0), CT_PAD_SQUARE, VInputOptions::Once());  
+  //GetInputMap()->MapTrigger(SHOW_TIME_STEPS, V_PSP2_PAD(0), CT_PAD_SQUARE, VInputOptions::Once());
   
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_PAD, V_PSP2_PAD(0), CT_PAD_CROSS, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_COMBO, V_PSP2_PAD(0), CT_PAD_SELECT, VInputOptions::HoldTime());
+
   //GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART, V_PSP2_PAD(0), CT_PAD_SQUARE, VInputOptions::Once());
   //GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART, V_PSP2_PAD(0), CT_PAD_CIRCLE, VInputOptions::Once());
   //GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT, V_PSP2_PAD(0), CT_PAD_TRIANGLE, VInputOptions::Once());
+
 #endif
   
-#if defined(_VISION_MOBILE) && defined(HK_DEBUG) 
+#if ( defined(_VISION_MOBILE)  || defined( _VISION_APOLLO ) ) && defined(HK_DEBUG)  // TODO: Have Apollo define _VISION_MOBILE.
   
   VTouchArea* profilingMenuArea1 = new VTouchArea(VInputManager::GetTouchScreen(), VRectanglef(0, 0, 80, 80), -900.0f);
   GetInputMap()->MapTrigger(SHOW_PROFILING_MENU1, profilingMenuArea1, CT_TOUCH_ANY);
-  
+
   int width = Vision::Video.GetXRes();
   int height = Vision::Video.GetYRes();
   
@@ -2312,6 +2473,10 @@ void VisSampleApp::DefineKeys ()
   GetInputMap()->MapTrigger(EXIT, VInputManagerAndroid::GetKeyInput(), CT_PAD_ANDROID_BACK, VInputOptions::Once());
 #endif
 
+#if defined( _VISION_TIZEN )
+  GetInputMap()->MapTrigger( EXIT, VInputManagerTizen::GetKeyInput(), CT_KB_TIZEN_BACK, VInputOptions::Once() );
+#endif
+
 #if defined(_VISION_WIIU)
   GetInputMap()->MapTrigger(EXIT, VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(EXIT_COMBO, VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_RIGHT_TRIGGER, VInputOptions::DeadZone(0.6f));
@@ -2319,8 +2484,8 @@ void VisSampleApp::DefineKeys ()
   GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART, VInputManagerWiiU::GetPad(0), CT_PAD_LEFT_SHOULDER, VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART, VInputManagerWiiU::GetPad(0), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
 
-  GetInputMap()->MapTrigger(SHOW_HELP,                 VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_SELECT, VInputOptions::Once());
-  GetInputMap()->MapTrigger(SHOW_FRAME_RATE,           VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_SELECT, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_HELP_PAD,             VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_SELECT, VInputOptions::HoldTime());
+  GetInputMap()->MapTrigger(SHOW_FRAME_RATE_PAD,       VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_SELECT, VInputOptions::HoldTime());
   GetInputMap()->MapTrigger(WIREFRAME_MODE,            VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_START,  VInputOptions::Once());
   
   GetInputMap()->MapTrigger(SHOW_ENTITY_DEBUG_OUTPUT,  VInputManagerWiiU::GetPad(0), CT_PAD_DOWN,     VInputOptions::Once());
@@ -2330,6 +2495,9 @@ void VisSampleApp::DefineKeys ()
   GetInputMap()->MapTrigger(SHOW_PREV_PROFILING_CHART, VInputManagerWiiU::GetPad(0), CT_PAD_Y,   VInputOptions::Once());
   GetInputMap()->MapTrigger(SHOW_NEXT_PROFILING_CHART, VInputManagerWiiU::GetPad(0), CT_PAD_X, VInputOptions::Once());
   GetInputMap()->MapTrigger(RESET_MAX_PROFILING_VALUES,VInputManagerWiiU::GetPad(0), CT_PAD_RIGHT_SHOULDER, VInputOptions::Once());
+
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_PAD, VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_B, VInputOptions::Once());
+  GetInputMap()->MapTrigger(SHOW_NEXT_DEBUG_SHADING_MODE_COMBO, VInputManagerWiiU::GetDRC(V_DRC_FIRST), CT_PAD_SELECT, VInputOptions::HoldTime());
 
   GetInputMap()->MapTrigger(FOV_DECREASE, VInputManagerWiiU::GetPad(0), CT_PAD_LEFT_THUMB_STICK_UP,   VInputOptions::DeadZone(0.4f));
   GetInputMap()->MapTrigger(FOV_INCREASE, VInputManagerWiiU::GetPad(0), CT_PAD_LEFT_THUMB_STICK_DOWN, VInputOptions::DeadZone(0.4f));
@@ -2377,6 +2545,7 @@ void VisSampleApp::SetupLoadingScreen(bool bStatus, const char *szTextureFile, f
 {
   m_bShowLoadingProgress = bStatus;
   m_loadingScreenSettings.sBackgroundImagePath = szTextureFile;
+  m_loadingScreenSettings.iBackgroundTextureFlags = 0;
   m_loadingScreenSettings.eAspectRatioAlignment = LoadingScreenSettings::ALIGN_HORIZONTAL;
   m_loadingScreenSettings.backgroundColor = HAVOK_COLOR_BACK;
   m_loadingScreenSettings.fFadeOutTime = fFadeOutTime;
@@ -2435,7 +2604,9 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
 
       if (!m_loadingScreenSettings.sBackgroundImagePath.IsEmpty())
       {   
-        m_spBackground = new VisScreenMask_cl(m_loadingScreenSettings.sBackgroundImagePath);
+        m_spBackground = new VisScreenMask_cl(
+          m_loadingScreenSettings.sBackgroundImagePath,
+          m_loadingScreenSettings.iBackgroundTextureFlags);
         m_spBackground->SetDepthWrite(FALSE);
         m_spBackground->SetTransparency(VIS_TRANSP_ALPHA);
         m_spBackground->SetOrder(-60);
@@ -2505,7 +2676,7 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
         m_loadingScreenSettings.fFadeOutTime = 0.0f;
       }
 
-      if (m_iSampleFlags & VSAMPLE_HAVOKLOGO)
+      if (m_iSampleFlags & VSampleFlags::VSAMPLE_HAVOKLOGO)
       {
 #if defined( HK_ANARCHY )
         m_spLogoOverlay = new VisScreenMask_cl("Textures\\Anarchy_Logo_128x128.dds");
@@ -2519,7 +2690,7 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
         float fWidth = 0.0f, fHeight = 0.0f;
         m_spLogoOverlay->GetTargetSize(fWidth, fHeight);
         float fGapBottom = 2.0f;
-        if(m_iSampleFlags & VSAMPLE_ALIGNLOGOALTERNATIVE)
+        if(m_iSampleFlags & VSampleFlags::VSAMPLE_ALIGNLOGOALTERNATIVE)
         {
           m_spLogoOverlay->SetPos(16.f, fScreenBottom - fGapBottom - fHeight);
           m_iXDist += 19;
@@ -2530,7 +2701,7 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
           m_spLogoOverlay->SetPos(fScreenRight - fGapRight - fWidth, fScreenBottom - fGapBottom - fHeight);
         }
 
-		m_spLogoOverlay->SetColor(VColorRef(255, 255, 255, m_bLogoFadeInDone ? 255 : 0));
+        m_spLogoOverlay->SetColor(VColorRef(255, 255, 255, m_bLogoFadeInDone ? 255 : 0));
         m_spLogoOverlay->GetTextureObject()->SetResourceFlag(VRESOURCEFLAG_AUTODELETE);
       }
 
@@ -2647,7 +2818,7 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
     VisRenderContext_cl::GetMainRenderContext()->Activate();
     Vision::RenderScreenMasks();
 
-    #if defined(WIN32)  || defined(_VISION_XENON)   || defined(_VISION_PSP2) || defined(_VISION_ANDROID) || defined(_VISION_WIIU) || defined(_VISION_IOS)
+    #if defined(WIN32)  || defined(_VISION_XENON) || defined(_VISION_PSP2) || defined(_VISION_ANDROID) || defined(_VISION_WIIU) || defined(_VISION_IOS) || defined(_VISION_TIZEN)
       // On PS3, don't flip yet, because this would modify the backbuffer when rendering system overlays during a flip.
       Vision::Video.UpdateScreen();
     #elif defined(_VISION_PS3)
@@ -2674,21 +2845,38 @@ void VisSampleApp::OnLoadSceneStatus(int iStatus, float fPercentage, const char*
 }
 
 #if defined( SUPPORTS_FILESERVE_CLIENT )
-bool VisSampleApp::SetupFileServeClient(bool bUseAppDataFallback)
+bool VisSampleApp::SetupFileServeClient(VFileServeFallback_e eFallbackType /* = VFSF_FALLBACK_CACHE */, const char* pszAlternativeCacheDir /* = NULL */)
 {
-#if defined( _VISION_MOBILE )
+#ifdef _VISION_IOS
+  char szAlternativeCacheDir[FS_MAX_PATH];
+  VPathHelper::CombineDirAndDir(szAlternativeCacheDir, GetDocumentsDirectory(), "FileServeCache");
+  strcat_s(szAlternativeCacheDir, "/");
+  const char* pszCachePath = szAlternativeCacheDir;
+#elif defined( _VISION_MOBILE ) || defined(_VISION_WINRT)
   const char* pszCachePath = GetCacheDirectory();
 #elif defined( WIN32 )
-  char pszCachePath[ FS_MAX_PATH ];
-  GetTempPathA( V_ARRAY_SIZE( pszCachePath ), pszCachePath );
+  char szCachePathMem[ FS_MAX_PATH ];
+  const char* pszCachePath = szCachePathMem;
+  GetTempPathA( V_ARRAY_SIZE( szCachePathMem ), szCachePathMem );
 #else
 #error "Platform not supported!"
 #endif
+
+  if(pszAlternativeCacheDir)
+  {
+    pszCachePath = pszAlternativeCacheDir;
+    Vision::Error.SystemMessage("Using alternative cache directory for vFileServe: %s", pszAlternativeCacheDir);
+  }
+  if(!VFileHelper::ExistsDir(pszCachePath))
+    VFileHelper::MkDirRecursive(pszCachePath);
 
 #if defined( _VISION_IOS )
   VStaticString< FS_MAX_PATH > sSettingsFilePath = GetDocumentsDirectory();
 #elif defined( _VISION_ANDROID ) || defined( _VISION_APOLLO )
   VStaticString< FS_MAX_PATH > sSettingsFilePath = GetSDCardDirectory();
+#elif defined( _VISION_TIZEN )
+  // TODO: sdcard directory not working because of insufficient permission (should use /opt/storage/sdcard/)
+  VStaticString< FS_MAX_PATH > sSettingsFilePath = "/opt/media";
 #else
   VStaticString< FS_MAX_PATH > sSettingsFilePath = ".";
 #endif
@@ -2724,7 +2912,7 @@ bool VisSampleApp::SetupFileServeClient(bool bUseAppDataFallback)
     return false;
 #endif
   }
-
+  
   // Read string
   char szHostUrl[1024];
   size_t uiLen = pStream->Read(szHostUrl, V_ARRAY_SIZE(szHostUrl)-1);
@@ -2732,8 +2920,10 @@ bool VisSampleApp::SetupFileServeClient(bool bUseAppDataFallback)
   pStream = NULL;
   szHostUrl[uiLen] = '\0';
 
-  VFileServeStreamManager *pFSSM = new VFileServeStreamManager( szHostUrl, pszCachePath );
+  IVFileStreamManager* pFallbackManager = (eFallbackType == VFSF_FALLBACK_CACHE_AND_PACKAGE) ? Vision::File.GetManager() : NULL;
+  VFileServeStreamManager *pFSSM = new VFileServeStreamManager( szHostUrl, pszCachePath, pFallbackManager);
   VASSERT_MSG( pFSSM != NULL, "Unable to create VFileServeStreamManager!" );
+  pFSSM->SetDataRoot(VISION_ROOT_DATA);
 
   bConnected = pFSSM->IsConnected();
   if ( !bConnected )
@@ -2741,7 +2931,7 @@ bool VisSampleApp::SetupFileServeClient(bool bUseAppDataFallback)
     Vision::Error.Warning( "Unable to connect to file server!" );
   }
 
-  if (bConnected || !bUseAppDataFallback)
+  if (bConnected || eFallbackType != VFSF_FALLBACK_PACKAGE)
   {
     // Only set the VFileServeStreamManager if it successfully connected or if AppData fallback is disabled.
     // If it is not connected and AppData fallback is disabled, the cached data will be used.
@@ -2777,7 +2967,7 @@ void VisSampleApp::OnHandleCallback(IVisCallbackDataObject_cl *pData)
       float fWidth = 0.0f, fHeight = 0.0f;
       m_spLogoOverlay->GetTargetSize(fWidth, fHeight);
       float fGapBottom = 2.0f;
-      if(m_iSampleFlags & VSAMPLE_ALIGNLOGOALTERNATIVE)
+      if(m_iSampleFlags & VSampleFlags::VSAMPLE_ALIGNLOGOALTERNATIVE)
       {
         m_spLogoOverlay->SetPos(16.f, fScreenBottom - fGapBottom - fHeight );
       } 
@@ -2786,6 +2976,40 @@ void VisSampleApp::OnHandleCallback(IVisCallbackDataObject_cl *pData)
         float fGapRight = 18.0f;
         m_spLogoOverlay->SetPos( fScreenRight - fGapRight - fWidth, fScreenBottom - fGapBottom - fHeight );
       }
+    }
+  }
+  else if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
+  {
+    VisRenderHookDataObject_cl *pRenderHookData = (VisRenderHookDataObject_cl *)pData;
+    if (pRenderHookData->m_iEntryConst == VRH_PRE_SCREENMASKS)
+    {
+#if defined(SUPPORTS_MULTITOUCH)
+      if (m_bTouchAreaDebug)
+      {
+        IVMultiTouchInput* pMultiTouchInput = NULL;
+        pMultiTouchInput = static_cast<IVMultiTouchInput*>(&VInputManager::GetInputDevice(INPUT_DEVICE_TOUCHSCREEN));
+        VPListT<VTouchArea> touchAreas = pMultiTouchInput->GetTouchAreas();
+
+        const float fBorderWidth = 3.0f;
+        VSimpleRenderState_t alphaState(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_FRONTFACE|RENDERSTATEFLAG_NOWIREFRAME|RENDERSTATEFLAG_ALWAYSVISIBLE);
+        
+        IVRender2DInterface *pRI = Vision::RenderLoopHelper.BeginOverlayRendering();
+        {
+          for (int i=0; i<touchAreas.GetLength(); ++i)
+          {
+            const VRectanglef& rect = touchAreas.Get(i)->GetArea();
+            const VColorRef color = touchAreas.Get(i)->GetTouchPointIndex() < 0 ? VColorRef(0, 255, 0, 64) : VColorRef(0, 255, 0, 96);
+            pRI->DrawSolidQuad(rect.m_vMin, rect.m_vMax, color, alphaState);
+            
+            pRI->DrawSolidQuad(rect.m_vMin, hkvVec2(rect.m_vMax.x, rect.m_vMin.y + fBorderWidth), VColorRef(0, 255, 0, 255), alphaState);
+            pRI->DrawSolidQuad(hkvVec2(rect.m_vMin.x, rect.m_vMax.y - fBorderWidth), rect.m_vMax, VColorRef(0, 255, 0, 255), alphaState);
+            pRI->DrawSolidQuad(hkvVec2(rect.m_vMin.x, rect.m_vMin.y + fBorderWidth), hkvVec2(rect.m_vMin.x + fBorderWidth, rect.m_vMax.y - fBorderWidth), VColorRef(0, 255, 0, 255), alphaState);
+            pRI->DrawSolidQuad(hkvVec2(rect.m_vMax.x - fBorderWidth, rect.m_vMin.y + fBorderWidth), hkvVec2(rect.m_vMax.x, rect.m_vMax.y - fBorderWidth), VColorRef(0, 255, 0, 255), alphaState);
+          }
+        }
+        Vision::RenderLoopHelper.EndOverlayRendering();
+      }
+#endif
     }
   }
   // OnLeaveForeground
@@ -2862,6 +3086,9 @@ void VisSampleApp::OnHandleCallback(IVisCallbackDataObject_cl *pData)
   // OnEnterForeground
   else if (pData->m_pSender == &Vision::Callbacks.OnEnterForeground)
   {
+    // Delete screenshot memory here in case we didn't use it (e.g. Android Sleep).
+    V_SAFE_DELETE_ARRAY(m_pTmpBackgroundScreenshot);
+
     // Re-set loading screen settings (only if restoration has finished)
     if (m_pBackgroundResourceRestorer != NULL)
     {
@@ -2896,6 +3123,13 @@ void VisSampleApp::OnHandleCallback(IVisCallbackDataObject_cl *pData)
       StoreScreenShotAsLoadBackgroundStart();
       m_bScreenshotForBackgroundPending = false;
     }
+#endif
+  }
+  else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
+  {
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+    Vision::RenderLoopHelper.SetReplacementRenderLoop(NULL);
+    m_iCurrentDebugShadingMode = -1;
 #endif
   }
 }
@@ -3006,43 +3240,28 @@ void VisSampleApp::StoreScreenShotAsLoadBackgroundEnd(const char* szFileName,
   const int iScreenWidth = Vision::Video.GetXRes();
   const int iScreenHeight = Vision::Video.GetYRes();
 
-  // flip buffer vertically and swap red <-> blue channel
-  float fLumFactors[3] = { 0.3f * fBrightness, 0.59f * fBrightness, 0.11f * fBrightness };
+  float fLumFactors[3] = { 0.114f * fBrightness, 0.587f * fBrightness, 0.299f * fBrightness };
   const float fInvSaturation = 1.0f - fSaturation;
-  for (int y = 0; y < iScreenHeight/2; y++)
+  for (int y = 0; y < iScreenHeight; y++)
   {
-    unsigned char *pRow1 = &m_pTmpBackgroundScreenshot[y*iScreenWidth*3];
-    unsigned char *pRow2 = &m_pTmpBackgroundScreenshot[(iScreenHeight-y-1)*iScreenWidth*3];
+    unsigned char *pRow = &m_pTmpBackgroundScreenshot[y*iScreenWidth*3];
 
-    for (int x = 0; x < iScreenWidth ; x++, pRow1 += 3, pRow2 += 3)
+    for (int x = 0; x < iScreenWidth ; x++, pRow += 3)
     {
-      unsigned char tmp[3] = { pRow1[0], pRow1[1], pRow1[2] };
+      unsigned char tmp[3] = { pRow[0], pRow[1], pRow[2] };
 
-      const float fLum1 = 
-        static_cast<float>(pRow1[0]) * fLumFactors[0] +
-        static_cast<float>(pRow1[1]) * fLumFactors[1] +
-        static_cast<float>(pRow1[2]) * fLumFactors[2];
-      const float fLum2 = 
-        static_cast<float>(pRow2[0]) * fLumFactors[0] +
-        static_cast<float>(pRow2[1]) * fLumFactors[1] +
-        static_cast<float>(pRow2[2]) * fLumFactors[2];
+      const float fLum = 
+        static_cast<float>(pRow[0]) * fLumFactors[0] +
+        static_cast<float>(pRow[1]) * fLumFactors[1] +
+        static_cast<float>(pRow[2]) * fLumFactors[2];
 
-      // flip and swap interpolated value
-      float fInvSaturationProduct = fInvSaturation * fLum2;
-      pRow1[0] = hkvMath::Min(255, static_cast<unsigned char>(
-        fSaturation * static_cast<float>(pRow2[2]) + fInvSaturationProduct));
-      pRow1[1] = hkvMath::Min(255, static_cast<unsigned char>(
-        fSaturation * static_cast<float>(pRow2[1]) + fInvSaturationProduct));
-      pRow1[2] = hkvMath::Min(255, static_cast<unsigned char>(
-        fSaturation * static_cast<float>(pRow2[0]) + fInvSaturationProduct));
-
-      fInvSaturationProduct = fInvSaturation * fLum1;
-      pRow2[0] = hkvMath::Min(255, static_cast<unsigned char>(
-        fSaturation * static_cast<float>(tmp[2]) + fInvSaturationProduct));
-      pRow2[1] = hkvMath::Min(255, static_cast<unsigned char>(
-        fSaturation * static_cast<float>(tmp[1]) + fInvSaturationProduct));
-      pRow2[2] = hkvMath::Min(255, static_cast<unsigned char>(
+      float fInvSaturationProduct = fInvSaturation * fLum;
+      pRow[0] = hkvMath::Min(255, static_cast<unsigned char>(
         fSaturation * static_cast<float>(tmp[0]) + fInvSaturationProduct));
+      pRow[1] = hkvMath::Min(255, static_cast<unsigned char>(
+        fSaturation * static_cast<float>(tmp[1]) + fInvSaturationProduct));
+      pRow[2] = hkvMath::Min(255, static_cast<unsigned char>(
+        fSaturation * static_cast<float>(tmp[2]) + fInvSaturationProduct));
     }
   }
 
@@ -3051,12 +3270,21 @@ void VisSampleApp::StoreScreenShotAsLoadBackgroundEnd(const char* szFileName,
   ImageMap_cl colorMap(iScreenWidth, iScreenHeight, 24, 
     static_cast<UBYTE*>(m_pTmpBackgroundScreenshot));
   image.AddColorMap(colorMap);
-  image.Scale(512, 512);
+
+  // Decide which resolution to use for the saved image.
+  int iScreenShotWidth = 512;
+  while (iScreenShotWidth > iScreenWidth || iScreenShotWidth > iScreenHeight)
+  {
+    iScreenShotWidth /= 2;
+    VASSERT(iScreenShotWidth > 0);
+  }
+
+  image.Scale(iScreenShotWidth, iScreenShotWidth);
 
   // build screen shot path
   const char* szScreenShotFileName = "vision_background.bmp";
   char szScreenShotFilePath[FS_MAX_PATH];
-#if defined(_VISION_MOBILE)
+#if defined(_VISION_MOBILE) || defined( _VISION_APOLLO )    // TODO: Have Apollo define _VISION_MOBILE.
   strcpy(szScreenShotFilePath, GetCacheDirectory());
   strcat(szScreenShotFilePath, "/");
   strcat(szScreenShotFilePath, szScreenShotFileName);
@@ -3075,6 +3303,8 @@ void VisSampleApp::StoreScreenShotAsLoadBackgroundEnd(const char* szFileName,
 
   // Set new background loading image
   m_loadingScreenSettings.sBackgroundImagePath = szScreenShotFilePath; 
+  // auto mip map generation not supported on some devices for RGB8
+  m_loadingScreenSettings.iBackgroundTextureFlags = VTM_FLAG_NO_MIPMAPS; 
   m_loadingScreenSettings.eAspectRatioAlignment = LoadingScreenSettings::ALIGN_NONE; // stretch over the whole screen
 
   // Disable custom progress bar rectangle and override fade out time
@@ -3149,6 +3379,35 @@ bool CheckFullscreenResolution( int iAdapter, int desiredX, int desiredY, int* s
 }
 #endif
 
+#if defined(SUPPORTS_DEBUG_SHADING) && defined(HK_DEBUG)
+void VisSampleApp::InitDebugShadingModes()
+{
+  m_debugShadingEffects.Clear();
+  m_spDebugShadingShaderLib = NULL;
+
+  m_spDebugShadingShaderLib = Vision::Shaders.LoadShaderLibrary("Shaders\\DebugShadingEffects.ShaderLib");
+  if ((m_spDebugShadingShaderLib == NULL) || (m_spDebugShadingShaderLib && !m_spDebugShadingShaderLib->IsLoaded()))
+    return;
+
+  VisShaderFXLibManager_cl &manager(Vision::Shaders.GetShaderFXLibManager());
+
+  // Enumerate all available effects and add them to a collection for later usage
+  for (int i=0;i<m_spDebugShadingShaderLib->m_Effects.Count();i++)
+  {
+    VCompiledEffect *pFX = m_spDebugShadingShaderLib->m_Effects.GetAt(i)->CompileEffect(NULL, manager.m_ShaderInstances);
+    
+    // Skip the "NotAvailable" shader, because it is only used for fallback reasons in vForge
+    if ((pFX==NULL) || (pFX && VStringHelper::SafeCompare(pFX->GetSourceEffect()->GetName(), "NotAvailable") == 0))
+      continue;
+    
+    // Use the effect's same as a description
+    pFX->SetUserData((void *)pFX->GetSourceEffect()->GetName());
+
+    m_debugShadingEffects.Add(pFX);
+  }
+}
+#endif
+
 #if defined(_VISION_WIIU)
 
 class VDRCDemoRenderLoop : public IVisRenderLoop_cl
@@ -3184,7 +3443,7 @@ void VDRCDemoRenderLoop::OnDoRenderLoop(void *pUserData)
 
   if(m_spLogoTexture != NULL)
   {
-    float fTimeDiff = Vision::GetTimer()->GetTimeDifference();
+    float fTimeDiff = Vision::GetUITimer()->GetTimeDifference();
     m_vLogoPosition += (m_vLogoMovement * fTimeDiff);
 
     hkvVec2 vLogoSize(m_spLogoTexture->GetTextureWidth(), m_spLogoTexture->GetTextureHeight());
@@ -3217,7 +3476,7 @@ public:
   {
   }
 
-  VOVERRIDE void OnDoRenderLoop(void *pUserData);
+  virtual void OnDoRenderLoop(void *pUserData) HKV_OVERRIDE;
 
   inline void SetTexture(VTextureObject* pTexture)
   {
@@ -3317,7 +3576,7 @@ void VisSampleApp::InitDRCCopyMode(VWiiUDRC eDrc /*= V_DRC_FIRST*/)
 #endif
 
 /*
- * Havok SDK - Base file, BUILD(#20130624)
+ * Havok SDK - Base file, BUILD(#20131019)
  * 
  * Confidential Information of Havok.  (C) Copyright 1999-2013
  * Telekinesys Research Limited t/a Havok. All Rights Reserved. The Havok

@@ -2,11 +2,6 @@
 //
 // Author: Joel Van Eenwyk
 // Purpose: Handle sprite setup and rendering
-// TODO:
-//   * Add shader support
-//   * Add 3D mode more it just generates a plane
-//   * Add alpha test option
-//   * Add blending mode options (additive, blend, etc)
 //
 //=======
 //
@@ -83,22 +78,16 @@ void Sprite::Clear()
 	m_scrollOffset.setZero();
 }
 
-bool Sprite::UpdateTextures()
+void Sprite::UpdateTextures()
 {
-	bool success = false;
-
 	m_spriteData = SpriteManager::GlobalManager().GetSpriteData(m_spriteSheetFilename, m_xmlDataFilename);
 	if (m_spriteData != NULL)
 	{
-		success = true;
-
 		if (m_spriteData->states.GetSize() > 0)
 		{
 			m_currentState = m_currentFrame = 0;
 		}
 	}
-
-	return success;
 }
 
 const hkvVec2 *Sprite::GetVertices() const
@@ -112,7 +101,7 @@ bool Sprite::SetSpriteSheetData(const char *spriteSheetFilename, const char *xml
 
 	if (m_spriteSheetFilename == spriteSheetFilename &&
 		m_xmlDataFilename == xmlFilename &&
-		m_loaded)
+		m_spriteData != NULL)
 	{
 		success = true;
 	}
@@ -120,12 +109,7 @@ bool Sprite::SetSpriteSheetData(const char *spriteSheetFilename, const char *xml
 	{
 		m_spriteSheetFilename = spriteSheetFilename;
 		m_xmlDataFilename = xmlFilename;
-
-		success = UpdateTextures();
-		if (success)
-		{
-			m_loaded = true;
-		}
+		UpdateTextures();
 	}
 
 	return success;
@@ -602,23 +586,21 @@ void Sprite::Update()
 	m_texCoords[VERTEX_TOP_RIGHT] = hkvVec2(uvBottomRight.x, uvTopLeft.y);
 	m_texCoords[VERTEX_BOTTOM_LEFT] = hkvVec2(uvTopLeft.x, uvBottomRight.y);
 	m_texCoords[VERTEX_BOTTOM_RIGHT] = uvBottomRight;
+
+	m_renderVertices[0].Set(m_vertices[VERTEX_TOP_LEFT].x, m_vertices[VERTEX_TOP_LEFT].y, m_texCoords[VERTEX_TOP_LEFT].x, m_texCoords[VERTEX_TOP_LEFT].y);
+	m_renderVertices[1].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
+	m_renderVertices[2].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
+
+	m_renderVertices[3].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
+	m_renderVertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
+	m_renderVertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
 }
 
 void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 {
 	if (GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
 	{
-		Overlay2DVertex_t vertices[6];
-
-		vertices[0].Set(m_vertices[VERTEX_TOP_LEFT].x, m_vertices[VERTEX_TOP_LEFT].y, m_texCoords[VERTEX_TOP_LEFT].x, m_texCoords[VERTEX_TOP_LEFT].y);
-		vertices[1].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
-		vertices[2].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
-
-		vertices[3].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
-		vertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
-		vertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
-
-		pRender->Draw2DBuffer(6, vertices, GetTexture(), state);
+		pRender->Draw2DBuffer(6, m_renderVertices, GetTexture(), state);
 	}
 }
 

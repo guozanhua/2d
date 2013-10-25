@@ -151,6 +151,14 @@ def main():
                                         os.path.join(project_directory, conf_debug),\
                                         options.force )
     
+    if options.force:
+        game_directory = os.path.normpath("%s\\Source\\SpriteGame\\" % project_directory)
+        source_files = ['VisSampleApp.cpp', 'VisSampleAppCallbacks.cpp', 'Tizen\\VisTizenGLESApp.cpp']
+        for source_file in source_files:
+            source = "%s\\Source\\Vision\\Runtime\\Common\\%s" % (vision_directory, source_file)
+            source = os.path.normpath(source)
+            shutil.copy2(source, game_directory)
+
     if options.assets:
         try:
             base = 'Data\Vision\Base'

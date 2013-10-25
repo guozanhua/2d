@@ -49,13 +49,13 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDebug.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_arm_vs2010_anarchyDebug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyDev.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_arm_vs2010_anarchyDev.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_vs2010_anarchyRelease.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\EnginePlugin_android_arm_vs2010_anarchyRelease.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">

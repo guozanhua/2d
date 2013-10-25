@@ -1,12 +1,10 @@
 #include "SpriteGamePCH.h"
 
-#include "VisSampleApp.hpp"
-
 //============================================================================================================
 // Properties for start up. Some of the settings are not relevant for mobile devices
 //============================================================================================================
-int windowSizeX    = 1024;               // Set the Window size X if not in fullscreen.
-int windowSizeY    = 768;                // Set the Window size Y if not in fullscreen.
+int windowSizeX   = 1024;                // Set the Window size X if not in fullscreen.
+int windowSizeY   = 768;                 // Set the Window size Y if not in fullscreen.
 int windowPosX    = 500;                 // Set the Window position X if not in fullscreen.
 int windowPosy    = 50;                  // Set the Window position Y if not in fullscreen.
 
@@ -86,7 +84,7 @@ VISION_INIT
 	// Init the application and point it to the start up scene.
 	if ( !spApp->InitSample("Sprite Game",
 		 StartUpScene,
-		 VSAMPLE_SPLASHSCREEN | VSAMPLE_USEDESKTOPRESOLUTION | VSAMPLE_SHOWEXITPROMPT | VSAMPLE_CUSTOMDATADIRECTORIES,
+		 VSampleFlags::VSAMPLE_SPLASHSCREEN | VSampleFlags::VSAMPLE_USEDESKTOPRESOLUTION | VSampleFlags::VSAMPLE_SHOWEXITPROMPT | VSampleFlags::VSAMPLE_CUSTOMDATADIRECTORIES,
 		 windowSizeX,
 		 windowSizeY) )
 	{
@@ -102,11 +100,6 @@ VISION_INIT
 
 VISION_SAMPLEAPP_AFTER_LOADING
 {
-	// define some help text
-	spApp->AddHelpText( "" );
-	spApp->AddHelpText( "How to use this demo :" );
-	spApp->AddHelpText( "" );
-
 	// Create a mouse controlled camera (optionally with gravity)
 	VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
 	pCamera->SetPosition( hkvVec3(cameraInitX, cameraInitY, cameraInitZ) );

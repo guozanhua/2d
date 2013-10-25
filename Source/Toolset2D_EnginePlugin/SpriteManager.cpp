@@ -43,55 +43,15 @@
 
 #include "Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/Toolset2D_Module_wrapper.hpp"
 
-int luaopen_Toolset2D(lua_State *);
+// global function referenced
+extern int luaopen_Toolset2D(lua_State *);
+
+// compare two sprites for depth sorting
+static int compareSprites(const void *sprite1, const void *sprite2);
 
 #if defined(WIN32)
-TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath)
-{
-	bool valid = !hkvStringHelper::isEmpty(absolutePath);
-
-	if (valid)
-	{
-		if (VPathHelper::IsAbsolutePath(absolutePath))
-		{
-			hkvAssetManager* assetManager = hkvAssetManager::getGlobalInstance();
-			hkvCriticalSectionLock lock(assetManager->acquireLock());
-
-			hkvAssetLibrary::RefPtr out_library;
-			valid = assetManager->makePathRelative(absolutePath, out_relativePath, out_library);
-		}
-		else
-		{
-			out_relativePath = absolutePath;
-		}
-	}
-
-	return valid;
-}
-#endif // WIN32
-
-// compare function for qsort
-static int CompareSprites(const void *arg1, const void *arg2)
-{
-	Sprite *pSort1 = *((Sprite **)arg1);
-	Sprite *pSort2 = *((Sprite **)arg2);
-
-	float a = pSort1->GetPosition().z;
-	float b = pSort2->GetPosition().z;
-
-	int result = 0;
-
-	if (hkvMath::isFloatEqual(a, b))
-	{
-		result = static_cast<int>(pSort2->GetUniqueID() - pSort1->GetUniqueID());
-	}
-	else
-	{
-		result = (b > a) ? -1 : 1;
-	}
-
-	return result;
-}
+TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
+#endif
 
 void SpriteManager::OneTimeInit()
 {
@@ -203,7 +163,7 @@ void SpriteManager::Render()
 	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_ALWAYSVISIBLE | RENDERSTATEFLAG_FILTERING | RENDERSTATEFLAG_DOUBLESIDED);
 
 	// Sort all the sprites by their Z order
-	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), CompareSprites);
+	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), compareSprites);
 
 	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
@@ -458,3 +418,52 @@ void SpriteManager::RegisterLua()
 		}
 	}
 }
+
+//----- functions
+
+static int compareSprites(const void *arg1, const void *arg2)
+{
+	Sprite *pSort1 = *((Sprite **)arg1);
+	Sprite *pSort2 = *((Sprite **)arg2);
+
+	float a = pSort1->GetPosition().z;
+	float b = pSort2->GetPosition().z;
+
+	int result = 0;
+
+	if (hkvMath::isFloatEqual(a, b))
+	{
+		result = static_cast<int>(pSort2->GetUniqueID() - pSort1->GetUniqueID());
+	}
+	else
+	{
+		result = (b > a) ? -1 : 1;
+	}
+
+	return result;
+}
+
+#if defined(WIN32)
+TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath)
+{
+	bool valid = !hkvStringHelper::isEmpty(absolutePath);
+
+	if (valid)
+	{
+		if (VPathHelper::IsAbsolutePath(absolutePath))
+		{
+			hkvAssetManager* assetManager = hkvAssetManager::getGlobalInstance();
+			hkvCriticalSectionLock lock(assetManager->acquireLock());
+
+			hkvAssetLibrary::RefPtr out_library;
+			valid = assetManager->makePathRelative(absolutePath, out_relativePath, out_library);
+		}
+		else
+		{
+			out_relativePath = absolutePath;
+		}
+	}
+
+	return valid;
+}
+#endif // WIN32

@@ -1,5 +1,6 @@
 ## Anarchy SDK files to ignore
 
+/ThirdParty/
 /External/Internal
 /Package/Output
 /Bin/*
@@ -14,6 +15,7 @@
 AndroidTemp/
 /Source/Vision/Samples/Engine/FileServe/vFileServeHost.txt
 Assets/AssetMgmt_data/thumbnails/
+/_Reference
 
 git_*.bat
 _viminfo

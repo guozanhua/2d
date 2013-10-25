@@ -94,7 +94,7 @@ protected:
 
 	void Clear();
 
-	bool UpdateTextures();
+	void UpdateTextures();
 	VTextureObject *GetTexture() const;
 
 	hkvVec2 GetDimensions() const;
@@ -126,6 +126,7 @@ private:
 
 	const SpriteData *m_spriteData;
 
+	Overlay2DVertex_t m_renderVertices[6];
 	hkvVec2 m_vertices[4];
 	hkvVec2 m_texCoords[4];
 

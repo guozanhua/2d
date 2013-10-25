@@ -2185,6 +2185,17 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
   }
 
 
+  SWIGINTERN int VisTypedEngineObject_cl_AddTimedValue(lua_State *L)
+  {
+    
+    //insert the class name of the component as parameter #2
+    lua_pushstring(L, "VTimedValueComponent");
+    lua_insert(L, 2);
+    
+    return VisTypedEngineObject_cl_AddComponentOfType(L);
+  }
+
+
   SWIGINTERN int VisTypedEngineObject_cl_AddTransitionStateMachine(lua_State *L)
   {
     
@@ -2202,7 +2213,7 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     SWIG_CONVERT_POINTER(L, 1, VisTypedEngineObject_cl, pSelf)
 
     //param #2: type name of the component
-    if(!SWIG_lua_isnilstring(L,2)) luaL_error(L, "Expected a string value as parameter 2 for VisTypedEngineObject_AddComponentOfType");
+    if(!SWIG_lua_isnilstring(L,2)) luaL_error(L, "Expected a string value as parameter 2 for VisTypedEngineObject_GetComponentOfType");
     const char * szComponentType = lua_tostring(L, 2);       
     
     //param #3: optional name of the component
@@ -2232,7 +2243,7 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     SWIG_CONVERT_POINTER(L, 1, VisTypedEngineObject_cl, pSelf)
 
     //param #2: type name of the component
-    if(!SWIG_lua_isnilstring(L,2)) luaL_error(L, "Expected a string value as parameter 2 for VisTypedEngineObject_AddComponentOfType");
+    if(!SWIG_lua_isnilstring(L,2)) luaL_error(L, "Expected a string value as parameter 2 for VisTypedEngineObject_GetComponentOfBaseType");
     const char * szBaseTypeName = lua_tostring(L, 2);       
     
     //param #3: optional name of the component
@@ -4311,6 +4322,7 @@ static swig_lua_method swig_VisTypedEngineObject_cl_methods[] = {
     { "AddTriggerTarget",VisTypedEngineObject_cl_AddTriggerTarget},
     { "AddTriggerSource",VisTypedEngineObject_cl_AddTriggerSource},
     { "AddTransitionStateMachine",VisTypedEngineObject_cl_AddTransitionStateMachine},
+    { "AddTimedValue",VisTypedEngineObject_cl_AddTimedValue},
     { "AddComponentOfType",VisTypedEngineObject_cl_AddComponentOfType},
     { "AddAnimation",VisTypedEngineObject_cl_AddAnimation},
     {"GetComponentCount", _wrap_VisTypedEngineObject_cl_GetComponentCount}, 

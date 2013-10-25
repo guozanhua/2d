@@ -19,4 +19,17 @@
     <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Lua\SpriteEntity.i">
+      <Filter>LUA</Filter>
+    </None>
+    <None Include="Lua\SpriteManager.i">
+      <Filter>LUA</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Lua\Toolset2D_Module.i">
+      <Filter>LUA</Filter>
+    </CustomBuild>
+  </ItemGroup>
 </Project>
