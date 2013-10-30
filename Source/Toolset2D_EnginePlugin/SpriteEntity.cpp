@@ -4,17 +4,6 @@
 // Purpose: Handle sprite setup and rendering
 //
 //=======
-//
-//       .-""""""-.
-//     .'          '.
-//    /   O    -=-   \
-//   :                :
-//   |                | 
-//   : ',          ,' :
-//    \  '-......-'  /
-//     '.          .'
-//       '-......-'
-//
 
 #include "Toolset2D_EnginePluginPCH.h"
 
@@ -424,12 +413,6 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 	}
 }
 
-BOOL Sprite::AddComponent(IVObjectComponent *pComponent)
-{
-	BOOL success = VisBaseEntity_cl::AddComponent(pComponent);
-	return success;
-}
-
 void Sprite::DebugRender(IVRenderInterface *pRenderer, float fSize, VColorRef iColor, bool bRenderConnections) const
 {
 	VSimpleRenderState_t state(VIS_TRANSP_NONE, RENDERSTATEFLAG_LINE2D);
@@ -587,10 +570,10 @@ void Sprite::Update()
 	m_texCoords[VERTEX_BOTTOM_LEFT] = hkvVec2(uvTopLeft.x, uvBottomRight.y);
 	m_texCoords[VERTEX_BOTTOM_RIGHT] = uvBottomRight;
 
+	// Setup the render vertices
 	m_renderVertices[0].Set(m_vertices[VERTEX_TOP_LEFT].x, m_vertices[VERTEX_TOP_LEFT].y, m_texCoords[VERTEX_TOP_LEFT].x, m_texCoords[VERTEX_TOP_LEFT].y);
 	m_renderVertices[1].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
 	m_renderVertices[2].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
-
 	m_renderVertices[3].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
 	m_renderVertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
 	m_renderVertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
@@ -631,11 +614,9 @@ bool Sprite::IsOverlapping(Sprite *other) const
 			int p1 = edges[edgeIndex * 2 + 0];
 			int p2 = edges[edgeIndex * 2 + 1];
 
-			hkvVec3 e = (m_vertices[p2] - m_vertices[p1]).getAsVec3(0.f);
-			hkvVec3 l = (otherVertices[vertexIndex] - m_vertices[p1]).getAsVec3(0.f);
-			e.normalize();
-			l.normalize();
-			hkvVec3 up = e.cross(l);
+			const hkvVec3 e = (m_vertices[p2] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
+			const hkvVec3 l = (otherVertices[vertexIndex] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
+			const hkvVec3 up = e.cross(l);
 
 			if (up.z < 0)
 			{

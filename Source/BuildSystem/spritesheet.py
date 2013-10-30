@@ -10,7 +10,8 @@
 #
 
 """
-spritesheet.py - Takes a folder or series of images and generates a spritesheet using ShoeBox
+spritesheet.py - Takes a folder or series of images and generates a spritesheet using
+                 ShoeBox. It therefore requires ShoeBox to be installed.
 """
 
 import sys
@@ -22,24 +23,14 @@ import time
 from optparse import OptionParser
 
 COMMAND_LINE_OPTIONS = (
-    (('-v', '--vision',),
+    (('-o', '--output',),
      {'action': 'store',
-      'dest': 'vision',
-      'help': "Vision SDK directory"}),
-    (('-p', '--project',),
+      'dest': 'output',
+      'help': "Output directory for spritesheets"}),
+    (('-s', '--shoebox',),
      {'action': 'store',
-      'dest': 'project',
-      'help': "Project root directory"}),
-    (('-a', '--assets',),
-     {'action': 'store_true',
-      'dest': 'assets',
-      'default': False,
-      'help': "Transform assets"}),
-    (('-f', '--force',),
-     {'action': 'store_true',
-      'dest': 'force',
-      'default': False,
-      'help': "Force the data to be updated despite file dates"}),
+      'dest': 'shoebox',
+      'help': "Directory where the ShoeBox executable lives"}),
     (('-q', '--quiet',),
      {'action': 'store_false',
       'dest': 'verbose',
@@ -161,11 +152,7 @@ def convert(options):
 
     return success
 
-def main():
-    """
-    Update the resources that are available and copy over newest assets.
-    """
-    
+def main():    
     success = False
     options = tuple()
 

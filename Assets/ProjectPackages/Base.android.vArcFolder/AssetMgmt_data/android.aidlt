@@ -1,0 +1,17 @@
+atten/linear.dds	Atten/linear.dds	sRGB=false
+atten/none.dds	Atten/none.dds	sRGB=false
+atten/quad.dds	Atten/quad.dds	sRGB=false
+atten/smooth.dds	Atten/smooth.dds	sRGB=false
+atten/square.dds	Atten/square.dds	sRGB=false
+defaultspotlight.dds	defaultSpotlight.dds	sRGB=false
+fonts/arial_18_00.dds	Fonts/Arial_18_00.dds	sRGB=false
+fonts/arial_22_00.dds	Fonts/Arial_22_00.dds	sRGB=false
+fonts/couriernew_18_00.dds	Fonts/CourierNew_18_00.dds	sRGB=false
+fonts/debugfont_00.dds	Fonts/DebugFont_00.dds	sRGB=false
+mainlens.dds#android-default	AssetMgmt_data/transformed/mainlens530z7g6lx39bv.rgba	sRGB=true
+mainlens.dds#android-pvr	AssetMgmt_data/transformed/mainlens530z7g6lx39bv.rgba	sRGB=true
+noise2d.dds#android-default	AssetMgmt_data/transformed/noise2d5t7ckwzlx39bv.rgba	sRGB=false
+noise2d.dds#android-pvr	AssetMgmt_data/transformed/noise2d5t7ckwzlx39bv.rgba	sRGB=false
+nonormals.dds#android-default	AssetMgmt_data/transformed/nonormals7psmvxglx39bv.rgba	sRGB=false
+nonormals.dds#android-pvr	AssetMgmt_data/transformed/nonormals7psmvxglx39bv.rgba	sRGB=false
+textures/blobshadow.dds	Textures/blobShadow.dds	sRGB=false

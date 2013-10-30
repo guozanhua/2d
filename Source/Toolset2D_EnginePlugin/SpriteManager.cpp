@@ -5,23 +5,6 @@
 //          render function appropriately
 //
 //=======
-//         _____           _____
-//     ,ad8PPPP88b,     ,d88PPPP8ba,
-//    d8P"      "Y8b, ,d8P"      "Y8b
-//   dP'           "8a8"           `Yd
-//   8(              "              )8
-//   I8                             8I
-//    Yb,                         ,dP
-//     "8a,                     ,a8"
-//       "8a,                 ,a8"
-//         "Yba             adP"
-//           `Y8a         a8P'
-//             `88,     ,88'
-//               "8b   d8"  
-//                "8b d8"   
-//                 `888'
-//                   "
-//
 
 #include "Toolset2D_EnginePluginPCH.h"
 
@@ -92,6 +75,7 @@ void SpriteManager::OneTimeDeInit()
 		delete spriteData;
 		m_spriteData[spriteDataIndex] = NULL;
 	}
+
 	m_spriteData.RemoveAll();
 }
 
@@ -318,7 +302,9 @@ const SpriteData *SpriteManager::GetSpriteData(const VString &spriteSheetFilenam
 				const char *result = strrchr(name, '_');
 				int index = -1;
 				if (result != NULL)
+				{
 					index = result - name;
+				}
 
 				SpriteState *state = NULL;
 				int stateIndex = -1;
@@ -367,7 +353,8 @@ const SpriteData *SpriteManager::GetSpriteData(const VString &spriteSheetFilenam
 				state->cells.Append(newCellIndex);
 			}
 		}
-		// No XML describing the sprite sheet, but we do have a sprite texture
+		// No XML describing the sprite sheet, but we do have a sprite texture, so create a default
+		// state and cell for it
 		else if (spriteData->spriteSheetTexture != NULL)
 		{
 			int stateIndex = spriteData->states.Append(SpriteState());

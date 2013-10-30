@@ -56,11 +56,6 @@ public:
 	
 	TOOLSET_2D_IMPEXP void CreateSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename);
 
-	// TODO
-	//TOOLSET_2D_IMPEXP void CreateSimpleSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename);
-	//TOOLSET_2D_IMPEXP void CreateCentinalSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename, LUA *OnUpdateCall);
-	//TOOLSET_2D_IMPEXP void CreateSpriteCollection(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename, LUA *OnUpdateCall);
-
 	TOOLSET_2D_IMPEXP const SpriteData *GetSpriteData(const VString &spriteSheetFilename, const VString &xmlDataFilename);
 
 	TOOLSET_2D_IMPEXP void Render();

@@ -2834,7 +2834,7 @@ SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisT
   }
 
 
-  #include "SpriteManager.hpp"
+	#include "SpriteManager.hpp"
 
 
   #include "SpriteEntity.hpp"
