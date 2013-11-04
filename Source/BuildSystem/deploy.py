@@ -34,8 +34,8 @@ COMMAND_LINE_OPTIONS = (
       'default': True,
       'help': "Don't print out status updates"}))
 
-CUSTOM_PLUGINS = ['Toolset2D_EnginePlugin', 'Toolset2D_Managed', 'Toolset2D.EditorPlugin', 'SpriteGamePlugin']
-
+CUSTOM_PLUGINS = ['Toolset2D_EnginePlugin', 'Toolset2D_Managed', 'Toolset2D.EditorPlugin']
+IGNORE_EXTENSIONS = ['.ilk', '.metagen']
 
 def main():
     """
@@ -73,7 +73,14 @@ def main():
 
         for filename in os.listdir(source_directory):
             for plugin in CUSTOM_PLUGINS:
-                if plugin.lower() in filename.lower():
+                skip = False
+
+                for extension_to_ignore in IGNORE_EXTENSIONS:
+                    if extension_to_ignore.lower() in filename.lower():
+                        skip = True
+                        break
+
+                if not skip and (plugin.lower() in filename.lower()):
                     source_file = os.path.join(source_directory, filename)
                     destination_file = os.path.join(output_path, filename)
 

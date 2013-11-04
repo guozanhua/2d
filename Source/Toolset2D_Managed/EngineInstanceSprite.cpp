@@ -165,9 +165,6 @@ namespace Toolset2D_Managed
 
 	bool EngineInstanceSprite::CanAttachComponent(ShapeComponent ^component, String ^%sError)
 	{
-		// Default implementation:
-		//	return ConversionUtils::CanAttachComponent(GetO3DPtr(),component,sError);
-
 		// For now, just allow script components
 		return (component->PrefabIdentifier == "VScriptComponent");
 	}

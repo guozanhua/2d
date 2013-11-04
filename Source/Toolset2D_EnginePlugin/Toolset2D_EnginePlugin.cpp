@@ -6,23 +6,6 @@
 //          our plugin.
 //
 //=======
-//
-//  ##  ########  ##   
-//    #   ####   #    
-//     ##  ##   ##     
-//      ##     ##      
-//       ##   ##       
-//       ##  ##        
-//       ##  ##        
-//      ###  ###       
-//      ##    ##       
-//     ##      ##      
-//    ##        ##     
-//   ##          ##    
-//  ##            ##   
-//  #              #   
-// #                #  
-//
 
 #include "Toolset2D_EnginePluginPCH.h"
 
@@ -102,4 +85,3 @@ VEXPORT IVisPlugin_cl* GetEnginePlugin()
 }
 
 #endif // _DLL or _WINDLL
-

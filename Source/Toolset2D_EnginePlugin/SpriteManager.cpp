@@ -45,6 +45,9 @@ void SpriteManager::OneTimeInit()
 
 	Vision::Callbacks.OnRenderHook += this;
 	Vision::Callbacks.OnUpdateSceneFinished += this;
+	Vision::Callbacks.OnEditorModeChanged += this;
+	Vision::Callbacks.OnAfterSceneUnloaded += this;
+	Vision::Callbacks.OnWorldDeInit += this;
 	IVScriptManager::OnRegisterScriptFunctions += this;
 	IVScriptManager::OnScriptProxyCreation += this;
 }
@@ -55,32 +58,44 @@ void SpriteManager::OneTimeDeInit()
 
 	Vision::Callbacks.OnRenderHook -= this;
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
+	Vision::Callbacks.OnAfterSceneUnloaded -= this;
+	Vision::Callbacks.OnEditorModeChanged -= this;
+	Vision::Callbacks.OnWorldDeInit -= this;
 	IVScriptManager::OnRegisterScriptFunctions -= this;
 	IVScriptManager::OnScriptProxyCreation -= this;
 
-	VASSERT(m_sprites.GetSize() == 0);
-
-	for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
+	if (m_spHUD)
 	{
-		SpriteData *spriteData = m_spriteData[spriteDataIndex];
-
-		spriteData->cells.RemoveAll();
-		spriteData->states.RemoveAll();
-		spriteData->stateNameToIndex.Reset();
-		spriteData->spTextureAnimation = NULL;
-
-		V_SAFE_RELEASE(spriteData->spriteSheetTexture);
-		V_SAFE_RELEASE(spriteData->spTextureAnimation);
-
-		delete spriteData;
-		m_spriteData[spriteDataIndex] = NULL;
+		m_spHUD->SetActivate(false);
+		m_spHUD = NULL;
 	}
-
-	m_spriteData.RemoveAll();
 }
 
 void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 {
+	if (pData->m_pSender == &Vision::Callbacks.OnEditorModeChanged)
+	{
+		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
+
+		// When vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
+		if (pEditorModeChangedData->m_eNewMode != VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME)
+		{
+			SetPlayTheGame(false);
+		}
+	}
+	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
+	{
+		// Init play-the-game only in this vForge mode (or outside vForge)
+		if (Vision::Editor.IsPlayingTheGame())
+		{
+			SetPlayTheGame(true);
+		}
+	}
+	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
+	{
+		// This is important when running outside vForge
+		SetPlayTheGame(false);
+	}
 	if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
 	{
 		VisRenderHookDataObject_cl *pRenderHookData = (VisRenderHookDataObject_cl *)pData;
@@ -92,6 +107,27 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
 	{
 		Update();
+	}
+	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
+	{
+		VASSERT(m_sprites.GetSize() == 0);
+
+		for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
+		{
+			SpriteData *spriteData = m_spriteData[spriteDataIndex];
+
+			spriteData->cells.RemoveAll();
+			spriteData->states.RemoveAll();
+			spriteData->stateNameToIndex.Reset();
+
+			V_SAFE_RELEASE(spriteData->spTextureAnimation);
+			V_SAFE_RELEASE(spriteData->spriteSheetTexture);
+
+			delete spriteData;
+			m_spriteData[spriteDataIndex] = NULL;
+		}
+
+		m_spriteData.RemoveAll();
 	}
 	else if (pData->m_pSender == &IVScriptManager::OnRegisterScriptFunctions)
 	{
@@ -154,6 +190,11 @@ void SpriteManager::Render()
 	{
 		m_sprites[spriteIndex]->Render(pRender, state);
 	}
+
+	// Render a little quad to represent that 2D is being used
+	hkvVec2	tl(10, 10);
+	hkvVec2	br(60, 60);
+	pRender->DrawSolidQuad(tl, br, VColorRef(0, 255, 0, 128), state);
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
 }
@@ -227,7 +268,7 @@ const SpriteData *SpriteManager::GetSpriteData(const VString &spriteSheetFilenam
 
 	SpriteData *spriteData = NULL;
 
-	VTextureObjectPtr spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
+	VTextureObject *spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
 	if (spSpriteSheetTexture)
 	{
 		spriteData = new SpriteData();
@@ -402,6 +443,29 @@ void SpriteManager::RegisterLua()
 		else
 		{
 			Vision::Error.Warning("Unable to create Lua Sprite Module, lua_State is NULL!");
+		}
+	}
+}
+
+// switch to play-the-game mode. Do some initialization such as HUD display
+void SpriteManager::SetPlayTheGame(bool bStatus)
+{
+	if (m_bPlayingTheGame != bStatus)
+	{
+		m_bPlayingTheGame = bStatus;
+		if (m_bPlayingTheGame)
+		{
+			m_spHUD = new HUDGUIContext(NULL);
+			m_spHUD->SetActivate(true);
+		}
+		else
+		{
+			// Deactivate the HUD
+			if (m_spHUD)
+			{
+				m_spHUD->SetActivate(false);
+				m_spHUD = NULL;
+			}
 		}
 	}
 }

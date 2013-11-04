@@ -15,9 +15,6 @@
 
 #define CURRENT_SPRITE_VERSION 2
 
-#define PROP_TEXTURE_FILENAME TextureFilename
-#define PROP_TEXTURE_SCALE TextureScale
-
 V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 
 // Called by the engine when entity is created. Not when it is de-serialized!
@@ -52,12 +49,9 @@ void Sprite::CommonDeInit()
 
 void Sprite::Clear()
 {
-	m_loaded = false;
+	m_scrollSpeed.setZero();
+	m_fullscreen = false;
 
-	Fullscreen = false;
-	ScrollSpeed.setZero();
-
-	m_spriteData = NULL;
 	m_currentState = -1;
 	m_currentFrame = -1;
 	m_frameTime = 0.f;
@@ -65,6 +59,11 @@ void Sprite::Clear()
 	m_playOnce = false;
 	m_collide = true;
 	m_scrollOffset.setZero();
+
+	m_spriteData = NULL;
+
+	m_spriteSheetFilename = NULL;
+	m_xmlDataFilename = NULL;
 }
 
 void Sprite::UpdateTextures()
@@ -122,7 +121,7 @@ const VArray<VString> Sprite::GetStateNames() const
 const SpriteState *Sprite::GetCurrentState() const
 {
 	const SpriteState *state = NULL;
-	if (m_currentState != -1)
+	if (m_spriteData != NULL && m_currentState >=0)
 	{
 		state = &m_spriteData->states[m_currentState];
 	}
@@ -136,7 +135,7 @@ int Sprite::GetCurrentFrame() const
 
 void Sprite::SetCurrentFrame(int currentFrame)
 {
-	if (m_currentState != -1)
+	if (m_spriteData != NULL && m_currentState >= 0)
 	{
 		m_paused = true;
 
@@ -168,32 +167,32 @@ float Sprite::GetOriginalCellHeight() const
 
 void Sprite::ThinkFunction()
 {
-	if (m_currentState != -1 && !m_paused)
+	if (m_spriteData != NULL && m_currentState >= 0 && !m_paused)
 	{
 		const float dt = Vision::GetTimer()->GetTimeDifference();
 
 		m_frameTime += dt;
-		m_scrollOffset += ScrollSpeed * dt;
+		m_scrollOffset += m_scrollSpeed * dt;
 
-		if (!hkvMath::isFloatEqual(ScrollSpeed.x, 0.0f))
+		if (!hkvMath::isFloatEqual(m_scrollSpeed.x, 0.0f))
 		{
-			if (ScrollSpeed.x > 0 && m_scrollOffset.x > 1.0f)
+			if (m_scrollSpeed.x > 0 && m_scrollOffset.x > 1.0f)
 			{
 				m_scrollOffset.x -= 1.0f;
 			}
-			else if (ScrollSpeed.x < 0 && m_scrollOffset.x < 0.0f)
+			else if (m_scrollSpeed.x < 0 && m_scrollOffset.x < 0.0f)
 			{
 				m_scrollOffset.x += 1.0f;
 			}
 		}
 
-		if (!hkvMath::isFloatEqual(ScrollSpeed.y, 0.0f))
+		if (!hkvMath::isFloatEqual(m_scrollSpeed.y, 0.0f))
 		{
-			if (ScrollSpeed.y > 0 && m_scrollOffset.y > 1.0f)
+			if (m_scrollSpeed.y > 0 && m_scrollOffset.y > 1.0f)
 			{
 				m_scrollOffset.y -= 1.0f;
 			}
-			else if (ScrollSpeed.y < 0 && m_scrollOffset.y < 0.0f)
+			else if (m_scrollSpeed.y < 0 && m_scrollOffset.y < 0.0f)
 			{
 				m_scrollOffset.y += 1.0f;
 			}
@@ -241,7 +240,7 @@ bool Sprite::SetState(const char *state)
 
 void Sprite::SetFramePercent(float percent)
 {
-	if (m_currentState != -1)
+	if (m_spriteData != NULL && m_currentState >= 0)
 	{
 		m_paused = true;
 
@@ -264,22 +263,22 @@ void Sprite::Pause()
 
 void Sprite::SetScrollSpeed(hkvVec2 scrollSpeed)
 {
-	ScrollSpeed = scrollSpeed;
+	m_scrollSpeed = scrollSpeed;
 }
 
 const hkvVec2 &Sprite::GetScrollSpeed() const
 {
-	return ScrollSpeed;
+	return m_scrollSpeed;
 }
 
 void Sprite::SetFullscreenMode(bool enabled)
 {
-	Fullscreen = enabled;
+	m_fullscreen = enabled;
 }
 
 bool Sprite::IsFullscreenMode() const
 {
-	return Fullscreen;
+	return m_fullscreen;
 }
 
 void Sprite::SetPlayOnce(bool enabled)
@@ -581,7 +580,7 @@ void Sprite::Update()
 
 void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 {
-	if (GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
+	if ( m_spriteData != NULL && (GetVisibleBitmask() & VIS_ENTITY_VISIBLE) )
 	{
 		pRender->Draw2DBuffer(6, m_renderVertices, GetTexture(), state);
 	}
@@ -630,7 +629,7 @@ bool Sprite::IsOverlapping(Sprite *other) const
 			break;
 		}
 	}
-
+	
 	return inside;
 }
 
@@ -654,10 +653,9 @@ void Sprite::Serialize(VArchive &ar)
 		ar.ReadStringBinary(xmlFilenameBuffer, FS_MAX_PATH);
 		m_xmlDataFilename = xmlFilenameBuffer;
 
-		ar >> TextureScale;
-		ar >> ScrollSpeed.x;
-		ar >> ScrollSpeed.y;
-		ar >> Fullscreen;
+		ar >> m_scrollSpeed.x;
+		ar >> m_scrollSpeed.y;
+		ar >> m_fullscreen;
 		ar >> m_playOnce;
 		ar >> m_collide;
 	} 
@@ -668,10 +666,9 @@ void Sprite::Serialize(VArchive &ar)
 		ar.WriteStringBinary(m_spriteSheetFilename);
 		ar.WriteStringBinary(m_xmlDataFilename);
 
-		ar << TextureScale;
-		ar << ScrollSpeed.x;
-		ar << ScrollSpeed.y;
-		ar << Fullscreen;
+		ar << m_scrollSpeed.x;
+		ar << m_scrollSpeed.y;
+		ar << m_fullscreen;
 		ar << m_playOnce;
 		ar << m_collide;
 	}
@@ -687,5 +684,4 @@ void Sprite::OnSerialized(VArchive &ar)
 START_VAR_TABLE(Sprite, VisBaseEntity_cl, "Sprite", 0, "")
 	DEFINE_VAR_STRING_CALLBACK(Sprite, TextureFilename, "Sprite sheet", "white.dds", DISPLAY_HINT_TEXTUREFILE, NULL);
 	DEFINE_VAR_STRING_CALLBACK(Sprite, XmlDataFilename, "Xml Data", "", DISPLAY_HINT_CUSTOMFILE, NULL);
-	DEFINE_VAR_FLOAT_AND_NAME(Sprite, PROP_TEXTURE_SCALE, "Scale", "Scale of the sprite sheet (% of pixels)", "0", 0, "Clamp(0, 1)");
 END_VAR_TABLE

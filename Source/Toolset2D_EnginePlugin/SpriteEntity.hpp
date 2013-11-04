@@ -68,7 +68,7 @@ public:
 	TOOLSET_2D_IMPEXP void Pause();
 	TOOLSET_2D_IMPEXP void Play();
 
-	TOOLSET_2D_IMPEXP void SetScrollSpeed(hkvVec2 scrollSpeed);
+	TOOLSET_2D_IMPEXP void SetScrollSpeed(hkvVec2 m_scrollSpeed);
 	TOOLSET_2D_IMPEXP const hkvVec2 &GetScrollSpeed() const;
 
 	TOOLSET_2D_IMPEXP void SetFullscreenMode(bool enabled);
@@ -102,19 +102,8 @@ protected:
 
 private:
 
-	//----- Properties
-
-	float TextureScale;
-
-	hkvVec2 ScrollSpeed;
-	//int BlendMode;
-	bool Fullscreen;
-
-	//----- Member variables
-
-	// Tracks whether or not the spritesheet and XML data have been loaded
-	bool m_loaded;
-
+	hkvVec2 m_scrollSpeed;
+	bool m_fullscreen;
 	int m_currentState;
 	int m_currentFrame;
 	float m_frameTime;

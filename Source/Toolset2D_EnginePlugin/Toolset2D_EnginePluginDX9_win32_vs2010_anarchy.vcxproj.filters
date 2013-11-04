@@ -8,11 +8,16 @@
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
       <Filter>Lua</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
+    <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Lua">

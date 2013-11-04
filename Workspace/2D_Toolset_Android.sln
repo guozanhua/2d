@@ -2,14 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_EnginePlugin", "..\Source\Toolset2D_EnginePlugin\Toolset2D_EnginePlugin_Android_vs2010.vcxproj", "{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGamePlugin", "..\Source\SpriteGamePlugin\SpriteGamePlugin_Android_vs2010.vcxproj", "{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76} = {4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGame", "..\Source\SpriteGame\SpriteGame_Android_vs2010.vcxproj", "{FFF01464-7E45-4E08-8B74-3079100FCA8F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311} = {A6E1B5E6-409B-4A4C-B350-7C6068C8A311}
+		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76} = {4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}
 	EndProjectSection
 EndProject
 Global
@@ -25,12 +20,6 @@ Global
 		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Dev|hkAndroid.Build.0 = Dev|hkAndroid
 		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|hkAndroid.ActiveCfg = Release|hkAndroid
 		{4910E2EB-2888-4829-9FE1-3E7B6FA0ED76}.Release|hkAndroid.Build.0 = Release|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|hkAndroid.ActiveCfg = Debug|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Debug|hkAndroid.Build.0 = Debug|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|hkAndroid.ActiveCfg = Dev|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Dev|hkAndroid.Build.0 = Dev|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|hkAndroid.ActiveCfg = Release|hkAndroid
-		{A6E1B5E6-409B-4A4C-B350-7C6068C8A311}.Release|hkAndroid.Build.0 = Release|hkAndroid
 		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|hkAndroid.ActiveCfg = Debug|hkAndroid
 		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Debug|hkAndroid.Build.0 = Debug|hkAndroid
 		{FFF01464-7E45-4E08-8B74-3079100FCA8F}.Dev|hkAndroid.ActiveCfg = Dev|hkAndroid

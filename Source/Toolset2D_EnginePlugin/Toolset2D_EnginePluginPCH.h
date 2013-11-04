@@ -1,6 +1,22 @@
 #ifndef TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 #define TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 
+// The following defines are necessary primarily on Android so that there aren't duplicate
+// symbols generated for SWIG and vHavok
+#define swig_types						t2d_swig_types
+#define swig_module						t2d_swig_module
+#define VSWIG_Lua_get_class_registry	T2D_VSWIG_Lua_get_class_registry
+#define VSWIG_Lua_ConvertPtr			T2D_VSWIG_Lua_ConvertPtr
+#define VSWIG_Lua_NewPointerObj			T2D_VSWIG_Lua_NewPointerObj
+#define VSWIG_TypeCast					T2D_VSWIG_TypeCast
+#define VSWIG_TypeCheckStruct			T2D_VSWIG_TypeCheckStruct
+#define VSWIG_VisionLuaClassSet			T2D_VSWIG_VisionLuaClassSet
+#define VSWIG_VisionLuaClassGet			T2D_VSWIG_VisionLuaClassGet
+#define VSWIG_TypeCheck					T2D_VSWIG_TypeCheck
+#define VSWIG_Lua_typename				T2D_VSWIG_Lua_typename
+
+#define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
+
 #if defined(WIN32)
 	// Exclude rarely-used stuff from Windows headers
 	#define WIN32_LEAN_AND_MEAN

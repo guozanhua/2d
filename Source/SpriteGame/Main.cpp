@@ -18,9 +18,7 @@ float cameraInitZ = 170;                  // Set our camera above the ground so 
 
 // Use the following line to initialize a plugin that is statically linked. 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
-VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteGame_EnginePlugin();
 VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
-VIMPORT IVisPlugin_cl* GetEnginePlugin_SpriteGamePlugin();
 		 
 VisSampleAppPtr spApp;
 
@@ -31,6 +29,8 @@ VISION_INIT
 {
 	// Create our new application.
 	spApp = new VisSampleApp();
+
+	Vision::Error.SystemMessage( "Sprite Game started!" );
 
 	// set the initial starting position of our game window
 	// and other properties if not in fullscreen. This is only relevant on windows
@@ -47,8 +47,8 @@ VISION_INIT
 	// The paths are platform dependent
 #if defined(WIN32)
 	const VString szRoot = "..\\..\\..\\..";
-	Vision::File.AddDataDirectory( szRoot + "\\Assets" );
-	Vision::File.AddDataDirectory( szRoot + "\\Data\\Vision\\Base" );
+	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Base.pcdx9.vArcFolder" );
+	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Project.pcdx9.vArcFolder" );
 #elif defined(_VISION_ANDROID)
 	VString szRoot = VisSampleApp::GetApkDirectory();
 	szRoot += "?assets";
@@ -79,7 +79,7 @@ VISION_INIT
 	// Use the following line to load a plugin. Remember that, except on Windows platform, in addition
 	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
 	// Properties, Linker, Additional Dependencies.
-	VISION_PLUGIN_ENSURE_LOADED(SpriteGamePlugin);
+	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
 
 	// Init the application and point it to the start up scene.
 	if ( !spApp->InitSample("Sprite Game",

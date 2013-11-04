@@ -1,6 +1,8 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
+#include "HUD.hpp"
+
 class Sprite;
 
 struct SpriteCell
@@ -33,8 +35,8 @@ struct SpriteData
 	VArray<SpriteCell> cells;
 	VArray<SpriteState> states;
 
-	VTextureObjectPtr spriteSheetTexture;
-	VisTextureAnimInstancePtr spTextureAnimation;
+	VTextureObject *spriteSheetTexture;
+	VisTextureAnimInstance_cl *spTextureAnimation;
 
 	VDictionary<int> stateNameToIndex;
 };
@@ -75,8 +77,15 @@ public:
 
 	TOOLSET_2D_IMPEXP int GetNumSprites();
 
+protected:
+	void SetPlayTheGame(bool bStatus);
+
 private:
 	VArray<Sprite*> m_sprites;
+
+	bool m_bPlayingTheGame;
+
+	HUDGUIContextPtr m_spHUD;
 
 	// We store the sprite data in the manager since sprites will most likely share
 	// the same data and we don't want to re-parse the same information multiple times

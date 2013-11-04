@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{a3532733-0ff5-4d49-9b6a-797012d1bd48}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>update.py</StartupFile>
+    <StartupFile>deploy.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
