@@ -14,17 +14,22 @@ namespace Toolset2D_Managed
 		// #warning, #verify (jve) - It seems necessary to use CreateEntity since it calls Init/InitVars, which can't be
 		// called manually inside Sprite due to protected linkage.
 		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+
+		//m_pSprite = new Sprite();
+		//m_pSprite->AddRef();
 	}
 
 	void EngineInstanceSprite::DisposeObject()
 	{
-		if (m_pSprite)
-		{
-			// Make sure nobody accidentally started referencing this without our knowledge
-			VASSERT(m_pSprite->GetRefCount() == 1);
-			m_pSprite->DisposeObject();
-			m_pSprite = NULL;
-		}
+		// #todo #memoryleak
+		Vision::Game.RemoveEntity(m_pSprite);
+
+		//m_pSprite = NULL;
+		//if (m_pSprite)
+		//{
+		//	delete m_pSprite;
+		//	m_pSprite = NULL;
+		//}
 	}
 
 	void EngineInstanceSprite::SetVisible(bool bStatus)
@@ -54,17 +59,38 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::SetPosition(float x, float y, float z)
 	{
-		m_pSprite->SetPosition(x, y, z);
+		if (m_pSprite)
+		{
+			m_pSprite->SetPosition(x, y, z);
+		}
 	}
 
 	void EngineInstanceSprite::SetOrientation(float yaw, float pitch, float roll)
 	{
-		m_pSprite->SetOrientation(yaw, pitch, roll);
+		if (m_pSprite)
+		{
+			m_pSprite->SetOrientation(yaw, pitch, roll);
+		}
+	}
+
+	bool EngineInstanceSprite::GetOrientation(Vector3F %orientation)
+	{
+		if (m_pSprite)
+		{
+			const hkvVec3 &o = m_pSprite->GetOrientation();
+			orientation.X = o.x;
+			orientation.Y = o.y;
+			orientation.Z = o.z;
+		}
+		return (m_pSprite != NULL);
 	}
 
 	void EngineInstanceSprite::SetScaling(float x, float y, float z)
 	{
-		m_pSprite->SetScaling( hkvVec3(x, y, z) );
+		if (m_pSprite)
+		{
+			m_pSprite->SetScaling( hkvVec3(x, y, z) );
+		}
 	}
 
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
@@ -158,9 +184,20 @@ namespace Toolset2D_Managed
 		// do the export: Get the export binary archive and serialize into it.
 		// Requires the native node class to support serialization (derive from VisTypedEngineObject_cl and 
 		// implement Serialize function)
-		VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
-		ar.WriteObject(m_pSprite);
+		if (m_pSprite)
+		{
+			VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
+			ar.WriteObject(m_pSprite);
+		}
 		return true;
+	}
+
+	void EngineInstanceSprite::SetUniqueID(unsigned __int64 iID)
+	{
+		if (m_pSprite)
+		{
+			m_pSprite->SetUniqueID(iID);
+		}
 	}
 
 	bool EngineInstanceSprite::CanAttachComponent(ShapeComponent ^component, String ^%sError)
@@ -171,11 +208,19 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::OnAttachComponent(ShapeComponent ^component)
 	{
-		ConversionUtils::OnAttachComponent(m_pSprite, component);
+		if (m_pSprite)
+		{
+			ConversionUtils::OnAttachComponent(m_pSprite, component);
+		}
 	}
 
 	void EngineInstanceSprite::SetSpriteSheetData(String ^pFileName, String ^pXml)
 	{
+		if (m_pSprite == NULL)
+		{
+			return;
+		}
+
 		VString sFileName;
 		ConversionUtils::StringToVString(pFileName, sFileName);
 
@@ -200,87 +245,184 @@ namespace Toolset2D_Managed
 
 	array<String^>^ EngineInstanceSprite::GetStateNames()
 	{
-		const VArray<VString> stateNames = m_pSprite->GetStateNames();
-
-		array<String^>^ names = gcnew array<String^>(stateNames.GetSize());
-		for (int i = 0; i < stateNames.GetSize(); i++)
+		if (m_pSprite != NULL)
 		{
-			names[i] = ConversionUtils::VStringToString(stateNames[i]);
+			const VArray<VString> stateNames = m_pSprite->GetStateNames();
+
+			array<String^>^ names = gcnew array<String^>(stateNames.GetSize());
+			for (int i = 0; i < stateNames.GetSize(); i++)
+			{
+				names[i] = ConversionUtils::VStringToString(stateNames[i]);
+			}
+
+			return names;
 		}
 
-		return names;
+		return gcnew array<String^>(0);
 	}
 
 	String^ EngineInstanceSprite::GetCurrentState()
 	{
-		String^ stateName = "NONE";
-		const SpriteState *state = m_pSprite->GetCurrentState();
-		if (state != NULL)
+		String^ stateName = "";
+
+		if (m_pSprite != NULL)
 		{
-			stateName = ConversionUtils::VStringToString(state->name);
+			String^ stateName = "NONE";
+			const SpriteState *state = m_pSprite->GetCurrentState();
+			if (state != NULL)
+			{
+				stateName = ConversionUtils::VStringToString(state->name);
+			}
 		}
+
 		return stateName;
 	}
 
 	void EngineInstanceSprite::SetCurrentState(String^ state)
 	{
-		VString stateName;
-		ConversionUtils::StringToVString(state, stateName);
-		m_pSprite->SetState(stateName);
+		if (m_pSprite != NULL)
+		{
+			VString stateName;
+			ConversionUtils::StringToVString(state, stateName);
+			m_pSprite->SetState(stateName);
+		}
 	}
 
 	int EngineInstanceSprite::GetCurrentFrame()
 	{
-		return m_pSprite->GetCurrentFrame();
+		int frame = -1;
+
+		if (m_pSprite != NULL)
+		{
+			frame = m_pSprite->GetCurrentFrame();
+		}
+
+		return frame;
 	}
 
 	void EngineInstanceSprite::SetCurrentFrame(int frame)
 	{
-		m_pSprite->SetCurrentFrame(frame);
+		if (m_pSprite != NULL)
+		{
+			m_pSprite->SetCurrentFrame(frame);
+		}
 	}
 
 	float EngineInstanceSprite::GetScrollX()
 	{
-		return m_pSprite->GetScrollSpeed().x;
+		float scrollX = 0.0f;
+		if (m_pSprite != NULL)
+		{
+			scrollX = m_pSprite->GetScrollSpeed().x;
+		}
+		return scrollX;
 	}
 
 	float EngineInstanceSprite::GetScrollY()
 	{
-		return m_pSprite->GetScrollSpeed().y;
+		float scrollY = 0.0f;
+		if (m_pSprite != NULL)
+		{
+			scrollY = m_pSprite->GetScrollSpeed().y;
+		}
+		return scrollY;
 	}
 
 	void EngineInstanceSprite::SetScroll(float x, float y)
 	{
-		m_pSprite->SetScrollSpeed(hkvVec2(x, y));
+		if (m_pSprite != NULL)
+		{
+			m_pSprite->SetScrollSpeed(hkvVec2(x, y));
+		}
+	}
+
+	float EngineInstanceSprite::GetWidth()
+	{
+		float width = 0.f;
+		if (m_pSprite != NULL)
+		{
+			width = m_pSprite->GetWidth();
+		}
+		return width;
+	}
+
+	float EngineInstanceSprite::GetHeight()
+	{
+		float height = 0.f;
+		if (m_pSprite != NULL)
+		{
+			height = m_pSprite->GetHeight();
+		}
+		return height;
+	}
+
+	void EngineInstanceSprite::SetWidth(float width)
+	{
+		if (m_pSprite != NULL)
+		{
+			return m_pSprite->SetWidth(width);
+		}
+	}
+
+	void EngineInstanceSprite::SetHeight(float height)
+	{
+		if (m_pSprite != NULL)
+		{
+			return m_pSprite->SetHeight(height);
+		}
 	}
 
 	void EngineInstanceSprite::SetFullscreenMode(bool enabled)
 	{
-		m_pSprite->SetFullscreenMode(enabled);
+		if (m_pSprite != NULL)
+		{
+			m_pSprite->SetFullscreenMode(enabled);
+		}
 	}
 
 	bool EngineInstanceSprite::IsFullscreenMode()
 	{
-		return m_pSprite->IsFullscreenMode();
+		bool fullscreen = false;
+		if (m_pSprite != NULL)
+		{
+			fullscreen = m_pSprite->IsFullscreenMode();
+		}
+		return fullscreen;
 	}
 
 	void EngineInstanceSprite::SetPlayOnce(bool enabled)
 	{
-		m_pSprite->SetPlayOnce(enabled);
+		if (m_pSprite != NULL)
+		{
+			m_pSprite->SetPlayOnce(enabled);
+		}
 	}
 
 	bool EngineInstanceSprite::IsPlayOnce()
 	{
-		return m_pSprite->IsPlayOnce();
+		bool playOnce = false;
+		if (m_pSprite != NULL)
+		{
+			playOnce =  m_pSprite->IsPlayOnce();
+		}
+		return playOnce;
 	}
 
 	void EngineInstanceSprite::SetCollision(bool enabled)
 	{
-		m_pSprite->SetCollision(enabled);
+		if (m_pSprite != NULL)
+		{
+			m_pSprite->SetCollision(enabled);
+		}
 	}
 
 	bool EngineInstanceSprite::IsColliding()
 	{
-		return m_pSprite->IsColliding();
+		bool colliding = false;
+		if (m_pSprite != NULL)
+		{
+			colliding = m_pSprite->IsColliding();
+		}
+		return colliding;
 	}
 }

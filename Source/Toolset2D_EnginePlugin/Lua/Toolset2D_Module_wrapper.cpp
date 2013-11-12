@@ -945,19 +945,32 @@ SWIGINTERN void  SWIG_Lua_module_add_function(lua_State* L,const char* name,lua_
 SWIGINTERN void VisionLuaClassGet(lua_State *L)
 {
   //solution 1: retrieve element when accessing an user data object from a global $node-POINTER_ADR-NAME_OF_ELEM$
-  //(+): fast and allows user to associate elemets with an instance of an user data object
+  //(+): allows user to associate elemets with an instance of an user data object
   //(-): elements are not stored in a table, so you cannot iterate over all elements of an instance
   
   const char * pKey = lua_tostring(L, 2);
-  const void * pPtr = lua_topointer(L, 1);
+  swig_lua_userdata * pUser = (swig_lua_userdata *) lua_topointer(L, 1);
+                                                                             //stack: userdata, key, ..., TOP
+  lua_pushliteral(L, "G");                                                   //stack: userdata, key, ..., 'G', TOP
+  lua_gettable(L, LUA_GLOBALSINDEX);                                         //stack: userdata, key, ..., globalTable, TOP
 
-  lua_pushfstring(L, "$node-%p-%s$", pPtr, pKey);  //stack: userdata, key, ..., new key, TOP
-  lua_gettable(L, LUA_GLOBALSINDEX); 		      //stack: userdata, key, ..., requested val, TOP
-  
+  if( lua_isnil(L, -1)==1 ) //test if the global table is valid
+  {                                                                          //stack: userdata, key, ..., nil, TOP
+    lua_pop(L, 1);                                                           //stack: userdata, key, ..., TOP
+    lua_pushfstring(L, "$node-%p-%s$", ((pUser==0) ? 0 : pUser->ptr), pKey); //stack: userdata, key, ..., new key, TOP
+    lua_gettable(L, LUA_GLOBALSINDEX);                                       //stack: userdata, key, ..., requested val, TOP
+  }
+  else
+  {                                                                          //stack: userdata, key,  ..., globalTable, TOP
+    lua_pushfstring(L, "$node-%p-%s$", ((pUser==0) ? 0 : pUser->ptr), pKey); //stack: userdata, key,  ..., globalTable, new key, TOP
+    lua_gettable(L, -2);                                                     //stack: userdata, key,  ..., globalTable, requested val, TOP
+    lua_remove(L, -2);                                                       //stack: userdata, key,  ..., requested val, TOP
+  }
+
 /*
   //solution 2: get element from a global table $node-POINTER_ADR$
   //(+): user data object instance behaves like a table (you can iterate on this table)
-  //(-): slower than solution 1
+  //(-): slower than solution 1 when setting the variable
   
   int iPtr = (int) lua_topointer(L, 1);
   lua_pushfstring(L, "$node-%p$", iPtr);          //stack: userdata, key, ..., instance string, TOP
@@ -980,6 +993,7 @@ SWIGINTERN int  SWIG_Lua_class_get(lua_State* L)
   (1) userdata (not the meta table)
   (2) string name of the attribute
 */
+
   assert(lua_isuserdata(L,-2));  /* just in case */
   lua_getmetatable(L,-2);    /* get the meta table */
   assert(lua_istable(L,-1));  /* just in case */
@@ -1039,16 +1053,29 @@ SWIGINTERN int  SWIG_Lua_class_get(lua_State* L)
 SWIGINTERN void VisionLuaClassSet(lua_State *L)
 {
   //solution 1: store all elements when accessing an user data objects as a global $node-POINTER_ADR-NAME_OF_ELEM$
-  //(+): fast and allows user to associate elemets with an instance of an user data object
+  //(+): allows user to associate elemets with an instance of an user data object
   //(-): elements are not stored in a table, so you cannot iterate over all elements of an instance
   
   const char * pKey = lua_tostring(L, 2);
-  const void * pPtr = lua_topointer(L, 1);
-  
-  lua_pushfstring(L, "$node-%p-%s$", pPtr, pKey);   //stack: userdata, key, value, ..., new key, TOP
-  
-  lua_pushvalue(L, 3);                              //stack: userdata, key, value, ..., new key, value, TOP
-  lua_settable(L, LUA_GLOBALSINDEX);                //stack: userdata, key, value, ..., TOP
+  swig_lua_userdata * pUser = (swig_lua_userdata *) lua_topointer(L, 1);
+                                                                             //stack: userdata, key, value, ..., TOP
+  lua_pushliteral(L, "G");                                                   //stack: userdata, key, value, ..., 'G', TOP
+  lua_gettable(L, LUA_GLOBALSINDEX);                                         //stack: userdata, key, value, ..., globalTable, TOP
+
+  if( lua_isnil(L, -1)==1 ) //test if the global table is valid
+  {                                                                          //stack: userdata, key, value, ..., nil, TOP
+    lua_pop(L, 1);                                                           //stack: userdata, key, value, ..., TOP
+    lua_pushfstring(L, "$node-%p-%s$", ((pUser==0) ? 0 : pUser->ptr), pKey); //stack: userdata, key, value, ..., new key, TOP
+    lua_pushvalue(L, 3);                                                     //stack: userdata, key, value, ..., new key, value, TOP
+    lua_settable(L, LUA_GLOBALSINDEX);                                       //stack: userdata, key, value, ..., TOP
+  }
+  else
+  {                                                                          //stack: userdata, key, value, ..., globalTable, TOP
+    lua_pushfstring(L, "$node-%p-%s$", ((pUser==0) ? 0 : pUser->ptr), pKey); //stack: userdata, key, value, ..., globalTable, new key, TOP
+    lua_pushvalue(L, 3);                                                     //stack: userdata, key, value, ..., globalTable, new key, value, TOP
+    lua_settable(L, -3);                                                     //stack: userdata, key, value, ..., globalTable, TOP
+    lua_pop(L, 1);                                                           //stack: userdata, key, value, ..., TOP
+  }
 
 /*  
   //solution 2: create a table $node-POINTER_ADR$ and save the element as element of this table
@@ -1088,11 +1115,11 @@ SWIGINTERN int  SWIG_Lua_class_set(lua_State* L)
 /*  there should be 3 params passed in
   (1) table (not the meta table)
   (2) string name of the attribute
-  (3) any for the new value
+  (3) any for the new value  
 printf("SWIG_Lua_class_set %p(%s) '%s' %p(%s)\n",
       lua_topointer(L,1),lua_typename(L,lua_type(L,1)),
       lua_tostring(L,2),
-      lua_topointer(L,3),lua_typename(L,lua_type(L,3)));*/
+      lua_topointer(L,3),lua_typename(L,lua_type(L,3))); */
 
   assert(lua_isuserdata(L,1));  /* just in case */
   lua_getmetatable(L,1);    /* get the meta table */
@@ -10188,6 +10215,58 @@ fail:
 }
 
 
+static int _wrap_Sprite_SetWidth(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("SetWidth",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetWidth",1,"Sprite *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetWidth",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetWidth",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  (arg1)->SetWidth(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_SetHeight(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("SetHeight",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetHeight",1,"Sprite *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetHeight",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetHeight",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  (arg1)->SetHeight(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_Sprite_GetPoint__SWIG_0(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
@@ -10468,6 +10547,8 @@ static swig_lua_method swig_Sprite_methods[] = {
     {"Play", _wrap_Sprite_Play}, 
     {"GetWidth", _wrap_Sprite_GetWidth}, 
     {"GetHeight", _wrap_Sprite_GetHeight}, 
+    {"SetWidth", _wrap_Sprite_SetWidth}, 
+    {"SetHeight", _wrap_Sprite_SetHeight}, 
     {"GetPoint", _wrap_Sprite_GetPoint}, 
     {"SetCenterPosition", _wrap_Sprite_SetCenterPosition}, 
     {"GetCenterPosition", _wrap_Sprite_GetCenterPosition}, 

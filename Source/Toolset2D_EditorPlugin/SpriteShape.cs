@@ -152,6 +152,20 @@ namespace Toolset2D
                 EngineNode.SetCurrentState(m_state);
                 EngineNode.SetPlayOnce(m_playOnce);
                 EngineNode.SetCollision(m_collision);
+
+                if (m_width != 0.0)
+                {
+                    EngineNode.SetWidth(m_width);
+                }
+
+                if (m_height != 0.0)
+                {
+                    EngineNode.SetHeight(m_height);
+                }
+
+                Vector3F orientation = new Vector3F();
+                EngineNode.GetOrientation(ref orientation);
+                EngineNode.SetOrientation(orientation.X, orientation.Y, m_rotation);
             }
         }
 
@@ -189,15 +203,22 @@ namespace Toolset2D
                 m_scrollY = info.GetSingle("_scroll_y");
                 m_fullscreen = info.GetBoolean("_fullscreen");
             }
-        }
 
-        /// <summary>
-        /// Called during export to collect native plugin information. In this case, return the global instance that applies for all shapes in this plugin
-        /// </summary>
-        /// <returns></returns>
-        public override CSharpFramework.Serialization.EditorPluginInfo GetPluginInformation()
-        {
-            return EditorPlugin.EDITOR_PLUGIN_INFO;
+            if (SerializationHelper.HasElement(info, "_collision"))
+            {
+                m_collision = info.GetBoolean("_collision");
+            }
+
+            if (SerializationHelper.HasElement(info, "_rotation"))
+            {
+                m_rotation = info.GetSingle("_rotation");
+            }
+
+            if (SerializationHelper.HasElement(info, "_width"))
+            {
+                m_width = info.GetSingle("_width");
+                m_height = info.GetSingle("_height");
+            }
         }
 
         /// <summary>
@@ -213,7 +234,20 @@ namespace Toolset2D
             info.AddValue("_state", m_state);
             info.AddValue("_scroll_x", m_scrollX);
             info.AddValue("_scroll_y", m_scrollY);
+            info.AddValue("_width", m_width);
+            info.AddValue("_height", m_height);
             info.AddValue("_fullscreen", m_fullscreen);
+            info.AddValue("_collision", m_collision);
+            info.AddValue("_rotation", m_rotation);
+        }
+
+        /// <summary>
+        /// Called during export to collect native plugin information. In this case, return the global instance that applies for all shapes in this plugin
+        /// </summary>
+        /// <returns></returns>
+        public override CSharpFramework.Serialization.EditorPluginInfo GetPluginInformation()
+        {
+            return EditorPlugin.EDITOR_PLUGIN_INFO;
         }
 
         /// <summary>
@@ -287,9 +321,8 @@ namespace Toolset2D
 
         float m_scrollX;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
+        PropertyOrder(4)]
         [Description("")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
         public float ScrollX
         {
             get { return EngineNode.GetScrollX(); }
@@ -302,9 +335,8 @@ namespace Toolset2D
 
         float m_scrollY;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
+        PropertyOrder(5)]
         [Description("")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
         public float ScrollY
         {
             get { return EngineNode.GetScrollY(); }
@@ -315,11 +347,38 @@ namespace Toolset2D
             }
         }
 
+        float m_width;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(6)]
+        [Description("")]
+        public float Width
+        {
+            get { return EngineNode.GetWidth(); }
+            set
+            {
+                m_width = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        float m_height;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(7)]
+        [Description("")]
+        public float Height
+        {
+            get { return EngineNode.GetHeight(); }
+            set
+            {
+                m_height = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
         bool m_playOnce;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
+        PropertyOrder(8)]
         [Description("PlayOnce")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
         public bool PlayOnce
         {
             get { return EngineNode.IsPlayOnce(); }
@@ -332,9 +391,8 @@ namespace Toolset2D
         
         bool m_collision;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
+        PropertyOrder(9)]
         [Description("Collide")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
         public bool Collide
         {
             get { return EngineNode.IsColliding(); }
@@ -347,15 +405,33 @@ namespace Toolset2D
 
         bool m_fullscreen;
         [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
+        PropertyOrder(10)]
         [Description("Fullscreen")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
         public bool Fullscreen
         {
             get { return EngineNode.IsFullscreenMode(); }
             set
             {
                 m_fullscreen = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        float m_rotation;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(11)]
+        [Description("")]
+        public float Rotation
+        {
+            get
+            { 
+                Vector3F orientation = new Vector3F();
+                EngineNode.GetOrientation(ref orientation);
+                return orientation.Z; 
+            }
+            set
+            {
+                m_rotation = value;
                 SetEngineInstanceBaseProperties();
             }
         }

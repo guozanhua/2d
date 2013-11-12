@@ -17,6 +17,17 @@
 
 V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 
+Sprite::Sprite()
+{
+	Clear();
+	CommonInit();
+}
+
+Sprite::~Sprite()
+{
+
+}
+
 // Called by the engine when entity is created. Not when it is de-serialized!
 void Sprite::InitFunction()
 {
@@ -316,12 +327,28 @@ hkvVec3 Sprite::GetCenterPosition()
 
 float Sprite::GetWidth() const
 {
-	return GetDimensions().x;
+	hkvVec3 scale = GetScaling();
+	return GetDimensions().x * scale.x;
 }
 
 float Sprite::GetHeight() const
 {
-	return GetDimensions().y;
+	hkvVec3 scale = GetScaling();
+	return GetDimensions().y * scale.y;
+}
+
+void Sprite::SetWidth(float width)
+{
+	hkvVec3 scale = GetScaling();
+	scale.x = width / GetDimensions().x;
+	SetScaling(scale);
+}
+
+void Sprite::SetHeight(float height)
+{
+	hkvVec3 scale = GetScaling();
+	scale.y = height / GetDimensions().y;
+	SetScaling(scale);
 }
 
 hkvVec2 Sprite::GetDimensions() const

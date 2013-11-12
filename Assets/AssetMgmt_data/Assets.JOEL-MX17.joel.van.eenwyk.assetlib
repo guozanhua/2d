@@ -5,6 +5,60 @@
         "LastEditTime": 1379700010234661700
     },
     "Assets": {
+        "Textures/impossible_enemy.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 884617263,
+                "TimeStamp": 1384212442890295200,
+                "LastEditTime": 1384212443295295200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 512,
+                "Height": 512,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/impossible_player.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3707117848,
+                "TimeStamp": 1384212420811295200,
+                "LastEditTime": 1384212421215295200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 512,
+                "Height": 512,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
         "Textures/missile.png": {
             "AssetType": "Texture",
             "Common": {

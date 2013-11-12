@@ -77,7 +77,7 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	{
 		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
 
-		// When vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
+		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
 		if (pEditorModeChangedData->m_eNewMode != VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME)
 		{
 			SetPlayTheGame(false);
@@ -85,7 +85,7 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
-		// Init play-the-game only in this vForge mode (or outside vForge)
+		// initialize play-the-game only in this vForge mode (or outside vForge)
 		if (Vision::Editor.IsPlayingTheGame())
 		{
 			SetPlayTheGame(true);
@@ -93,7 +93,6 @@ void SpriteManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
-		// This is important when running outside vForge
 		SetPlayTheGame(false);
 	}
 	if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
@@ -458,14 +457,11 @@ void SpriteManager::SetPlayTheGame(bool bStatus)
 			m_spHUD = new HUDGUIContext(NULL);
 			m_spHUD->SetActivate(true);
 		}
-		else
+		// deactivate the HUD if we're no longer playing the game
+		else if (m_spHUD)
 		{
-			// Deactivate the HUD
-			if (m_spHUD)
-			{
-				m_spHUD->SetActivate(false);
-				m_spHUD = NULL;
-			}
+			m_spHUD->SetActivate(false);
+			m_spHUD = NULL;
 		}
 	}
 }
@@ -484,7 +480,9 @@ static int compareSprites(const void *arg1, const void *arg2)
 
 	if (hkvMath::isFloatEqual(a, b))
 	{
-		result = static_cast<int>(pSort2->GetUniqueID() - pSort1->GetUniqueID());
+		__int64 id1 = pSort1->GetUniqueID();
+		__int64 id2 = pSort2->GetUniqueID();
+		result = static_cast<int>(id2 - id1);
 	}
 	else
 	{

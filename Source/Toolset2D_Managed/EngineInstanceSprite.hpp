@@ -28,10 +28,12 @@ namespace Toolset2D_Managed
 		VOVERRIDE void SetObjectKey(String ^key) override;
 		VOVERRIDE void SetPosition(float x,float y,float z) override;
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
+		VOVERRIDE bool GetOrientation(Vector3F %orientation) override;
 		VOVERRIDE void SetScaling(float x, float y, float z) override;
 		VOVERRIDE bool GetLocalBoundingBox(BoundingBox^ %bbox) override;
 		VOVERRIDE void TraceShape(Shape3D ^ownerShape, Vector3F rayStart,Vector3F rayEnd, ShapeTraceResult^ %result) override;
 		VOVERRIDE bool OnExport(SceneExportInfo ^info) override;
+		VOVERRIDE void SetUniqueID(unsigned __int64 iID) override;
 
 		VOVERRIDE bool CanAttachComponent(ShapeComponent ^component, String ^%sError) override;
 		VOVERRIDE void OnAttachComponent(ShapeComponent ^component) override;
@@ -52,6 +54,12 @@ namespace Toolset2D_Managed
 		float GetScrollX();
 		float GetScrollY();
 		void SetScroll(float x, float y);
+
+		float GetWidth();
+		float GetHeight();
+
+		void SetWidth(float width);
+		void SetHeight(float height);
 
 		void SetFullscreenMode(bool enabled);
 		bool IsFullscreenMode();

@@ -17,6 +17,9 @@ public:
 
 	float GetWidth();
 	float GetHeight();
+	
+	void SetWidth(float width);
+	void SetHeight(float height);
 
 	// Converts a pixel coordinate on the sprite to the new scaled/rotated/transformed
 	// position, which is useful for attachment points

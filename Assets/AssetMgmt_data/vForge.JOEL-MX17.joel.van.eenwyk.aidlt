@@ -1,3 +1,5 @@
+textures/impossible_enemy.png	textures/impossible_enemy.png	sRGB=false
+textures/impossible_player.png	textures/impossible_player.png	sRGB=false
 textures/missile.png	textures/missile.png	sRGB=false
 textures/missile_evil.png	textures/missile_evil.png	sRGB=false
 textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	sRGB=false

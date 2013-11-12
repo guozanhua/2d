@@ -20,6 +20,9 @@ public:
 		VERTEX_BOTTOM_RIGHT = 3
 	};
 
+	TOOLSET_2D_IMPEXP Sprite();
+	TOOLSET_2D_IMPEXP ~Sprite();
+
 	// Overridden entity functions
 	TOOLSET_2D_IMPEXP VOVERRIDE void InitFunction();
 	TOOLSET_2D_IMPEXP VOVERRIDE void DeInitFunction();
@@ -86,6 +89,9 @@ public:
 
 	TOOLSET_2D_IMPEXP float GetWidth() const;
 	TOOLSET_2D_IMPEXP float GetHeight() const;
+
+	TOOLSET_2D_IMPEXP void SetWidth(float width);
+	TOOLSET_2D_IMPEXP void SetHeight(float height);
 
 protected:
 	void CommonInit();
