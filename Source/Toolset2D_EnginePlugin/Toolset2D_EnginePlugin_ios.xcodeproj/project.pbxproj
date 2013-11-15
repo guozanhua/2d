@@ -8,22 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		3439D97418036878002D7A5E /* SpriteEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D96D18036878002D7A5E /* SpriteEntity.cpp */; };
-		3439D97518036878002D7A5E /* SpriteManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D96F18036878002D7A5E /* SpriteManager.cpp */; };
 		3439D97618036878002D7A5E /* Toolset2D_EnginePlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */; };
 		3439D97718036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */; };
 		3439D97918036884002D7A5E /* Toolset2D_Module_wrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3439D97818036884002D7A5E /* Toolset2D_Module_wrapper.cpp */; };
+		34B990161836967D008EFAB0 /* Camera2dEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B990101836967D008EFAB0 /* Camera2dEntity.cpp */; };
+		34B990171836967D008EFAB0 /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B990121836967D008EFAB0 /* HUD.cpp */; };
+		34B990181836967D008EFAB0 /* Toolset2dManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34B990141836967D008EFAB0 /* Toolset2dManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1DE116361738FBE100E51293 /* libToolset2D_EnginePlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libToolset2D_EnginePlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3439D96D18036878002D7A5E /* SpriteEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteEntity.cpp; sourceTree = "<group>"; };
 		3439D96E18036878002D7A5E /* SpriteEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteEntity.hpp; sourceTree = "<group>"; };
-		3439D96F18036878002D7A5E /* SpriteManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteManager.cpp; sourceTree = "<group>"; };
-		3439D97018036878002D7A5E /* SpriteManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpriteManager.hpp; sourceTree = "<group>"; };
 		3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolset2D_EnginePlugin.cpp; sourceTree = "<group>"; };
 		3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolset2D_EnginePluginPCH.cpp; sourceTree = "<group>"; };
 		3439D97318036878002D7A5E /* Toolset2D_EnginePluginPCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Toolset2D_EnginePluginPCH.h; sourceTree = "<group>"; };
 		3439D97818036884002D7A5E /* Toolset2D_Module_wrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Toolset2D_Module_wrapper.cpp; path = Lua/Toolset2D_Module_wrapper.cpp; sourceTree = "<group>"; };
+		34B990101836967D008EFAB0 /* Camera2dEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera2dEntity.cpp; sourceTree = "<group>"; };
+		34B990111836967D008EFAB0 /* Camera2dEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera2dEntity.hpp; sourceTree = "<group>"; };
+		34B990121836967D008EFAB0 /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
+		34B990131836967D008EFAB0 /* HUD.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HUD.hpp; sourceTree = "<group>"; };
+		34B990141836967D008EFAB0 /* Toolset2dManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Toolset2dManager.cpp; sourceTree = "<group>"; };
+		34B990151836967D008EFAB0 /* Toolset2dManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Toolset2dManager.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,10 +55,14 @@
 			isa = PBXGroup;
 			children = (
 				1DE116371738FBE100E51293 /* Products */,
+				34B990101836967D008EFAB0 /* Camera2dEntity.cpp */,
+				34B990111836967D008EFAB0 /* Camera2dEntity.hpp */,
+				34B990121836967D008EFAB0 /* HUD.cpp */,
+				34B990131836967D008EFAB0 /* HUD.hpp */,
+				34B990141836967D008EFAB0 /* Toolset2dManager.cpp */,
+				34B990151836967D008EFAB0 /* Toolset2dManager.hpp */,
 				3439D96D18036878002D7A5E /* SpriteEntity.cpp */,
 				3439D96E18036878002D7A5E /* SpriteEntity.hpp */,
-				3439D96F18036878002D7A5E /* SpriteManager.cpp */,
-				3439D97018036878002D7A5E /* SpriteManager.hpp */,
 				3439D97118036878002D7A5E /* Toolset2D_EnginePlugin.cpp */,
 				3439D97218036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp */,
 				3439D97318036878002D7A5E /* Toolset2D_EnginePluginPCH.h */,
@@ -110,11 +120,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34B990181836967D008EFAB0 /* Toolset2dManager.cpp in Sources */,
 				3439D97918036884002D7A5E /* Toolset2D_Module_wrapper.cpp in Sources */,
 				3439D97618036878002D7A5E /* Toolset2D_EnginePlugin.cpp in Sources */,
 				3439D97718036878002D7A5E /* Toolset2D_EnginePluginPCH.cpp in Sources */,
-				3439D97518036878002D7A5E /* SpriteManager.cpp in Sources */,
+				34B990171836967D008EFAB0 /* HUD.cpp in Sources */,
 				3439D97418036878002D7A5E /* SpriteEntity.cpp in Sources */,
+				34B990161836967D008EFAB0 /* Camera2dEntity.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

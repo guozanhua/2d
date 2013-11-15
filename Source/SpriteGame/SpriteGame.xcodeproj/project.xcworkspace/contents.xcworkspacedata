@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ProjectTemplate_ios.xcodeproj">
+      location = "self:SpriteGame.xcodeproj">
    </FileRef>
 </Workspace>

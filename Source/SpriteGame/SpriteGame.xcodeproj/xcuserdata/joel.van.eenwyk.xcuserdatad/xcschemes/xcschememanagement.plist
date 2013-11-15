@@ -4,27 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>ProjectTemplate.xcscheme</key>
+		<key>SpriteGame.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>ProjectTemplate_debug_v7-xcode.xcscheme_^#shared#^_</key>
+		<key>SpriteGame_debug_v7-xcode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>ProjectTemplate_dev_v7-xcode.xcscheme_^#shared#^_</key>
+		<key>SpriteGame_dev_v7-xcode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>ProjectTemplate_distrib_v7-xcode.xcscheme_^#shared#^_</key>
+		<key>SpriteGame_distrib_v7-xcode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>ProjectTemplate_release_v7-xcode.xcscheme_^#shared#^_</key>
+		<key>SpriteGame_release_v7-xcode.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>

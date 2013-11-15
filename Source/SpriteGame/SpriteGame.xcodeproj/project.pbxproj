@@ -21,7 +21,6 @@
 		3441B2DD180716B500F1292B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3441B2DC180716B500F1292B /* CoreData.framework */; };
 		3441B2DF180716C400F1292B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3441B2DE180716C400F1292B /* UIKit.framework */; };
 		3441B2E1180716CB00F1292B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3441B2E0180716CB00F1292B /* OpenGLES.framework */; };
-		3441B2E2180716EC00F1292B /* libSpriteGamePlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3434F54A180362E200A8679F /* libSpriteGamePlugin.a */; };
 		3441B2E3180716EF00F1292B /* libToolset2D_EnginePlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3434F5561803630600A8679F /* libToolset2D_EnginePlugin.a */; };
 		3441B2E518071C9200F1292B /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 3441B2E418071C9200F1292B /* Assets */; };
 		3508490000000000022681 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0759340000000000022679 /* main.cpp */; };
@@ -32,26 +31,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3434F549180362E200A8679F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3434F545180362E200A8679F /* SpriteGamePlugin_ios.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1DE116361738FBE100E51293;
-			remoteInfo = libGamePlugin;
-		};
 		3434F5551803630600A8679F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3434F5511803630500A8679F /* Toolset2D_EnginePlugin_ios.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 1DE116361738FBE100E51293;
 			remoteInfo = libGamePlugin;
-		};
-		3441B2D61807163F00F1292B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3434F545180362E200A8679F /* SpriteGamePlugin_ios.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 504685136751641300000101;
-			remoteInfo = libSpriteGamePlugin;
 		};
 		3441B2D81807164200F1292B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -68,11 +53,9 @@
 		1189170000000000022747 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		1DE1163117380E0600E51293 /* VisSampleApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VisSampleApp.cpp; sourceTree = "<group>"; };
 		1DE1163217380E0600E51293 /* VisSampleAppCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VisSampleAppCallbacks.cpp; sourceTree = "<group>"; };
-		1DF33BFB1737F6CB000F2FBC /* SpriteGame_ios-xcode_dev_v7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SpriteGame_ios-xcode_dev_v7.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF33BFB1737F6CB000F2FBC /* SpriteGame-xcode_dev_v7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SpriteGame-xcode_dev_v7.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3434F54118035D0E00A8679F /* SpriteGamePCH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGamePCH.cpp; sourceTree = "<group>"; };
 		3434F54218035D0E00A8679F /* SpriteGamePCH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteGamePCH.h; sourceTree = "<group>"; };
-		3434F54318035D0E00A8679F /* VisSampleApp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VisSampleApp.hpp; sourceTree = "<group>"; };
-		3434F545180362E200A8679F /* SpriteGamePlugin_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SpriteGamePlugin_ios.xcodeproj; path = ../SpriteGamePlugin/SpriteGamePlugin_ios.xcodeproj; sourceTree = "<group>"; };
 		3434F5511803630500A8679F /* Toolset2D_EnginePlugin_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Toolset2D_EnginePlugin_ios.xcodeproj; path = ../Toolset2D_EnginePlugin/Toolset2D_EnginePlugin_ios.xcodeproj; sourceTree = "<group>"; };
 		3434F5581803634E00A8679F /* VisAppDelegateIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisAppDelegateIOS.h; sourceTree = "<group>"; };
 		3434F5591803634E00A8679F /* VisAppDelegateIOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisAppDelegateIOS.m; sourceTree = "<group>"; };
@@ -101,7 +84,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3441B2E3180716EF00F1292B /* libToolset2D_EnginePlugin.a in Frameworks */,
-				3441B2E2180716EC00F1292B /* libSpriteGamePlugin.a in Frameworks */,
 				3441B2E1180716CB00F1292B /* OpenGLES.framework in Frameworks */,
 				3441B2DF180716C400F1292B /* UIKit.framework in Frameworks */,
 				3441B2DD180716B500F1292B /* CoreData.framework in Frameworks */,
@@ -117,7 +99,7 @@
 		1DF33BFC1737F6CB000F2FBC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1DF33BFB1737F6CB000F2FBC /* SpriteGame_ios-xcode_dev_v7.app */,
+				1DF33BFB1737F6CB000F2FBC /* SpriteGame-xcode_dev_v7.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,14 +110,6 @@
 				6920950000000000022744 /* Common */,
 			);
 			path = ../../Data;
-			sourceTree = "<group>";
-		};
-		3434F546180362E200A8679F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3434F54A180362E200A8679F /* libSpriteGamePlugin.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		3434F5521803630500A8679F /* Products */ = {
@@ -175,9 +149,7 @@
 				2605410000000000022745 /* ../../Data */,
 				3434F5571803634E00A8679F /* iOS */,
 				1DF33BFC1737F6CB000F2FBC /* Products */,
-				3434F545180362E200A8679F /* SpriteGamePlugin_ios.xcodeproj */,
 				3434F5511803630500A8679F /* Toolset2D_EnginePlugin_ios.xcodeproj */,
-				3434F54318035D0E00A8679F /* VisSampleApp.hpp */,
 				3434F54218035D0E00A8679F /* SpriteGamePCH.h */,
 				3434F54118035D0E00A8679F /* SpriteGamePCH.cpp */,
 				1DE1163117380E0600E51293 /* VisSampleApp.cpp */,
@@ -232,11 +204,10 @@
 			);
 			dependencies = (
 				3441B2D91807164200F1292B /* PBXTargetDependency */,
-				3441B2D71807163F00F1292B /* PBXTargetDependency */,
 			);
 			name = SpriteGame;
 			productName = Tutorial01;
-			productReference = 1DF33BFB1737F6CB000F2FBC /* SpriteGame_ios-xcode_dev_v7.app */;
+			productReference = 1DF33BFB1737F6CB000F2FBC /* SpriteGame-xcode_dev_v7.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -251,7 +222,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8895300000000000022769 /* Build configuration list for PBXProject "SpriteGame_ios" */;
+			buildConfigurationList = 8895300000000000022769 /* Build configuration list for PBXProject "SpriteGame" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -262,10 +233,6 @@
 			productRefGroup = 1DF33BFC1737F6CB000F2FBC /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 3434F546180362E200A8679F /* Products */;
-					ProjectRef = 3434F545180362E200A8679F /* SpriteGamePlugin_ios.xcodeproj */;
-				},
 				{
 					ProductGroup = 3434F5521803630500A8679F /* Products */;
 					ProjectRef = 3434F5511803630500A8679F /* Toolset2D_EnginePlugin_ios.xcodeproj */;
@@ -279,13 +246,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3434F54A180362E200A8679F /* libSpriteGamePlugin.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSpriteGamePlugin.a;
-			remoteRef = 3434F549180362E200A8679F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3434F5561803630600A8679F /* libToolset2D_EnginePlugin.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -361,11 +321,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3441B2D71807163F00F1292B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libSpriteGamePlugin;
-			targetProxy = 3441B2D61807163F00F1292B /* PBXContainerItemProxy */;
-		};
 		3441B2D91807164200F1292B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Toolset2D_EnginePlugin;
@@ -440,7 +395,7 @@
 					"-lVisionD",
 					"-lVisionEnginePlugin",
 				);
-				PRODUCT_NAME = "SpriteGame_ios-xcode_debug_v7";
+				PRODUCT_NAME = "SpriteGame-xcode_debug_v7";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
@@ -550,7 +505,7 @@
 					"-lhkpConstraintSolver",
 					"-lhkpConstraint",
 				);
-				PRODUCT_NAME = "SpriteGame_ios-xcode_distrib_v7";
+				PRODUCT_NAME = "SpriteGame-xcode_distrib_v7";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
@@ -677,7 +632,7 @@
 					"-lhkpConstraintSolver",
 					"-lhkpConstraint",
 				);
-				PRODUCT_NAME = "SpriteGame_ios-xcode_release_v7";
+				PRODUCT_NAME = "SpriteGame-xcode_release_v7";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
@@ -837,7 +792,7 @@
 					"-lhkpConstraintSolver",
 					"-lhkpConstraint",
 				);
-				PRODUCT_NAME = "SpriteGame_ios-xcode_dev_v7";
+				PRODUCT_NAME = "SpriteGame-xcode_dev_v7";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
@@ -880,7 +835,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = dev_v7;
 		};
-		8895300000000000022769 /* Build configuration list for PBXProject "SpriteGame_ios" */ = {
+		8895300000000000022769 /* Build configuration list for PBXProject "SpriteGame" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3398580000000000022765 /* dev_v7 */,
