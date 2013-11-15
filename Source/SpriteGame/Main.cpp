@@ -1,20 +1,12 @@
 #include "SpriteGamePCH.h"
 
-//============================================================================================================
-// Properties for start up. Some of the settings are not relevant for mobile devices
-//============================================================================================================
-int windowSizeX   = 1024;                // Set the Window size X if not in fullscreen.
-int windowSizeY   = 768;                 // Set the Window size Y if not in fullscreen.
-int windowPosX    = 500;                 // Set the Window position X if not in fullscreen.
-int windowPosy    = 50;                  // Set the Window position Y if not in fullscreen.
+const int kWindowSizeX   = 1024;
+const int kWindowSizeY   = 768;
+const int kWindowPosX    = 500;
+const int kWindowPosY    = 50;
 
-char name[]      = "2D Sprite Game";  // Name to be displayed in the windows title bar.
-char StartUpScene[]  = "Scenes\\Default.vscene";   // Set the location of your start up scene.
-
-float cameraInitX = 0;                    //
-float cameraInitY = 0;                    //
-float cameraInitZ = 170;                  // Set our camera above the ground so that we can see 
-										  // the ground.
+const char kApplicationName[]  = "2D Sprite Game"; 
+const char kStartUpScene[]     = "Scenes\\Shooter.vscene";
 
 // Use the following line to initialize a plugin that is statically linked. 
 // Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
@@ -35,9 +27,9 @@ VISION_INIT
 	// set the initial starting position of our game window
 	// and other properties if not in fullscreen. This is only relevant on windows
 #if defined(WIN32)
-	spApp->m_appConfig.m_videoConfig.m_iXPos = windowPosX;
-	spApp->m_appConfig.m_videoConfig.m_iYPos = windowPosy;
-	spApp->m_appConfig.m_videoConfig.m_szWindowTitle = name;
+	spApp->m_appConfig.m_videoConfig.m_iXPos = kWindowPosX;
+	spApp->m_appConfig.m_videoConfig.m_iYPos = kWindowPosY;
+	spApp->m_appConfig.m_videoConfig.m_szWindowTitle = kApplicationName;
 #endif
 
 	// Set the executable directory the current directory
@@ -83,10 +75,10 @@ VISION_INIT
 
 	// Init the application and point it to the start up scene.
 	if ( !spApp->InitSample("Sprite Game",
-		 StartUpScene,
+		 kStartUpScene,
 		 VSampleFlags::VSAMPLE_SPLASHSCREEN | VSampleFlags::VSAMPLE_USEDESKTOPRESOLUTION | VSampleFlags::VSAMPLE_SHOWEXITPROMPT | VSampleFlags::VSAMPLE_CUSTOMDATADIRECTORIES,
-		 windowSizeX,
-		 windowSizeY) )
+		 kWindowSizeX,
+		 kWindowSizeY) )
 	{
 		return false;
 	}
@@ -100,9 +92,6 @@ VISION_INIT
 
 VISION_SAMPLEAPP_AFTER_LOADING
 {
-	// Create a mouse controlled camera (optionally with gravity)
-	VisBaseEntity_cl *pCamera = spApp->EnableMouseCamera();
-	pCamera->SetPosition( hkvVec3(cameraInitX, cameraInitY, cameraInitZ) );
 }
 
 //---------------------------------------------------------------------------------------------------------

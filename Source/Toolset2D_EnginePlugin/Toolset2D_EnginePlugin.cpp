@@ -9,7 +9,7 @@
 
 #include "Toolset2D_EnginePluginPCH.h"
 
-#include "SpriteManager.hpp"
+#include "Toolset2dManager.hpp"
 
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.
@@ -23,13 +23,13 @@ public:
 
 		Vision::RegisterModule(&gToolset2D_EngineModule);
 
-		SpriteManager *module = &SpriteManager::GlobalManager();
+		Toolset2dManager *module = Toolset2dManager::Instance();
 		if (module != NULL)
 		{
 			module->OneTimeInit();
 		}
 		
-		SpriteManager::RegisterLua();
+		Toolset2dManager::RegisterLua();
 	}
 
 	// only called once
@@ -37,7 +37,7 @@ public:
 	{
 		Vision::Error.SystemMessage( "Toolset2D_EnginePlugin_cl:OnDeInitEnginePlugin()" );
 
-		SpriteManager *module = &SpriteManager::GlobalManager();
+		Toolset2dManager *module = Toolset2dManager::Instance();
 		if (module != NULL)
 		{
 			module->OneTimeDeInit();

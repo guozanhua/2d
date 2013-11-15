@@ -1,6 +1,7 @@
 #pragma once
 
 using namespace System;
+using namespace System::Diagnostics;
 using namespace CSharpFramework;
 using namespace CSharpFramework::Math;
 using namespace CSharpFramework::Shapes;
@@ -19,10 +20,6 @@ namespace Toolset2D_Managed
 		EngineInstanceSprite();
 
 		VOVERRIDE void DisposeObject() override;
-		VOVERRIDE IntPtr GetNativeObject() override
-		{
-			return System::IntPtr((void *)m_pSprite);
-		}
 
 		VOVERRIDE void SetVisible(bool bStatus) override;
 		VOVERRIDE void SetObjectKey(String ^key) override;
@@ -37,6 +34,17 @@ namespace Toolset2D_Managed
 
 		VOVERRIDE bool CanAttachComponent(ShapeComponent ^component, String ^%sError) override;
 		VOVERRIDE void OnAttachComponent(ShapeComponent ^component) override;
+
+		VOVERRIDE IntPtr GetNativeObject() override
+		{
+			return System::IntPtr(GetSpriteEntity());
+		}
+
+		inline Sprite *GetSpriteEntity()
+		{
+			Debug::Assert( m_pEntityWP != nullptr );
+			return (Sprite *)m_pEntityWP->GetPtr();
+		}
 
 		// special functions
 		void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
@@ -72,6 +80,6 @@ namespace Toolset2D_Managed
 
 	private:		
 		// pointer to native engine object
-		Sprite *m_pSprite;
+		VWeakPtr<VisBaseEntity_cl> *m_pEntityWP;
 	};
 }

@@ -19,6 +19,50 @@ namespace Toolset2D
 {
     #region IDropContext
 
+    public class IconManager
+    {
+        private static int m_SpriteIndex = -1;
+        private static int m_2DIndex = -1;
+        private static int m_CameraIndex = -1;
+
+        private static void Initialize()
+        {            
+            if (m_SpriteIndex == -1)
+            {
+                m_SpriteIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Toolset2D.Resources.sprite, "SpriteIcon", Color.Magenta);
+                m_2DIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Toolset2D.Resources._2d, "Category2DIcon", Color.Magenta);
+                m_CameraIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Toolset2D.Resources.camera, "CameraIcon", Color.Magenta);
+            }
+        }
+
+        public static int CategoryIndex
+        {
+            get
+            {
+                Initialize();
+                return m_2DIndex;
+            }
+        }
+
+        public static int CameraIndex
+        {
+            get
+            {
+                Initialize();
+                return m_CameraIndex;
+            }
+        }
+
+        public static int SpriteIndex
+        {
+            get
+            {
+                Initialize();
+                return m_SpriteIndex;
+            }
+        }
+    }
+
     /// <summary>
     /// Base class of a drag and drop context
     /// </summary>
@@ -201,7 +245,8 @@ namespace Toolset2D
 
             m_shapeCreators = new IShapeCreatorPlugin[]
                  {
-                   new SpriteShapeCreator()
+                   new SpriteShapeCreator(),
+                   new Camera2dShapeCreator()
                  };
 
             // add them to the editor

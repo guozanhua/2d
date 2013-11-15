@@ -29,6 +29,15 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Package", "..\Package\Packa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{F5167031-B1F5-4399-B87A-7531D30A05B6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{40CAE731-2832-4021-B47A-ADD3A1A7E769}"
+	ProjectSection(SolutionItems) = preProject
+		..\Assets\Scripts\EnemyControl.lua = ..\Assets\Scripts\EnemyControl.lua
+		..\Assets\Scripts\ExplosionControl.lua = ..\Assets\Scripts\ExplosionControl.lua
+		..\Assets\Scripts\GameControl.lua = ..\Assets\Scripts\GameControl.lua
+		..\Assets\Scripts\Impossible_PlayerControl.lua = ..\Assets\Scripts\Impossible_PlayerControl.lua
+		..\Assets\Scripts\PlayerShipControl.lua = ..\Assets\Scripts\PlayerShipControl.lua
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL|Any CPU = Debug DLL|Any CPU
@@ -125,6 +134,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
+		{40CAE731-2832-4021-B47A-ADD3A1A7E769} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
 		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
 		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
 		{8C897073-9C9E-4EFA-A0F6-317ACB479735} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}

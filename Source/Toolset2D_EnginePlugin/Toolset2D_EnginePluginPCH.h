@@ -3,6 +3,7 @@
 
 // The following defines are necessary primarily on Android so that there aren't duplicate
 // symbols generated for SWIG and vHavok
+#ifndef WIN32
 #define swig_types						t2d_swig_types
 #define swig_module						t2d_swig_module
 #define VSWIG_Lua_get_class_registry	T2D_VSWIG_Lua_get_class_registry
@@ -14,6 +15,7 @@
 #define VSWIG_VisionLuaClassGet			T2D_VSWIG_VisionLuaClassGet
 #define VSWIG_TypeCheck					T2D_VSWIG_TypeCheck
 #define VSWIG_Lua_typename				T2D_VSWIG_Lua_typename
+#endif
 
 #define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
 

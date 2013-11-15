@@ -5,7 +5,7 @@
 // and is represented in Lua as the "Toolset 2D" module.
 
 //custom headers for generated source file
-%module Toolset2D
+%module Toolset2dModule
 %{
 	#include "Toolset2D_EnginePluginPCH.h"
 %}
@@ -22,5 +22,6 @@
 %include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/VisApiBaseEntity.i>
 %include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/VisApiObjectComponent.i>
 
-%include <SpriteManager.i>
 %include <SpriteEntity.i>
+%include <Camera2dEntity.i>
+%include <Toolset2dManager.i>

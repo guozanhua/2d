@@ -22,22 +22,6 @@ using System.IO;
 
 namespace Toolset2D
 {
-    public class IconManager
-    {
-        public static int m_SpriteIndex = -1;
-        public static int SpriteIndex
-        {
-            get
-            {
-                if (m_SpriteIndex == -1)
-                {
-                    m_SpriteIndex = EditorManager.GUI.ShapeTreeImages.AddBitmap(Toolset2D.Resources.sprite, "SpriteIcon", Color.Magenta);
-                }
-                return m_SpriteIndex;
-            }
-        }
-    }
-
     #region class SpriteShape
     /// <summary>
     /// SpriteShape : This is the class that represents the shape in the editor. It has an engine instance that handles the
@@ -133,7 +117,6 @@ namespace Toolset2D
             if (HasEngineInstance())
             {
                 EngineNode.RenderShape(view, mode);
-                base.RenderShape(view, mode);
             }
         }
 
@@ -177,9 +160,9 @@ namespace Toolset2D
         /// <param name="result">esult structure to fill in</param>
         public override void OnTraceShape(ShapeTraceMode_e mode, Vector3F rayStart, Vector3F rayEnd, ref ShapeTraceResult result)
         {
-            if (ConversionUtils.TraceOrientedBoundingBox(LocalBoundingBox, Position, RotationMatrix, rayStart, rayEnd, ref result))
+            if (HasEngineInstance() && mode == ShapeTraceMode_e.ShapePicking)
             {
-                result.hitShape = this;
+                EngineNode.TraceShape(this, rayStart, rayEnd, ref result);
             }
         }        
         #endregion
@@ -454,7 +437,7 @@ namespace Toolset2D
         public SpriteShapeCreator()
         {
             IconIndex = IconManager.SpriteIndex;
-            CategoryIconIndex = IconManager.SpriteIndex;
+            CategoryIconIndex = IconManager.CategoryIndex;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@
 #include "Toolset2D_EnginePluginPCH.h"
 
 #include "SpriteEntity.hpp"
-#include "SpriteManager.hpp"
+#include "Toolset2dManager.hpp"
 
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
@@ -19,13 +19,10 @@ V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 
 Sprite::Sprite()
 {
-	Clear();
-	CommonInit();
 }
 
 Sprite::~Sprite()
 {
-
 }
 
 // Called by the engine when entity is created. Not when it is de-serialized!
@@ -48,13 +45,13 @@ void Sprite::DeInitFunction()
 // called by our InitFunction and our de-serialization code
 void Sprite::CommonInit()
 {
-	SpriteManager::GlobalManager().AddSprite(this);
+	Toolset2dManager::Instance()->AddSprite(this);
 	SetSpriteSheetData(m_spriteSheetFilename, m_xmlDataFilename);
 }
 
 void Sprite::CommonDeInit()
 { 
-	SpriteManager::GlobalManager().RemoveSprite(this);	
+	Toolset2dManager::Instance()->RemoveSprite(this);	
 	Clear();
 }
 
@@ -79,7 +76,7 @@ void Sprite::Clear()
 
 void Sprite::UpdateTextures()
 {
-	m_spriteData = SpriteManager::GlobalManager().GetSpriteData(m_spriteSheetFilename, m_xmlDataFilename);
+	m_spriteData = Toolset2dManager::Instance()->GetSpriteData(m_spriteSheetFilename, m_xmlDataFilename);
 	if (m_spriteData != NULL)
 	{
 		if (m_spriteData->states.GetSize() > 0)
@@ -92,6 +89,27 @@ void Sprite::UpdateTextures()
 const hkvVec2 *Sprite::GetVertices() const
 {
 	return m_vertices;
+}
+
+hkvAlignedBBox Sprite::GetBBox() const
+{
+	// add a depth to the bounding box even though it's 2D in case we want to put it
+	// in a 3D world and maybe add physics to it
+	const float depth = 5;
+
+	hkvAlignedBBox bbox;
+	bbox.m_vMin.set(FLT_MAX, FLT_MAX, -depth);
+	bbox.m_vMax.set(FLT_MIN, FLT_MIN, depth);
+
+	for (int vertexIndex = 0; vertexIndex < 4; vertexIndex++)
+	{
+		bbox.m_vMin.x = hkvMath::Min(bbox.m_vMin.x, m_vertices[vertexIndex].x);
+		bbox.m_vMin.y = hkvMath::Min(bbox.m_vMin.y, m_vertices[vertexIndex].y);
+		bbox.m_vMax.x = hkvMath::Max(bbox.m_vMax.x, m_vertices[vertexIndex].x);
+		bbox.m_vMax.y = hkvMath::Max(bbox.m_vMax.y, m_vertices[vertexIndex].y);
+	}
+
+	return bbox;
 }
 
 bool Sprite::SetSpriteSheetData(const char *spriteSheetFilename, const char *xmlFilename)

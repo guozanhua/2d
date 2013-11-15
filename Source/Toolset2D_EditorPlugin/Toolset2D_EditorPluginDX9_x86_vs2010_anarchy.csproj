@@ -59,6 +59,7 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Camera2dShape.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -116,6 +117,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=" " />
+    <None Include="Resources\camera.png" />
+    <None Include="Resources\2d.png" />
     <None Include="Resources\background.png" />
     <EmbeddedResource Include="Resources\sprite.png" />
   </ItemGroup>

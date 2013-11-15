@@ -211,22 +211,25 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera2dEntity.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp" />
+    <ClCompile Include="Toolset2dManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="SpriteEntity.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePluginPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClInclude Include="Camera2dEntity.hpp" />
     <ClInclude Include="HUD.hpp" />
     <ClInclude Include="SpriteEntity.hpp" />
-    <ClInclude Include="SpriteManager.hpp" />
+    <ClInclude Include="Toolset2dManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Lua\Camera2dEntity.i" />
     <None Include="Lua\SpriteEntity.i">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -IToolset2D_Module.i</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua/Toolset2D_Module_wrapper.cpp</Outputs>
@@ -240,15 +243,15 @@ python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Too
 xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
 del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module.i;Lua\Toolset2dManager.i;Lua\SpriteEntity.i;Lua\Camera2dEntity.i</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
 python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
 xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
 del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module.i;Lua\Toolset2dManager.i;Lua\SpriteEntity.i;Lua\Camera2dEntity.i</AdditionalInputs>
     </CustomBuild>
-    <None Include="Lua\SpriteManager.i" />
+    <None Include="Lua\Toolset2dManager.i" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">

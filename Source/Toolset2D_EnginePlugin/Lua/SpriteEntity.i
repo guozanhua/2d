@@ -2,7 +2,7 @@
 %nodefaultdtor Sprite;
 
 // custom headers for generated source file
-%module Toolset2D
+%module Toolset2dModule
 %{
   #include "SpriteEntity.hpp"
 %}

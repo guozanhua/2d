@@ -1549,14 +1549,14 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 /* ------------------------------ end luarun.swg  ------------------------------ */
 
 
-swig_type_info *swig_types[32];
-swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
+swig_type_info *swig_types[33];
+swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
 
-#define SWIG_name      "Toolset2D"
-#define SWIG_init      luaopen_Toolset2D
-#define SWIG_init_user luaopen_Toolset2D_user
+#define SWIG_name      "Toolset2dModule"
+#define SWIG_init      luaopen_Toolset2dModule
+#define SWIG_init_user luaopen_Toolset2dModule_user
 
-#define SWIG_LUACODE   luaopen_Toolset2D_luacode
+#define SWIG_LUACODE   luaopen_Toolset2dModule_luacode
 
 
 namespace swig {
@@ -2861,9 +2861,6 @@ SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisT
   }
 
 
-	#include "SpriteManager.hpp"
-
-
   #include "SpriteEntity.hpp"
 
 SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
@@ -2872,6 +2869,18 @@ SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
     Vision::Error.Warning("[Lua] Cannot cast to %s!","Sprite");
     return NULL;
   }
+
+  #include "Camera2dEntity.hpp"
+
+SWIGINTERN Camera2D *Camera2D_Cast(VTypedObject *pObject){
+    if(pObject && pObject->IsOfType(Camera2D::GetClassTypeId()))
+      return (Camera2D *) pObject;
+    Vision::Error.Warning("[Lua] Cannot cast to %s!","Camera2D");
+    return NULL;
+  }
+
+	#include "Toolset2dManager.hpp"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10037,37 +10046,6 @@ static swig_lua_class *swig_IVObjectComponent_bases[] = {0,0};
 static const char *swig_IVObjectComponent_base_names[] = {"VisTypedEngineObject_cl *",0};
 static swig_lua_class _wrap_class_IVObjectComponent = { "IVObjectComponent", &SWIGTYPE_p_IVObjectComponent,0,0, swig_IVObjectComponent_methods, swig_IVObjectComponent_attributes, swig_IVObjectComponent_bases, swig_IVObjectComponent_base_names };
 
-static int _wrap_new_SpriteManager(lua_State* L) {
-  int SWIG_arg = 0;
-  SpriteManager *result = 0 ;
-  
-  SWIG_check_num_args("SpriteManager::SpriteManager",0,0)
-  result = (SpriteManager *)new SpriteManager();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SpriteManager,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_SpriteManager(void *obj) {
-SpriteManager *arg1 = (SpriteManager *) obj;
-delete arg1;
-}
-static swig_lua_method swig_SpriteManager_methods[] = {
-    {0,0}
-};
-static swig_lua_attribute swig_SpriteManager_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_class *swig_SpriteManager_bases[] = {0};
-static const char *swig_SpriteManager_base_names[] = {0};
-static swig_lua_class _wrap_class_SpriteManager = { "SpriteManager", &SWIGTYPE_p_SpriteManager,_wrap_new_SpriteManager, swig_delete_SpriteManager, swig_SpriteManager_methods, swig_SpriteManager_attributes, swig_SpriteManager_bases, swig_SpriteManager_base_names };
-
 static int _wrap_Sprite_SetState(lua_State* L) {
   int SWIG_arg = 0;
   Sprite *arg1 = (Sprite *) 0 ;
@@ -10563,12 +10541,78 @@ static swig_lua_class *swig_Sprite_bases[] = {0,0};
 static const char *swig_Sprite_base_names[] = {"VisBaseEntity_cl *",0};
 static swig_lua_class _wrap_class_Sprite = { "Sprite", &SWIGTYPE_p_Sprite,0,0, swig_Sprite_methods, swig_Sprite_attributes, swig_Sprite_bases, swig_Sprite_base_names };
 
+static int _wrap_Camera2D_Cast(lua_State* L) {
+  int SWIG_arg = 0;
+  VTypedObject *arg1 = (VTypedObject *) 0 ;
+  Camera2D *result = 0 ;
+  
+  SWIG_check_num_args("Camera2D_Cast",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Camera2D_Cast",1,"VTypedObject *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VTypedObject,0))){
+    SWIG_fail_ptr("Camera2D_Cast",1,SWIGTYPE_p_VTypedObject);
+  }
+  
+  result = (Camera2D *)Camera2D_Cast(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Camera2D,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static swig_lua_method swig_Camera2D_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_Camera2D_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_Camera2D_bases[] = {0,0};
+static const char *swig_Camera2D_base_names[] = {"VisBaseEntity_cl *",0};
+static swig_lua_class _wrap_class_Camera2D = { "Camera2D", &SWIGTYPE_p_Camera2D,0,0, swig_Camera2D_methods, swig_Camera2D_attributes, swig_Camera2D_bases, swig_Camera2D_base_names };
+
+static int _wrap_new_Toolset2dManager(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *result = 0 ;
+  
+  SWIG_check_num_args("Toolset2dManager::Toolset2dManager",0,0)
+  result = (Toolset2dManager *)new Toolset2dManager();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Toolset2dManager,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_Toolset2dManager(void *obj) {
+Toolset2dManager *arg1 = (Toolset2dManager *) obj;
+delete arg1;
+}
+static swig_lua_method swig_Toolset2dManager_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_Toolset2dManager_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_Toolset2dManager_bases[] = {0};
+static const char *swig_Toolset2dManager_base_names[] = {0};
+static swig_lua_class _wrap_class_Toolset2dManager = { "Toolset2dManager", &SWIGTYPE_p_Toolset2dManager,_wrap_new_Toolset2dManager, swig_delete_Toolset2dManager, swig_Toolset2dManager_methods, swig_Toolset2dManager_attributes, swig_Toolset2dManager_bases, swig_Toolset2dManager_base_names };
+
 #ifdef __cplusplus
 }
 #endif
 
 static const struct luaL_reg swig_commands[] = {
     { "Sprite_Cast", _wrap_Sprite_Cast},
+    { "Camera2D_Cast", _wrap_Camera2D_Cast},
     {0,0}
 };
 
@@ -10603,11 +10647,17 @@ static void *_p_SpriteTo_p_VisTypedEngineObject_cl(void *x, int *SWIGUNUSEDPARM(
 static void *_p_VisObject3D_clTo_p_VisTypedEngineObject_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisTypedEngineObject_cl *)  ((VisObject3D_cl *) x));
 }
+static void *_p_Camera2DTo_p_VisTypedEngineObject_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VisTypedEngineObject_cl *) (VisObject3D_cl *)(VisBaseEntity_cl *) ((Camera2D *) x));
+}
 static void *_p_VisBaseEntity_clTo_p_VisObject3D_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObject3D_cl *)  ((VisBaseEntity_cl *) x));
 }
 static void *_p_SpriteTo_p_VisObject3D_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObject3D_cl *) (VisBaseEntity_cl *) ((Sprite *) x));
+}
+static void *_p_Camera2DTo_p_VisObject3D_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VisObject3D_cl *) (VisBaseEntity_cl *) ((Camera2D *) x));
 }
 static void *_p_IVObjectComponentTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VTypedObject *) (VisTypedEngineObject_cl *) ((IVObjectComponent *) x));
@@ -10621,11 +10671,17 @@ static void *_p_SpriteTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory))
 static void *_p_VisObject3D_clTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VTypedObject *) (VisTypedEngineObject_cl *) ((VisObject3D_cl *) x));
 }
+static void *_p_Camera2DTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VTypedObject *) (VisTypedEngineObject_cl *)(VisObject3D_cl *)(VisBaseEntity_cl *) ((Camera2D *) x));
+}
 static void *_p_VisTypedEngineObject_clTo_p_VTypedObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VTypedObject *)  ((VisTypedEngineObject_cl *) x));
 }
 static void *_p_SpriteTo_p_VisBaseEntity_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisBaseEntity_cl *)  ((Sprite *) x));
+}
+static void *_p_Camera2DTo_p_VisBaseEntity_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VisBaseEntity_cl *)  ((Camera2D *) x));
 }
 static void *_p_VisBaseEntity_clTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObjectKey_cl *) (VisObject3D_cl *) ((VisBaseEntity_cl *) x));
@@ -10636,9 +10692,13 @@ static void *_p_SpriteTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemor
 static void *_p_VisObject3D_clTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((VisObjectKey_cl *)  ((VisObject3D_cl *) x));
 }
+static void *_p_Camera2DTo_p_VisObjectKey_cl(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((VisObjectKey_cl *) (VisObject3D_cl *)(VisBaseEntity_cl *) ((Camera2D *) x));
+}
+static swig_type_info _swigt__p_Camera2D = {"_p_Camera2D", "Camera2D *", 0, 0, (void*)&_wrap_class_Camera2D, 0};
 static swig_type_info _swigt__p_IVObjectComponent = {"_p_IVObjectComponent", "IVObjectComponent *", 0, 0, (void*)&_wrap_class_IVObjectComponent, 0};
 static swig_type_info _swigt__p_Sprite = {"_p_Sprite", "Sprite *", 0, 0, (void*)&_wrap_class_Sprite, 0};
-static swig_type_info _swigt__p_SpriteManager = {"_p_SpriteManager", "SpriteManager *", 0, 0, (void*)&_wrap_class_SpriteManager, 0};
+static swig_type_info _swigt__p_Toolset2dManager = {"_p_Toolset2dManager", "Toolset2dManager *", 0, 0, (void*)&_wrap_class_Toolset2dManager, 0};
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
 static swig_type_info _swigt__p_VDynamicMesh = {"_p_VDynamicMesh", "VDynamicMesh *", 0, 0, (void*)0, 0};
@@ -10669,9 +10729,10 @@ static swig_type_info _swigt__p_unsigned_long = {"_p_unsigned_long", "HANDLE_PTR
 static swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "WORD *|UHALF_PTR *|unsigned short *|USHORT *|FSHORT *|LANGID *|UINT16 *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_Camera2D,
   &_swigt__p_IVObjectComponent,
   &_swigt__p_Sprite,
-  &_swigt__p_SpriteManager,
+  &_swigt__p_Toolset2dManager,
   &_swigt__p_VBitmask,
   &_swigt__p_VColorRef,
   &_swigt__p_VDynamicMesh,
@@ -10702,19 +10763,20 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_unsigned_short,
 };
 
+static swig_cast_info _swigc__p_Camera2D[] = {  {&_swigt__p_Camera2D, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_IVObjectComponent[] = {  {&_swigt__p_IVObjectComponent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Sprite[] = {  {&_swigt__p_Sprite, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SpriteManager[] = {  {&_swigt__p_SpriteManager, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_Toolset2dManager[] = {  {&_swigt__p_Toolset2dManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTextureObject[] = {  {&_swigt__p_VTextureObject, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VTypedObject, 0, 0},  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VisBaseEntity_cl[] = {  {&_swigt__p_VisBaseEntity_cl, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisBaseEntity_cl, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VisObject3D_cl[] = {  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VisObjectKey_cl[] = {  {&_swigt__p_VisObjectKey_cl, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisObjectKey_cl, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VTypedObject, 0, 0},  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VisBaseEntity_cl[] = {  {&_swigt__p_VisBaseEntity_cl, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisBaseEntity_cl, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisBaseEntity_cl, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VisObject3D_cl[] = {  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObject3D_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, 0, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisObject3D_cl, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VisObjectKey_cl[] = {  {&_swigt__p_VisObjectKey_cl, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisObjectKey_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisObjectKey_cl, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisSurface_cl[] = {  {&_swigt__p_VisSurface_cl, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VisTypedEngineObject_cl[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VisTypedEngineObject_cl[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VisTypedEngineObject_cl, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p___int64[] = {  {&_swigt__p___int64, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};
@@ -10735,9 +10797,10 @@ static swig_cast_info _swigc__p_unsigned_long[] = {  {&_swigt__p_unsigned_long, 
 static swig_cast_info _swigc__p_unsigned_short[] = {  {&_swigt__p_unsigned_short, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_Camera2D,
   _swigc__p_IVObjectComponent,
   _swigc__p_Sprite,
-  _swigc__p_SpriteManager,
+  _swigc__p_Toolset2dManager,
   _swigc__p_VBitmask,
   _swigc__p_VColorRef,
   _swigc__p_VDynamicMesh,

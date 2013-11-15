@@ -5,9 +5,11 @@
     <ClCompile Include="Toolset2D_Managed.cpp" />
     <ClCompile Include="Toolset2D_ManagedPCH.cpp" />
     <ClCompile Include="EngineInstanceSprite.cpp" />
+    <ClCompile Include="EngineInstanceCamera2d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_ManagedPCH.h" />
     <ClInclude Include="EngineInstanceSprite.hpp" />
+    <ClInclude Include="EngineInstanceCamera2d.hpp" />
   </ItemGroup>
 </Project>

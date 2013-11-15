@@ -234,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="EngineInstanceCamera2d.cpp" />
     <ClCompile Include="EngineInstanceSprite.cpp" />
     <ClCompile Include="Toolset2D_Managed.cpp" />
     <ClCompile Include="Toolset2D_ManagedPCH.cpp">
@@ -243,6 +244,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EngineInstanceCamera2d.hpp" />
     <ClInclude Include="EngineInstanceSprite.hpp" />
     <ClInclude Include="Toolset2D_ManagedPCH.h" />
   </ItemGroup>

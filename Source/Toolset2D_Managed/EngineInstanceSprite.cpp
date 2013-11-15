@@ -2,7 +2,7 @@
 
 #include "EngineInstanceSprite.hpp"
 #include "Toolset2D_EnginePlugin/SpriteEntity.hpp"
-#include "Toolset2D_EnginePlugin/SpriteManager.hpp"
+#include "Toolset2D_EnginePlugin/Toolset2dManager.hpp"
 
 using namespace ManagedFramework;
 #using <mscorlib.dll>
@@ -11,91 +11,82 @@ namespace Toolset2D_Managed
 {
 	EngineInstanceSprite::EngineInstanceSprite() : IEngineShapeInstance()
 	{
-		// #warning, #verify (jve) - It seems necessary to use CreateEntity since it calls Init/InitVars, which can't be
-		// called manually inside Sprite due to protected linkage.
-		m_pSprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+		Sprite *sprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+		Debug::Assert(sprite != nullptr, "Could not create Sprite entity!");
 
-		//m_pSprite = new Sprite();
-		//m_pSprite->AddRef();
+		m_pEntityWP = new VWeakPtr<VisBaseEntity_cl>(sprite->GetWeakReference());
 	}
 
 	void EngineInstanceSprite::DisposeObject()
 	{
-		// #todo #memoryleak
-		Vision::Game.RemoveEntity(m_pSprite);
-
-		//m_pSprite = NULL;
-		//if (m_pSprite)
-		//{
-		//	delete m_pSprite;
-		//	m_pSprite = NULL;
-		//}
+		Sprite *pEntity = GetSpriteEntity();
+		V_SAFE_DISPOSEOBJECT(pEntity);
 	}
 
 	void EngineInstanceSprite::SetVisible(bool bStatus)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			m_pSprite->SetVisibleBitmask(bStatus ? VIS_ENTITY_VISIBLE : VIS_ENTITY_INVISIBLE);
+			GetSpriteEntity()->SetVisibleBitmask(bStatus ? VIS_ENTITY_VISIBLE : VIS_ENTITY_INVISIBLE);
 		}
 	}
 
 	void EngineInstanceSprite::SetObjectKey(String ^key)
 	{
-		if (!m_pSprite)
+		if (!GetSpriteEntity())
 			return;
 
 		VString sKey;
 		ConversionUtils::StringToVString(key, sKey);
 
 		if (sKey.IsEmpty())
-			m_pSprite->SetObjectKey(NULL);
+			GetSpriteEntity()->SetObjectKey(NULL);
 		else
-			m_pSprite->SetObjectKey(sKey);
+			GetSpriteEntity()->SetObjectKey(sKey);
 
 		// inform owner object and its components, that the object key has changed
-		m_pSprite->SendMsg(m_pSprite, VIS_MSG_EDITOR_PROPERTYCHANGED, (INT_PTR)"ObjectKey", 0);
+		GetSpriteEntity()->SendMsg(GetSpriteEntity(), VIS_MSG_EDITOR_PROPERTYCHANGED, (INT_PTR)"ObjectKey", 0);
 	}
 
 	void EngineInstanceSprite::SetPosition(float x, float y, float z)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			m_pSprite->SetPosition(x, y, z);
+			GetSpriteEntity()->SetPosition(x, y, z);
 		}
 	}
 
 	void EngineInstanceSprite::SetOrientation(float yaw, float pitch, float roll)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			m_pSprite->SetOrientation(yaw, pitch, roll);
+			GetSpriteEntity()->SetOrientation(yaw, pitch, roll);
 		}
 	}
 
 	bool EngineInstanceSprite::GetOrientation(Vector3F %orientation)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			const hkvVec3 &o = m_pSprite->GetOrientation();
+			const hkvVec3 &o = GetSpriteEntity()->GetOrientation();
 			orientation.X = o.x;
 			orientation.Y = o.y;
 			orientation.Z = o.z;
 		}
-		return (m_pSprite != NULL);
+		return (GetSpriteEntity() != NULL);
 	}
 
 	void EngineInstanceSprite::SetScaling(float x, float y, float z)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			m_pSprite->SetScaling( hkvVec3(x, y, z) );
+			GetSpriteEntity()->SetScaling( hkvVec3(x, y, z) );
 		}
 	}
 
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
 			IVRenderInterface* pRI = Vision::Contexts.GetCurrentContext()->GetRenderInterface();
 			VColorRef color;
@@ -106,7 +97,7 @@ namespace Toolset2D_Managed
 			switch (mode)
 			{
 			case ShapeRenderMode::Normal:
-				if (m_pSprite->GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
+				if (GetSpriteEntity()->GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
 				{
 					color = VColorRef(255, 0, 0, 80);
 					render = true;
@@ -119,10 +110,10 @@ namespace Toolset2D_Managed
 				break;
 			}
 
-			if (render && !m_pSprite->IsFullscreenMode())
+			if (render && !GetSpriteEntity()->IsFullscreenMode())
 			{
 				// Make sure the vertices are updated before rendering
-				m_pSprite->Update();
+				GetSpriteEntity()->Update();
 
 				const int edges[8] = {
 					0, 1,
@@ -130,7 +121,7 @@ namespace Toolset2D_Managed
 					3, 2,
 					2, 0};
 
-				const hkvVec2 *vertices = m_pSprite->GetVertices();
+				const hkvVec2 *vertices = GetSpriteEntity()->GetVertices();
 
 				for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
 				{
@@ -142,25 +133,29 @@ namespace Toolset2D_Managed
 						color, width);
 				}
 
-				hkvVec2 position = m_pSprite->GetPosition().getAsVec2();
-				hkvVec2 topLeft = position;
-				hkvVec2 topRight = topLeft + hkvVec2(m_pSprite->GetOriginalCellWidth(), 0);
-				hkvVec2 bottomLeft = topLeft + hkvVec2(0, m_pSprite->GetOriginalCellHeight());
-				hkvVec2 bottomRight = bottomLeft + hkvVec2(m_pSprite->GetOriginalCellWidth(), 0);
-				const hkvVec2 border[8] = {
-					topLeft, topRight,
-					topRight, bottomRight,
-					bottomRight, bottomLeft,
-					bottomLeft, topLeft};
-
-				for (int borderEdgeIndex = 0; borderEdgeIndex < 4; borderEdgeIndex++)
+				bool drawOriginalOutlineSize = false;
+				if (drawOriginalOutlineSize)
 				{
-					const hkvVec2 p1 = border[borderEdgeIndex * 2 + 0];
-					const hkvVec2 p2 = border[borderEdgeIndex * 2 + 1];
-					Vision::Game.DrawSingleLine2D(
-						p1.x, p1.y,
-						p2.x, p2.y,
-						VColorRef(255, 255, 0, 30), width);
+					hkvVec2 position = GetSpriteEntity()->GetPosition().getAsVec2();
+					hkvVec2 topLeft = position;
+					hkvVec2 topRight = topLeft + hkvVec2(GetSpriteEntity()->GetOriginalCellWidth(), 0);
+					hkvVec2 bottomLeft = topLeft + hkvVec2(0, GetSpriteEntity()->GetOriginalCellHeight());
+					hkvVec2 bottomRight = bottomLeft + hkvVec2(GetSpriteEntity()->GetOriginalCellWidth(), 0);
+					const hkvVec2 border[8] = {
+						topLeft, topRight,
+						topRight, bottomRight,
+						bottomRight, bottomLeft,
+						bottomLeft, topLeft};
+
+						for (int borderEdgeIndex = 0; borderEdgeIndex < 4; borderEdgeIndex++)
+						{
+							const hkvVec2 p1 = border[borderEdgeIndex * 2 + 0];
+							const hkvVec2 p2 = border[borderEdgeIndex * 2 + 1];
+							Vision::Game.DrawSingleLine2D(
+								p1.x, p1.y,
+								p2.x, p2.y,
+								VColorRef(255, 255, 0, 30), width);
+						}
 				}
 			}
 		}
@@ -168,15 +163,46 @@ namespace Toolset2D_Managed
 
 	bool EngineInstanceSprite::GetLocalBoundingBox(BoundingBox^ %bbox)
 	{
+		bool result = false;
+
 		// create a small bounding box for picking
-		float fSize = 5.f;
-		(*bbox).Set(-fSize, -fSize, -fSize, fSize, fSize, fSize);
-		return true;
+		if (GetSpriteEntity())
+		{
+			hkvAlignedBBox bbox = GetSpriteEntity()->GetBBox();
+			result = true;
+		}
+
+		return result;
 	}
 
-	void EngineInstanceSprite::TraceShape(Shape3D^ /* ownerShape*/, Vector3F /*rayStart*/,Vector3F /*rayEnd*/, ShapeTraceResult^% /*result*/)
+	void EngineInstanceSprite::TraceShape(Shape3D^ ownerShape, Vector3F rayStart, Vector3F rayEnd, ShapeTraceResult^% result)
 	{
-		// don't do anything because the shape code already does the picking
+		float x = 0.f;
+		float y = 0.f;
+		const hkvVec3 start(rayStart.X, rayStart.Y, rayStart.Z);
+
+		if ( GetSpriteEntity() && Vision::Contexts.GetMainRenderContext()->Project2D(start, x, y) )
+		{
+			hkvAlignedBBox bbox = GetSpriteEntity()->GetBBox();
+			const hkvVec3 point(x, y, 0.0f);
+			if ( bbox.contains(point) )
+			{
+				float distance = (GetSpriteEntity()->GetCenterPosition() - point).getLength();
+
+				if (GetSpriteEntity()->IsFullscreenMode())
+				{
+					// push the distance way back if we're in fullscreen mode
+					distance += 1000.f;
+				}
+
+				if (!result->bHit || distance < result->fHitDistance)
+				{
+					result->hitShape = ownerShape;
+					result->fHitDistance = distance;
+					result->bHit = true;
+				}
+			}
+		}
 	}
 	
 	bool EngineInstanceSprite::OnExport(SceneExportInfo ^info)
@@ -184,19 +210,19 @@ namespace Toolset2D_Managed
 		// do the export: Get the export binary archive and serialize into it.
 		// Requires the native node class to support serialization (derive from VisTypedEngineObject_cl and 
 		// implement Serialize function)
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
 			VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
-			ar.WriteObject(m_pSprite);
+			ar.WriteObject(GetSpriteEntity());
 		}
 		return true;
 	}
 
 	void EngineInstanceSprite::SetUniqueID(unsigned __int64 iID)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			m_pSprite->SetUniqueID(iID);
+			GetSpriteEntity()->SetUniqueID(iID);
 		}
 	}
 
@@ -208,15 +234,15 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::OnAttachComponent(ShapeComponent ^component)
 	{
-		if (m_pSprite)
+		if (GetSpriteEntity())
 		{
-			ConversionUtils::OnAttachComponent(m_pSprite, component);
+			ConversionUtils::OnAttachComponent(GetSpriteEntity(), component);
 		}
 	}
 
 	void EngineInstanceSprite::SetSpriteSheetData(String ^pFileName, String ^pXml)
 	{
-		if (m_pSprite == NULL)
+		if (GetSpriteEntity() == NULL)
 		{
 			return;
 		}
@@ -239,15 +265,15 @@ namespace Toolset2D_Managed
 				xml = "";
 			}
 
-			m_pSprite->SetSpriteSheetData(filename, xml);
+			GetSpriteEntity()->SetSpriteSheetData(filename, xml);
 		}
 	}
 
 	array<String^>^ EngineInstanceSprite::GetStateNames()
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			const VArray<VString> stateNames = m_pSprite->GetStateNames();
+			const VArray<VString> stateNames = GetSpriteEntity()->GetStateNames();
 
 			array<String^>^ names = gcnew array<String^>(stateNames.GetSize());
 			for (int i = 0; i < stateNames.GetSize(); i++)
@@ -265,10 +291,10 @@ namespace Toolset2D_Managed
 	{
 		String^ stateName = "";
 
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
 			String^ stateName = "NONE";
-			const SpriteState *state = m_pSprite->GetCurrentState();
+			const SpriteState *state = GetSpriteEntity()->GetCurrentState();
 			if (state != NULL)
 			{
 				stateName = ConversionUtils::VStringToString(state->name);
@@ -280,11 +306,11 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::SetCurrentState(String^ state)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
 			VString stateName;
 			ConversionUtils::StringToVString(state, stateName);
-			m_pSprite->SetState(stateName);
+			GetSpriteEntity()->SetState(stateName);
 		}
 	}
 
@@ -292,9 +318,9 @@ namespace Toolset2D_Managed
 	{
 		int frame = -1;
 
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			frame = m_pSprite->GetCurrentFrame();
+			frame = GetSpriteEntity()->GetCurrentFrame();
 		}
 
 		return frame;
@@ -302,18 +328,18 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::SetCurrentFrame(int frame)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			m_pSprite->SetCurrentFrame(frame);
+			GetSpriteEntity()->SetCurrentFrame(frame);
 		}
 	}
 
 	float EngineInstanceSprite::GetScrollX()
 	{
 		float scrollX = 0.0f;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			scrollX = m_pSprite->GetScrollSpeed().x;
+			scrollX = GetSpriteEntity()->GetScrollSpeed().x;
 		}
 		return scrollX;
 	}
@@ -321,27 +347,27 @@ namespace Toolset2D_Managed
 	float EngineInstanceSprite::GetScrollY()
 	{
 		float scrollY = 0.0f;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			scrollY = m_pSprite->GetScrollSpeed().y;
+			scrollY = GetSpriteEntity()->GetScrollSpeed().y;
 		}
 		return scrollY;
 	}
 
 	void EngineInstanceSprite::SetScroll(float x, float y)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			m_pSprite->SetScrollSpeed(hkvVec2(x, y));
+			GetSpriteEntity()->SetScrollSpeed(hkvVec2(x, y));
 		}
 	}
 
 	float EngineInstanceSprite::GetWidth()
 	{
 		float width = 0.f;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			width = m_pSprite->GetWidth();
+			width = GetSpriteEntity()->GetWidth();
 		}
 		return width;
 	}
@@ -349,79 +375,79 @@ namespace Toolset2D_Managed
 	float EngineInstanceSprite::GetHeight()
 	{
 		float height = 0.f;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			height = m_pSprite->GetHeight();
+			height = GetSpriteEntity()->GetHeight();
 		}
 		return height;
 	}
 
 	void EngineInstanceSprite::SetWidth(float width)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			return m_pSprite->SetWidth(width);
+			return GetSpriteEntity()->SetWidth(width);
 		}
 	}
 
 	void EngineInstanceSprite::SetHeight(float height)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			return m_pSprite->SetHeight(height);
+			return GetSpriteEntity()->SetHeight(height);
 		}
 	}
 
 	void EngineInstanceSprite::SetFullscreenMode(bool enabled)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			m_pSprite->SetFullscreenMode(enabled);
+			GetSpriteEntity()->SetFullscreenMode(enabled);
 		}
 	}
 
 	bool EngineInstanceSprite::IsFullscreenMode()
 	{
 		bool fullscreen = false;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			fullscreen = m_pSprite->IsFullscreenMode();
+			fullscreen = GetSpriteEntity()->IsFullscreenMode();
 		}
 		return fullscreen;
 	}
 
 	void EngineInstanceSprite::SetPlayOnce(bool enabled)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			m_pSprite->SetPlayOnce(enabled);
+			GetSpriteEntity()->SetPlayOnce(enabled);
 		}
 	}
 
 	bool EngineInstanceSprite::IsPlayOnce()
 	{
 		bool playOnce = false;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			playOnce =  m_pSprite->IsPlayOnce();
+			playOnce =  GetSpriteEntity()->IsPlayOnce();
 		}
 		return playOnce;
 	}
 
 	void EngineInstanceSprite::SetCollision(bool enabled)
 	{
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			m_pSprite->SetCollision(enabled);
+			GetSpriteEntity()->SetCollision(enabled);
 		}
 	}
 
 	bool EngineInstanceSprite::IsColliding()
 	{
 		bool colliding = false;
-		if (m_pSprite != NULL)
+		if (GetSpriteEntity() != NULL)
 		{
-			colliding = m_pSprite->IsColliding();
+			colliding = GetSpriteEntity()->IsColliding();
 		}
 		return colliding;
 	}

@@ -3,21 +3,23 @@
   <ItemGroup>
     <ClCompile Include="Toolset2D_EnginePluginPCH.cpp" />
     <ClCompile Include="SpriteEntity.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
       <Filter>Lua</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Camera2dEntity.cpp" />
+    <ClCompile Include="Toolset2dManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="SpriteEntity.hpp" />
-    <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp">
       <Filter>Lua</Filter>
     </ClInclude>
     <ClInclude Include="HUD.hpp" />
+    <ClInclude Include="Camera2dEntity.hpp" />
+    <ClInclude Include="Toolset2dManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Lua">
@@ -33,7 +35,10 @@
     <None Include="Lua\SpriteEntity.i">
       <Filter>Lua</Filter>
     </None>
-    <None Include="Lua\SpriteManager.i">
+    <None Include="Lua\Toolset2dManager.i">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="Lua\Camera2dEntity.i">
       <Filter>Lua</Filter>
     </None>
   </ItemGroup>
