@@ -25,10 +25,11 @@
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
 
-#include "Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/Toolset2D_Module_wrapper.hpp"
-
 // global function referenced
-extern int luaopen_Toolset2dModule(lua_State *);
+extern "C" 
+{
+	int luaopen_Toolset2dModule(lua_State *);
+}
 
 // compare two sprites for depth sorting
 static int compareSprites(const void *sprite1, const void *sprite2);
@@ -445,8 +446,18 @@ void Toolset2dManager::RegisterLua()
 		{
 			luaopen_Toolset2dModule(pLuaState);
 
-			VSWIG_PUSH_PROXY(pLuaState, Toolset2dManager, Toolset2dManager::Instance());
-			lua_setglobal(pLuaState, "Toolset2D");
+			int iRetParams = LUA_CallStaticFunction(pLuaState, "Toolset2dModule", "Toolset2dManager", "Cast", "v>v", Toolset2dManager::Instance());
+			if (iRetParams==1)
+			{
+				if(lua_isnil(pLuaState, -1))
+				{
+					lua_pop(pLuaState, iRetParams);
+				}
+				else
+				{
+					lua_setglobal(pLuaState, "Toolset2D");
+				}
+			}
 		}
 		else
 		{

@@ -11,7 +11,6 @@
 #include <Toolset2D_EnginePluginPCH.h>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 #include <Vision/Runtime/Base/System/Memory/VMemDbg.hpp>
-#include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/Lua/Toolset2D_Module_wrapper.hpp>
 
 #ifndef _VISION_DOC
 
@@ -346,6 +345,38 @@ SWIGINTERNINLINE int SWIG_CheckState(int r) {
 extern "C" {
 #endif
 
+typedef void *(*swig_converter_func)(void *, int *);
+typedef struct swig_type_info *(*swig_dycast_func)(void **);
+
+/* Structure to store information on one type */
+typedef struct swig_type_info {
+  const char             *name;			/* mangled name of this type */
+  const char             *str;			/* human readable name of this type */
+  swig_dycast_func        dcast;		/* dynamic cast function down a hierarchy */
+  struct swig_cast_info  *cast;			/* linked list of types that can cast into this type */
+  void                   *clientdata;		/* language specific type data */
+  int                    owndata;		/* flag if the structure owns the clientdata */
+} swig_type_info;
+
+/* Structure to store a type and conversion function used for casting */
+typedef struct swig_cast_info {
+  swig_type_info         *type;			/* pointer to type that is equivalent to this type */
+  swig_converter_func     converter;		/* function to cast the void pointers */
+  struct swig_cast_info  *next;			/* pointer to next cast in linked list */
+  struct swig_cast_info  *prev;			/* pointer to the previous cast */
+} swig_cast_info;
+
+/* Structure used to store module information
+ * Each module generates one structure like this, and the runtime collects
+ * all of these structures and stores them in a circularly linked list.*/
+typedef struct swig_module_info {
+  swig_type_info         **types;		/* Array of pointers to swig_type_info structures that are in this module */
+  size_t                 size;		        /* Number of types in this module */
+  struct swig_module_info *next;		/* Pointer to next element in circularly linked list */
+  swig_type_info         **type_initial;	/* Array of initially generated type structures */
+  swig_cast_info         **cast_initial;	/* Array of initially generated casting structures */
+  void                    *clientdata;		/* Language specific module data */
+} swig_module_info;
 
 /* 
   Compare two type names skipping the space characters, therefore
@@ -728,6 +759,80 @@ SWIG_UnpackDataName(const char *c, void *ptr, size_t sz, const char *name) {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "lua.h"
+#include "lauxlib.h"
+#include <stdlib.h>  /* for malloc */
+#include <assert.h>  /* for a few sanity tests */
+
+/* -----------------------------------------------------------------------------
+ * global swig types
+ * ----------------------------------------------------------------------------- */
+/* Constant table */
+#define SWIG_LUA_INT     1
+#define SWIG_LUA_FLOAT   2
+#define SWIG_LUA_STRING  3
+#define SWIG_LUA_POINTER 4
+#define SWIG_LUA_BINARY  5
+#define SWIG_LUA_CHAR    6
+
+/* Structure for variable linking table */
+typedef struct {
+  const char *name;
+  lua_CFunction get;
+  lua_CFunction set;
+} swig_lua_var_info;
+
+/* Constant information structure */
+typedef struct {
+    int type;
+    char *name;
+    long lvalue;
+    double dvalue;
+    void   *pvalue;
+    swig_type_info **ptype;
+} swig_lua_const_info;
+
+typedef struct {
+  const char     *name;
+  lua_CFunction   method;
+} swig_lua_method;
+
+typedef struct {
+  const char     *name;
+  lua_CFunction   getmethod;
+  lua_CFunction   setmethod;
+} swig_lua_attribute;
+
+typedef struct swig_lua_class {
+  const char    *name;
+  swig_type_info   **type;
+  lua_CFunction  constructor;
+  void    (*destructor)(void *);
+  swig_lua_method   *methods;
+  swig_lua_attribute     *attributes;
+  struct swig_lua_class **bases;
+  const char **base_names;
+} swig_lua_class;
+
+/* this is the struct for wrappering all pointers in SwigLua
+*/
+typedef struct {
+  swig_type_info   *type;
+  int     own;  /* 1 if owned & must be destroyed */
+  void        *ptr;
+} swig_lua_userdata;
+
+/* this is the struct for wrapping arbitary packed binary data
+(currently it is only used for member function pointers)
+the data ordering is similar to swig_lua_userdata, but it is currently not possible
+to tell the two structures apart within SWIG, other than by looking at the type
+*/
+typedef struct {
+  swig_type_info   *type;
+  int     own;  /* 1 if owned & must be destroyed */
+  char data[1];       /* arbitary amount of data */    
+} swig_lua_rawdata;
 
 /* Common SWIG API */
 #define SWIG_NewPointerObj(L, ptr, type, owner)       SWIG_Lua_NewPointerObj(L, (void *)ptr, type, owner)
@@ -1549,8 +1654,47 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 /* ------------------------------ end luarun.swg  ------------------------------ */
 
 
-swig_type_info *swig_types[33];
-swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
+/* -------- TYPES TABLE (BEGIN) -------- */
+
+#define SWIGTYPE_p_Camera2D swig_types[0]
+#define SWIGTYPE_p_IVObjectComponent swig_types[1]
+#define SWIGTYPE_p_Sprite swig_types[2]
+#define SWIGTYPE_p_Toolset2dManager swig_types[3]
+#define SWIGTYPE_p_VBitmask swig_types[4]
+#define SWIGTYPE_p_VColorRef swig_types[5]
+#define SWIGTYPE_p_VDynamicMesh swig_types[6]
+#define SWIGTYPE_p_VString swig_types[7]
+#define SWIGTYPE_p_VTextureObject swig_types[8]
+#define SWIGTYPE_p_VTypedObject swig_types[9]
+#define SWIGTYPE_p_VisBaseEntity_cl swig_types[10]
+#define SWIGTYPE_p_VisObject3D_cl swig_types[11]
+#define SWIGTYPE_p_VisObjectKey_cl swig_types[12]
+#define SWIGTYPE_p_VisSurface_cl swig_types[13]
+#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[14]
+#define SWIGTYPE_p___int64 swig_types[15]
+#define SWIGTYPE_p_char swig_types[16]
+#define SWIGTYPE_p_float swig_types[17]
+#define SWIGTYPE_p_hkvAlignedBBox swig_types[18]
+#define SWIGTYPE_p_hkvMat3 swig_types[19]
+#define SWIGTYPE_p_hkvVec3 swig_types[20]
+#define SWIGTYPE_p_int swig_types[21]
+#define SWIGTYPE_p_long swig_types[22]
+#define SWIGTYPE_p_p_char swig_types[23]
+#define SWIGTYPE_p_p_unsigned_long swig_types[24]
+#define SWIGTYPE_p_short swig_types[25]
+#define SWIGTYPE_p_signed___int64 swig_types[26]
+#define SWIGTYPE_p_signed_char swig_types[27]
+#define SWIGTYPE_p_unsigned___int64 swig_types[28]
+#define SWIGTYPE_p_unsigned_char swig_types[29]
+#define SWIGTYPE_p_unsigned_int swig_types[30]
+#define SWIGTYPE_p_unsigned_long swig_types[31]
+#define SWIGTYPE_p_unsigned_short swig_types[32]
+static swig_type_info *swig_types[34];
+static swig_module_info swig_module = {swig_types, 33, 0, 0, 0, 0};
+#define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
+#define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
+
+/* -------- TYPES TABLE (END) -------- */
 
 #define SWIG_name      "Toolset2dModule"
 #define SWIG_init      luaopen_Toolset2dModule
@@ -2881,6 +3025,9 @@ SWIGINTERN Camera2D *Camera2D_Cast(VTypedObject *pObject){
 
 	#include "Toolset2dManager.hpp"
 
+SWIGINTERN Toolset2dManager *Toolset2dManager_Cast(unsigned long *lObject){
+    return (Toolset2dManager *) lObject;
+  }
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -10575,6 +10722,153 @@ static swig_lua_class *swig_Camera2D_bases[] = {0,0};
 static const char *swig_Camera2D_base_names[] = {"VisBaseEntity_cl *",0};
 static swig_lua_class _wrap_class_Camera2D = { "Camera2D", &SWIGTYPE_p_Camera2D,0,0, swig_Camera2D_methods, swig_Camera2D_attributes, swig_Camera2D_bases, swig_Camera2D_base_names };
 
+static int _wrap_Toolset2dManager_GetNumSprites(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("GetNumSprites",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetNumSprites",1,"Toolset2dManager *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
+    SWIG_fail_ptr("Toolset2dManager_GetNumSprites",1,SWIGTYPE_p_Toolset2dManager);
+  }
+  
+  result = (int)(arg1)->GetNumSprites();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
+  hkvVec3 *arg2 = 0 ;
+  VString *arg3 = 0 ;
+  VString *arg4 = 0 ;
+  Sprite *result = 0 ;
+  
+  SWIG_check_num_args("CreateSprite",4,4)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("CreateSprite",2,"hkvVec3 const &");
+  if(!lua_isuserdata(L,3)) SWIG_fail_arg("CreateSprite",3,"VString const &");
+  if(!lua_isuserdata(L,4)) SWIG_fail_arg("CreateSprite",4,"VString const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",1,SWIGTYPE_p_Toolset2dManager);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_hkvVec3,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",2,SWIGTYPE_p_hkvVec3);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_VString,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",3,SWIGTYPE_p_VString);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&arg4,SWIGTYPE_p_VString,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",4,SWIGTYPE_p_VString);
+  }
+  
+  result = (Sprite *)(arg1)->CreateSprite((hkvVec3 const &)*arg2,(VString const &)*arg3,(VString const &)*arg4);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_SetCamera(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
+  Camera2D *arg2 = (Camera2D *) 0 ;
+  
+  SWIG_check_num_args("SetCamera",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCamera",1,"Toolset2dManager *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetCamera",2,"Camera2D *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
+    SWIG_fail_ptr("Toolset2dManager_SetCamera",1,SWIGTYPE_p_Toolset2dManager);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_Camera2D,0))){
+    SWIG_fail_ptr("Toolset2dManager_SetCamera",2,SWIGTYPE_p_Camera2D);
+  }
+  
+  (arg1)->SetCamera(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_GetCamera(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
+  Camera2D *result = 0 ;
+  
+  SWIG_check_num_args("GetCamera",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCamera",1,"Toolset2dManager *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
+    SWIG_fail_ptr("Toolset2dManager_GetCamera",1,SWIGTYPE_p_Toolset2dManager);
+  }
+  
+  result = (Camera2D *)(arg1)->GetCamera();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Camera2D,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_Cast(lua_State* L) {
+  int SWIG_arg = 0;
+  unsigned long *arg1 = (unsigned long *) 0 ;
+  Toolset2dManager *result = 0 ;
+  
+  SWIG_check_num_args("Toolset2dManager_Cast",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Toolset2dManager_Cast",1,"unsigned long *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_unsigned_long,0))){
+    SWIG_fail_ptr("Toolset2dManager_Cast",1,SWIGTYPE_p_unsigned_long);
+  }
+  
+  result = (Toolset2dManager *)Toolset2dManager_Cast(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Toolset2dManager,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_new_Toolset2dManager(lua_State* L) {
   int SWIG_arg = 0;
   Toolset2dManager *result = 0 ;
@@ -10597,6 +10891,10 @@ Toolset2dManager *arg1 = (Toolset2dManager *) obj;
 delete arg1;
 }
 static swig_lua_method swig_Toolset2dManager_methods[] = {
+    {"GetNumSprites", _wrap_Toolset2dManager_GetNumSprites}, 
+    {"CreateSprite", _wrap_Toolset2dManager_CreateSprite}, 
+    {"SetCamera", _wrap_Toolset2dManager_SetCamera}, 
+    {"GetCamera", _wrap_Toolset2dManager_GetCamera}, 
     {0,0}
 };
 static swig_lua_attribute swig_Toolset2dManager_attributes[] = {
@@ -10613,6 +10911,7 @@ static swig_lua_class _wrap_class_Toolset2dManager = { "Toolset2dManager", &SWIG
 static const struct luaL_reg swig_commands[] = {
     { "Sprite_Cast", _wrap_Sprite_Cast},
     { "Camera2D_Cast", _wrap_Camera2D_Cast},
+    { "Toolset2dManager_Cast", _wrap_Toolset2dManager_Cast},
     {0,0}
 };
 
@@ -10702,6 +11001,7 @@ static swig_type_info _swigt__p_Toolset2dManager = {"_p_Toolset2dManager", "Tool
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
 static swig_type_info _swigt__p_VDynamicMesh = {"_p_VDynamicMesh", "VDynamicMesh *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_VString = {"_p_VString", "VString *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VTextureObject = {"_p_VTextureObject", "VTextureObject *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VTypedObject = {"_p_VTypedObject", "VTypedObject *", 0, 0, (void*)&_wrap_class_VTypedObject, 0};
 static swig_type_info _swigt__p_VisBaseEntity_cl = {"_p_VisBaseEntity_cl", "VisBaseEntity_cl *", 0, 0, (void*)&_wrap_class_VisBaseEntity_cl, 0};
@@ -10736,6 +11036,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_VBitmask,
   &_swigt__p_VColorRef,
   &_swigt__p_VDynamicMesh,
+  &_swigt__p_VString,
   &_swigt__p_VTextureObject,
   &_swigt__p_VTypedObject,
   &_swigt__p_VisBaseEntity_cl,
@@ -10770,6 +11071,7 @@ static swig_cast_info _swigc__p_Toolset2dManager[] = {  {&_swigt__p_Toolset2dMan
 static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VString[] = {  {&_swigt__p_VString, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTextureObject[] = {  {&_swigt__p_VTextureObject, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VTypedObject, 0, 0},  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisBaseEntity_cl[] = {  {&_swigt__p_VisBaseEntity_cl, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisBaseEntity_cl, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisBaseEntity_cl, 0, 0},{0, 0, 0, 0}};
@@ -10804,6 +11106,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_VBitmask,
   _swigc__p_VColorRef,
   _swigc__p_VDynamicMesh,
+  _swigc__p_VString,
   _swigc__p_VTextureObject,
   _swigc__p_VTypedObject,
   _swigc__p_VisBaseEntity_cl,
@@ -11072,11 +11375,15 @@ SWIG_PropagateClientData(void) {
 
 /* Forward declaration of where the user's %init{} gets inserted */
 void SWIG_init_user(lua_State* L );
+    
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* this is the initialization function
   added at the very end of the code
   the function is always called SWIG_init, but an eariler #define will rename it
 */
-int SWIG_init(lua_State* L)
+SWIGEXPORT int SWIG_init(lua_State* L)
 {
   int i;
 
@@ -11192,6 +11499,10 @@ int SWIG_init(lua_State* L)
   return 1;
 }
 
+#ifdef __cplusplus
+}
+#endif
+
 
 const char* SWIG_LUACODE=
   "";
@@ -11202,15 +11513,6 @@ void SWIG_init_user(lua_State* L)
   SWIG_Lua_dostring(L,SWIG_LUACODE);
 }
 
-void VSWIG_Lua_get_class_registry(lua_State* L){ SWIG_Lua_get_class_registry(L); }
-int  VSWIG_Lua_ConvertPtr(lua_State* L,int index,void** ptr,swig_type_info *type,int flags){ return SWIG_Lua_ConvertPtr(L,index,ptr,type,flags); }
-void VSWIG_Lua_NewPointerObj(lua_State* L,void* ptr,swig_type_info *type, int own){ SWIG_Lua_NewPointerObj(L,ptr,type,own); }
-void * VSWIG_TypeCast(swig_cast_info *ty, void *ptr, int *newmemory){ return SWIG_TypeCast(ty,ptr,newmemory); }
-swig_cast_info *VSWIG_TypeCheckStruct(swig_type_info *from, swig_type_info *ty){ return SWIG_TypeCheckStruct(from,ty); }
-void VSWIG_VisionLuaClassSet(lua_State* L) { VisionLuaClassSet(L); }
-void VSWIG_VisionLuaClassGet(lua_State* L) { VisionLuaClassGet(L); }
-swig_cast_info *VSWIG_TypeCheck(const char * fromName, swig_type_info *ty) { return SWIG_TypeCheck(fromName,ty); }
-const char *VSWIG_Lua_typename(lua_State *L, int tp){ return SWIG_Lua_typename(L, tp); }
 
 #if defined (__SNC__)
 #pragma diag_pop

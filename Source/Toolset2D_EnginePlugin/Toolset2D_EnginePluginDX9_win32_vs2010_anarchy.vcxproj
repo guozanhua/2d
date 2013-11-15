@@ -239,15 +239,11 @@
     <CustomBuild Include="Lua\Toolset2D_Module.i">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
-python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
-xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
-del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">Lua\Toolset2D_Module.i;Lua\Toolset2dManager.i;Lua\SpriteEntity.i;Lua\Camera2dEntity.i</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
-python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
-xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
-del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Lua\Toolset2D_Module.i;Lua\Toolset2dManager.i;Lua\SpriteEntity.i;Lua\Camera2dEntity.i</AdditionalInputs>
     </CustomBuild>

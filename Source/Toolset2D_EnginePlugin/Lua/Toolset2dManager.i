@@ -9,9 +9,15 @@
 
 class Toolset2dManager
 {
+public:
 	int GetNumSprites();
 	Sprite *CreateSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename);
 
 	void SetCamera(Camera2D *camera);
 	Camera2D *GetCamera();
+
+	%extend
+	{
+		VSWIG_CREATE_CAST_UNSAFE(Toolset2dManager)
+	}
 };
