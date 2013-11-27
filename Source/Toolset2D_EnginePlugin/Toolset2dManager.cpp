@@ -139,17 +139,19 @@ bool SpriteData::GenerateConvexHull()
 		if (convexHull.build(vertices, config) != -1)
 		{
 			hkgpConvexHull *result = &convexHull;
-			hkgpConvexHull *sch = convexHull.clone();			
+			hkgpConvexHull *convexHullSimplified = convexHull.clone();			
 			
-			const int numVertsToKeep = max(4, sch->getNumVertices() / 2);
-			if (sch->decimateVertices(numVertsToKeep, true))
+			const int numVertsToKeep = max(4, convexHullSimplified->getNumVertices() / 2);
+			if (convexHullSimplified && convexHullSimplified->decimateVertices(numVertsToKeep, true))
 			{
-				result = sch;
+				result = convexHullSimplified;
 			}
 
 			result->buildIndices();
 			result->generateIndexedFaces(hkgpConvexHull::INTERNAL_VERTICES, cell.verticesPerFace, cell.vertexIndices, true);					
 			result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
+
+			V_SAFE_DELETE(convexHullSimplified);
 
 			success = true;
 		}
