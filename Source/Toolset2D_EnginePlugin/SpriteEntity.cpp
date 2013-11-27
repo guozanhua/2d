@@ -176,22 +176,22 @@ void Sprite::SetCurrentFrame(int currentFrame)
 
 float Sprite::GetCellWidth() const
 {
-	return ( GetCurretCell() ? GetCurretCell()->width : 0.f );
+	return ( GetCurrentCell() ? GetCurrentCell()->width : 0.f );
 }
 
 float Sprite::GetCellHeight() const
 {
-	return ( GetCurretCell() ? GetCurretCell()->height : 0.f );
+	return ( GetCurrentCell() ? GetCurrentCell()->height : 0.f );
 }
 
 float Sprite::GetOriginalCellWidth() const
 {
-	return ( GetCurretCell() ? GetCurretCell()->originalWidth : 0.f );
+	return ( GetCurrentCell() ? GetCurrentCell()->originalWidth : 0.f );
 }
 
 float Sprite::GetOriginalCellHeight() const
 {
-	return ( GetCurretCell() ? GetCurretCell()->originalHeight : 0.f );
+	return ( GetCurrentCell() ? GetCurrentCell()->originalHeight : 0.f );
 }
 
 void Sprite::ThinkFunction()
@@ -391,7 +391,7 @@ hkvVec2 Sprite::GetDimensions() const
 	return hkvVec2(width, height);
 }
 
-const SpriteCell *Sprite::GetCurretCell() const
+const SpriteCell *Sprite::GetCurrentCell() const
 {
 	const SpriteCell *cell = NULL;
 	if (m_spriteData)

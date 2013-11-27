@@ -109,13 +109,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Toolset2D_Managed\Toolset2D_ManagedDX9_win32_vs2010_anarchy.vcxproj">
-      <Project>{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}</Project>
-      <Name>Toolset2D_ManagedDX9</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include=" " />
     <None Include="Resources\camera.png" />
     <None Include="Resources\2d.png" />
@@ -127,6 +120,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Toolset2D_Managed\Toolset2D_ManagedDX9_win32_vs2010_anarchy.vcxproj">
+      <Project>{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}</Project>
+      <Name>Toolset2D_ManagedDX9</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

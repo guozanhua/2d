@@ -16,20 +16,19 @@
 #include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
 #endif
 
+#include <Vision/Runtime/Base/Graphics/VColor.hpp>
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VLuaHelpers.hpp>
-
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
 
+#include <Common/Internal/GeometryProcessing/ConvexHull/hkgpConvexHull.h>
+
 // global function referenced
-extern "C" 
-{
-	int luaopen_Toolset2dModule(lua_State *);
-}
+extern "C" int luaopen_Toolset2dModule(lua_State *);
 
 // compare two sprites for depth sorting
 static int compareSprites(const void *sprite1, const void *sprite2);
@@ -37,6 +36,127 @@ static int compareSprites(const void *sprite1, const void *sprite2);
 #if defined(WIN32)
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
 #endif
+
+bool SpriteData::GenerateConvexHull()
+{
+	bool success = false;
+
+	const int bytesPerPixel = spriteSheetTexture->GetBitsPerPixel(spriteSheetTexture->GetTextureFormat()) / 8;
+	IDirect3DTexture9 *pTexture2D = (IDirect3DTexture9 *)spriteSheetTexture->GetD3DInterface();
+	const int iMipLevel = 0;
+	const int iLockFlags = D3DLOCK_READONLY;
+
+	D3DLOCKED_RECT destRect;
+	RECT lockRect = { 0, 0, spriteSheetTexture->GetTextureWidth(), spriteSheetTexture->GetTextureHeight() };
+	pTexture2D->LockRect(iMipLevel, &destRect, NULL, spriteSheetTexture->GetD3D9LockFlags(iLockFlags));
+
+	unsigned char *pDest = (unsigned char *)destRect.pBits;
+
+	const unsigned char thresholdMin = 10;
+
+	for (int stateIndex = 0; stateIndex < cells.GetLength(); stateIndex++)
+	{
+		SpriteCell &cell = cells[stateIndex];
+		const int width = static_cast<int>(cell.width);
+		const int height = static_cast<int>(cell.height);
+
+		int *mins = new int[height];
+		int *maxs = new int[height];
+		memset(mins, -1, sizeof(int) * height);
+		memset(maxs, -1, sizeof(int) * height);
+
+		const int startX = static_cast<int>(cell.offset.x);
+		const int endX = startX + width;
+		const int startY = static_cast<int>(cell.offset.y);
+		const int endY = startY + height;
+
+		for (int y = startY; y < endY; y++)
+		{
+			bool findMin = true;
+			const int positionY = y - startY;
+
+			for (int x = startX; x < endX; x++)
+			{
+				const unsigned int *pixel = reinterpret_cast<unsigned int*>(&pDest[y * destRect.Pitch + x * bytesPerPixel]);
+				const unsigned char alpha = ((*pixel) & 0xff000000) >> 24;
+				const int positionX = x - startX;
+				const bool withinThreshold = (alpha >= thresholdMin);
+				if (findMin && withinThreshold)
+				{
+					mins[positionY] = positionX;
+					findMin = false;
+				}
+				else if (!findMin && !withinThreshold)
+				{
+					maxs[positionY] = positionX;
+					break;
+				}
+			}
+
+			if (maxs[positionY] == -1)
+			{
+				maxs[positionY] = width;
+			}
+		}
+
+		const float hwidth = static_cast<float>(width) / 2.0f;
+		const float hheight = static_cast<float>(height) / 2.0f;
+		hkArray<hkVector4> vertices;
+		for (int i = 0; i < height; i++)
+		{
+			if (mins[i] != -1)
+			{
+				hkReal xx1 = static_cast<hkReal>(mins[i]) - hwidth;
+				hkReal xx2 = static_cast<hkReal>(maxs[i]) - hwidth;
+				hkReal hh = static_cast<hkReal>(i) - hheight;
+
+				vertices.pushBack( hkVector4(xx1, hh, 0, 0) );
+				vertices.pushBack( hkVector4(xx2, hh, 0, 0) );
+
+				if (i == height - 1)
+				{
+					hkReal hh2 = static_cast<hkReal>(i + 1) - hheight;
+					vertices.pushBack( hkVector4(xx1, hh2, 0, 0) );
+					vertices.pushBack( hkVector4(xx2, hh2, 0, 0) );
+				}
+			}
+		}
+
+		delete [] mins;
+		delete [] maxs;
+
+		bool sortInputs = true;
+
+		hkgpConvexHull::BuildConfig	config;
+		config.m_allowLowerDimensions = true;
+		config.m_buildIndices = true;
+		config.m_sortInputs = sortInputs;
+
+		hkVector4 projectionPlane(0, 0, 1);
+
+		hkgpConvexHull convexHull;
+
+		if (convexHull.build(vertices, config) != -1)
+		{
+			hkgpConvexHull *result = &convexHull;
+			hkgpConvexHull *sch = convexHull.clone();			
+			
+			const int numVertsToKeep = max(4, sch->getNumVertices() / 2);
+			if (sch->decimateVertices(numVertsToKeep, true))
+			{
+				result = sch;
+			}
+
+			result->buildIndices();
+			result->generateIndexedFaces(hkgpConvexHull::INTERNAL_VERTICES, cell.verticesPerFace, cell.vertexIndices, true);					
+			result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
+
+			success = true;
+		}
+	}
+
+	return success;
+}
 
 void Toolset2dManager::OneTimeInit()
 {
@@ -278,7 +398,7 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 	SpriteData *spriteData = NULL;
 
 	VTextureObject *spSpriteSheetTexture = Vision::TextureManager.Load2DTexture(spriteSheetFilename);
-	if (spSpriteSheetTexture)
+	if (spSpriteSheetTexture && spSpriteSheetTexture->GetTextureType() == VTextureLoader::Texture2D)
 	{
 		spriteData = new SpriteData();
 		m_spriteData.Append(spriteData);
@@ -431,6 +551,8 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 			spriteData->sourceWidth = currentCell->width = currentCell->originalWidth = textureWidth;
 			spriteData->sourceHeight = currentCell->height = currentCell->originalHeight = textureHeight;
 		}
+
+		spriteData->GenerateConvexHull();
 	}
 
 	return spriteData;

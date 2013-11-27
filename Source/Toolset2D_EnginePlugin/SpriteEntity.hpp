@@ -2,8 +2,9 @@
 #define SPRITE_ENTITY_HPP_INCLUDED
 
 struct SpriteState;
-struct SpriteData;
 struct SpriteCell;
+
+class SpriteData;
 
 class Sprite : public VisBaseEntity_cl
 {
@@ -60,6 +61,8 @@ public:
 	TOOLSET_2D_IMPEXP const hkvVec2 *GetVertices() const;
 	TOOLSET_2D_IMPEXP hkvAlignedBBox GetBBox() const;
 
+	TOOLSET_2D_IMPEXP const SpriteCell *GetCurrentCell() const;
+	
 	//----- Utility functions exposed to LUA
 
 	TOOLSET_2D_IMPEXP void OnCollision(Sprite *other);
@@ -104,8 +107,6 @@ protected:
 	VTextureObject *GetTexture() const;
 
 	hkvVec2 GetDimensions() const;
-
-	const SpriteCell *GetCurretCell() const;
 
 private:
 

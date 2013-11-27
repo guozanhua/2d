@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolset2D_EditorPluginDX9_x86_vs2010_anarchy", "..\Source\Toolset2D_EditorPlugin\Toolset2D_EditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2D Toolset", "2D Toolset", "{10FEE6B0-9FCD-48FC-A402-FC590093E858}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL|Any CPU = Debug DLL|Any CPU
+		Debug DLL|Mixed Platforms = Debug DLL|Mixed Platforms
+		Debug DLL|win32 = Debug DLL|win32
+		Debug DLL|x64 = Debug DLL|x64
+		Debug DLL|x86 = Debug DLL|x86
+		Dev DLL|Any CPU = Dev DLL|Any CPU
+		Dev DLL|Mixed Platforms = Dev DLL|Mixed Platforms
+		Dev DLL|win32 = Dev DLL|win32
+		Dev DLL|x64 = Dev DLL|x64
+		Dev DLL|x86 = Dev DLL|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|win32.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x64.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x86.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x86.Build.0 = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|win32.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x64.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x86.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x86.Build.0 = Dev DLL|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+	EndGlobalSection
+EndGlobal

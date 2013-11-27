@@ -133,6 +133,35 @@ namespace Toolset2D_Managed
 						color, width);
 				}
 
+				// render the convex hull
+				const SpriteCell *cell = GetSpriteEntity()->GetCurrentCell();
+				if (cell != NULL && cell->vertexIndices.getSize() > 0)
+				{
+					const float scaleX = GetSpriteEntity()->GetScaling().x;
+					const float scaleY = GetSpriteEntity()->GetScaling().y;
+					const float offsetX = GetSpriteEntity()->GetCenterPosition().x;
+					const float offsetY = GetSpriteEntity()->GetCenterPosition().y;
+
+					const int* vi = &cell->vertexIndices[0];
+					for(int i = 0;i < cell->verticesPerFace.getSize();++i)
+					{
+						const int count = cell->verticesPerFace[i];
+
+						for(int j = 0; j < count; ++j)
+						{
+							const hkVector4 &e1 = cell->vertexPositions[ vi[j] ];
+							const hkVector4 &e2 = cell->vertexPositions[ vi[(j + 1) % count] ];
+
+							Vision::Game.DrawSingleLine2D(
+								e1(0) * scaleX + offsetX, e1(1) * scaleY + offsetY,
+								e2(0) * scaleX + offsetX, e2(1) * scaleY + offsetY,
+								VColorRef(0, 255, 0, 80), width);
+						}
+
+						vi += count;
+					}
+				}
+
 				bool drawOriginalOutlineSize = false;
 				if (drawOriginalOutlineSize)
 				{

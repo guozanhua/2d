@@ -17,6 +17,10 @@ struct SpriteCell
 	float originalWidth;
 	float originalHeight;
 	int index;
+
+	hkArray<int> verticesPerFace;
+	hkArray<int> vertexIndices;
+	hkArray<hkVector4> vertexPositions;
 };
 
 struct SpriteState
@@ -26,8 +30,13 @@ struct SpriteState
 	float framerate;
 };
 
-struct SpriteData
+class SpriteData
 {
+public:
+	bool GenerateConvexHull();
+
+	//-----
+
 	float sourceWidth;
 	float sourceHeight;
 

@@ -3268,6 +3268,7 @@ static int _wrap_VColorRef_Clear(lua_State* L) {
   VColorRef *arg1 = (VColorRef *) 0 ;
   
   SWIG_check_num_args("Clear",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Clear",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Clear",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3295,6 +3296,7 @@ static int _wrap_VColorRef_SetRGBA(lua_State* L) {
   UINT arg5 ;
   
   SWIG_check_num_args("SetRGBA",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetRGBA",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRGBA",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetRGBA",2,"UINT");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetRGBA",3,"UINT");
@@ -3333,6 +3335,7 @@ static int _wrap_VColorRef_SetRGB(lua_State* L) {
   UINT arg4 ;
   
   SWIG_check_num_args("SetRGB",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetRGB",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRGB",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetRGB",2,"UINT");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetRGB",3,"UINT");
@@ -3367,6 +3370,7 @@ static int _wrap_VColorRef___eq(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("operator ==",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator ==",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator ==",1,"VColorRef *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("operator ==",2,"VColorRef const &");
   
@@ -3398,6 +3402,7 @@ static int _wrap_VColorRef___add(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("operator +",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator +",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator +",1,"VColorRef const *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("operator +",2,"VColorRef const &");
   
@@ -3432,6 +3437,7 @@ static int _wrap_VColorRef___sub(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("operator -",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator -",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator -",1,"VColorRef const *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("operator -",2,"VColorRef const &");
   
@@ -3466,6 +3472,7 @@ static int _wrap_VColorRef___mul__SWIG_0(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("operator *",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator *",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator *",1,"VColorRef const *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("operator *",2,"VColorRef const &");
   
@@ -3500,6 +3507,7 @@ static int _wrap_VColorRef___mul__SWIG_1(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("operator *",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator *",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator *",1,"VColorRef const *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("operator *",2,"float");
   
@@ -3588,6 +3596,7 @@ static int _wrap_VColorRef_IsZero(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("IsZero",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsZero",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsZero",1,"VColorRef const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3612,6 +3621,7 @@ static int _wrap_VColorRef_IsBlack(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("IsBlack",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsBlack",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsBlack",1,"VColorRef const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3636,6 +3646,7 @@ static int _wrap_VColorRef_GetIntensity(lua_State* L) {
   float result;
   
   SWIG_check_num_args("GetIntensity",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetIntensity",1,"VColorRef const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetIntensity",1,"VColorRef const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3662,6 +3673,7 @@ static int _wrap_VColorRef_Lerp(lua_State* L) {
   float arg4 ;
   
   SWIG_check_num_args("Lerp",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Lerp",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Lerp",1,"VColorRef *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("Lerp",2,"VColorRef const &");
   if(!lua_isuserdata(L,3)) SWIG_fail_arg("Lerp",3,"VColorRef const &");
@@ -3700,6 +3712,7 @@ static int _wrap_VColorRef_r_set(lua_State* L) {
   UBYTE arg2 ;
   
   SWIG_check_num_args("r",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("r",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("r",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("r",2,"UBYTE");
   
@@ -3727,6 +3740,7 @@ static int _wrap_VColorRef_r_get(lua_State* L) {
   UBYTE result;
   
   SWIG_check_num_args("r",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("r",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("r",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3751,6 +3765,7 @@ static int _wrap_VColorRef_g_set(lua_State* L) {
   UBYTE arg2 ;
   
   SWIG_check_num_args("g",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("g",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("g",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("g",2,"UBYTE");
   
@@ -3778,6 +3793,7 @@ static int _wrap_VColorRef_g_get(lua_State* L) {
   UBYTE result;
   
   SWIG_check_num_args("g",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("g",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("g",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3802,6 +3818,7 @@ static int _wrap_VColorRef_b_set(lua_State* L) {
   UBYTE arg2 ;
   
   SWIG_check_num_args("b",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("b",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("b",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("b",2,"UBYTE");
   
@@ -3829,6 +3846,7 @@ static int _wrap_VColorRef_b_get(lua_State* L) {
   UBYTE result;
   
   SWIG_check_num_args("b",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("b",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("b",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -3853,6 +3871,7 @@ static int _wrap_VColorRef_a_set(lua_State* L) {
   UBYTE arg2 ;
   
   SWIG_check_num_args("a",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("a",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("a",1,"VColorRef *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("a",2,"UBYTE");
   
@@ -3880,6 +3899,7 @@ static int _wrap_VColorRef_a_get(lua_State* L) {
   UBYTE result;
   
   SWIG_check_num_args("a",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("a",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("a",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -4006,6 +4026,7 @@ static int _wrap_VColorRef_Clone(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("Clone",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Clone",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Clone",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -4033,6 +4054,7 @@ static int _wrap_VColorRef_clone(lua_State* L) {
   VColorRef result;
   
   SWIG_check_num_args("clone",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("clone",1,"VColorRef *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("clone",1,"VColorRef *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VColorRef,0))){
@@ -4093,6 +4115,7 @@ static int _wrap_VTypedObject_GetType(lua_State* L) {
   char *result = 0 ;
   
   SWIG_check_num_args("GetType",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetType",1,"VTypedObject const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetType",1,"VTypedObject const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VTypedObject,0))){
@@ -4118,6 +4141,7 @@ static int _wrap_VTypedObject_IsOfType(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("IsOfType",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsOfType",1,"VTypedObject *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsOfType",1,"VTypedObject *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("IsOfType",2,"char const *");
   
@@ -4145,6 +4169,7 @@ static int _wrap_VTypedObject_GetPropertyType(lua_State* L) {
   char *result = 0 ;
   
   SWIG_check_num_args("GetPropertyType",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetPropertyType",1,"VTypedObject *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPropertyType",1,"VTypedObject *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetPropertyType",2,"char const *");
   
@@ -4172,6 +4197,7 @@ static int _wrap_VTypedObject___eq(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("operator ==",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("operator ==",1,"VTypedObject *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("operator ==",1,"VTypedObject *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("operator ==",2,"VTypedObject const &");
   
@@ -4202,6 +4228,7 @@ static int _wrap_VTypedObject_GetNumProperties(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetNumVariables",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetNumVariables",1,"VTypedObject const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetNumVariables",1,"VTypedObject const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VTypedObject,0))){
@@ -4228,6 +4255,7 @@ static int _wrap_VTypedObject_UpdateProperty(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetVariable",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetVariable",1,"VTypedObject *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetVariable",1,"VTypedObject *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetVariable",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetVariable",3,"char const *");
@@ -4277,6 +4305,7 @@ static int _wrap_VisTypedEngineObject_cl_GetComponentCount(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetComponentCount",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentCount",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentCount",1,"VisTypedEngineObject_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
@@ -4302,6 +4331,7 @@ static int _wrap_VisTypedEngineObject_cl_AddComponent(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddComponent",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddComponent",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddComponent",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddComponent",2,"IVObjectComponent *");
   
@@ -4333,6 +4363,7 @@ static int _wrap_VisTypedEngineObject_cl_RemoveComponent(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("RemoveComponent",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("RemoveComponent",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveComponent",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("RemoveComponent",2,"IVObjectComponent *");
   
@@ -4365,6 +4396,7 @@ static int _wrap_VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(lua_State
   bool result;
   
   SWIG_check_num_args("RemoveComponentOfType",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("RemoveComponentOfType",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveComponentOfType",1,"VisTypedEngineObject_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveComponentOfType",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("RemoveComponentOfType",3,"char const *");
@@ -4394,6 +4426,7 @@ static int _wrap_VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_1(lua_State
   bool result;
   
   SWIG_check_num_args("RemoveComponentOfType",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("RemoveComponentOfType",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveComponentOfType",1,"VisTypedEngineObject_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveComponentOfType",2,"char const *");
   
@@ -4478,6 +4511,7 @@ static int _wrap_VisTypedEngineObject_cl_RemoveAllComponents(lua_State* L) {
   VisTypedEngineObject_cl *arg1 = (VisTypedEngineObject_cl *) 0 ;
   
   SWIG_check_num_args("RemoveAllComponents",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("RemoveAllComponents",1,"VisTypedEngineObject_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveAllComponents",1,"VisTypedEngineObject_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
@@ -4528,6 +4562,7 @@ static int _wrap_VisObjectKey_cl_SetKey(lua_State* L) {
   char *arg2 = (char *) 0 ;
   
   SWIG_check_num_args("SetObjectKey",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetObjectKey",1,"VisObjectKey_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetObjectKey",1,"VisObjectKey_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetObjectKey",2,"char const *");
   
@@ -4554,6 +4589,7 @@ static int _wrap_VisObjectKey_cl_GetKey(lua_State* L) {
   char *result = 0 ;
   
   SWIG_check_num_args("GetObjectKey",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetObjectKey",1,"VisObjectKey_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetObjectKey",1,"VisObjectKey_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObjectKey_cl,0))){
@@ -4580,6 +4616,7 @@ static int _wrap_VisObjectKey_cl_HasKey__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("HasKey",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("HasKey",1,"VisObjectKey_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("HasKey",1,"VisObjectKey_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("HasKey",2,"char const *");
   if(!lua_isboolean(L,3)) SWIG_fail_arg("HasKey",3,"bool");
@@ -4609,6 +4646,7 @@ static int _wrap_VisObjectKey_cl_HasKey__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("HasKey",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("HasKey",1,"VisObjectKey_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("HasKey",1,"VisObjectKey_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("HasKey",2,"char const *");
   
@@ -4707,6 +4745,7 @@ static int _wrap_VisObject3D_cl_SetPosition__SWIG_0(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetPosition",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetPosition",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetPosition",2,"hkvVec3 const &");
   
@@ -4737,6 +4776,7 @@ static int _wrap_VisObject3D_cl_IncPosition__SWIG_0(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("IncPosition",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncPosition",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("IncPosition",2,"hkvVec3 const &");
   
@@ -4767,6 +4807,7 @@ static int _wrap_VisObject3D_cl_GetPosition(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetPosition",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPosition",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -4796,6 +4837,7 @@ static int _wrap_VisObject3D_cl_SetPosition__SWIG_1(lua_State* L) {
   float arg4 ;
   
   SWIG_check_num_args("SetPosition",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetPosition",1,"VisObject3D_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetPosition",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetPosition",3,"float");
@@ -4897,6 +4939,7 @@ static int _wrap_VisObject3D_cl_IncPosition__SWIG_1(lua_State* L) {
   float arg4 ;
   
   SWIG_check_num_args("IncPosition",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncPosition",1,"VisObject3D_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("IncPosition",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("IncPosition",3,"float");
@@ -4998,6 +5041,7 @@ static int _wrap_VisObject3D_cl_SetOrientation__SWIG_0(lua_State* L) {
   float arg4 ;
   
   SWIG_check_num_args("SetOrientation",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetOrientation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOrientation",1,"VisObject3D_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetOrientation",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetOrientation",3,"float");
@@ -5030,6 +5074,7 @@ static int _wrap_VisObject3D_cl_IncOrientation__SWIG_0(lua_State* L) {
   float arg4 ;
   
   SWIG_check_num_args("IncOrientation",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncOrientation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncOrientation",1,"VisObject3D_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("IncOrientation",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("IncOrientation",3,"float");
@@ -5060,6 +5105,7 @@ static int _wrap_VisObject3D_cl_SetUseEulerAngles(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetUseEulerAngles",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetUseEulerAngles",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetUseEulerAngles",1,"VisObject3D_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetUseEulerAngles",2,"bool");
   
@@ -5086,6 +5132,7 @@ static int _wrap_VisObject3D_cl_GetUseEulerAngles(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("GetUseEulerAngles",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetUseEulerAngles",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetUseEulerAngles",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5111,6 +5158,7 @@ static int _wrap_VisObject3D_cl_TransformToObjectSpace(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("TransformToObjectSpace",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("TransformToObjectSpace",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TransformToObjectSpace",1,"VisObject3D_cl const *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("TransformToObjectSpace",2,"hkvVec3 const &");
   
@@ -5144,6 +5192,7 @@ static int _wrap_VisObject3D_cl_SetOrientation__SWIG_1(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetOrientation",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetOrientation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOrientation",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetOrientation",2,"hkvVec3 const &");
   
@@ -5243,6 +5292,7 @@ static int _wrap_VisObject3D_cl_IncOrientation__SWIG_1(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("IncOrientation",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncOrientation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncOrientation",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("IncOrientation",2,"hkvVec3 const &");
   
@@ -5342,6 +5392,7 @@ static int _wrap_VisObject3D_cl_GetOrientation(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetActualOrientation",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetActualOrientation",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetActualOrientation",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5369,6 +5420,7 @@ static int _wrap_VisObject3D_cl_SetRotationMatrix(lua_State* L) {
   hkvMat3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetRotationMatrix",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetRotationMatrix",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRotationMatrix",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetRotationMatrix",2,"hkvMat3 const &");
   
@@ -5399,6 +5451,7 @@ static int _wrap_VisObject3D_cl_GetRotationMatrix(lua_State* L) {
   hkvMat3 result;
   
   SWIG_check_num_args("GetRotationMatrix",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetRotationMatrix",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetRotationMatrix",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5426,6 +5479,7 @@ static int _wrap_VisObject3D_cl_GetTransposedRotationMatrix(lua_State* L) {
   hkvMat3 result;
   
   SWIG_check_num_args("GetTransposedRotationMatrix",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetTransposedRotationMatrix",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTransposedRotationMatrix",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5453,6 +5507,7 @@ static int _wrap_VisObject3D_cl_GetDirection(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetDirection",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetDirection",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetDirection",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5480,6 +5535,7 @@ static int _wrap_VisObject3D_cl_SetDirection(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetDirection",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetDirection",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetDirection",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetDirection",2,"hkvVec3 const &");
   
@@ -5510,6 +5566,7 @@ static int _wrap_VisObject3D_cl_AttachToParent(lua_State* L) {
   VisObject3D_cl *arg2 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("AttachToParent",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AttachToParent",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AttachToParent",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AttachToParent",2,"VisObject3D_cl *");
   
@@ -5539,6 +5596,7 @@ static int _wrap_VisObject3D_cl_DetachFromParent(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("DetachFromParent",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("DetachFromParent",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DetachFromParent",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5563,6 +5621,7 @@ static int _wrap_VisObject3D_cl_GetNumChildren(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetNumChildren",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetNumChildren",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetNumChildren",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5587,6 +5646,7 @@ static int _wrap_VisObject3D_cl_SetLocalPosition(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetLocalPosition",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetLocalPosition",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetLocalPosition",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetLocalPosition",2,"hkvVec3 const &");
   
@@ -5617,6 +5677,7 @@ static int _wrap_VisObject3D_cl_GetLocalPosition(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetLocalPosition",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetLocalPosition",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetLocalPosition",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5644,6 +5705,7 @@ static int _wrap_VisObject3D_cl_SetLocalOrientation(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetLocalOrientation",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetLocalOrientation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetLocalOrientation",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetLocalOrientation",2,"hkvVec3 const &");
   
@@ -5674,6 +5736,7 @@ static int _wrap_VisObject3D_cl_GetLocalOrientation(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetLocalOrientation",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetLocalOrientation",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetLocalOrientation",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5700,6 +5763,7 @@ static int _wrap_VisObject3D_cl_ResetLocalTransformation(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("ResetLocalTransformation",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ResetLocalTransformation",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ResetLocalTransformation",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5724,6 +5788,7 @@ static int _wrap_VisObject3D_cl_SetMotionDeltaWorldSpace(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetMotionDeltaWorldSpace",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetMotionDeltaWorldSpace",2,"hkvVec3 const &");
   
@@ -5754,6 +5819,7 @@ static int _wrap_VisObject3D_cl_SetMotionDeltaLocalSpace(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetMotionDeltaLocalSpace",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetMotionDeltaLocalSpace",2,"hkvVec3 const &");
   
@@ -5784,6 +5850,7 @@ static int _wrap_VisObject3D_cl_IncMotionDeltaWorldSpace(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("IncMotionDeltaWorldSpace",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("IncMotionDeltaWorldSpace",2,"hkvVec3 const &");
   
@@ -5814,6 +5881,7 @@ static int _wrap_VisObject3D_cl_IncMotionDeltaLocalSpace(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("IncMotionDeltaLocalSpace",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("IncMotionDeltaLocalSpace",2,"hkvVec3 const &");
   
@@ -5844,6 +5912,7 @@ static int _wrap_VisObject3D_cl_GetMotionDeltaWorldSpace(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetMotionDeltaWorldSpace",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetMotionDeltaWorldSpace",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetMotionDeltaWorldSpace",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5871,6 +5940,7 @@ static int _wrap_VisObject3D_cl_GetMotionDeltaLocalSpace(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetMotionDeltaLocalSpace",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetMotionDeltaLocalSpace",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetMotionDeltaLocalSpace",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5898,6 +5968,7 @@ static int _wrap_VisObject3D_cl_HasRotationDelta(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("HasRotationDelta",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("HasRotationDelta",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("HasRotationDelta",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5922,6 +5993,7 @@ static int _wrap_VisObject3D_cl_GetRotationDelta(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetRotationDelta",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetRotationDelta",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetRotationDelta",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5948,6 +6020,7 @@ static int _wrap_VisObject3D_cl_ResetMotionDeltaLocalSpace(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("ResetMotionDeltaLocalSpace",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ResetMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ResetMotionDeltaLocalSpace",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5971,6 +6044,7 @@ static int _wrap_VisObject3D_cl_ResetMotionDeltaWorldSpace(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("ResetMotionDeltaWorldSpace",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ResetMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ResetMotionDeltaWorldSpace",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -5994,6 +6068,7 @@ static int _wrap_VisObject3D_cl_ResetMotionDelta(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("ResetMotionDelta",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ResetMotionDelta",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ResetMotionDelta",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -6018,6 +6093,7 @@ static int _wrap_VisObject3D_cl_SetRotationDelta(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("SetRotationDelta",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetRotationDelta",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRotationDelta",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetRotationDelta",2,"hkvVec3 const &");
   
@@ -6048,6 +6124,7 @@ static int _wrap_VisObject3D_cl_IncRotationDelta(lua_State* L) {
   hkvVec3 *arg2 = 0 ;
   
   SWIG_check_num_args("IncRotationDelta",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IncRotationDelta",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IncRotationDelta",1,"VisObject3D_cl *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("IncRotationDelta",2,"hkvVec3 const &");
   
@@ -6077,6 +6154,7 @@ static int _wrap_VisObject3D_cl_ResetRotationDelta(lua_State* L) {
   VisObject3D_cl *arg1 = (VisObject3D_cl *) 0 ;
   
   SWIG_check_num_args("ResetRotationDelta",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ResetRotationDelta",1,"VisObject3D_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ResetRotationDelta",1,"VisObject3D_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -6101,6 +6179,7 @@ static int _wrap_VisObject3D_cl_GetObjDir(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetObjDir",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetObjDir",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetObjDir",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -6128,6 +6207,7 @@ static int _wrap_VisObject3D_cl_GetObjDir_Right(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetObjDir_Right",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetObjDir_Right",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetObjDir_Right",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -6155,6 +6235,7 @@ static int _wrap_VisObject3D_cl_GetObjDir_Up(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetObjDir_Up",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetObjDir_Up",1,"VisObject3D_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetObjDir_Up",1,"VisObject3D_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisObject3D_cl,0))){
@@ -6234,6 +6315,7 @@ static int _wrap_VisBaseEntity_cl_Remove(lua_State* L) {
   VisBaseEntity_cl *arg1 = (VisBaseEntity_cl *) 0 ;
   
   SWIG_check_num_args("Remove",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Remove",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Remove",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6257,6 +6339,7 @@ static int _wrap_VisBaseEntity_cl_InitFunction(lua_State* L) {
   VisBaseEntity_cl *arg1 = (VisBaseEntity_cl *) 0 ;
   
   SWIG_check_num_args("InitFunction",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("InitFunction",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("InitFunction",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6280,6 +6363,7 @@ static int _wrap_VisBaseEntity_cl_DeInitFunction(lua_State* L) {
   VisBaseEntity_cl *arg1 = (VisBaseEntity_cl *) 0 ;
   
   SWIG_check_num_args("DeInitFunction",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("DeInitFunction",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DeInitFunction",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6304,6 +6388,7 @@ static int _wrap_VisBaseEntity_cl_GetMesh(lua_State* L) {
   VDynamicMesh *result = 0 ;
   
   SWIG_check_num_args("GetMesh",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetMesh",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetMesh",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6329,6 +6414,7 @@ static int _wrap_VisBaseEntity_cl_SetMesh__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetMesh",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetMesh",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetMesh",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetMesh",2,"char const *");
   
@@ -6356,6 +6442,7 @@ static int _wrap_VisBaseEntity_cl_SetMesh__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetMesh",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetMesh",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetMesh",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetMesh",2,"VDynamicMesh *");
   
@@ -6445,6 +6532,7 @@ static int _wrap_VisBaseEntity_cl_SetThinkFunctionStatus(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetThinkFunctionStatus",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetThinkFunctionStatus",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetThinkFunctionStatus",1,"VisBaseEntity_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetThinkFunctionStatus",2,"bool");
   
@@ -6471,6 +6559,7 @@ static int _wrap_VisBaseEntity_cl_GetThinkFunctionStatus(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("GetThinkFunctionStatus",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetThinkFunctionStatus",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetThinkFunctionStatus",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6495,6 +6584,7 @@ static int _wrap_VisBaseEntity_cl_HasMesh(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("HasMesh",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("HasMesh",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("HasMesh",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6519,6 +6609,7 @@ static int _wrap_VisBaseEntity_cl_SetCastShadows(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetCastShadows",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCastShadows",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCastShadows",1,"VisBaseEntity_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetCastShadows",2,"bool");
   
@@ -6545,6 +6636,7 @@ static int _wrap_VisBaseEntity_cl_GetCastShadows(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("GetCastShadows",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCastShadows",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCastShadows",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6570,6 +6662,7 @@ static int _wrap_VisBaseEntity_cl_SetScaling__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetScaling",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetScaling",2,"float");
   
@@ -6599,6 +6692,7 @@ static int _wrap_VisBaseEntity_cl_SetScaling__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetScaling",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetScaling",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetScaling",3,"float");
@@ -6630,6 +6724,7 @@ static int _wrap_VisBaseEntity_cl_SetScaling__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetScaling",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetScaling",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetScaling",2,"hkvVec3 const *");
   
@@ -6749,6 +6844,7 @@ static int _wrap_VisBaseEntity_cl_GetScaling(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetScaling",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetScaling",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetScaling",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6776,6 +6872,7 @@ static int _wrap_VisBaseEntity_cl_SetAlwaysInForeGround__SWIG_0(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetAlwaysInForeGround",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetAlwaysInForeGround",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetAlwaysInForeGround",1,"VisBaseEntity_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetAlwaysInForeGround",2,"bool");
   
@@ -6801,6 +6898,7 @@ static int _wrap_VisBaseEntity_cl_SetAlwaysInForeGround__SWIG_1(lua_State* L) {
   VisBaseEntity_cl *arg1 = (VisBaseEntity_cl *) 0 ;
   
   SWIG_check_num_args("SetAlwaysInForeGround",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetAlwaysInForeGround",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetAlwaysInForeGround",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6874,6 +6972,7 @@ static int _wrap_VisBaseEntity_cl_IsObjectAlwaysInForegroundEnabled(lua_State* L
   bool result;
   
   SWIG_check_num_args("IsObjectAlwaysInForegroundEnabled",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsObjectAlwaysInForegroundEnabled",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsObjectAlwaysInForegroundEnabled",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6898,6 +6997,7 @@ static int _wrap_VisBaseEntity_cl_SetCastStaticShadows(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetCastStaticShadows",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCastStaticShadows",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCastStaticShadows",1,"VisBaseEntity_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetCastStaticShadows",2,"bool");
   
@@ -6924,6 +7024,7 @@ static int _wrap_VisBaseEntity_cl_GetCastStaticShadows(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("GetCastStaticShadows",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCastStaticShadows",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCastStaticShadows",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -6948,6 +7049,7 @@ static int _wrap_VisBaseEntity_cl_SetCustomTraceBBox(lua_State* L) {
   hkvAlignedBBox *arg2 = (hkvAlignedBBox *) 0 ;
   
   SWIG_check_num_args("SetCustomTraceBBox",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCustomTraceBBox",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCustomTraceBBox",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetCustomTraceBBox",2,"hkvAlignedBBox const *");
   
@@ -6978,6 +7080,7 @@ static int _wrap_VisBaseEntity_cl_GetCustomTraceBBox(lua_State* L) {
   hkvAlignedBBox result;
   
   SWIG_check_num_args("GetCustomTraceBBox",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCustomTraceBBox",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCustomTraceBBox",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7005,6 +7108,7 @@ static int _wrap_VisBaseEntity_cl_SetTraceAccuracy(lua_State* L) {
   int arg2 ;
   
   SWIG_check_num_args("SetTraceAccuracy",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTraceAccuracy",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTraceAccuracy",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetTraceAccuracy",2,"int");
   
@@ -7031,6 +7135,7 @@ static int _wrap_VisBaseEntity_cl_WasVisibleInLastFrame(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("WasVisibleInLastFrame",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("WasVisibleInLastFrame",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("WasVisibleInLastFrame",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7055,6 +7160,7 @@ static int _wrap_VisBaseEntity_cl_WasVisibleInAnyLastFrame(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("WasVisibleInAnyLastFrame",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("WasVisibleInAnyLastFrame",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("WasVisibleInAnyLastFrame",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7079,6 +7185,7 @@ static int _wrap_VisBaseEntity_cl_GetBoundingBox(lua_State* L) {
   hkvAlignedBBox result;
   
   SWIG_check_num_args("GetBoundingBox",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetBoundingBox",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetBoundingBox",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7106,6 +7213,7 @@ static int _wrap_VisBaseEntity_cl_GetCollisionBoundingBox(lua_State* L) {
   hkvAlignedBBox result;
   
   SWIG_check_num_args("GetCollisionBoundingBox",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCollisionBoundingBox",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCollisionBoundingBox",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7133,6 +7241,7 @@ static int _wrap_VisBaseEntity_cl_SetVisible(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetVisible",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetVisible",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetVisible",1,"VisBaseEntity_cl *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetVisible",2,"bool");
   
@@ -7159,6 +7268,7 @@ static int _wrap_VisBaseEntity_cl_IsVisible(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("IsVisible",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsVisible",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsVisible",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7183,6 +7293,7 @@ static int _wrap_VisBaseEntity_cl_SetVisibleBitmask(lua_State* L) {
   VBitmask *arg2 = (VBitmask *) 0 ;
   
   SWIG_check_num_args("SetVisibleBitmask",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetVisibleBitmask",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetVisibleBitmask",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetVisibleBitmask",2,"VBitmask *");
   
@@ -7213,6 +7324,7 @@ static int _wrap_VisBaseEntity_cl_GetVisibleBitmask(lua_State* L) {
   VBitmask result;
   
   SWIG_check_num_args("GetVisibleBitmask",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetVisibleBitmask",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetVisibleBitmask",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7240,6 +7352,7 @@ static int _wrap_VisBaseEntity_cl_SetLightInfluenceBitmask(lua_State* L) {
   VBitmask *arg2 = (VBitmask *) 0 ;
   
   SWIG_check_num_args("SetLightInfluenceBitmask",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetLightInfluenceBitmask",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetLightInfluenceBitmask",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetLightInfluenceBitmask",2,"VBitmask *");
   
@@ -7270,6 +7383,7 @@ static int _wrap_VisBaseEntity_cl_GetLightInfluenceBitmask(lua_State* L) {
   VBitmask result;
   
   SWIG_check_num_args("GetLightInfluenceBitmask",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetLightInfluenceBitmask",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetLightInfluenceBitmask",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -7301,6 +7415,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTechnique",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7340,6 +7455,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTechnique",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7378,6 +7494,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetTechnique",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7413,6 +7530,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_3(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetTechnique",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7447,6 +7565,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_4(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTechnique",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7482,6 +7601,7 @@ static int _wrap_VisBaseEntity_cl_SetTechnique__SWIG_5(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTechnique",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTechnique",3,"char const *");
@@ -7735,6 +7855,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTechnique",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -7774,6 +7895,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTechnique",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -7812,6 +7934,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("AddTechnique",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -7847,6 +7970,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_3(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("AddTechnique",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -7881,6 +8005,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_4(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AddTechnique",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -7916,6 +8041,7 @@ static int _wrap_VisBaseEntity_cl_AddTechnique__SWIG_5(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddTechnique",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTechnique",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AddTechnique",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddTechnique",3,"char const *");
@@ -8169,6 +8295,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetEffect",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8208,6 +8335,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetEffect",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8246,6 +8374,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetEffect",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8281,6 +8410,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_3(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetEffect",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8315,6 +8445,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_4(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetEffect",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8350,6 +8481,7 @@ static int _wrap_VisBaseEntity_cl_SetEffect__SWIG_5(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetEffect",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetEffect",3,"char const *");
@@ -8603,6 +8735,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddEffect",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -8642,6 +8775,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddEffect",2,"VisSurface_cl *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -8680,6 +8814,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("AddEffect",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -8715,6 +8850,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_3(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("AddEffect",2,"int");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -8749,6 +8885,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_4(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",5,5)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AddEffect",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -8784,6 +8921,7 @@ static int _wrap_VisBaseEntity_cl_AddEffect__SWIG_5(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("AddEffect",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddEffect",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AddEffect",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("AddEffect",3,"char const *");
@@ -9036,6 +9174,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_0(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"VisSurface_cl *");
@@ -9076,6 +9215,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_1(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"VisSurface_cl *");
@@ -9115,6 +9255,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_2(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"char const *");
@@ -9151,6 +9292,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_3(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"char const *");
@@ -9186,6 +9328,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_4(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"int");
@@ -9222,6 +9365,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_5(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"VTextureObject *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"int");
@@ -9257,6 +9401,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_6(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"VisSurface_cl *");
@@ -9293,6 +9438,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_7(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"VisSurface_cl *");
@@ -9328,6 +9474,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_8(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"char const *");
@@ -9360,6 +9507,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_9(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"char const *");
@@ -9391,6 +9539,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_10(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"int");
@@ -9423,6 +9572,7 @@ static int _wrap_VisBaseEntity_cl_SetTextureForSurface__SWIG_11(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetTextureForSurface",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTextureForSurface",1,"VisBaseEntity_cl *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTextureForSurface",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTextureForSurface",3,"int");
@@ -9844,6 +9994,7 @@ static int _wrap_VisBaseEntity_cl_ClearShaderSet(lua_State* L) {
   VisBaseEntity_cl *arg1 = (VisBaseEntity_cl *) 0 ;
   
   SWIG_check_num_args("ClearShaderSet",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("ClearShaderSet",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ClearShaderSet",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -9868,6 +10019,7 @@ static int _wrap_VisBaseEntity_cl_SetPrimarySortingKey(lua_State* L) {
   int arg2 ;
   
   SWIG_check_num_args("SetPrimarySortingKey",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetPrimarySortingKey",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetPrimarySortingKey",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetPrimarySortingKey",2,"int");
   
@@ -9894,6 +10046,7 @@ static int _wrap_VisBaseEntity_cl_GetPrimarySortingKey(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetPrimarySortingKey",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetPrimarySortingKey",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPrimarySortingKey",1,"VisBaseEntity_cl *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -9918,6 +10071,7 @@ static int _wrap_VisBaseEntity_cl_SetFarClipDistance(lua_State* L) {
   float arg2 ;
   
   SWIG_check_num_args("SetFarClipDistance",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetFarClipDistance",1,"VisBaseEntity_cl *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetFarClipDistance",1,"VisBaseEntity_cl *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetFarClipDistance",2,"float");
   
@@ -9944,6 +10098,7 @@ static int _wrap_VisBaseEntity_cl_GetFarClipDistance(lua_State* L) {
   float result;
   
   SWIG_check_num_args("GetFarClipDistance",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetFarClipDistance",1,"VisBaseEntity_cl const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetFarClipDistance",1,"VisBaseEntity_cl const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_VisBaseEntity_cl,0))){
@@ -10019,6 +10174,7 @@ static int _wrap_IVObjectComponent_SetOwner(lua_State* L) {
   VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
   
   SWIG_check_num_args("SetOwner",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetOwner",2,"VisTypedEngineObject_cl *");
   
@@ -10049,6 +10205,7 @@ static int _wrap_IVObjectComponent_GetComponentID(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetComponentID",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
@@ -10073,6 +10230,7 @@ static int _wrap_IVObjectComponent_GetComponentName(lua_State* L) {
   char *result = 0 ;
   
   SWIG_check_num_args("GetComponentName",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
@@ -10097,6 +10255,7 @@ static int _wrap_IVObjectComponent_SetComponentID(lua_State* L) {
   int arg2 ;
   
   SWIG_check_num_args("SetComponentID",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetComponentID",2,"int");
   
@@ -10123,6 +10282,7 @@ static int _wrap_IVObjectComponent_SetComponentName(lua_State* L) {
   char *arg2 = (char *) 0 ;
   
   SWIG_check_num_args("SetComponentName",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetComponentName",2,"char const *");
   
@@ -10150,6 +10310,7 @@ static int _wrap_IVObjectComponent_CanAttachToObject(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("CanAttachToObject",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("CanAttachToObject",2,"VisTypedEngineObject_cl *");
   
@@ -10200,6 +10361,7 @@ static int _wrap_Sprite_SetState(lua_State* L) {
   bool result;
   
   SWIG_check_num_args("SetState",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetState",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetState",1,"Sprite *");
   if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetState",2,"char const *");
   
@@ -10226,6 +10388,7 @@ static int _wrap_Sprite_SetFramePercent(lua_State* L) {
   float arg2 ;
   
   SWIG_check_num_args("SetFramePercent",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetFramePercent",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetFramePercent",1,"Sprite *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetFramePercent",2,"float");
   
@@ -10251,6 +10414,7 @@ static int _wrap_Sprite_Pause(lua_State* L) {
   Sprite *arg1 = (Sprite *) 0 ;
   
   SWIG_check_num_args("Pause",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Pause",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Pause",1,"Sprite *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
@@ -10274,6 +10438,7 @@ static int _wrap_Sprite_Play(lua_State* L) {
   Sprite *arg1 = (Sprite *) 0 ;
   
   SWIG_check_num_args("Play",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Play",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Play",1,"Sprite *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
@@ -10298,6 +10463,7 @@ static int _wrap_Sprite_GetWidth(lua_State* L) {
   float result;
   
   SWIG_check_num_args("GetWidth",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetWidth",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetWidth",1,"Sprite *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
@@ -10322,6 +10488,7 @@ static int _wrap_Sprite_GetHeight(lua_State* L) {
   float result;
   
   SWIG_check_num_args("GetHeight",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetHeight",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetHeight",1,"Sprite *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
@@ -10346,6 +10513,7 @@ static int _wrap_Sprite_SetWidth(lua_State* L) {
   float arg2 ;
   
   SWIG_check_num_args("SetWidth",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetWidth",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetWidth",1,"Sprite *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetWidth",2,"float");
   
@@ -10372,6 +10540,7 @@ static int _wrap_Sprite_SetHeight(lua_State* L) {
   float arg2 ;
   
   SWIG_check_num_args("SetHeight",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetHeight",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetHeight",1,"Sprite *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("SetHeight",2,"float");
   
@@ -10401,6 +10570,7 @@ static int _wrap_Sprite_GetPoint__SWIG_0(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetPoint",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("GetPoint",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("GetPoint",3,"float");
@@ -10436,6 +10606,7 @@ static int _wrap_Sprite_GetPoint__SWIG_1(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetPoint",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetPoint",1,"Sprite *");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("GetPoint",2,"float");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("GetPoint",3,"float");
@@ -10537,6 +10708,7 @@ static int _wrap_Sprite_SetCenterPosition(lua_State* L) {
   hkvVec3 *argp2 ;
   
   SWIG_check_num_args("SetCenterPosition",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCenterPosition",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCenterPosition",1,"Sprite *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("SetCenterPosition",2,"hkvVec3");
   
@@ -10568,6 +10740,7 @@ static int _wrap_Sprite_GetCenterPosition(lua_State* L) {
   hkvVec3 result;
   
   SWIG_check_num_args("GetCenterPosition",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCenterPosition",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCenterPosition",1,"Sprite *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
@@ -10595,6 +10768,7 @@ static int _wrap_Sprite_SetPlayOnce(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetPlayOnce",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetPlayOnce",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetPlayOnce",1,"Sprite *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetPlayOnce",2,"bool");
   
@@ -10621,6 +10795,7 @@ static int _wrap_Sprite_SetCollision(lua_State* L) {
   bool arg2 ;
   
   SWIG_check_num_args("SetCollision",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCollision",1,"Sprite *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCollision",1,"Sprite *");
   if(!lua_isboolean(L,2)) SWIG_fail_arg("SetCollision",2,"bool");
   
@@ -10728,6 +10903,7 @@ static int _wrap_Toolset2dManager_GetNumSprites(lua_State* L) {
   int result;
   
   SWIG_check_num_args("GetNumSprites",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetNumSprites",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetNumSprites",1,"Toolset2dManager *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
@@ -10755,6 +10931,7 @@ static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
   Sprite *result = 0 ;
   
   SWIG_check_num_args("CreateSprite",4,4)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("CreateSprite",2,"hkvVec3 const &");
   if(!lua_isuserdata(L,3)) SWIG_fail_arg("CreateSprite",3,"VString const &");
@@ -10797,6 +10974,7 @@ static int _wrap_Toolset2dManager_SetCamera(lua_State* L) {
   Camera2D *arg2 = (Camera2D *) 0 ;
   
   SWIG_check_num_args("SetCamera",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetCamera",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetCamera",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetCamera",2,"Camera2D *");
   
@@ -10827,6 +11005,7 @@ static int _wrap_Toolset2dManager_GetCamera(lua_State* L) {
   Camera2D *result = 0 ;
   
   SWIG_check_num_args("GetCamera",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetCamera",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetCamera",1,"Toolset2dManager *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){

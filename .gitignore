@@ -1,6 +1,5 @@
 ## Anarchy SDK files to ignore
 
-/ThirdParty/
 /External/Internal
 /Package/Output
 /Bin/*
