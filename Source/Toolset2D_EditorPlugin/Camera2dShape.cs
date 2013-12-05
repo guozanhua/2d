@@ -50,7 +50,6 @@ namespace Toolset2D
         public Camera2dShape(string name)
             : base(name)
         {
-            m_collision = true;
             AddHint(HintFlags_e.HideGizmo);
         }
 
@@ -63,7 +62,7 @@ namespace Toolset2D
         /// </summary>
         public override int GetIconIndex()
         {
-            return IconManager.SpriteIndex;
+            return IconManager.CameraIndex;
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace Toolset2D
         /// <returns></returns>
         public override int GetSelectedIconIndex()
         {
-            return IconManager.SpriteIndex;
+            return IconManager.CameraIndex;
         }
 
         #endregion
@@ -86,7 +85,7 @@ namespace Toolset2D
         /// <param name="bCreateChildren">relevant for the base class to create instances for children</param>
         public override void CreateEngineInstance(bool bCreateChildren)
         {
-            _engineInstance = new EngineInstanceSprite();
+            _engineInstance = new EngineInstanceCamera2d();
             SetEngineInstanceBaseProperties(); // sets the position etc.
             base.CreateEngineInstance(bCreateChildren);
         }
@@ -106,7 +105,7 @@ namespace Toolset2D
         /// Helper field to access the engine instance as casted class to perform specfic operations on it
         /// </summary>
         [Browsable(false)]
-        public EngineInstanceSprite EngineNode { get { return (EngineInstanceSprite)_engineInstance; } }
+        public EngineInstanceCamera2d EngineNode { get { return (EngineInstanceCamera2d)_engineInstance; } }
 
         /// <summary>
         /// Overridden render function: Let the engine instance render itself and render a box
@@ -131,26 +130,7 @@ namespace Toolset2D
             base.SetEngineInstanceBaseProperties();
             if (HasEngineInstance())
             {
-                EngineNode.SetSpriteSheetData(m_SpriteSheetFilename, m_ShoeBoxFilename);
-                EngineNode.SetFullscreenMode(m_fullscreen);
-                EngineNode.SetScroll(m_scrollX, m_scrollY);
-                EngineNode.SetCurrentState(m_state);
-                EngineNode.SetPlayOnce(m_playOnce);
-                EngineNode.SetCollision(m_collision);
 
-                if (m_width != 0.0)
-                {
-                    EngineNode.SetWidth(m_width);
-                }
-
-                if (m_height != 0.0)
-                {
-                    EngineNode.SetHeight(m_height);
-                }
-
-                Vector3F orientation = new Vector3F();
-                EngineNode.GetOrientation(ref orientation);
-                EngineNode.SetOrientation(orientation.X, orientation.Y, m_rotation);
             }
         }
 
@@ -179,31 +159,6 @@ namespace Toolset2D
         protected Camera2dShape(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            if (SerializationHelper.HasElement(info, "_sheet_filename"))
-            {
-                SpriteSheetFilename = info.GetString("_sheet_filename");
-                ShoeBoxData = info.GetString("_shoebox_filename");
-                m_state = info.GetString("_state");
-                m_scrollX = info.GetSingle("_scroll_x");
-                m_scrollY = info.GetSingle("_scroll_y");
-                m_fullscreen = info.GetBoolean("_fullscreen");
-            }
-
-            if (SerializationHelper.HasElement(info, "_collision"))
-            {
-                m_collision = info.GetBoolean("_collision");
-            }
-
-            if (SerializationHelper.HasElement(info, "_rotation"))
-            {
-                m_rotation = info.GetSingle("_rotation");
-            }
-
-            if (SerializationHelper.HasElement(info, "_width"))
-            {
-                m_width = info.GetSingle("_width");
-                m_height = info.GetSingle("_height");
-            }
         }
 
         /// <summary>
@@ -214,16 +169,6 @@ namespace Toolset2D
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             base.GetObjectData(info, context);
-            info.AddValue("_sheet_filename", m_SpriteSheetFilename);
-            info.AddValue("_shoebox_filename", m_ShoeBoxFilename);
-            info.AddValue("_state", m_state);
-            info.AddValue("_scroll_x", m_scrollX);
-            info.AddValue("_scroll_y", m_scrollY);
-            info.AddValue("_width", m_width);
-            info.AddValue("_height", m_height);
-            info.AddValue("_fullscreen", m_fullscreen);
-            info.AddValue("_collision", m_collision);
-            info.AddValue("_rotation", m_rotation);
         }
 
         /// <summary>
@@ -253,173 +198,6 @@ namespace Toolset2D
         #endregion
 
         #region Properties
-        string m_SpriteSheetFilename;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE), PropertyOrder(1)]
-        [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
-        [Description("Texture used for the sprite sheet.")]
-        public string SpriteSheetFilename
-        {
-            get { return m_SpriteSheetFilename; }
-            set
-            {
-                if (m_SpriteSheetFilename == value) return;
-                m_SpriteSheetFilename = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        string m_ShoeBoxFilename;
-        [PrefabResolveFilename]
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(2),
-        EditorAttribute(typeof(FilenameEditor), typeof(UITypeEditor)),
-        FileDialogFilter(new string[] { ".xml" })]
-        [Description("XML file output by ShoeBox that describes where the cells are in the sprite sheet")]
-        [DependentProperties(new string[] { "SpriteSheetFilename" })]
-        public string ShoeBoxData
-        {
-            get { return m_ShoeBoxFilename; }
-            set
-            {
-                if (m_ShoeBoxFilename != value)
-                {
-                    m_ShoeBoxFilename = value;
-                    SetEngineInstanceBaseProperties();
-                }
-            }
-        }
-
-        string m_state;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(3)]
-        [Description("Current state")]
-        [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
-        public string State
-        {
-            get { return EngineNode.GetCurrentState(); }
-            set
-            {
-                m_state = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        float m_scrollX;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(4)]
-        [Description("")]
-        public float ScrollX
-        {
-            get { return EngineNode.GetScrollX(); }
-            set
-            {
-                m_scrollX = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        float m_scrollY;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(5)]
-        [Description("")]
-        public float ScrollY
-        {
-            get { return EngineNode.GetScrollY(); }
-            set
-            {
-                m_scrollY = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        float m_width;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(6)]
-        [Description("")]
-        public float Width
-        {
-            get { return EngineNode.GetWidth(); }
-            set
-            {
-                m_width = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        float m_height;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(7)]
-        [Description("")]
-        public float Height
-        {
-            get { return EngineNode.GetHeight(); }
-            set
-            {
-                m_height = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        bool m_playOnce;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(8)]
-        [Description("PlayOnce")]
-        public bool PlayOnce
-        {
-            get { return EngineNode.IsPlayOnce(); }
-            set
-            {
-                m_playOnce = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-        
-        bool m_collision;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(9)]
-        [Description("Collide")]
-        public bool Collide
-        {
-            get { return EngineNode.IsColliding(); }
-            set
-            {
-                m_collision = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        bool m_fullscreen;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(10)]
-        [Description("Fullscreen")]
-        public bool Fullscreen
-        {
-            get { return EngineNode.IsFullscreenMode(); }
-            set
-            {
-                m_fullscreen = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
-
-        float m_rotation;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
-        PropertyOrder(11)]
-        [Description("")]
-        public float Rotation
-        {
-            get
-            { 
-                Vector3F orientation = new Vector3F();
-                EngineNode.GetOrientation(ref orientation);
-                return orientation.Z; 
-            }
-            set
-            {
-                m_rotation = value;
-                SetEngineInstanceBaseProperties();
-            }
-        }
         #endregion
     }
     #endregion

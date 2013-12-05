@@ -35,15 +35,20 @@
 // Include For Vision Engine
 #include <Vision/Runtime/Base/VBase.hpp>
 #include <Vision/Runtime/Engine/System/Vision.hpp>
-#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
 #include <Vision/Runtime/Base/Graphics/VColor.hpp>
+
+#ifdef WIN32
+#include <crtdbg.h>
+#endif
+
+#ifndef __HAVOK_PARSER__
+#undef swap16
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
+#endif
 
 extern VModule gToolset2D_EngineModule;
 
-ANALYSIS_IGNORE_ALL_START
-#pragma managed(push, off)
-#include <Common/Base/hkBase.h>
-#pragma managed(pop)
-ANALYSIS_IGNORE_ALL_END
+// #todo #jve : Still not completely working yet, so disable for now
+//#define USE_HAVOK_PHYSICS_2D 1
 
 #endif // TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED

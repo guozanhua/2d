@@ -31,15 +31,13 @@ function FireWeapon(self)
 			return entity:GetPosition().y < -entity:GetHeight()
 		end
 		
-		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
+		local missileLeft = Toolset2D:CreateSprite(default, kMissileTexture)
 		missileLeft:SetScaling(kMissileScale)
-		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
 		missileLeft:SetCenterPosition(offset1)
 		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
-		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
+		local missileRight = Toolset2D:CreateSprite(default, kMissileTexture)
 		missileRight:SetScaling(kMissileScale)
-		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
 		missileRight:SetCenterPosition(offset2)	
 		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
 		

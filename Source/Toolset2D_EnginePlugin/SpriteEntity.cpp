@@ -13,7 +13,10 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
-#define CURRENT_SPRITE_VERSION 2
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
+#include <Physics2012/Collide/Query/Collector/BodyPairCollector/hkpAllCdBodyPairCollector.h>
+
+#define CURRENT_SPRITE_VERSION 3
 
 V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
 
@@ -46,17 +49,26 @@ void Sprite::DeInitFunction()
 void Sprite::CommonInit()
 {
 	Toolset2dManager::Instance()->AddSprite(this);
+
 	SetSpriteSheetData(m_spriteSheetFilename, m_xmlDataFilename);
 }
 
 void Sprite::CommonDeInit()
 { 
-	Toolset2dManager::Instance()->RemoveSprite(this);	
+	Toolset2dManager::Instance()->RemoveSprite(this);
+
+	RemoveShape();
+
 	Clear();
 }
 
 void Sprite::Clear()
 {
+	SetExcludeFromVisTest(true);
+
+	m_lastGeneratedCell = NULL;
+	m_shape2D = NULL;
+
 	m_scrollSpeed.setZero();
 	m_fullscreen = false;
 
@@ -67,11 +79,23 @@ void Sprite::Clear()
 	m_playOnce = false;
 	m_collide = true;
 	m_scrollOffset.setZero();
+	m_convexHullCollision = false;
 
 	m_spriteData = NULL;
 
 	m_spriteSheetFilename = NULL;
 	m_xmlDataFilename = NULL;
+}
+
+void Sprite::RemoveShape()
+{
+	m_lastGeneratedCell = NULL;
+
+	if (m_shape2D != NULL)
+	{
+		m_shape2D->removeReference();
+		m_shape2D = NULL;
+	}
 }
 
 void Sprite::UpdateTextures()
@@ -247,6 +271,23 @@ void Sprite::ThinkFunction()
 				}
 			}
 		}
+
+		const SpriteCell *cell = GetCurrentCell();
+		if (m_convexHullCollision)
+		{
+			if (cell != m_lastGeneratedCell && cell->shape != NULL)
+			{
+				RemoveShape();
+
+				m_shape2D = new hkpConvexTransformShape( cell->shape, GetTransform() );
+
+				m_lastGeneratedCell = cell;
+			}
+			else if (m_shape2D != NULL)
+			{
+				m_shape2D->setTransform(GetTransform());
+			}
+		}
 	}
 }
 
@@ -330,13 +371,23 @@ bool Sprite::IsColliding() const
 	return m_collide && !IsFullscreenMode();
 }
 
+void Sprite::SetConvexHullCollision(bool enabled)
+{
+	m_convexHullCollision = enabled;
+}
+
+bool Sprite::IsConvexHullCollision() const
+{
+	return m_convexHullCollision;
+}
+
 void Sprite::SetCenterPosition(const hkvVec3 &position)
 {
 	const hkvVec2 dimensions = GetDimensions();
 	SetPosition(position.x - dimensions.x / 2.f, position.y - dimensions.y / 2.f, position.z);
 }
 
-hkvVec3 Sprite::GetCenterPosition()
+hkvVec3 Sprite::GetCenterPosition() const
 {
 	const hkvVec2 dimensions = GetDimensions();
 	const hkvVec3 &position = GetPosition();
@@ -480,9 +531,9 @@ VTextureObject *Sprite::GetTexture() const
 	if (m_spriteData != NULL)
 	{
 		texture = m_spriteData->spriteSheetTexture;
-		if (m_spriteData->spTextureAnimation)
+		if (m_spriteData->textureAnimation)
 		{
-			texture = m_spriteData->spTextureAnimation->GetCurrentFrame();
+			texture = m_spriteData->textureAnimation->GetCurrentFrame();
 		}
 	}
 	return texture;
@@ -636,45 +687,107 @@ void Sprite::OnCollision(Sprite *other)
 	this->TriggerScriptEvent("OnSpriteCollision", "*o", other);
 }
 
+const hkpConvexTransformShape *Sprite::GetShape() const
+{
+	return m_shape2D;
+}
+
+hkQsTransform Sprite::GetTransform() const
+{
+	const hkvVec3 pos = GetCenterPosition();
+	const hkvVec3 &scaling = GetScaling();
+
+	return hkQsTransform(
+		hkVector4(pos.x, pos.y, 0, 0),
+		hkQuaternion( hkVector4(0, 0, 1, 0), hkvMath::Deg2Rad(m_vOrientation.z) ),
+		hkVector4(scaling.x, scaling.y, 0, 0) );
+}
+
+hkvVec2 Sprite::TransformVertex(const hkVector4 &vertex) const
+{
+	hkVector4 output;
+	output.setTransformedPos( GetTransform(), vertex );
+	return hkvVec2(output(0), output(1));
+}
+
 bool Sprite::IsOverlapping(Sprite *other) const
 {
-	const hkvVec2 *otherVertices = other->GetVertices();
-	bool inside = true;
+	bool inside = false;
 
-	int edges[8] = {0, 1,
-					1, 3,
-					3, 2,
-					2, 0};
-
-	// Loop through each vertex and see if any of them are inside all
-	// of the edges
-	for (int vertexIndex = 0; vertexIndex < 4; vertexIndex++)
+	// if both sprites don't use convex hull collision, then default to simple AABB collision
+	if (!IsConvexHullCollision() && !other->IsConvexHullCollision())
 	{
-		inside = true;
+		const hkvVec2 *otherVertices = other->GetVertices();
 
-		// Test each edge
-		for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
+		int edges[8] = {0, 1,
+						1, 3,
+						3, 2,
+						2, 0};
+
+		// Loop through each vertex and see if any of them are inside all
+		// of the edges
+		for (int vertexIndex = 0; vertexIndex < 4; vertexIndex++)
 		{
-			int p1 = edges[edgeIndex * 2 + 0];
-			int p2 = edges[edgeIndex * 2 + 1];
+			bool insideEdges = true;
 
-			const hkvVec3 e = (m_vertices[p2] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
-			const hkvVec3 l = (otherVertices[vertexIndex] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
-			const hkvVec3 up = e.cross(l);
-
-			if (up.z < 0)
+			// Test each edge
+			for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
 			{
-				inside = false;
+				int p1 = edges[edgeIndex * 2 + 0];
+				int p2 = edges[edgeIndex * 2 + 1];
+
+				const hkvVec3 e = (m_vertices[p2] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
+				const hkvVec3 l = (otherVertices[vertexIndex] - m_vertices[p1]).getNormalized().getAsVec3(0.f);
+				const hkvVec3 up = e.cross(l);
+
+				if (up.z < 0)
+				{
+					insideEdges = false;
+					break;
+				}
+			}
+
+			if (insideEdges)
+			{
+				inside = true;
 				break;
 			}
 		}
+	}
+	else
+	{
+		vHavokPhysicsModule* physicsModule = vHavokPhysicsModule::GetInstance();
+		const hkpConvexTransformShape *shapeA = GetShape();
+		const hkpConvexTransformShape *shapeB = other->GetShape();
 
-		if (inside)
+		if (physicsModule != HK_NULL &&
+			shapeA != NULL &&
+			shapeB != NULL)
 		{
-			break;
+			const hkReal collisionTolerance = 0.01;
+
+			hkpWorld* physicsWorld = physicsModule->GetPhysicsWorld();
+			hkpAllCdBodyPairCollector collector;
+
+			physicsWorld->markForRead();
+			{
+				hkpCollisionDispatcher *dispatcher = physicsWorld->getCollisionDispatcher();
+				dispatcher->getPenetrations(
+					shapeA,
+					hkTransform::getIdentity(),
+					shapeB,
+					hkTransform::getIdentity(),
+					collisionTolerance, collector);
+			}
+			physicsWorld->unmarkForRead();
+
+			if (collector.getHits().getSize() > 0)
+			{
+				inside = true;
+			}
 		}
 	}
-	
+
 	return inside;
 }
 
@@ -703,6 +816,7 @@ void Sprite::Serialize(VArchive &ar)
 		ar >> m_fullscreen;
 		ar >> m_playOnce;
 		ar >> m_collide;
+		ar >> m_convexHullCollision;
 	} 
 	else
 	{
@@ -716,6 +830,7 @@ void Sprite::Serialize(VArchive &ar)
 		ar << m_fullscreen;
 		ar << m_playOnce;
 		ar << m_collide;
+		ar << m_convexHullCollision;
 	}
 }
 

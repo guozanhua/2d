@@ -12,7 +12,7 @@ using namespace System::Runtime::CompilerServices;
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("Havok")];
-[assembly:AssemblyProductAttribute("")];
+[assembly:AssemblyProductAttribute("vForge")];
 [assembly:AssemblyCopyrightAttribute("")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];		
@@ -28,7 +28,7 @@ using namespace System::Runtime::CompilerServices;
 // You can specify all the value or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("2013.1.0.1")];
+[assembly:AssemblyVersionAttribute(VISION_RESOURCE_VERSION_ASSEMBLY)];
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

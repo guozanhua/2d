@@ -1,5 +1,11 @@
 #include "Toolset2D_ManagedPCH.h"
 
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
+
+#using <mscorlib.dll>
+using namespace System;
+
 VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
 
 namespace Toolset2D_Managed

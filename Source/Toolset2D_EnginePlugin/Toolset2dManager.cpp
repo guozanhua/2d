@@ -37,10 +37,44 @@ static int compareSprites(const void *sprite1, const void *sprite2);
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
 #endif
 
+static const hkUint32 HK_VISUAL_DEBUGGER_WORLD_2D_PORT = 25003;
+
+SpriteData::SpriteData()
+{
+	spriteSheetTexture = NULL;
+	textureAnimation = NULL;
+}
+
+SpriteData::~SpriteData()
+{
+	Cleanup();
+}
+
+void SpriteData::Cleanup()
+{
+	for (int cellIndex = 0; cellIndex < cells.GetSize(); cellIndex++)
+	{
+		SpriteCell *cell = &cells[cellIndex];
+		if (cell->shape != NULL)
+		{
+			cell->shape->removeReference();
+			cell->shape = NULL;
+		}
+	}
+
+	cells.RemoveAll();
+	states.RemoveAll();
+	stateNameToIndex.Reset();
+
+	V_SAFE_RELEASE(textureAnimation);
+	V_SAFE_RELEASE(spriteSheetTexture);
+}
+
 bool SpriteData::GenerateConvexHull()
 {
 	bool success = false;
 
+#if defined(WIN32) && defined(USE_HAVOK_PHYSICS_2D)
 	const int bytesPerPixel = spriteSheetTexture->GetBitsPerPixel(spriteSheetTexture->GetTextureFormat()) / 8;
 	IDirect3DTexture9 *pTexture2D = (IDirect3DTexture9 *)spriteSheetTexture->GetD3DInterface();
 	const int iMipLevel = 0;
@@ -48,151 +82,258 @@ bool SpriteData::GenerateConvexHull()
 
 	D3DLOCKED_RECT destRect;
 	RECT lockRect = { 0, 0, spriteSheetTexture->GetTextureWidth(), spriteSheetTexture->GetTextureHeight() };
-	pTexture2D->LockRect(iMipLevel, &destRect, NULL, spriteSheetTexture->GetD3D9LockFlags(iLockFlags));
+	HRESULT result = pTexture2D->LockRect(iMipLevel, &destRect, NULL, spriteSheetTexture->GetD3D9LockFlags(iLockFlags));
 
-	unsigned char *pDest = (unsigned char *)destRect.pBits;
-
-	const unsigned char thresholdMin = 10;
-
-	for (int stateIndex = 0; stateIndex < cells.GetLength(); stateIndex++)
+	if (result == S_OK)
 	{
-		SpriteCell &cell = cells[stateIndex];
-		const int width = static_cast<int>(cell.width);
-		const int height = static_cast<int>(cell.height);
+		const unsigned char thresholdMin = 10;
 
-		int *mins = new int[height];
-		int *maxs = new int[height];
-		memset(mins, -1, sizeof(int) * height);
-		memset(maxs, -1, sizeof(int) * height);
+		unsigned char *pDest = (unsigned char *)destRect.pBits;
 
-		const int startX = static_cast<int>(cell.offset.x);
-		const int endX = startX + width;
-		const int startY = static_cast<int>(cell.offset.y);
-		const int endY = startY + height;
-
-		for (int y = startY; y < endY; y++)
+		for (int stateIndex = 0; stateIndex < cells.GetLength(); stateIndex++)
 		{
-			bool findMin = true;
-			const int positionY = y - startY;
+			SpriteCell &cell = cells[stateIndex];
+			const int width = static_cast<int>(cell.width);
+			const int height = static_cast<int>(cell.height);
 
-			for (int x = startX; x < endX; x++)
+			int *mins = new int[height];
+			int *maxs = new int[height];
+			memset(mins, -1, sizeof(int) * height);
+			memset(maxs, -1, sizeof(int) * height);
+
+			const int startX = static_cast<int>(cell.offset.x);
+			const int endX = startX + width;
+			const int startY = static_cast<int>(cell.offset.y);
+			const int endY = startY + height;
+
+			for (int y = startY; y < endY; y++)
 			{
-				const unsigned int *pixel = reinterpret_cast<unsigned int*>(&pDest[y * destRect.Pitch + x * bytesPerPixel]);
-				const unsigned char alpha = ((*pixel) & 0xff000000) >> 24;
-				const int positionX = x - startX;
-				const bool withinThreshold = (alpha >= thresholdMin);
-				if (findMin && withinThreshold)
+				bool findMin = true;
+				const int positionY = y - startY;
+
+				for (int x = startX; x < endX; x++)
 				{
-					mins[positionY] = positionX;
-					findMin = false;
+					unsigned char *pixelRaw = &pDest[y * destRect.Pitch + x * bytesPerPixel];
+					unsigned int alpha = 0;
+					
+					// if there's an alpha channel, just worry about that
+					if (bytesPerPixel == 4)
+					{
+						const unsigned int *pixel = reinterpret_cast<unsigned int*>(pixelRaw);
+						alpha = ((*pixel) & 0xff000000) >> 24;
+					}
+					else
+					{
+						for (int offset = 0; offset < bytesPerPixel; offset++)
+						{
+							alpha += pixelRaw[offset];
+						}
+					}
+
+					const int positionX = x - startX;
+					const bool withinThreshold = (alpha >= thresholdMin);
+					if (findMin && withinThreshold)
+					{
+						mins[positionY] = positionX;
+						findMin = false;
+					}
+					else if (!findMin && !withinThreshold)
+					{
+						maxs[positionY] = positionX;
+						break;
+					}
 				}
-				else if (!findMin && !withinThreshold)
+
+				if (maxs[positionY] == -1)
 				{
-					maxs[positionY] = positionX;
-					break;
+					maxs[positionY] = width;
 				}
 			}
 
-			if (maxs[positionY] == -1)
+			const float hwidth = static_cast<float>(width) / 2.0f;
+			const float hheight = static_cast<float>(height) / 2.0f;
+			hkArray<hkVector4> vertices;
+			for (int y = 0; y < height; y++)
 			{
-				maxs[positionY] = width;
+				if (mins[y] != -1)
+				{
+					hkReal xx1 = static_cast<hkReal>(mins[y]) - hwidth;
+					hkReal xx2 = static_cast<hkReal>(maxs[y]) - hwidth;
+					hkReal hh = static_cast<hkReal>(y) - hheight;
+
+					vertices.pushBack( hkVector4(xx1, hh, 0, 0) );
+					vertices.pushBack( hkVector4(xx2, hh, 0, 0) );
+
+					if (y == height - 1)
+					{
+						hkReal hh2 = static_cast<hkReal>(y + 1) - hheight;
+						vertices.pushBack( hkVector4(xx1, hh2, 0, 0) );
+						vertices.pushBack( hkVector4(xx2, hh2, 0, 0) );
+					}
+				}
+			}
+
+			delete [] mins;
+			delete [] maxs;
+
+			const bool sortInputs = true;
+			const bool simplify = false;
+
+			hkgpConvexHull::BuildConfig	config;
+			config.m_allowLowerDimensions = true;
+			config.m_buildIndices = true;
+			config.m_sortInputs = sortInputs;
+
+			hkVector4 projectionPlane(0, 0, 1);
+
+			hkgpConvexHull convexHull;
+
+			if (convexHull.build(vertices, config) != -1)
+			{
+				hkgpConvexHull *result = &convexHull;
+				hkgpConvexHull *convexHullSimplified = NULL;		
+
+				if (simplify)
+				{
+					convexHullSimplified = convexHull.clone();
+					const int numVertsToKeep = max(4, convexHullSimplified->getNumVertices() / 2);
+					if (convexHullSimplified && convexHullSimplified->decimateVertices(numVertsToKeep, true))
+					{
+						result = convexHullSimplified;
+					}
+				}
+
+				result->generateIndexedFaces(hkgpConvexHull::INTERNAL_VERTICES, cell.verticesPerFace, cell.vertexIndices, true);					
+				result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
+
+				hkpConvexVerticesShape::BuildConfig config;
+				config.m_convexRadius = 0.f;
+				config.m_shrinkByConvexRadius = false;
+				config.m_useOptimizedShrinking = false;
+				cell.shape = new hkpConvexVerticesShape(cell.vertexPositions, config);
+				VASSERT(cell.shape->getReferenceCount() == 1);
+
+				V_SAFE_DELETE(convexHullSimplified);
+
+				success = true;
 			}
 		}
 
-		const float hwidth = static_cast<float>(width) / 2.0f;
-		const float hheight = static_cast<float>(height) / 2.0f;
-		hkArray<hkVector4> vertices;
-		for (int i = 0; i < height; i++)
-		{
-			if (mins[i] != -1)
-			{
-				hkReal xx1 = static_cast<hkReal>(mins[i]) - hwidth;
-				hkReal xx2 = static_cast<hkReal>(maxs[i]) - hwidth;
-				hkReal hh = static_cast<hkReal>(i) - hheight;
-
-				vertices.pushBack( hkVector4(xx1, hh, 0, 0) );
-				vertices.pushBack( hkVector4(xx2, hh, 0, 0) );
-
-				if (i == height - 1)
-				{
-					hkReal hh2 = static_cast<hkReal>(i + 1) - hheight;
-					vertices.pushBack( hkVector4(xx1, hh2, 0, 0) );
-					vertices.pushBack( hkVector4(xx2, hh2, 0, 0) );
-				}
-			}
-		}
-
-		delete [] mins;
-		delete [] maxs;
-
-		bool sortInputs = true;
-
-		hkgpConvexHull::BuildConfig	config;
-		config.m_allowLowerDimensions = true;
-		config.m_buildIndices = true;
-		config.m_sortInputs = sortInputs;
-
-		hkVector4 projectionPlane(0, 0, 1);
-
-		hkgpConvexHull convexHull;
-
-		if (convexHull.build(vertices, config) != -1)
-		{
-			hkgpConvexHull *result = &convexHull;
-			hkgpConvexHull *convexHullSimplified = convexHull.clone();			
-			
-			const int numVertsToKeep = max(4, convexHullSimplified->getNumVertices() / 2);
-			if (convexHullSimplified && convexHullSimplified->decimateVertices(numVertsToKeep, true))
-			{
-				result = convexHullSimplified;
-			}
-
-			result->buildIndices();
-			result->generateIndexedFaces(hkgpConvexHull::INTERNAL_VERTICES, cell.verticesPerFace, cell.vertexIndices, true);					
-			result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
-
-			V_SAFE_DELETE(convexHullSimplified);
-
-			success = true;
-		}
+		HRESULT unlockResult = pTexture2D->UnlockRect(iMipLevel);
+		VASSERT(unlockResult == S_OK);
 	}
+#endif // WIN32
 
 	return success;
 }
 
 void Toolset2dManager::OneTimeInit()
 {
+	m_camera = NULL;
+	m_bPlayingTheGame = false;
+	m_world = NULL;
+	m_visualDebugger = NULL;
+
 	FORCE_LINKDYNCLASS(Sprite);
+	FORCE_LINKDYNCLASS(Camera2D);
+
+	FORCE_LINKDYNCLASS(vHavokRigidBody);
 
 	VISION_PLUGIN_ENSURE_LOADED(vHavok);
-	VISION_HAVOK_SYNC_ALL_STATICS();
 
 	Vision::Callbacks.OnRenderHook += this;
 	Vision::Callbacks.OnUpdateSceneFinished += this;
 	Vision::Callbacks.OnEditorModeChanged += this;
 	Vision::Callbacks.OnAfterSceneUnloaded += this;
 	Vision::Callbacks.OnWorldDeInit += this;
+
 	IVScriptManager::OnRegisterScriptFunctions += this;
 	IVScriptManager::OnScriptProxyCreation += this;
+
+	vHavokPhysicsModule::OnBeforeInitializePhysics += this;
+	vHavokPhysicsModule::OnAfterDeInitializePhysics += this;
+	vHavokPhysicsModule::OnAfterWorldCreated += this;
+	vHavokPhysicsModule::OnBeforeDeInitializePhysics += this;
 }
 
 void Toolset2dManager::OneTimeDeInit()
 {
-	VISION_HAVOK_UNSYNC_ALL_STATICS();
-
 	Vision::Callbacks.OnRenderHook -= this;
 	Vision::Callbacks.OnUpdateSceneFinished -= this;
 	Vision::Callbacks.OnAfterSceneUnloaded -= this;
 	Vision::Callbacks.OnEditorModeChanged -= this;
 	Vision::Callbacks.OnWorldDeInit -= this;
+
 	IVScriptManager::OnRegisterScriptFunctions -= this;
 	IVScriptManager::OnScriptProxyCreation -= this;
 
-	if (m_spHUD)
+	vHavokPhysicsModule::OnBeforeInitializePhysics -= this;
+	vHavokPhysicsModule::OnAfterDeInitializePhysics -= this;
+	vHavokPhysicsModule::OnAfterWorldCreated -= this;
+	vHavokPhysicsModule::OnBeforeDeInitializePhysics -= this;
+}
+
+void Toolset2dManager::InitializeHavokPhysics()
+{
+#ifdef USE_HAVOK_PHYSICS_2D
 	{
-		m_spHUD->SetActivate(false);
-		m_spHUD = NULL;
+		hkpWorldCinfo worldInfo;
+
+		worldInfo.setupSolverInfo(hkpWorldCinfo::SOLVER_TYPE_4ITERS_MEDIUM);
+		worldInfo.m_gravity = hkVector4(0.0f, -9.8f, 0.0f);
+		worldInfo.m_broadPhaseType = hkpWorldCinfo::BROADPHASE_TYPE_TREE;
+
+		// just fix the entity if the object falls off too far
+		worldInfo.m_broadPhaseBorderBehaviour = hkpWorldCinfo::BROADPHASE_BORDER_FIX_ENTITY;
+
+		// You must specify the size of the broad phase - objects should not be simulated outside this region
+		worldInfo.setBroadPhaseWorldSize(1000.0f);
+		m_world = new hkpWorld(worldInfo);
 	}
+
+	// Register all collision agents, even though only box - box will be used in this particular example.
+	// It's important to register collision agents before adding any entities to the world.
+	{
+		hkpAgentRegisterUtil::registerAllAgents( m_world->getCollisionDispatcher() );
+	}
+
+	//
+	// Initialize the visual debugger so we can connect remotely to the simulation
+	// The context must exist beyond the use of the VDB instance, and you can make
+	// whatever contexts you like for your own viewer types.
+	//
+
+	hkpPhysicsContext* context = new hkpPhysicsContext;
+	hkpPhysicsContext::registerAllPhysicsProcesses(); // all the physics viewers
+	context->addWorld(m_world); // add the physics world so the viewers can see it
+	m_visualDebugger = SetupVisualDebugger(context);
+#endif // USE_HAVOK_PHYSICS_2D
+}
+
+void Toolset2dManager::UnintializeHavokPhysics()
+{
+	V_SAFE_DELETE(m_world);
+	V_SAFE_DELETE(m_visualDebugger);
+
+	VISION_HAVOK_UNSYNC_ALL_STATICS();
+}
+
+hkVisualDebugger *Toolset2dManager::SetupVisualDebugger(hkpPhysicsContext *context)
+{
+	// Setup the visual debugger
+	hkArray<hkProcessContext*> contexts;
+	contexts.pushBack(context);
+
+	hkVisualDebugger* vdb = new hkVisualDebugger(contexts);
+	vdb->serve(HK_VISUAL_DEBUGGER_WORLD_2D_PORT);
+
+	// Allocate memory for internal profiling information
+	// You can discard this if you do not want Havok profiling information
+	hkMonitorStream& stream = hkMonitorStream::getInstance();
+	stream.resize( 500 * 1024 );	// 500K for timer info
+	stream.reset();
+
+	return vdb;
 }
 
 bool Toolset2dManager::CreateLuaCast(VScriptCreateStackProxyObject *scriptData, const char *typeName, VType *type)
@@ -254,7 +395,7 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	{
 		SetPlayTheGame(false);
 	}
-	if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
+	else if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
 	{
 		VisRenderHookDataObject_cl *pRenderHookData = (VisRenderHookDataObject_cl *)pData;
 		if ( pRenderHookData->m_iEntryConst == VRH_POST_TRANSPARENT_PASS_GEOMETRY)
@@ -262,25 +403,62 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			Render();
 		}
 	}
-	if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
+	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
 	{
-		Update();
+		vHavokPhysicsModuleCallbackData *pHavokData = (vHavokPhysicsModuleCallbackData*)pData;
+		VISION_HAVOK_SYNC_STATICS();
+		VISION_HAVOK_SYNC_PER_THREAD_STATICS( pHavokData->GetHavokModule() );
+
+		hkDefaultClassNameRegistry& dcnReg	= hkDefaultClassNameRegistry::getInstance();
+		hkTypeInfoRegistry&			tyReg	= hkTypeInfoRegistry::getInstance();
+		hkVtableClassRegistry&		vtcReg	= hkVtableClassRegistry::getInstance();
+		
+		// Register AI classes
+		//<dkw.review: this may change
+#ifndef VBASE_LIB  // DLL, so have a full set 
+		dcnReg.registerList(hkBuiltinTypeRegistry::StaticLinkedClasses);
+		tyReg.registerList(hkBuiltinTypeRegistry::StaticLinkedTypeInfos);
+		vtcReg.registerList(hkBuiltinTypeRegistry::StaticLinkedTypeInfos, hkBuiltinTypeRegistry::StaticLinkedClasses);
+
+#else // Static lib, just need to add Ai ones and reg the ai patches which would not have been done yet
+
+		dcnReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedClasses);
+		tyReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedTypeInfos);
+		vtcReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedTypeInfos, hkBuiltinAiTypeRegistry::StaticLinkedClasses);
+#endif
+		//registerAiPatches();
+		//hkVersionPatchManager::getInstance().recomputePatchDependencies();
+
+		//vHavokAiModule::GetInstance()->Init();
+		pHavokData->GetHavokModule()->AddStepper(this);
 	}
-	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
+	else if (pData->m_pSender == &vHavokPhysicsModule::OnAfterDeInitializePhysics)
+	{
+		vHavokPhysicsModuleCallbackData *pHavokData = (vHavokPhysicsModuleCallbackData*)pData;
+		pHavokData->GetHavokModule()->RemoveStepper(this);
+
+		VISION_HAVOK_UNSYNC_STATICS();
+		VISION_HAVOK_UNSYNC_PER_THREAD_STATICS( pHavokData->GetHavokModule() );
+	}
+	else if (pData->m_pSender == &vHavokPhysicsModule::OnAfterWorldCreated)
+	{
+		InitializeHavokPhysics();
+	}
+	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeDeInitializePhysics)
+	{
+		UnintializeHavokPhysics();
+	}
+	else if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
+	{
+		Update( Vision::GetTimer()->GetTimeDifference() );
+	}
+	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
 	{
 		VASSERT(m_sprites.GetSize() == 0);
 
 		for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
 		{
 			SpriteData *spriteData = m_spriteData[spriteDataIndex];
-
-			spriteData->cells.RemoveAll();
-			spriteData->states.RemoveAll();
-			spriteData->stateNameToIndex.Reset();
-
-			V_SAFE_RELEASE(spriteData->spTextureAnimation);
-			V_SAFE_RELEASE(spriteData->spriteSheetTexture);
-
 			delete spriteData;
 			m_spriteData[spriteDataIndex] = NULL;
 		}
@@ -314,35 +492,47 @@ void Toolset2dManager::Render()
 	VSimpleRenderState_t state(VIS_TRANSP_ALPHA, RENDERSTATEFLAG_ALWAYSVISIBLE | RENDERSTATEFLAG_FILTERING | RENDERSTATEFLAG_DOUBLESIDED);
 
 	// Sort all the sprites by their Z order
-	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(Sprite*), compareSprites);
+	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(VWeakPtr<VisBaseEntity_cl> *), compareSprites);
 
 	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
-		m_sprites[spriteIndex]->Render(pRender, state);
+		Sprite *sprite = static_cast<Sprite*>( m_sprites[spriteIndex]->GetPtr() );
+		if (sprite)
+		{
+			sprite->Render(pRender, state);
+		}
 	}
-
-	// Render a little quad to represent that 2D is being used
-	//hkvVec2	tl(10, 10);
-	//hkvVec2	br(60, 60);
-	//pRender->DrawSolidQuad(tl, br, VColorRef(0, 255, 0, 128), state);
 
 	Vision::RenderLoopHelper.EndOverlayRendering();
 }
 
-void Toolset2dManager::Update()
+void Toolset2dManager::Update(float deltaTime)
 {
-	// Update all the sprites first so we're sure their vertices are up to date
-	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
-	{
-		Sprite *sprite = m_sprites[spriteIndex];
-		sprite->Update();
-	}
+	int spriteIndex = 0;
 
-	// Check to see if there are any overlaps and report it
-	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+	// Remove all dead sprites and update vertices first before checking collision
+	while (spriteIndex < m_sprites.GetSize())
 	{
-		Sprite *sprite = m_sprites[spriteIndex];
+		Sprite *sprite = static_cast<Sprite*>( m_sprites[spriteIndex]->GetPtr() );
+		if (sprite == NULL)
+		{
+			V_SAFE_DELETE( m_sprites[spriteIndex] );
+			m_sprites.RemoveAt(spriteIndex);
+		}
+		else
+		{
+			// Update all the sprites first so we're sure their vertices are up to date
+			sprite->Update();
+
+			spriteIndex++;
+		}
+	}
+	
+	// Check to see if there are any overlaps and report it
+	for (spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+	{
+		Sprite *sprite = static_cast<Sprite*>( m_sprites[spriteIndex]->GetPtr() );
 
 		// Only worry about sprites that have collision enabled
 		if (sprite->IsColliding())
@@ -350,7 +540,7 @@ void Toolset2dManager::Update()
 			// Check this sprite against 
 			for (int otherSpriteIndex = spriteIndex + 1; otherSpriteIndex < m_sprites.GetSize(); otherSpriteIndex++)
 			{
-				Sprite *otherSprite = m_sprites[otherSpriteIndex];
+				Sprite *otherSprite = static_cast<Sprite*>( m_sprites[otherSpriteIndex]->GetPtr() );
 				if (otherSprite->IsColliding() &&
 					(sprite->IsOverlapping(otherSprite) || otherSprite->IsOverlapping(sprite)))
 				{
@@ -362,21 +552,51 @@ void Toolset2dManager::Update()
 	}
 }
 
+void Toolset2dManager::Step( float dt )
+{
+#ifdef USE_HAVOK_PHYSICS_2D
+	if (m_world)
+	{
+		m_world->stepDeltaTime(dt);
+
+		// Step the debugger
+		m_visualDebugger->step(dt);
+
+		// Reset internal profiling info for next frame
+		hkMonitorStream::getInstance().reset();
+	}
+#endif
+}
+
 void Toolset2dManager::AddSprite(Sprite *sprite)
 {
-	const int spriteIndex = m_sprites.Find(sprite, 0);
-	if (spriteIndex == -1)
+	if (FindSprite(sprite) == -1)
 	{
-		m_sprites.Append(sprite);
+		m_sprites.Append( new VWeakPtr<VisBaseEntity_cl>(sprite->GetWeakReference()) );
 	}
+}
+
+int Toolset2dManager::FindSprite(Sprite *sprite)
+{
+	int resultIndex = -1;
+	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+	{
+		if (m_sprites[spriteIndex]->GetPtr() == sprite)
+		{
+			resultIndex = spriteIndex;
+			break;
+		}
+	}
+	return resultIndex;
 }
 
 void Toolset2dManager::RemoveSprite(Sprite *sprite)
 {
-	const int spriteIndex = m_sprites.Find(sprite, 0);
-	if (spriteIndex != -1)
+	int index = FindSprite(sprite);
+	if (index != -1)
 	{
-		m_sprites.RemoveAt(spriteIndex);
+		V_SAFE_DELETE( m_sprites[index] );
+		m_sprites.RemoveAt(index);
 	}
 }
 
@@ -418,10 +638,10 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 		// TODO: Perhaps it's a bit weird to have a spritesheet that also has animations on it--all of the cells
 		//       would have to be in the same places for each sheet, which is odd. Probably assert when there is
 		//       XML document AND a texture animation.
-		spriteData->spTextureAnimation = Vision::TextureManager.GetAnimationInstance(spriteData->spriteSheetTexture);
-		if (spriteData->spTextureAnimation)
+		spriteData->textureAnimation = Vision::TextureManager.GetAnimationInstance(spriteData->spriteSheetTexture);
+		if (spriteData->textureAnimation)
 		{
-			spriteData->spTextureAnimation->AddRef();
+			spriteData->textureAnimation->AddRef();
 		}
 
 		TiXmlDocument xmlDocument;
@@ -527,7 +747,7 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 		}
 		// No XML describing the sprite sheet, but we do have a sprite texture, so create a default
 		// state and cell for it
-		else if (spriteData->spriteSheetTexture != NULL)
+		else
 		{
 			int stateIndex = spriteData->states.Append(SpriteState());
 			SpriteState *state = &spriteData->states[stateIndex];
@@ -596,26 +816,16 @@ void Toolset2dManager::SetPlayTheGame(bool bStatus)
 	if (m_bPlayingTheGame != bStatus)
 	{
 		m_bPlayingTheGame = bStatus;
-		if (m_bPlayingTheGame)
-		{
-			m_spHUD = new HUDGUIContext(NULL);
-			m_spHUD->SetActivate(true);
-		}
-		// deactivate the HUD if we're no longer playing the game
-		else if (m_spHUD)
-		{
-			m_spHUD->SetActivate(false);
-			m_spHUD = NULL;
-		}
 	}
 }
 
-Sprite *Toolset2dManager::CreateSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename)
+Sprite *Toolset2dManager::CreateSprite(const hkvVec3 &position, const char *spriteSheetFilename, const char *xmlDataFilename)
 {
-	Sprite *sprite = (Sprite *)Vision::Game.CreateEntity("Sprite", position);
+	Sprite *sprite = (Sprite *)Vision::Game.CreateEntity( "Sprite", hkvVec3::ZeroVector() );
 	if (sprite != NULL)
 	{
 		sprite->SetSpriteSheetData(spriteSheetFilename, xmlDataFilename);
+		sprite->SetCenterPosition(position);
 	}
 	return sprite;
 }
@@ -634,23 +844,29 @@ Camera2D *Toolset2dManager::GetCamera()
 
 static int compareSprites(const void *arg1, const void *arg2)
 {
-	Sprite *pSort1 = *((Sprite **)arg1);
-	Sprite *pSort2 = *((Sprite **)arg2);
+	VWeakPtr<VisBaseEntity_cl> *pSort1 = *((VWeakPtr<VisBaseEntity_cl> **)arg1);
+	VWeakPtr<VisBaseEntity_cl> *pSort2 = *((VWeakPtr<VisBaseEntity_cl> **)arg2);
 
-	float a = pSort1->GetPosition().z;
-	float b = pSort2->GetPosition().z;
+	Sprite *pSprite1 = (Sprite *)pSort1->GetPtr();
+	Sprite *pSprite2 = (Sprite *)pSort2->GetPtr();
 
 	int result = 0;
 
-	if (hkvMath::isFloatEqual(a, b))
+	if (pSprite1 && pSprite2)
 	{
-		__int64 id1 = pSort1->GetUniqueID();
-		__int64 id2 = pSort2->GetUniqueID();
-		result = static_cast<int>(id2 - id1);
-	}
-	else
-	{
-		result = (b > a) ? -1 : 1;
+		float a = pSprite1->GetPosition().z;
+		float b = pSprite2->GetPosition().z;
+		
+		if (hkvMath::isFloatEqual(a, b))
+		{
+			__int64 id1 = pSprite1->GetUniqueID();
+			__int64 id2 = pSprite2->GetUniqueID();
+			result = static_cast<int>(id2 - id1);
+		}
+		else
+		{
+			result = (b > a) ? -1 : 1;
+		}
 	}
 
 	return result;

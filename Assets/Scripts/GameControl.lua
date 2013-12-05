@@ -118,17 +118,13 @@ function OnThink(self)
 	local kTimeDifference = Timer:GetTimeDiff()
 	
 	if self.enemySpawnTimer <= 0 then
-		local enemy = Game:CreateEntity(
+		local enemy = Toolset2D:CreateSprite(
 			Vision.hkvVec3(0, 0, 0),
-			"Sprite",
-			"",
-			"Enemy")
+			"Textures/SpriteSheets/EnemyShipV2.png",
+			"Textures/SpriteSheets/EnemyShipV2.xml")
 		
 		enemy:SetScaling(kEnemyScale)
 		enemy:SetOrientation(0, 0, 180)
-
-		enemy:UpdateProperty("TextureFilename", "Textures/SpriteSheets/EnemyShipV2.png")	
-		enemy:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/EnemyShipV2.xml")
 		
 		local default = Vision.hkvVec3(
 			enemy:GetWidth() / 2.0 + Util:GetRandInt(G.screenWidth - enemy:GetWidth()),

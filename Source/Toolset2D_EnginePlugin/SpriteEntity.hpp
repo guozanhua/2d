@@ -87,9 +87,18 @@ public:
 	TOOLSET_2D_IMPEXP void SetCollision(bool enabled);
 	TOOLSET_2D_IMPEXP bool IsColliding() const;
 
+	TOOLSET_2D_IMPEXP void SetConvexHullCollision(bool enabled);
+	TOOLSET_2D_IMPEXP bool IsConvexHullCollision() const;
+
 	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y, float z = 0.0f) const;
 	TOOLSET_2D_IMPEXP void SetCenterPosition(const hkvVec3 &position);
-	TOOLSET_2D_IMPEXP hkvVec3 GetCenterPosition();
+	TOOLSET_2D_IMPEXP hkvVec3 GetCenterPosition() const;
+
+	TOOLSET_2D_IMPEXP const hkpConvexTransformShape *GetShape() const;
+	TOOLSET_2D_IMPEXP hkQsTransform GetTransform() const;
+
+	// Managed code doesn't like dealing with hkVector4 so providing a helper
+	TOOLSET_2D_IMPEXP hkvVec2 TransformVertex(const hkVector4 &vertex) const;
 
 	TOOLSET_2D_IMPEXP float GetWidth() const;
 	TOOLSET_2D_IMPEXP float GetHeight() const;
@@ -103,12 +112,18 @@ protected:
 
 	void Clear();
 
+	void RemoveShape();
+
 	void UpdateTextures();
 	VTextureObject *GetTexture() const;
 
 	hkvVec2 GetDimensions() const;
 
 private:
+
+	// stores the last cell used to generate the shape
+	const SpriteCell *m_lastGeneratedCell;
+	hkpConvexTransformShape *m_shape2D;
 
 	hkvVec2 m_scrollSpeed;
 	bool m_fullscreen;
@@ -119,6 +134,7 @@ private:
 	bool m_playOnce;
 	bool m_collide;
 	hkvVec2 m_scrollOffset;
+	bool m_convexHullCollision;
 
 	const SpriteData *m_spriteData;
 

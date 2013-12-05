@@ -1663,34 +1663,33 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_VBitmask swig_types[4]
 #define SWIGTYPE_p_VColorRef swig_types[5]
 #define SWIGTYPE_p_VDynamicMesh swig_types[6]
-#define SWIGTYPE_p_VString swig_types[7]
-#define SWIGTYPE_p_VTextureObject swig_types[8]
-#define SWIGTYPE_p_VTypedObject swig_types[9]
-#define SWIGTYPE_p_VisBaseEntity_cl swig_types[10]
-#define SWIGTYPE_p_VisObject3D_cl swig_types[11]
-#define SWIGTYPE_p_VisObjectKey_cl swig_types[12]
-#define SWIGTYPE_p_VisSurface_cl swig_types[13]
-#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[14]
-#define SWIGTYPE_p___int64 swig_types[15]
-#define SWIGTYPE_p_char swig_types[16]
-#define SWIGTYPE_p_float swig_types[17]
-#define SWIGTYPE_p_hkvAlignedBBox swig_types[18]
-#define SWIGTYPE_p_hkvMat3 swig_types[19]
-#define SWIGTYPE_p_hkvVec3 swig_types[20]
-#define SWIGTYPE_p_int swig_types[21]
-#define SWIGTYPE_p_long swig_types[22]
-#define SWIGTYPE_p_p_char swig_types[23]
-#define SWIGTYPE_p_p_unsigned_long swig_types[24]
-#define SWIGTYPE_p_short swig_types[25]
-#define SWIGTYPE_p_signed___int64 swig_types[26]
-#define SWIGTYPE_p_signed_char swig_types[27]
-#define SWIGTYPE_p_unsigned___int64 swig_types[28]
-#define SWIGTYPE_p_unsigned_char swig_types[29]
-#define SWIGTYPE_p_unsigned_int swig_types[30]
-#define SWIGTYPE_p_unsigned_long swig_types[31]
-#define SWIGTYPE_p_unsigned_short swig_types[32]
-static swig_type_info *swig_types[34];
-static swig_module_info swig_module = {swig_types, 33, 0, 0, 0, 0};
+#define SWIGTYPE_p_VTextureObject swig_types[7]
+#define SWIGTYPE_p_VTypedObject swig_types[8]
+#define SWIGTYPE_p_VisBaseEntity_cl swig_types[9]
+#define SWIGTYPE_p_VisObject3D_cl swig_types[10]
+#define SWIGTYPE_p_VisObjectKey_cl swig_types[11]
+#define SWIGTYPE_p_VisSurface_cl swig_types[12]
+#define SWIGTYPE_p_VisTypedEngineObject_cl swig_types[13]
+#define SWIGTYPE_p___int64 swig_types[14]
+#define SWIGTYPE_p_char swig_types[15]
+#define SWIGTYPE_p_float swig_types[16]
+#define SWIGTYPE_p_hkvAlignedBBox swig_types[17]
+#define SWIGTYPE_p_hkvMat3 swig_types[18]
+#define SWIGTYPE_p_hkvVec3 swig_types[19]
+#define SWIGTYPE_p_int swig_types[20]
+#define SWIGTYPE_p_long swig_types[21]
+#define SWIGTYPE_p_p_char swig_types[22]
+#define SWIGTYPE_p_p_unsigned_long swig_types[23]
+#define SWIGTYPE_p_short swig_types[24]
+#define SWIGTYPE_p_signed___int64 swig_types[25]
+#define SWIGTYPE_p_signed_char swig_types[26]
+#define SWIGTYPE_p_unsigned___int64 swig_types[27]
+#define SWIGTYPE_p_unsigned_char swig_types[28]
+#define SWIGTYPE_p_unsigned_int swig_types[29]
+#define SWIGTYPE_p_unsigned_long swig_types[30]
+#define SWIGTYPE_p_unsigned_short swig_types[31]
+static swig_type_info *swig_types[33];
+static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -10922,20 +10921,20 @@ fail:
 }
 
 
-static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
+static int _wrap_Toolset2dManager_CreateSprite__SWIG_0(lua_State* L) {
   int SWIG_arg = 0;
   Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
   hkvVec3 *arg2 = 0 ;
-  VString *arg3 = 0 ;
-  VString *arg4 = 0 ;
+  char *arg3 = (char *) 0 ;
+  char *arg4 = (char *) 0 ;
   Sprite *result = 0 ;
   
   SWIG_check_num_args("CreateSprite",4,4)
   if(lua_isnil(L, 1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("CreateSprite",2,"hkvVec3 const &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("CreateSprite",3,"VString const &");
-  if(!lua_isuserdata(L,4)) SWIG_fail_arg("CreateSprite",4,"VString const &");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("CreateSprite",3,"char const *");
+  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("CreateSprite",4,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
     SWIG_fail_ptr("Toolset2dManager_CreateSprite",1,SWIGTYPE_p_Toolset2dManager);
@@ -10946,17 +10945,9 @@ static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
     SWIG_fail_ptr("Toolset2dManager_CreateSprite",2,SWIGTYPE_p_hkvVec3);
   }
   
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_VString,0))){
-    SWIG_fail_ptr("Toolset2dManager_CreateSprite",3,SWIGTYPE_p_VString);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&arg4,SWIGTYPE_p_VString,0))){
-    SWIG_fail_ptr("Toolset2dManager_CreateSprite",4,SWIGTYPE_p_VString);
-  }
-  
-  result = (Sprite *)(arg1)->CreateSprite((hkvVec3 const &)*arg2,(VString const &)*arg3,(VString const &)*arg4);
+  arg3 = (char *)lua_tostring(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  result = (Sprite *)(arg1)->CreateSprite((hkvVec3 const &)*arg2,(char const *)arg3,(char const *)arg4);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -10965,6 +10956,120 @@ static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
 fail:
   lua_error(L);
   return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_CreateSprite__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  Toolset2dManager *arg1 = (Toolset2dManager *) 0 ;
+  hkvVec3 *arg2 = 0 ;
+  char *arg3 = (char *) 0 ;
+  Sprite *result = 0 ;
+  
+  SWIG_check_num_args("CreateSprite",3,3)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CreateSprite",1,"Toolset2dManager *");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("CreateSprite",2,"hkvVec3 const &");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("CreateSprite",3,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Toolset2dManager,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",1,SWIGTYPE_p_Toolset2dManager);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_hkvVec3,0))){
+    SWIG_fail_ptr("Toolset2dManager_CreateSprite",2,SWIGTYPE_p_hkvVec3);
+  }
+  
+  arg3 = (char *)lua_tostring(L, 3);
+  result = (Sprite *)(arg1)->CreateSprite((hkvVec3 const &)*arg2,(char const *)arg3);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Toolset2dManager_CreateSprite(lua_State* L) {
+  int argc;
+  int argv[5]={
+    1,2,3,4,5
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 3) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Toolset2dManager, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (lua_isuserdata(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_hkvVec3, 0)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        {
+          _v = SWIG_lua_isnilstring(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_Toolset2dManager_CreateSprite__SWIG_1(L);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Toolset2dManager, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (lua_isuserdata(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_hkvVec3, 0)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        {
+          _v = SWIG_lua_isnilstring(L,argv[2]);
+        }
+        if (_v) {
+          {
+            _v = SWIG_lua_isnilstring(L,argv[3]);
+          }
+          if (_v) {
+            return _wrap_Toolset2dManager_CreateSprite__SWIG_0(L);
+          }
+        }
+      }
+    }
+  }
+  
+  lua_pushstring(L,"Wrong arguments for overloaded function 'Toolset2dManager_CreateSprite'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    CreateSprite(Toolset2dManager *,hkvVec3 const &,char const *,char const *)\n"
+    "    CreateSprite(Toolset2dManager *,hkvVec3 const &,char const *)\n");
+  lua_error(L);return 0;
 }
 
 
@@ -11180,7 +11285,6 @@ static swig_type_info _swigt__p_Toolset2dManager = {"_p_Toolset2dManager", "Tool
 static swig_type_info _swigt__p_VBitmask = {"_p_VBitmask", "VBitmask *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VColorRef = {"_p_VColorRef", "VColorRef *", 0, 0, (void*)&_wrap_class_VColorRef, 0};
 static swig_type_info _swigt__p_VDynamicMesh = {"_p_VDynamicMesh", "VDynamicMesh *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_VString = {"_p_VString", "VString *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VTextureObject = {"_p_VTextureObject", "VTextureObject *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_VTypedObject = {"_p_VTypedObject", "VTypedObject *", 0, 0, (void*)&_wrap_class_VTypedObject, 0};
 static swig_type_info _swigt__p_VisBaseEntity_cl = {"_p_VisBaseEntity_cl", "VisBaseEntity_cl *", 0, 0, (void*)&_wrap_class_VisBaseEntity_cl, 0};
@@ -11215,7 +11319,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_VBitmask,
   &_swigt__p_VColorRef,
   &_swigt__p_VDynamicMesh,
-  &_swigt__p_VString,
   &_swigt__p_VTextureObject,
   &_swigt__p_VTypedObject,
   &_swigt__p_VisBaseEntity_cl,
@@ -11250,7 +11353,6 @@ static swig_cast_info _swigc__p_Toolset2dManager[] = {  {&_swigt__p_Toolset2dMan
 static swig_cast_info _swigc__p_VBitmask[] = {  {&_swigt__p_VBitmask, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VColorRef[] = {  {&_swigt__p_VColorRef, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VDynamicMesh[] = {  {&_swigt__p_VDynamicMesh, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_VString[] = {  {&_swigt__p_VString, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTextureObject[] = {  {&_swigt__p_VTextureObject, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VTypedObject[] = {  {&_swigt__p_IVObjectComponent, _p_IVObjectComponentTo_p_VTypedObject, 0, 0},  {&_swigt__p_VTypedObject, 0, 0, 0},  {&_swigt__p_VisBaseEntity_cl, _p_VisBaseEntity_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VTypedObject, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisObject3D_cl, _p_VisObject3D_clTo_p_VTypedObject, 0, 0},  {&_swigt__p_VisTypedEngineObject_cl, _p_VisTypedEngineObject_clTo_p_VTypedObject, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_VisBaseEntity_cl[] = {  {&_swigt__p_VisBaseEntity_cl, 0, 0, 0},  {&_swigt__p_Sprite, _p_SpriteTo_p_VisBaseEntity_cl, 0, 0},  {&_swigt__p_Camera2D, _p_Camera2DTo_p_VisBaseEntity_cl, 0, 0},{0, 0, 0, 0}};
@@ -11285,7 +11387,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_VBitmask,
   _swigc__p_VColorRef,
   _swigc__p_VDynamicMesh,
-  _swigc__p_VString,
   _swigc__p_VTextureObject,
   _swigc__p_VTypedObject,
   _swigc__p_VisBaseEntity_cl,

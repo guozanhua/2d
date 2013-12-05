@@ -212,7 +212,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera2dEntity.cpp" />
-    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HavokSetup.cpp" />
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp" />
     <ClCompile Include="Toolset2dManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
@@ -222,7 +222,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClInclude Include="Camera2dEntity.hpp" />
-    <ClInclude Include="HUD.hpp" />
     <ClInclude Include="SpriteEntity.hpp" />
     <ClInclude Include="Toolset2dManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />

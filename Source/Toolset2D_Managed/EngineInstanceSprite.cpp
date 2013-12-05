@@ -11,7 +11,7 @@ namespace Toolset2D_Managed
 {
 	EngineInstanceSprite::EngineInstanceSprite() : IEngineShapeInstance()
 	{
-		Sprite *sprite = (Sprite *)Vision::Game.CreateEntity("Sprite", hkvVec3(0, 0, 0));
+		Sprite *sprite = Toolset2dManager::CreateSprite( hkvVec3::ZeroVector(), "" );
 		Debug::Assert(sprite != nullptr, "Could not create Sprite entity!");
 
 		m_pEntityWP = new VWeakPtr<VisBaseEntity_cl>(sprite->GetWeakReference());
@@ -21,6 +21,7 @@ namespace Toolset2D_Managed
 	{
 		Sprite *pEntity = GetSpriteEntity();
 		V_SAFE_DISPOSEOBJECT(pEntity);
+		V_SAFE_DELETE(m_pEntityWP);
 	}
 
 	void EngineInstanceSprite::SetVisible(bool bStatus)
@@ -86,8 +87,12 @@ namespace Toolset2D_Managed
 
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
 	{
-		if (GetSpriteEntity() != NULL)
+		Sprite *sprite = GetSpriteEntity();
+		if (sprite != NULL)
 		{
+			// updates the vertices internally and transforms
+			sprite->Update();
+
 			IVRenderInterface* pRI = Vision::Contexts.GetCurrentContext()->GetRenderInterface();
 			VColorRef color;
 			bool render = false;
@@ -97,7 +102,7 @@ namespace Toolset2D_Managed
 			switch (mode)
 			{
 			case ShapeRenderMode::Normal:
-				if (GetSpriteEntity()->GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
+				if (sprite->GetVisibleBitmask() & VIS_ENTITY_VISIBLE)
 				{
 					color = VColorRef(255, 0, 0, 80);
 					render = true;
@@ -110,18 +115,15 @@ namespace Toolset2D_Managed
 				break;
 			}
 
-			if (render && !GetSpriteEntity()->IsFullscreenMode())
+			if (render && !sprite->IsFullscreenMode())
 			{
-				// Make sure the vertices are updated before rendering
-				GetSpriteEntity()->Update();
-
 				const int edges[8] = {
 					0, 1,
 					1, 3,
 					3, 2,
 					2, 0};
 
-				const hkvVec2 *vertices = GetSpriteEntity()->GetVertices();
+				const hkvVec2 *vertices = sprite->GetVertices();
 
 				for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
 				{
@@ -133,15 +135,10 @@ namespace Toolset2D_Managed
 						color, width);
 				}
 
-				// render the convex hull
-				const SpriteCell *cell = GetSpriteEntity()->GetCurrentCell();
-				if (cell != NULL && cell->vertexIndices.getSize() > 0)
+				// render the convex hull of the current cell
+				const SpriteCell *cell = sprite->GetCurrentCell();
+				if (sprite->IsConvexHullCollision() && cell != NULL && cell->vertexIndices.getSize() > 0)
 				{
-					const float scaleX = GetSpriteEntity()->GetScaling().x;
-					const float scaleY = GetSpriteEntity()->GetScaling().y;
-					const float offsetX = GetSpriteEntity()->GetCenterPosition().x;
-					const float offsetY = GetSpriteEntity()->GetCenterPosition().y;
-
 					const int* vi = &cell->vertexIndices[0];
 					for(int i = 0;i < cell->verticesPerFace.getSize();++i)
 					{
@@ -149,42 +146,17 @@ namespace Toolset2D_Managed
 
 						for(int j = 0; j < count; ++j)
 						{
-							const hkVector4 &e1 = cell->vertexPositions[ vi[j] ];
-							const hkVector4 &e2 = cell->vertexPositions[ vi[(j + 1) % count] ];
-
+							hkvVec2 e1 = sprite->TransformVertex( cell->vertexPositions[ vi[j] ] );
+							hkvVec2 e2 = sprite->TransformVertex( cell->vertexPositions[ vi[(j + 1) % count] ] );
+							
 							Vision::Game.DrawSingleLine2D(
-								e1(0) * scaleX + offsetX, e1(1) * scaleY + offsetY,
-								e2(0) * scaleX + offsetX, e2(1) * scaleY + offsetY,
+								e1.x, e1.y,
+								e2.x, e2.y,
 								VColorRef(0, 255, 0, 80), width);
 						}
 
 						vi += count;
 					}
-				}
-
-				bool drawOriginalOutlineSize = false;
-				if (drawOriginalOutlineSize)
-				{
-					hkvVec2 position = GetSpriteEntity()->GetPosition().getAsVec2();
-					hkvVec2 topLeft = position;
-					hkvVec2 topRight = topLeft + hkvVec2(GetSpriteEntity()->GetOriginalCellWidth(), 0);
-					hkvVec2 bottomLeft = topLeft + hkvVec2(0, GetSpriteEntity()->GetOriginalCellHeight());
-					hkvVec2 bottomRight = bottomLeft + hkvVec2(GetSpriteEntity()->GetOriginalCellWidth(), 0);
-					const hkvVec2 border[8] = {
-						topLeft, topRight,
-						topRight, bottomRight,
-						bottomRight, bottomLeft,
-						bottomLeft, topLeft};
-
-						for (int borderEdgeIndex = 0; borderEdgeIndex < 4; borderEdgeIndex++)
-						{
-							const hkvVec2 p1 = border[borderEdgeIndex * 2 + 0];
-							const hkvVec2 p2 = border[borderEdgeIndex * 2 + 1];
-							Vision::Game.DrawSingleLine2D(
-								p1.x, p1.y,
-								p2.x, p2.y,
-								VColorRef(255, 255, 0, 30), width);
-						}
 				}
 			}
 		}
@@ -318,11 +290,10 @@ namespace Toolset2D_Managed
 
 	String^ EngineInstanceSprite::GetCurrentState()
 	{
-		String^ stateName = "";
+		String^ stateName = "NONE";
 
 		if (GetSpriteEntity() != NULL)
 		{
-			String^ stateName = "NONE";
 			const SpriteState *state = GetSpriteEntity()->GetCurrentState();
 			if (state != NULL)
 			{
@@ -477,6 +448,24 @@ namespace Toolset2D_Managed
 		if (GetSpriteEntity() != NULL)
 		{
 			colliding = GetSpriteEntity()->IsColliding();
+		}
+		return colliding;
+	}
+
+	void EngineInstanceSprite::SetConvexHullCollision(bool enabled)
+	{
+		if (GetSpriteEntity() != NULL)
+		{
+			GetSpriteEntity()->SetConvexHullCollision(enabled);
+		}
+	}
+
+	bool EngineInstanceSprite::IsConvexHullCollision()
+	{
+		bool colliding = false;
+		if (GetSpriteEntity() != NULL)
+		{
+			colliding = GetSpriteEntity()->IsConvexHullCollision();
 		}
 		return colliding;
 	}

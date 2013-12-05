@@ -46,7 +46,6 @@ namespace Toolset2D_Managed
 			return (Sprite *)m_pEntityWP->GetPtr();
 		}
 
-		// special functions
 		void RenderShape(VisionViewBase ^view, CSharpFramework::Shapes::ShapeRenderMode mode);
 
 		void SetSpriteSheetData(String ^pFileName, String ^pXml);
@@ -77,6 +76,9 @@ namespace Toolset2D_Managed
 
 		void SetCollision(bool enabled);
 		bool IsColliding();
+
+		void SetConvexHullCollision(bool enabled);
+		bool IsConvexHullCollision();
 
 	private:		
 		// pointer to native engine object

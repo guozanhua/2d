@@ -7,9 +7,9 @@
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
       <Filter>Lua</Filter>
     </ClCompile>
-    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Camera2dEntity.cpp" />
     <ClCompile Include="Toolset2dManager.cpp" />
+    <ClCompile Include="HavokSetup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
@@ -17,7 +17,6 @@
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp">
       <Filter>Lua</Filter>
     </ClInclude>
-    <ClInclude Include="HUD.hpp" />
     <ClInclude Include="Camera2dEntity.hpp" />
     <ClInclude Include="Toolset2dManager.hpp" />
   </ItemGroup>

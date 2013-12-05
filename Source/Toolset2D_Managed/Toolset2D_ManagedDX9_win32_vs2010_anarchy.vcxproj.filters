@@ -6,6 +6,7 @@
     <ClCompile Include="Toolset2D_ManagedPCH.cpp" />
     <ClCompile Include="EngineInstanceSprite.cpp" />
     <ClCompile Include="EngineInstanceCamera2d.cpp" />
+    <ClCompile Include="HavokSetup_Managed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_ManagedPCH.h" />

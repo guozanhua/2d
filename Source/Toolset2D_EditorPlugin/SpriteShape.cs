@@ -135,6 +135,7 @@ namespace Toolset2D
                 EngineNode.SetCurrentState(m_state);
                 EngineNode.SetPlayOnce(m_playOnce);
                 EngineNode.SetCollision(m_collision);
+                EngineNode.SetConvexHullCollision(m_convexHullCollision);
 
                 if (m_width != 0.0)
                 {
@@ -202,6 +203,11 @@ namespace Toolset2D
                 m_width = info.GetSingle("_width");
                 m_height = info.GetSingle("_height");
             }
+
+            if (SerializationHelper.HasElement(info, "_convexHullCollision"))
+            {
+                m_convexHullCollision = info.GetBoolean("_convexHullCollision");
+            }
         }
 
         /// <summary>
@@ -222,6 +228,7 @@ namespace Toolset2D
             info.AddValue("_fullscreen", m_fullscreen);
             info.AddValue("_collision", m_collision);
             info.AddValue("_rotation", m_rotation);
+            info.AddValue("_convexHullCollision", m_convexHullCollision);
         }
 
         /// <summary>
@@ -382,6 +389,20 @@ namespace Toolset2D
             set
             {
                 m_collision = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        bool m_convexHullCollision;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(9)]
+        [Description("AABB Collision")]
+        public bool ConvexHullCollision
+        {
+            get { return EngineNode.IsConvexHullCollision(); }
+            set
+            {
+                m_convexHullCollision = value;
                 SetEngineInstanceBaseProperties();
             }
         }

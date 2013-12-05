@@ -21,6 +21,7 @@ namespace Toolset2D_Managed
 	{
 		Camera2D *pEntity = GetCamera2dEntity();
 		V_SAFE_DISPOSEOBJECT(pEntity);
+		V_SAFE_DELETE(m_pEntityWP);
 	}
 
 	void EngineInstanceCamera2d::SetVisible(bool bStatus)

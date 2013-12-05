@@ -11,7 +11,7 @@ class Toolset2dManager
 {
 public:
 	int GetNumSprites();
-	Sprite *CreateSprite(const hkvVec3 &position, const VString &spriteSheetFilename, const VString &xmlDataFilename);
+	Sprite *CreateSprite(const hkvVec3 &position, const char *spriteSheetFilename, const char *xmlDataFilename = "");
 
 	void SetCamera(Camera2D *camera);
 	Camera2D *GetCamera();

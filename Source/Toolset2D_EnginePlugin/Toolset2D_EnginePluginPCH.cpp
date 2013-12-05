@@ -1,31 +1,6 @@
 #include "Toolset2D_EnginePluginPCH.h"
 
-#include <Common/Base/keycode.cxx>
-
-#define HK_EXCLUDE_FEATURE_SerializeDeprecatedPre700
-
-#undef HAVOK_ANIMATION_KEYCODE
-#undef HK_FEATURE_PRODUCT_ANIMATION
-
-#undef HAVOK_BEHAVIOR_KEYCODE
-#undef HK_FEATURE_PRODUCT_BEHAVIOR
-
-#undef HAVOK_CLOTH_KEYCODE
-#undef HK_FEATURE_PRODUCT_CLOTH
-
-#undef HAVOK_DESTRUCTION_2012_KEYCODE
-#undef HK_FEATURE_PRODUCT_DESTRUCTION_2012
-
-#undef HAVOK_DESTRUCTION_KEYCODE
-#undef HK_FEATURE_PRODUCT_DESTRUCTION
-
-#undef HAVOK_AI_KEYCODE 
-#undef HK_FEATURE_PRODUCT_AI
-
-#undef HAVOK_SIMULATION_KEYCODE 
-#undef HK_FEATURE_PRODUCT_MILSIM
-
-#undef HAVOK_PHYSICS_KEYCODE 
-#undef HK_FEATURE_PRODUCT_PHYSICS
-
-#include <Common/Base/Config/hkProductFeatures.cxx>
+// Havok - Keycode. Should have a better place for this in static lib builds.
+#ifndef VBASE_LIB
+#    include <Common/Base/keycode.cxx>
+#endif

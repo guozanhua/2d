@@ -5,6 +5,9 @@
 // Include For Vision Engine
 #include <Vision/Runtime/Base/VBase.hpp>
 #include <Vision/Runtime/Engine/System/Vision.hpp>
+#include <Vision/Runtime/Base/Graphics/VColor.hpp>
 #include <Vision/Editor/vForge/EditorPlugins/VisionPlugin/VisionManaged/VisionManagedPCH.h>
 
-#include "Toolset2D_EnginePlugin/Toolset2D_EnginePluginPCH.h"
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
+
+#define TOOLSET_2D_IMPEXP __declspec(dllimport)
