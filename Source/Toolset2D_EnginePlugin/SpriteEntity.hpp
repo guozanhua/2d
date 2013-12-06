@@ -16,9 +16,10 @@ public:
 	enum VERTEX_INDICES
 	{
 		VERTEX_TOP_LEFT = 0,
-		VERTEX_TOP_RIGHT = 1,
-		VERTEX_BOTTOM_LEFT = 2,
-		VERTEX_BOTTOM_RIGHT = 3
+		VERTEX_TOP_RIGHT,
+		VERTEX_BOTTOM_LEFT,
+		VERTEX_BOTTOM_RIGHT,
+		VERTEX_NUM_VERTS
 	};
 
 	TOOLSET_2D_IMPEXP Sprite();
@@ -144,6 +145,8 @@ private:
 
 	VString m_spriteSheetFilename;
 	VString m_xmlDataFilename;
+
+	bool m_offscreen;
 };
 
 #endif // SPRITE_ENTITY_HPP_INCLUDED

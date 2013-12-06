@@ -11,6 +11,8 @@
 
 #include "Toolset2dManager.hpp"
 
+#include "HavokSetup.cxx"
+
 // This class implements the IVisPlugin_cl interface. The engine queries an instance of this class via 
 // the exported GetEnginePlugin class.
 class Toolset2D_EnginePlugin_cl : public IVisPlugin_cl

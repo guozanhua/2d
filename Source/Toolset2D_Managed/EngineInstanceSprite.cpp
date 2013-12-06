@@ -182,7 +182,9 @@ namespace Toolset2D_Managed
 		float y = 0.f;
 		const hkvVec3 start(rayStart.X, rayStart.Y, rayStart.Z);
 
-		if ( GetSpriteEntity() && Vision::Contexts.GetMainRenderContext()->Project2D(start, x, y) )
+		if ( GetSpriteEntity() &&
+			 // convert the 3D coordinate to a 2D coordinate
+			 Vision::Contexts.GetMainRenderContext()->Project2D(start, x, y) )
 		{
 			hkvAlignedBBox bbox = GetSpriteEntity()->GetBBox();
 			const hkvVec3 point(x, y, 0.0f);
@@ -216,6 +218,7 @@ namespace Toolset2D_Managed
 			VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
 			ar.WriteObject(GetSpriteEntity());
 		}
+
 		return true;
 	}
 

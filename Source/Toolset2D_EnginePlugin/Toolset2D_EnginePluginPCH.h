@@ -48,7 +48,4 @@
 
 extern VModule gToolset2D_EngineModule;
 
-// #todo #jve : Still not completely working yet, so disable for now
-//#define USE_HAVOK_PHYSICS_2D 1
-
 #endif // TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED

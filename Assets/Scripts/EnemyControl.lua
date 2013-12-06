@@ -66,7 +66,7 @@ function FireWeapon(self)
 		local offset2 = self:GetPoint(64, 100, kMissileLayer)
 		
 		local removeFunc = function(entity)
-			return entity:GetPosition().y < -entity:GetHeight()
+			return entity:GetPosition().y > G.screenHeight + entity:GetHeight()
 		end
 		
 		local missileLeft = Toolset2D:CreateSprite(default, kMissileTexture)

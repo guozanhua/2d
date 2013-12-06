@@ -212,7 +212,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera2dEntity.cpp" />
-    <ClCompile Include="HavokSetup.cpp" />
+    <ClCompile Include="HavokSetup.cxx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp" />
     <ClCompile Include="Toolset2dManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />

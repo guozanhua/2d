@@ -12,6 +12,13 @@
 #include "SpriteEntity.hpp"
 #include "Camera2dEntity.hpp"
 
+#include <Common/Base/hkBase.h>
+#include <Common/Base/Config/hkProductFeatures.h>
+#include <Common/Serialize/Version/hkVersionPatchManager.h>
+#include <Common/Compat/hkHavokVersions.h>
+#include <Common/Base/Config/hkOptionalComponent.h>
+#include <Physics2012/Internal/BroadPhase/TreeBroadPhase/hkpTreeBroadPhase.h>
+
 #if defined(WIN32)
 #include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
 #endif
@@ -74,7 +81,7 @@ bool SpriteData::GenerateConvexHull()
 {
 	bool success = false;
 
-#if defined(WIN32) && defined(USE_HAVOK_PHYSICS_2D)
+#if defined(WIN32) && USE_HAVOK_PHYSICS_2D
 	const int bytesPerPixel = spriteSheetTexture->GetBitsPerPixel(spriteSheetTexture->GetTextureFormat()) / 8;
 	IDirect3DTexture9 *pTexture2D = (IDirect3DTexture9 *)spriteSheetTexture->GetD3DInterface();
 	const int iMipLevel = 0;
@@ -275,7 +282,10 @@ void Toolset2dManager::OneTimeDeInit()
 
 void Toolset2dManager::InitializeHavokPhysics()
 {
-#ifdef USE_HAVOK_PHYSICS_2D
+#if USE_HAVOK_PHYSICS_2D
+	hkProductFeatures::initialize();
+	HK_OPTIONAL_COMPONENT_REQUEST(hkpTreeBroadPhase);
+
 	{
 		hkpWorldCinfo worldInfo;
 
@@ -554,7 +564,7 @@ void Toolset2dManager::Update(float deltaTime)
 
 void Toolset2dManager::Step( float dt )
 {
-#ifdef USE_HAVOK_PHYSICS_2D
+#if USE_HAVOK_PHYSICS_2D
 	if (m_world)
 	{
 		m_world->stepDeltaTime(dt);
@@ -635,9 +645,9 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 		spriteData->spriteSheetTexture = spSpriteSheetTexture;
 		spriteData->spriteSheetTexture->AddRef();
 
-		// TODO: Perhaps it's a bit weird to have a spritesheet that also has animations on it--all of the cells
-		//       would have to be in the same places for each sheet, which is odd. Probably assert when there is
-		//       XML document AND a texture animation.
+		// #todo #jve : Perhaps it's a bit weird to have a spritesheet that also has animations on it--all of the cells
+		//              would have to be in the same places for each sheet, which is odd. Probably assert when there is
+		//              XML document AND a texture animation.
 		spriteData->textureAnimation = Vision::TextureManager.GetAnimationInstance(spriteData->spriteSheetTexture);
 		if (spriteData->textureAnimation)
 		{

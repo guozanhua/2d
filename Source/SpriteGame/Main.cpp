@@ -40,13 +40,8 @@ VISION_INIT
 #if defined(WIN32)
 	const VString szRoot = "..\\..\\..\\..";
 
-	#if defined(_DEBUG)
-	Vision::File.AddDataDirectory( szRoot + "\\Assets" );
-	Vision::File.AddDataDirectory( szRoot + "\\Data" );
-	#else
 	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Base.pcdx9.vArcFolder" );
 	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Project.pcdx9.vArcFolder" );
-	#endif
 #elif defined(_VISION_ANDROID)
 	VString szRoot = VisSampleApp::GetApkDirectory();
 	szRoot += "?assets";

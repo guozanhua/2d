@@ -236,7 +236,6 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="EngineInstanceCamera2d.cpp" />
     <ClCompile Include="EngineInstanceSprite.cpp" />
-    <ClCompile Include="HavokSetup_Managed.cpp" />
     <ClCompile Include="Toolset2D_Managed.cpp" />
     <ClCompile Include="Toolset2D_ManagedPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Dev DLL|win32'">Create</PrecompiledHeader>

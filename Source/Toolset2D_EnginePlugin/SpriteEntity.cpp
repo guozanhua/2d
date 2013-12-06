@@ -68,6 +68,7 @@ void Sprite::Clear()
 
 	m_lastGeneratedCell = NULL;
 	m_shape2D = NULL;
+	m_offscreen = false;
 
 	m_scrollSpeed.setZero();
 	m_fullscreen = false;
@@ -672,11 +673,28 @@ void Sprite::Update()
 	m_renderVertices[3].Set(m_vertices[VERTEX_TOP_RIGHT].x, m_vertices[VERTEX_TOP_RIGHT].y, m_texCoords[VERTEX_TOP_RIGHT].x, m_texCoords[VERTEX_TOP_RIGHT].y);
 	m_renderVertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
 	m_renderVertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
+
+	if(Vision::IsInitialized() && Vision::Contexts.GetMainRenderContext())
+	{
+		bool inside = false;
+		int x, y, w, h;
+		Vision::Contexts.GetMainRenderContext()->GetViewport(x, y, w, h);
+		for (int vertexIndex = 0; vertexIndex < VERTEX_NUM_VERTS; vertexIndex++)
+		{
+			if (m_vertices[vertexIndex].x >= x && m_vertices[vertexIndex].x <= x + w &&
+				m_vertices[vertexIndex].y >= y && m_vertices[vertexIndex].y <= y + h)
+			{
+				inside = true;
+				break;
+			}
+		}
+		m_offscreen = !inside;
+	}
 }
 
 void Sprite::Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state)
 {
-	if ( m_spriteData != NULL && (GetVisibleBitmask() & VIS_ENTITY_VISIBLE) )
+	if ( m_spriteData != NULL && (GetVisibleBitmask() & VIS_ENTITY_VISIBLE) && !m_offscreen )
 	{
 		pRender->Draw2DBuffer(6, m_renderVertices, GetTexture(), state);
 	}

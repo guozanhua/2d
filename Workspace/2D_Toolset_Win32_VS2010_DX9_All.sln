@@ -1,0 +1,155 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteGameDX9", "..\Source\SpriteGame\SpriteGameDX9_win32_vs2010_anarchy.vcxproj", "{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolset2D_EditorPluginDX9_x86_vs2010_anarchy", "..\Source\Toolset2D_EditorPlugin\Toolset2D_EditorPluginDX9_x86_vs2010_anarchy.csproj", "{8C897073-9C9E-4EFA-A0F6-317ACB479735}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB} = {9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_EnginePluginDX9", "..\Source\Toolset2D_EnginePlugin\Toolset2D_EnginePluginDX9_win32_vs2010_anarchy.vcxproj", "{C9CF850C-BEB9-4744-B58F-98D405FA1A93}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Toolset2D_ManagedDX9", "..\Source\Toolset2D_Managed\Toolset2D_ManagedDX9_win32_vs2010_anarchy.vcxproj", "{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {C9CF850C-BEB9-4744-B58F-98D405FA1A93}
+	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BuildSystem", "..\Source\BuildSystem\BuildSystem.pyproj", "{A3532733-0FF5-4D49-9B6A-797012D1BD48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2D Toolset", "2D Toolset", "{10FEE6B0-9FCD-48FC-A402-FC590093E858}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{3E6E1E90-697D-4FB6-9C00-FDDF9F553F5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sprite Game", "Sprite Game", "{17F3DF43-789B-4B79-AFBD-8C16CE941133}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Package", "..\Package\Package.pyproj", "{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{F5167031-B1F5-4399-B87A-7531D30A05B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{40CAE731-2832-4021-B47A-ADD3A1A7E769}"
+	ProjectSection(SolutionItems) = preProject
+		..\Assets\Scripts\EnemyControl.lua = ..\Assets\Scripts\EnemyControl.lua
+		..\Assets\Scripts\ExplosionControl.lua = ..\Assets\Scripts\ExplosionControl.lua
+		..\Assets\Scripts\GameControl.lua = ..\Assets\Scripts\GameControl.lua
+		..\Assets\Scripts\Impossible_PlayerControl.lua = ..\Assets\Scripts\Impossible_PlayerControl.lua
+		..\Assets\Scripts\PlayerShipControl.lua = ..\Assets\Scripts\PlayerShipControl.lua
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL|Any CPU = Debug DLL|Any CPU
+		Debug DLL|Mixed Platforms = Debug DLL|Mixed Platforms
+		Debug DLL|win32 = Debug DLL|win32
+		Debug DLL|x64 = Debug DLL|x64
+		Debug DLL|x86 = Debug DLL|x86
+		Dev DLL|Any CPU = Dev DLL|Any CPU
+		Dev DLL|Mixed Platforms = Dev DLL|Mixed Platforms
+		Dev DLL|win32 = Dev DLL|win32
+		Dev DLL|x64 = Dev DLL|x64
+		Dev DLL|x86 = Dev DLL|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|Any CPU.Build.0 = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|win32.ActiveCfg = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|win32.Build.0 = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|x64.ActiveCfg = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Debug DLL|x86.ActiveCfg = Debug DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|Any CPU.Build.0 = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|x64.ActiveCfg = Dev DLL|win32
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820}.Dev DLL|x86.ActiveCfg = Dev DLL|win32
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Any CPU.Build.0 = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|win32.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x64.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x86.ActiveCfg = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Debug DLL|x86.Build.0 = Debug DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Any CPU.Build.0 = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|win32.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x64.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x86.ActiveCfg = Dev DLL|x86
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735}.Dev DLL|x86.Build.0 = Dev DLL|x86
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|Any CPU.Build.0 = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|win32.ActiveCfg = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|win32.Build.0 = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|x64.ActiveCfg = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Debug DLL|x86.ActiveCfg = Debug DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|Any CPU.Build.0 = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|x64.ActiveCfg = Dev DLL|win32
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93}.Dev DLL|x86.ActiveCfg = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|Any CPU.Build.0 = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|win32.ActiveCfg = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|win32.Build.0 = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|x64.ActiveCfg = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Debug DLL|x86.ActiveCfg = Debug DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|Any CPU.ActiveCfg = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|Any CPU.Build.0 = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|Mixed Platforms.ActiveCfg = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|Mixed Platforms.Build.0 = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|win32.ActiveCfg = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|win32.Build.0 = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|x64.ActiveCfg = Dev DLL|win32
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB}.Dev DLL|x86.ActiveCfg = Dev DLL|win32
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Debug DLL|Any CPU.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Debug DLL|Mixed Platforms.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Debug DLL|win32.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Debug DLL|x64.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Debug DLL|x86.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|Any CPU.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|Mixed Platforms.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|win32.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|x64.ActiveCfg = Dev|Any CPU
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48}.Dev DLL|x86.ActiveCfg = Dev|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|Any CPU.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|win32.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|x64.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Debug DLL|x86.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|Any CPU.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|win32.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|x64.ActiveCfg = Release|Any CPU
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC}.Dev DLL|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B09A4FEC-8B71-47D6-A94A-BAA29BE34820} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
+		{40CAE731-2832-4021-B47A-ADD3A1A7E769} = {17F3DF43-789B-4B79-AFBD-8C16CE941133}
+		{C9CF850C-BEB9-4744-B58F-98D405FA1A93} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{9FE41C0E-C41C-42B6-BFC2-FC9E9C4F07BB} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{8C897073-9C9E-4EFA-A0F6-317ACB479735} = {10FEE6B0-9FCD-48FC-A402-FC590093E858}
+		{A3532733-0FF5-4D49-9B6A-797012D1BD48} = {3E6E1E90-697D-4FB6-9C00-FDDF9F553F5F}
+		{86A7836E-C35F-48EC-881C-4B8E1FF04FBC} = {3E6E1E90-697D-4FB6-9C00-FDDF9F553F5F}
+	EndGlobalSection
+EndGlobal

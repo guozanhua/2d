@@ -1,6 +1,9 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
+// #todo #jve : Still not completely working yet, so disable for now
+#define USE_HAVOK_PHYSICS_2D	0
+
 class Sprite;
 class Camera2D;
 class VScriptCreateStackProxyObject;

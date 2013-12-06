@@ -9,7 +9,7 @@
     </ClCompile>
     <ClCompile Include="Camera2dEntity.cpp" />
     <ClCompile Include="Toolset2dManager.cpp" />
-    <ClCompile Include="HavokSetup.cpp" />
+    <ClCompile Include="HavokSetup.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />

@@ -41,24 +41,22 @@ function OnAfterSceneLoaded(self)
 end
 
 function CreateEnemy(self)
-	local enemy = Game:CreateEntity(
-		Vision.hkvVec3(0, 0, 0),
-		"Sprite",
-		"",
-		"Enemy")
-
 	local enemyData = {}
 
-	enemyData.sprite = enemy
-	enemyData.position = Vision.hkvVec3(G.w + self:GetWidth(), G.h - self.platform:GetHeight() - self:GetHeight() / 2, depthLayer)
+	enemyData.position = Vision.hkvVec3(
+		G.w + self:GetWidth(),
+		G.h - self.platform:GetHeight() - self:GetHeight() / 2,
+		depthLayer)
+
+	enemyData.sprite = Toolset2D:CreateSprite(
+		Vision.hkvVec3(0, 0, 0),
+		"Textures/impossible_enemy.png",
+		self.enemy:GetProperty("XmlDataFilename"))
 	
-	enemy:SetKey("enemy")
-	enemy:SetScaling(self.enemy:GetScaling())
-	enemy:SetCollision(true)
-	
-	enemy:UpdateProperty("TextureFilename", "Textures/impossible_enemy.png")
-	enemy:UpdateProperty("XmlDataFilename", self.enemy:GetProperty("XmlDataFilename"))
-	enemy:SetCenterPosition(enemyData.position)
+	enemyData.sprite:SetKey("enemy")
+	enemyData.sprite:SetScaling(self.enemy:GetScaling())
+	enemyData.sprite:SetCollision(true)
+	enemyData.sprite:SetCenterPosition(enemyData.position)
 
 	table.insert(self.enemies, enemyData)
 end
