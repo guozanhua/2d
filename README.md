@@ -1,5 +1,5 @@
-Project Anarchy: 2D Toolset Sample (Alpha)
-==========================================
+2D Toolset Sample (Alpha)
+=========================
 
 ![alt text](http://www.projectanarchy.com/sites/default/files/Project%20Anarchy%20Logo.png "Project Anarchy")
 
@@ -21,27 +21,27 @@ Features
 Dependencies
 ------------
 
-* [Visual Studio 2010][6] - Needed for compiling and you can use [Visual Studio 2010 Express][5]
-* [Python 2.7][4] - There are numerous helper scripts that are executed automatically in Visual Studio when you build, so you need to install this and put it in your PATH
-* [PyTools][3] - Optional if you want to debug Python scripts
-* [Shoebox][1] - Optional if you want to generate new spritesheets
+* [Visual Studio 2010][6] - **(Required)** Needed for compiling and you can use [Visual Studio 2010 Express][5]
+* [Python 2.7][4] - **(Required)** There are numerous helper scripts that are executed automatically in Visual Studio when you build, so you need to install this and put it in your PATH.
+* [PyTools][3] - (Optional) if you want to debug Python scripts
+* [Shoebox][1] - (Optional) if you want to generate new spritesheets
 
 Samples
 -------
 
-* Shooter
+* Shooter (`Assets\Scenes\Shooter.scene`)
+* Impossible (`Assets\Scenes\Impossible.scene`)
+* Physics (`Assets\Scenes\Physics.scene`) - **(Not yet working)** Shows 2D Havok Physics integration.
 
 Compiling
 ---------
 
-* [Visual Studio 2010][6]
-* [PyTools][3] - Optional
-
 To build on Windows, simply open Workspace\2D_Toolset_Win32_VS2010_DX9.sln and build either Debug DLL or Dev DLL
 configurations. It will automatically copy the binaries to the Anarchy SDK folder.
 
-* 2D_Toolset_Win32_VS2010_DX9_All.sln - Includes PyTools projects
-* 2D_Toolset_Win32_VS2010_DX9_C++.sln / 2D_Toolset_Win32_VS2010_DX9_C#.sln - If you have Visual Studio Express, you need to build these two separately
+* `2D_Toolset_Win32_VS2010_DX9.sln` - Doesn't include PyTools projects, but requires a non-Express version of Visual Studio. This includes everything you need to build the 2D toolset.
+* `2D_Toolset_Win32_VS2010_DX9_All.sln` - Includes PyTools projects and requires a non-Express version of Visual Studio
+* `2D_Toolset_Win32_VS2010_DX9_C++.sln` / `2D_Toolset_Win32_VS2010_DX9_C#.sln` - If you have Visual Studio Express, you need to build these two separately
 
 Generating Spritesheets
 -----------------------
@@ -51,12 +51,12 @@ We have a Python script Source\BuildSystem\spritesheet.py that can be used to ge
 Credits
 -------
 
-Special thanks to Howard Day for the explosion effects!
+Special thanks to [Howard Day][8] for the explosion effects in the shooter sample!
 
-TODO
-----
+Remaining Work
+--------------
 
-Beta:
+###Beta
 
 - Finish iOS and Android port
 - Add 2D physics component using Havok Physics
@@ -67,7 +67,7 @@ Beta:
 - Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:AddSprite
 - Add a Clone LUA call to Sprite entity
 
-Wishlist:
+###Wishlist
 
 - Add a broadphase / sweep-and-prune implementation for collision detection
 - Add support for using particle effects (as a child of the Sprite entity)
@@ -76,12 +76,11 @@ Wishlist:
 - Add support for Box2D
 - Add a transform rule that automatically creates the sprite sheet
 
-Reference
----------
-
 [1]: http://renderhjs.net/shoebox/
 [2]: http://www.polycount.com/forum/showthread.php?t=91554&highlight=shoebox
 [3]: http://pytools.codeplex.com/
 [4]: http://www.python.org/download/releases/2.7.6/
 [5]: http://www.visualstudio.com/en-us/downloads#d-2010-express
 [6]: http://www.visualstudio.com/
+[7]: http://flukedude.com/theimpossiblegame/
+[8]: http://www.hedfiles.net/
