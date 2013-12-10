@@ -59,6 +59,12 @@ void Camera2D::CommonDeInit()
 
 void Camera2D::Clear()
 {
+	m_transform = hkvVec4(1.f, 1.f, 0.f, 0.f);
+}
+
+const hkvVec4 *Camera2D::GetTransform() const
+{
+	return &m_transform;
 }
 
 void Camera2D::Serialize(VArchive &ar)

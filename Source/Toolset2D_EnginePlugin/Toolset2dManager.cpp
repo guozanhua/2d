@@ -195,7 +195,7 @@ bool SpriteData::GenerateConvexHull()
 
 			hkgpConvexHull convexHull;
 
-			if (convexHull.build(vertices, config) != -1)
+			if ( convexHull.build(vertices, config) != -1 )
 			{
 				hkgpConvexHull *result = &convexHull;
 				hkgpConvexHull *convexHullSimplified = NULL;		
@@ -218,7 +218,6 @@ bool SpriteData::GenerateConvexHull()
 				config.m_shrinkByConvexRadius = false;
 				config.m_useOptimizedShrinking = false;
 				cell.shape = new hkpConvexVerticesShape(cell.vertexPositions, config);
-				VASSERT(cell.shape->getReferenceCount() == 1);
 
 				V_SAFE_DELETE(convexHullSimplified);
 
@@ -238,8 +237,9 @@ void Toolset2dManager::OneTimeInit()
 {
 	m_camera = NULL;
 	m_bPlayingTheGame = false;
+
 	m_world = NULL;
-	m_visualDebugger = NULL;
+	m_physicsModule = NULL;
 
 	FORCE_LINKDYNCLASS(Sprite);
 	FORCE_LINKDYNCLASS(Camera2D);
@@ -283,9 +283,6 @@ void Toolset2dManager::OneTimeDeInit()
 void Toolset2dManager::InitializeHavokPhysics()
 {
 #if USE_HAVOK_PHYSICS_2D
-	hkProductFeatures::initialize();
-	HK_OPTIONAL_COMPONENT_REQUEST(hkpTreeBroadPhase);
-
 	{
 		hkpWorldCinfo worldInfo;
 
@@ -307,43 +304,31 @@ void Toolset2dManager::InitializeHavokPhysics()
 		hkpAgentRegisterUtil::registerAllAgents( m_world->getCollisionDispatcher() );
 	}
 
-	//
-	// Initialize the visual debugger so we can connect remotely to the simulation
-	// The context must exist beyond the use of the VDB instance, and you can make
-	// whatever contexts you like for your own viewer types.
-	//
-
-	hkpPhysicsContext* context = new hkpPhysicsContext;
-	hkpPhysicsContext::registerAllPhysicsProcesses(); // all the physics viewers
-	context->addWorld(m_world); // add the physics world so the viewers can see it
-	m_visualDebugger = SetupVisualDebugger(context);
+	//m_physicsContext = new hkpPhysicsContext;
+	//hkpPhysicsContext::registerAllPhysicsProcesses();			// all the physics viewers
+	//m_physicsContext->addWorld(m_world);                // add the physics world so the viewers can see it
+	//hkArray<hkProcessContext*> contexts;
+	//contexts.pushBack(m_physicsContext);
+	//m_pVisualDebugger = new hkVisualDebugger(contexts);
+	//m_pVisualDebugger->serve(25003);
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
 void Toolset2dManager::UnintializeHavokPhysics()
 {
 	V_SAFE_DELETE(m_world);
-	V_SAFE_DELETE(m_visualDebugger);
 
 	VISION_HAVOK_UNSYNC_ALL_STATICS();
 }
 
-hkVisualDebugger *Toolset2dManager::SetupVisualDebugger(hkpPhysicsContext *context)
+void Toolset2dManager::Step( float dt )
 {
-	// Setup the visual debugger
-	hkArray<hkProcessContext*> contexts;
-	contexts.pushBack(context);
-
-	hkVisualDebugger* vdb = new hkVisualDebugger(contexts);
-	vdb->serve(HK_VISUAL_DEBUGGER_WORLD_2D_PORT);
-
-	// Allocate memory for internal profiling information
-	// You can discard this if you do not want Havok profiling information
-	hkMonitorStream& stream = hkMonitorStream::getInstance();
-	stream.resize( 500 * 1024 );	// 500K for timer info
-	stream.reset();
-
-	return vdb;
+#if USE_HAVOK_PHYSICS_2D
+	if (m_world)
+	{
+		m_world->stepDeltaTime(dt);
+	}
+#endif
 }
 
 bool Toolset2dManager::CreateLuaCast(VScriptCreateStackProxyObject *scriptData, const char *typeName, VType *type)
@@ -416,31 +401,28 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
 	{
 		vHavokPhysicsModuleCallbackData *pHavokData = (vHavokPhysicsModuleCallbackData*)pData;
+
+		// #jve #note : This shouldn't be necessary, but we add this here to make sure that the broadphase
+		//              is accessible.
+		hkProductFeatures::initialize();
+
 		VISION_HAVOK_SYNC_STATICS();
 		VISION_HAVOK_SYNC_PER_THREAD_STATICS( pHavokData->GetHavokModule() );
 
 		hkDefaultClassNameRegistry& dcnReg	= hkDefaultClassNameRegistry::getInstance();
 		hkTypeInfoRegistry&			tyReg	= hkTypeInfoRegistry::getInstance();
 		hkVtableClassRegistry&		vtcReg	= hkVtableClassRegistry::getInstance();
-		
-		// Register AI classes
-		//<dkw.review: this may change
-#ifndef VBASE_LIB  // DLL, so have a full set 
+	
 		dcnReg.registerList(hkBuiltinTypeRegistry::StaticLinkedClasses);
 		tyReg.registerList(hkBuiltinTypeRegistry::StaticLinkedTypeInfos);
 		vtcReg.registerList(hkBuiltinTypeRegistry::StaticLinkedTypeInfos, hkBuiltinTypeRegistry::StaticLinkedClasses);
 
-#else // Static lib, just need to add Ai ones and reg the ai patches which would not have been done yet
-
-		dcnReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedClasses);
-		tyReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedTypeInfos);
-		vtcReg.registerList(hkBuiltinAiTypeRegistry::StaticLinkedTypeInfos, hkBuiltinAiTypeRegistry::StaticLinkedClasses);
-#endif
-		//registerAiPatches();
-		//hkVersionPatchManager::getInstance().recomputePatchDependencies();
-
-		//vHavokAiModule::GetInstance()->Init();
-		pHavokData->GetHavokModule()->AddStepper(this);
+		m_physicsModule = pHavokData->GetHavokModule();
+		VASSERT(m_physicsModule != NULL);
+		if (m_physicsModule)
+		{
+			m_physicsModule->AddStepper(this);
+		}
 	}
 	else if (pData->m_pSender == &vHavokPhysicsModule::OnAfterDeInitializePhysics)
 	{
@@ -504,6 +486,12 @@ void Toolset2dManager::Render()
 	// Sort all the sprites by their Z order
 	qsort(m_sprites.GetData(), m_sprites.GetSize(), sizeof(VWeakPtr<VisBaseEntity_cl> *), compareSprites);
 
+	if (m_camera != NULL)
+	{
+		const hkvVec4 *transform = m_camera->GetTransform();
+		pRender->SetTransformation(transform);
+	}
+
 	// Now render all the things
 	for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
 	{
@@ -560,22 +548,6 @@ void Toolset2dManager::Update(float deltaTime)
 			}
 		}
 	}
-}
-
-void Toolset2dManager::Step( float dt )
-{
-#if USE_HAVOK_PHYSICS_2D
-	if (m_world)
-	{
-		m_world->stepDeltaTime(dt);
-
-		// Step the debugger
-		m_visualDebugger->step(dt);
-
-		// Reset internal profiling info for next frame
-		hkMonitorStream::getInstance().reset();
-	}
-#endif
 }
 
 void Toolset2dManager::AddSprite(Sprite *sprite)
@@ -826,6 +798,15 @@ void Toolset2dManager::SetPlayTheGame(bool bStatus)
 	if (m_bPlayingTheGame != bStatus)
 	{
 		m_bPlayingTheGame = bStatus;
+
+		if (m_bPlayingTheGame)
+		{
+			// #jve #todo : Add the sprites that have physics to the world
+			for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
+			{
+				//Sprite *sprite = static_cast<Sprite*>( m_sprites[spriteIndex]->GetPtr() );
+			}
+		}
 	}
 }
 

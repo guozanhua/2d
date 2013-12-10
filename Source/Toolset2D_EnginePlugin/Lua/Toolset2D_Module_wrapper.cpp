@@ -10815,6 +10815,169 @@ fail:
 }
 
 
+static int _wrap_Sprite_SetConvexHullCollision(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  bool arg2 ;
+  
+  SWIG_check_num_args("SetConvexHullCollision",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetConvexHullCollision",1,"Sprite *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetConvexHullCollision",1,"Sprite *");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SetConvexHullCollision",2,"bool");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_SetConvexHullCollision",1,SWIGTYPE_p_Sprite);
+  }
+  
+  arg2 = (lua_toboolean(L, 2)!=0);
+  (arg1)->SetConvexHullCollision(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_IsConvexHullCollision(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("IsConvexHullCollision",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("IsConvexHullCollision",1,"Sprite const *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsConvexHullCollision",1,"Sprite const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_IsConvexHullCollision",1,SWIGTYPE_p_Sprite);
+  }
+  
+  result = (bool)((Sprite const *)arg1)->IsConvexHullCollision();
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_Clone__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  hkvVec3 *arg2 = (hkvVec3 *) 0 ;
+  Sprite *result = 0 ;
+  
+  SWIG_check_num_args("Clone",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Clone",1,"Sprite const *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Clone",1,"Sprite const *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("Clone",2,"hkvVec3 const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_Clone",1,SWIGTYPE_p_Sprite);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_hkvVec3,0))){
+    SWIG_fail_ptr("Sprite_Clone",2,SWIGTYPE_p_hkvVec3);
+  }
+  
+  result = (Sprite *)((Sprite const *)arg1)->Clone((hkvVec3 const *)arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_Clone__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  Sprite *arg1 = (Sprite *) 0 ;
+  Sprite *result = 0 ;
+  
+  SWIG_check_num_args("Clone",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("Clone",1,"Sprite const *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Clone",1,"Sprite const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Sprite,0))){
+    SWIG_fail_ptr("Sprite_Clone",1,SWIGTYPE_p_Sprite);
+  }
+  
+  result = (Sprite *)((Sprite const *)arg1)->Clone();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Sprite,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Sprite_Clone(lua_State* L) {
+  int argc;
+  int argv[3]={
+    1,2,3
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 1) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Sprite, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      return _wrap_Sprite_Clone__SWIG_1(L);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_Sprite, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (SWIG_isptrtype(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_hkvVec3, 0)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        return _wrap_Sprite_Clone__SWIG_0(L);
+      }
+    }
+  }
+  
+  lua_pushstring(L,"Wrong arguments for overloaded function 'Sprite_Clone'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    Clone(Sprite const *,hkvVec3 const *)\n"
+    "    Clone(Sprite const *)\n");
+  lua_error(L);return 0;
+}
+
+
 static int _wrap_Sprite_Cast(lua_State* L) {
   int SWIG_arg = 0;
   VTypedObject *arg1 = (VTypedObject *) 0 ;
@@ -10853,6 +11016,9 @@ static swig_lua_method swig_Sprite_methods[] = {
     {"GetCenterPosition", _wrap_Sprite_GetCenterPosition}, 
     {"SetPlayOnce", _wrap_Sprite_SetPlayOnce}, 
     {"SetCollision", _wrap_Sprite_SetCollision}, 
+    {"SetConvexHullCollision", _wrap_Sprite_SetConvexHullCollision}, 
+    {"IsConvexHullCollision", _wrap_Sprite_IsConvexHullCollision}, 
+    {"Clone", _wrap_Sprite_Clone}, 
     {0,0}
 };
 static swig_lua_attribute swig_Sprite_attributes[] = {

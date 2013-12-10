@@ -31,6 +31,11 @@ public:
 	void SetPlayOnce(bool enabled);
   
 	void SetCollision(bool enabled);
+	
+	void SetConvexHullCollision(bool enabled);
+	bool IsConvexHullCollision() const;
+	
+	Sprite *Clone(const hkvVec3 *position = NULL) const;
 
 	%extend{
 		VSWIG_CREATE_CAST(Sprite)

@@ -1,12 +1,16 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
-// #todo #jve : Still not completely working yet, so disable for now
+// #todo : disabling for now since there are still some known issues with it
 #define USE_HAVOK_PHYSICS_2D	0
+
+// #todo : not yet implemented
+#define USE_BOX_2D				0
 
 class Sprite;
 class Camera2D;
 class VScriptCreateStackProxyObject;
+class vHavokPhysicsModule;
 
 struct SpriteCell
 {
@@ -116,7 +120,6 @@ protected:
 
 	void InitializeHavokPhysics();
 	void UnintializeHavokPhysics();
-	hkVisualDebugger *SetupVisualDebugger(hkpPhysicsContext *context);
 
 private:
 	// Hold weak pointers so that if they get removed in some unexpected way we don't
@@ -128,7 +131,7 @@ private:
 	bool m_bPlayingTheGame;
 
 	hkpWorld *m_world;
-	hkVisualDebugger *m_visualDebugger;
+	vHavokPhysicsModule *m_physicsModule;
 
 	// We store the sprite data in the manager since sprites will most likely share
 	// the same data and we don't want to re-parse the same information multiple times

@@ -13,7 +13,7 @@ and we wanted to give you, the community, a first look at this so that you can p
 Features
 --------
 
-- Adds two new entities: Sprite and 2D Camera
+- Adds two new entities: **Sprite** and **2D Camera**
 - Automated sprite generation using [Shoebox][1]
 - Runtime playback of spritesheets
 - Collision detection and LUA callbacks
@@ -23,15 +23,15 @@ Dependencies
 
 * [Visual Studio 2010][6] - **(Required)** Needed for compiling and you can use [Visual Studio 2010 Express][5]
 * [Python 2.7][4] - **(Required)** There are numerous helper scripts that are executed automatically in Visual Studio when you build, so you need to install this and put it in your PATH.
-* [PyTools][3] - (Optional) if you want to debug Python scripts
-* [Shoebox][1] - (Optional) if you want to generate new spritesheets
+* [PyTools][3] - (Optional) Useful if you want to debug Python scripts
+* [Shoebox][1] - (Optional) Needed if you want to generate new spritesheets using the provided Python scripts
 
 Samples
 -------
 
 * Shooter (`Assets\Scenes\Shooter.scene`)
 * Impossible (`Assets\Scenes\Impossible.scene`)
-* Physics (`Assets\Scenes\Physics.scene`) - **(Not yet working)** Shows 2D Havok Physics integration.
+* Physics (`Assets\Scenes\Physics.scene`) - **(Not yet working)** Will showcase Havok Physics integration.
 
 Compiling
 ---------
@@ -59,13 +59,13 @@ Remaining Work
 ###Beta
 
 - Finish iOS and Android port
-- Add 2D physics component using Havok Physics
 - Optimzied rendering that uses actual mesh buffers
+  - Already have a working version of this internally, but need to port it over
+- Add 2D physics component using Havok Physics
 - Add blending modes for Sprite entity
 - Add custom shader support for Sprite entity
 - Add a SetDirection LUA call for setting orientation of sprite
 - Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:AddSprite
-- Add a Clone LUA call to Sprite entity
 
 ###Wishlist
 
@@ -73,8 +73,8 @@ Remaining Work
 - Add support for using particle effects (as a child of the Sprite entity)
 - Add a 2D manipulator in the editor
 - Add pixel-perfect collision detection
-- Add support for Box2D
 - Add a transform rule that automatically creates the sprite sheet
+- Add support for Box2D
 
 [1]: http://renderhjs.net/shoebox/
 [2]: http://www.polycount.com/forum/showthread.php?t=91554&highlight=shoebox

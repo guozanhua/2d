@@ -443,6 +443,22 @@ hkvVec2 Sprite::GetDimensions() const
 	return hkvVec2(width, height);
 }
 
+Sprite *Sprite::Clone(const hkvVec3 *position) const
+{
+	hkvVec3 startPosition = (position != NULL) ? *position : GetCenterPosition();
+
+	Sprite *sprite = Toolset2dManager::CreateSprite( startPosition, m_spriteSheetFilename, m_xmlDataFilename );
+
+	sprite->SetObjectKey( GetObjectKey() );
+	sprite->SetCollision( IsColliding() );
+	sprite->SetPlayOnce( IsPlayOnce() );
+	sprite->SetFullscreenMode( IsFullscreenMode() );
+	sprite->SetWidth( GetWidth() );
+	sprite->SetHeight( GetHeight() );
+
+	return sprite;
+}
+
 const SpriteCell *Sprite::GetCurrentCell() const
 {
 	const SpriteCell *cell = NULL;
@@ -732,8 +748,12 @@ bool Sprite::IsOverlapping(Sprite *other) const
 {
 	bool inside = false;
 
+	const hkpConvexTransformShape *shapeA = GetShape();
+	const hkpConvexTransformShape *shapeB = other->GetShape();
+
 	// if both sprites don't use convex hull collision, then default to simple AABB collision
-	if (!IsConvexHullCollision() && !other->IsConvexHullCollision())
+	if ( shapeA == NULL || shapeB == NULL ||
+		 (!IsConvexHullCollision() && !other->IsConvexHullCollision()) )
 	{
 		const hkvVec2 *otherVertices = other->GetVertices();
 
@@ -775,8 +795,6 @@ bool Sprite::IsOverlapping(Sprite *other) const
 	else
 	{
 		vHavokPhysicsModule* physicsModule = vHavokPhysicsModule::GetInstance();
-		const hkpConvexTransformShape *shapeA = GetShape();
-		const hkpConvexTransformShape *shapeB = other->GetShape();
 
 		if (physicsModule != HK_NULL &&
 			shapeA != NULL &&

@@ -107,6 +107,8 @@ public:
 	TOOLSET_2D_IMPEXP void SetWidth(float width);
 	TOOLSET_2D_IMPEXP void SetHeight(float height);
 
+	TOOLSET_2D_IMPEXP Sprite *Clone(const hkvVec3 *position = NULL) const;
+
 protected:
 	void CommonInit();
 	void CommonDeInit();

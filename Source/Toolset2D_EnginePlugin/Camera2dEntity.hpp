@@ -27,11 +27,17 @@ public:
 
 	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
 
+	TOOLSET_2D_IMPEXP const hkvVec4 *GetTransform() const;
+
 protected:
 	void CommonInit();
 	void CommonDeInit();
 
 	void Clear();
+
+private:
+	// hkvVec4(scale.x, scale.y, offset.x, offset.y)
+	hkvVec4 m_transform;
 };
 
 #endif // CAMERA_2D_ENTITY_HPP_INCLUDED

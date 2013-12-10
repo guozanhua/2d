@@ -139,15 +139,15 @@ namespace Toolset2D_Managed
 				const SpriteCell *cell = sprite->GetCurrentCell();
 				if (sprite->IsConvexHullCollision() && cell != NULL && cell->vertexIndices.getSize() > 0)
 				{
-					const int* vi = &cell->vertexIndices[0];
-					for(int i = 0;i < cell->verticesPerFace.getSize();++i)
+					const int *vertexIndices = &cell->vertexIndices[0];
+					for(int faceIndex = 0; faceIndex < cell->verticesPerFace.getSize(); ++faceIndex)
 					{
-						const int count = cell->verticesPerFace[i];
+						const int count = cell->verticesPerFace[faceIndex];
 
-						for(int j = 0; j < count; ++j)
+						for(int vertexIndex = 0; vertexIndex < count; ++vertexIndex)
 						{
-							hkvVec2 e1 = sprite->TransformVertex( cell->vertexPositions[ vi[j] ] );
-							hkvVec2 e2 = sprite->TransformVertex( cell->vertexPositions[ vi[(j + 1) % count] ] );
+							hkvVec2 e1 = sprite->TransformVertex( cell->vertexPositions[ vertexIndices[vertexIndex] ] );
+							hkvVec2 e2 = sprite->TransformVertex( cell->vertexPositions[ vertexIndices[(vertexIndex + 1) % count] ] );
 							
 							Vision::Game.DrawSingleLine2D(
 								e1.x, e1.y,
@@ -155,7 +155,7 @@ namespace Toolset2D_Managed
 								VColorRef(0, 255, 0, 80), width);
 						}
 
-						vi += count;
+						vertexIndices += count;
 					}
 				}
 			}
