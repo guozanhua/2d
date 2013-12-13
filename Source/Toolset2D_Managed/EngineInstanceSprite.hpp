@@ -24,6 +24,7 @@ namespace Toolset2D_Managed
 		VOVERRIDE void SetVisible(bool bStatus) override;
 		VOVERRIDE void SetObjectKey(String ^key) override;
 		VOVERRIDE void SetPosition(float x,float y,float z) override;
+		VOVERRIDE bool GetPosition(Vector3F %enginePosition) override;
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
 		VOVERRIDE bool GetOrientation(Vector3F %orientation) override;
 		VOVERRIDE void SetScaling(float x, float y, float z) override;
@@ -61,6 +62,8 @@ namespace Toolset2D_Managed
 		float GetScrollX();
 		float GetScrollY();
 		void SetScroll(float x, float y);
+
+		void SetCenterPosition(float x, float y);
 
 		float GetWidth();
 		float GetHeight();

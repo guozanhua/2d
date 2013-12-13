@@ -33,7 +33,8 @@ namespace Toolset2D
         /// <summary>
         /// Category string
         /// </summary>
-        protected const string CAT_EVENTRES = "Sprite";
+        protected const string CAT_SPRITE = "Sprite";
+        protected const string CAT_DYNAMICS = "Dynamics";
 
         /// <summary>
         /// Category ID
@@ -265,11 +266,24 @@ namespace Toolset2D
             base.OnDeserialization();
             AddHint(HintFlags_e.HideGizmo);
         }
+
+        public void SetCenterPosition(float x, float y)
+        {
+            if (HasEngineInstance())
+            {
+                EngineNode.SetCenterPosition(x, y);
+
+                Vector3F position = new Vector3F();
+                EngineNode.GetPosition(ref position);
+
+                Position = position;
+            }
+        }
         #endregion
 
         #region Properties
         string m_SpriteSheetFilename;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE), PropertyOrder(1)]
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE), PropertyOrder(1)]
         [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
         [Description("Texture used for the sprite sheet.")]
         public string SpriteSheetFilename
@@ -285,7 +299,7 @@ namespace Toolset2D
 
         string m_ShoeBoxFilename;
         [PrefabResolveFilename]
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(2),
         EditorAttribute(typeof(FilenameEditor), typeof(UITypeEditor)),
         FileDialogFilter(new string[] { ".xml" })]
@@ -305,7 +319,7 @@ namespace Toolset2D
         }
 
         string m_state;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(3)]
         [Description("Current state")]
         [EditorAttribute(typeof(StateTypeEditor), typeof(UITypeEditor))]
@@ -320,7 +334,7 @@ namespace Toolset2D
         }
 
         float m_scrollX;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(4)]
         [Description("")]
         public float ScrollX
@@ -334,7 +348,7 @@ namespace Toolset2D
         }
 
         float m_scrollY;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(5)]
         [Description("")]
         public float ScrollY
@@ -348,7 +362,7 @@ namespace Toolset2D
         }
 
         float m_width;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(6)]
         [Description("")]
         public float Width
@@ -362,7 +376,7 @@ namespace Toolset2D
         }
 
         float m_height;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(7)]
         [Description("")]
         public float Height
@@ -376,7 +390,7 @@ namespace Toolset2D
         }
 
         bool m_playOnce;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(8)]
         [Description("PlayOnce")]
         public bool PlayOnce
@@ -390,7 +404,7 @@ namespace Toolset2D
         }
         
         bool m_collision;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_DYNAMICS, CATORDER_SPRITE),
         PropertyOrder(9)]
         [Description("Collide")]
         public bool Collide
@@ -404,7 +418,7 @@ namespace Toolset2D
         }
 
         bool m_convexHullCollision;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_DYNAMICS, CATORDER_SPRITE),
         PropertyOrder(9)]
         [Description("AABB Collision")]
         public bool ConvexHullCollision
@@ -418,7 +432,7 @@ namespace Toolset2D
         }
 
         bool m_simulate;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_DYNAMICS, CATORDER_SPRITE),
         PropertyOrder(9)]
         [Description("Simulate")]
         public bool Simulate
@@ -432,7 +446,7 @@ namespace Toolset2D
         }
 
         bool m_fixed;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_DYNAMICS, CATORDER_SPRITE),
         PropertyOrder(9)]
         [Description("Fixed")]
         public bool Fixed
@@ -446,7 +460,7 @@ namespace Toolset2D
         }
 
         bool m_fullscreen;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(10)]
         [Description("Fullscreen")]
         public bool Fullscreen
@@ -460,7 +474,7 @@ namespace Toolset2D
         }
 
         float m_rotation;
-        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        [SortedCategory(CAT_SPRITE, CATORDER_SPRITE),
         PropertyOrder(11)]
         [Description("")]
         public float Rotation

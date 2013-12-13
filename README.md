@@ -31,7 +31,7 @@ Samples
 
 * Shooter (`Assets\Scenes\Shooter.scene`)
 * Impossible (`Assets\Scenes\Impossible.scene`)
-* Physics (`Assets\Scenes\Physics.scene`) - **(Not yet working)** Will showcase Havok Physics integration.
+* Physics (`Assets\Scenes\Physics.scene`) 
 
 Compiling
 ---------
@@ -46,7 +46,8 @@ configurations. It will automatically copy the binaries to the Anarchy SDK folde
 Generating Spritesheets
 -----------------------
 
-We have a Python script Source\BuildSystem\spritesheet.py that can be used to generate a sprite sheet. Just pass in either a folder or
+We have a Python script Source\BuildSystem\spritesheet.py that can be used to generate a sprite sheet. Just pass in either a folder or set of files and it
+will call [Shoebox][1], generate the spritesheet along with needed XML files, and copy it to the Assets folder.
 
 Credits
 -------
@@ -58,20 +59,23 @@ Remaining Work
 
 ###Beta
 
-- Finish iOS and Android port
+- Fix Android crash
+- Add a 2D manipulator/gizmo in the editor
 - Optimzied rendering that uses actual mesh buffers
   - Already have a working version of this internally, but need to port it over
-- Add 2D physics component using Havok Physics
+- Convert Havok Physics integration to a component
+- Add support for Havok Physics on Android, iOS and Tizen
+  - Need to implement serialization so that convex hull generation only happens on PC
 - Add blending modes for Sprite entity
-- Add custom shader support for Sprite entity
 - Add a SetDirection LUA call for setting orientation of sprite
-- Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:AddSprite
+- Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:CreateSimpleSprite
+- Add support for Tizezn
 
 ###Wishlist
 
+- Add custom shader support for Sprite entity
 - Add a broadphase / sweep-and-prune implementation for collision detection
 - Add support for using particle effects (as a child of the Sprite entity)
-- Add a 2D manipulator in the editor
 - Add pixel-perfect collision detection
 - Add a transform rule that automatically creates the sprite sheet
 - Add support for Box2D

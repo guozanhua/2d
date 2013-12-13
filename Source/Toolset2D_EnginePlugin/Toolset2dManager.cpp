@@ -234,11 +234,14 @@ bool SpriteData::GenerateConvexHull()
 
 				cell.shape = new hkpConvexVerticesShape(cell.vertexPositions, config);
 
+				// Get the bounding box of the shape and use the max extent as the depth of the 3d shape
 				hkAabb aabb;
 				cell.shape->getAabb( hkTransform::getIdentity(), 0.f, aabb );
 				hkVector4 extents;
 				aabb.getExtents(extents);
 				const hkReal depth = extents( extents.getIndexOfMaxComponent<2>() ) / 2.0f;
+				
+				// Generate a 3d
 				hkArray<hkVector4> vertexPositions3d;
 				for (int vertexIndex = 0; vertexIndex < cell.vertexPositions.getSize(); vertexIndex++)
 				{
@@ -422,12 +425,12 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			SetPlayTheGame(true);
 		}
 	}
-	if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
+	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
 		SetPlayTheGame(false);
 		RemoveSpriteData();
 	}
-	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
+	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
 	{
 		RemoveSpriteData();
 	}

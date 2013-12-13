@@ -10,19 +10,20 @@
       <Filter>LUA</Filter>
     </ClCompile>
     <ClCompile Include="SpriteEntity.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="Toolset2D_EnginePluginPCH.cpp" />
-    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Camera2dEntity.cpp" />
+    <ClCompile Include="HavokSetup.cxx" />
+    <ClCompile Include="Toolset2dManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SpriteEntity.hpp" />
-    <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp">
       <Filter>LUA</Filter>
     </ClInclude>
-    <ClInclude Include="HUD.hpp" />
+    <ClInclude Include="Camera2dEntity.hpp" />
+    <ClInclude Include="Toolset2dManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Lua\SpriteEntity.i">

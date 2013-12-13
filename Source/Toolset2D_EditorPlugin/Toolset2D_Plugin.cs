@@ -176,8 +176,10 @@ namespace Toolset2D
             EditorManager.ActiveView.DropObject(_dummyShape, e);
             EditorManager.ActiveView.Focus();
 
-            Shape3D newShape = EditorManager.ActiveView.Gizmo.Shapes[0] as Shape3D;
-            newShape.Position = EditorManager.ActiveView.Gizmo.Position = GetPosition(e);
+            Vector3F position = GetPosition(e);
+            SpriteShape newShape = EditorManager.ActiveView.Gizmo.Shapes[0] as SpriteShape;
+            newShape.SetCenterPosition(position.X, position.Y);
+            EditorManager.ActiveView.Gizmo.Position = position;
    
             //EditorManager.ActiveView.Gizmo
 

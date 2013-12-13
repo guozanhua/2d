@@ -139,12 +139,15 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Camera2dEntity.cpp" />
+    <ClCompile Include="HavokSetup.cxx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Lua\Toolset2D_Module_wrapper.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Yes</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SpriteEntity.cpp" />
-    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="Toolset2dManager.cpp" />
     <ClCompile Include="Toolset2D_EnginePlugin.cpp" />
     <ClCompile Include="Toolset2D_EnginePluginPCH.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Toolset2D_EnginePluginPCH.h</PrecompiledHeaderFile>
@@ -152,9 +155,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HUD.hpp" />
+    <ClInclude Include="Camera2dEntity.hpp" />
     <ClInclude Include="SpriteEntity.hpp" />
-    <ClInclude Include="SpriteManager.hpp" />
+    <ClInclude Include="Toolset2dManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp" />
   </ItemGroup>
@@ -164,19 +167,13 @@
     <CustomBuild Include="Lua\Toolset2D_Module.i">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
-python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
-xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
-del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
-python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
-xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
-del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">"$(HAVOK_THIRDPARTY_DIR)\redistsdks\swig\2.0.3\swig.exe" -c++ -lua -verbose -o Lua/Toolset2D_Module_wrapper.cpp -I$(VISION_SDK)\Source Lua\Toolset2D_Module.i
-python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --header "Toolset2D_Module_wrapper.hpp" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp
-xcopy /y $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp $(ProjectDir)\Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\
-del $(ProjectDir)\Lua\Toolset2D_Module_wrapper.hpp</Command>
+python "$(VISION_SDK)\Build\StandaloneTools\Iswig\Python\iswig.py" --includePre "Toolset2D_EnginePluginPCH.h" Lua/Toolset2D_Module_wrapper.cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">Lua\Toolset2D_Module_wrapper.cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">Lua\Toolset2D_Module.i;Lua\SpriteEntity.i;Lua\SpriteManager.i</AdditionalInputs>

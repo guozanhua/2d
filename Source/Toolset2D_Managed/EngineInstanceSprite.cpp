@@ -57,6 +57,19 @@ namespace Toolset2D_Managed
 		}
 	}
 
+	bool EngineInstanceSprite::GetPosition(Vector3F %enginePosition)
+	{
+		bool success = false;
+		if (GetSpriteEntity())
+		{
+			hkvVec3 position;
+			GetSpriteEntity()->GetPosition(position);
+			enginePosition = Vector3F(position.x, position.y, position.z);
+			success = true;
+		}
+		return success;
+	}
+
 	void EngineInstanceSprite::SetOrientation(float yaw, float pitch, float roll)
 	{
 		if (GetSpriteEntity())
@@ -138,7 +151,7 @@ namespace Toolset2D_Managed
 #if USE_HAVOK_PHYSICS_2D
 				// render the convex hull of the current cell
 				const SpriteCell *cell = sprite->GetCurrentCell();
-				if (sprite->IsConvexHullCollision() && cell != NULL && cell->vertexIndices.getSize() > 0)
+				if (cell != NULL && cell->vertexIndices.getSize() > 0)
 				{
 					const int *vertexIndices = &cell->vertexIndices[0];
 					for(int faceIndex = 0; faceIndex < cell->verticesPerFace.getSize(); ++faceIndex)
@@ -364,6 +377,15 @@ namespace Toolset2D_Managed
 		if (GetSpriteEntity() != NULL)
 		{
 			GetSpriteEntity()->SetScrollSpeed(hkvVec2(x, y));
+		}
+	}
+
+	void EngineInstanceSprite::SetCenterPosition(float x, float y)
+	{
+		if (GetSpriteEntity() != NULL)
+		{
+			const hkvVec3 position = GetSpriteEntity()->GetPosition();
+			GetSpriteEntity()->SetCenterPosition( hkvVec3(x, y, position.z) );
 		}
 	}
 
