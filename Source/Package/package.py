@@ -30,7 +30,7 @@ def getDatestamp():
 LOGGER = logging.getLogger('toolset2d.package')
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(inspect.getfile(inspect.currentframe())))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.join(SCRIPT_DIR, os.pardir), os.pardir))
 
 TOOL_NAME = "Toolset2D"
 
@@ -41,8 +41,11 @@ IGNORE_FOLDER_LIST = ["obj", "thumbnails", "AndroidTemp", "AssetMgmt_data\\trans
 # src is relative to package root, dest is the path in the zip to place the file at.
 # if src is a directory it will be added recursively
 PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
+                 "update.bat": ("Tools/%s/update.bat" % TOOL_NAME),
+                 "update.sh": ("Tools/%s/update.sh" % TOOL_NAME),
                  "Source": ("Tools/%s/Source" % TOOL_NAME),
                  "Assets": ("Tools/%s/Assets" % TOOL_NAME),
+                 "ProjectPackages": ("Tools/%s/ProjectPackages" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME),
@@ -53,7 +56,7 @@ PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
 
 # Define the command line options. Need to put this after getDatestamp
 # is defined.
-PACKAGE = "Package/Output/ProjectAnarchy_Toolset2D_%s.zip" % getDatestamp()
+PACKAGE = "Bin/ProjectAnarchy_Toolset2D_%s.zip" % getDatestamp()
 COMMAND_LINE_OPTIONS = (
     (('-p', '--pkg-path'), {'action': 'store',
                             'dest': 'packagePath',
