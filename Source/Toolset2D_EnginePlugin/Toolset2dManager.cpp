@@ -80,12 +80,14 @@ void SpriteData::Cleanup()
 #if USE_HAVOK_PHYSICS_2D
 		if (cell->shape != NULL)
 		{
+			VASSERT(cell->shape->getReferenceCount() == 1);
 			cell->shape->removeReference();
 			cell->shape = NULL;
 		}
 
 		if (cell->shape3d != NULL)
 		{
+			VASSERT(cell->shape3d->getReferenceCount() == 1);
 			cell->shape3d->removeReference();
 			cell->shape3d = NULL;
 		}
@@ -344,6 +346,20 @@ void Toolset2dManager::UnintializeHavokPhysics()
 #endif
 }
 
+void Toolset2dManager::RemoveSpriteData()
+{
+	VASSERT(m_sprites.GetSize() == 0);
+
+	for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
+	{
+		SpriteData *spriteData = m_spriteData[spriteDataIndex];
+		delete spriteData;
+		m_spriteData[spriteDataIndex] = NULL;
+	}
+
+	m_spriteData.RemoveAll();
+}
+
 void Toolset2dManager::Step( float dt )
 {
 #if USE_HAVOK_PHYSICS_2D
@@ -396,14 +412,9 @@ bool Toolset2dManager::CreateLuaCast(VScriptCreateStackProxyObject *scriptData, 
 
 void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 {
-	if (pData->m_pSender == &Vision::Callbacks.OnEditorModeChanged)
-	{
-		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
+	//-- Scene load events
 
-		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
-		SetPlayTheGame( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME );
-	}
-	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
+	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
 		// initialize play-the-game only in this vForge mode (or outside vForge)
 		if (Vision::Editor.IsPlayingTheGame())
@@ -411,9 +422,24 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			SetPlayTheGame(true);
 		}
 	}
-	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
+	if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
 		SetPlayTheGame(false);
+		RemoveSpriteData();
+	}
+	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
+	{
+		RemoveSpriteData();
+	}
+
+	//-- Runtime events
+
+	if (pData->m_pSender == &Vision::Callbacks.OnEditorModeChanged)
+	{
+		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
+
+		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
+		SetPlayTheGame( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME );
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
 	{
@@ -423,8 +449,28 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			Render();
 		}
 	}
+	else if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
+	{
+		Update( Vision::GetTimer()->GetTimeDifference() );
+	}
+	else if (pData->m_pSender == &IVScriptManager::OnRegisterScriptFunctions)
+	{
+		RegisterLua();
+	}
+	else if (pData->m_pSender == &IVScriptManager::OnScriptProxyCreation)
+	{
+		VScriptCreateStackProxyObject * pScriptData = (VScriptCreateStackProxyObject *)pData;
+
+		// process data only if no other callback did that
+		if (!pScriptData->m_bProcessed)
+		{
+			CreateLuaCast(pScriptData, "Sprite", V_RUNTIME_CLASS(Sprite));
+			CreateLuaCast(pScriptData, "Camera2D", V_RUNTIME_CLASS(Camera2D));
+		}
+	}
+
 #if USE_HAVOK_PHYSICS_2D
-	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
+	if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
 	{
 		vHavokPhysicsModuleCallbackData *pHavokData = (vHavokPhysicsModuleCallbackData*)pData;
 
@@ -467,38 +513,6 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		UnintializeHavokPhysics();
 	}
 #endif // USE_HAVOK_PHYSICS_2D
-	else if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
-	{
-		Update( Vision::GetTimer()->GetTimeDifference() );
-	}
-	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
-	{
-		VASSERT(m_sprites.GetSize() == 0);
-
-		for (int spriteDataIndex = 0; spriteDataIndex < m_spriteData.GetSize(); spriteDataIndex++)
-		{
-			SpriteData *spriteData = m_spriteData[spriteDataIndex];
-			delete spriteData;
-			m_spriteData[spriteDataIndex] = NULL;
-		}
-
-		m_spriteData.RemoveAll();
-	}
-	else if (pData->m_pSender == &IVScriptManager::OnRegisterScriptFunctions)
-	{
-		RegisterLua();
-	}
-	else if (pData->m_pSender == &IVScriptManager::OnScriptProxyCreation)
-	{
-		VScriptCreateStackProxyObject * pScriptData = (VScriptCreateStackProxyObject *)pData;
-
-		// process data only if no other callback did that
-		if (!pScriptData->m_bProcessed)
-		{
-			CreateLuaCast(pScriptData, "Sprite", V_RUNTIME_CLASS(Sprite));
-			CreateLuaCast(pScriptData, "Camera2D", V_RUNTIME_CLASS(Camera2D));
-		}
-	}
 }
 
 void Toolset2dManager::Render()

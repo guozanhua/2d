@@ -178,6 +178,7 @@ void Sprite::CreateShapeData()
 			}
 
 			hkpRigidBody* body = new hkpRigidBody(ci);
+			rigidBodyShape->removeReference();
 			m_rigidBodies.Add(body);
 			world->addEntity(body);
 

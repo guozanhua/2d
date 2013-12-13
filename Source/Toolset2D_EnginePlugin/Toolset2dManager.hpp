@@ -134,6 +134,8 @@ protected:
 	void InitializeHavokPhysics();
 	void UnintializeHavokPhysics();
 
+	void RemoveSpriteData();
+
 private:
 	// Hold weak pointers so that if they get removed in some unexpected way we don't
 	// have a dead pointer hanging around
