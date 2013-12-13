@@ -17,7 +17,6 @@
 #include <Common/Serialize/Version/hkVersionPatchManager.h>
 #include <Common/Compat/hkHavokVersions.h>
 #include <Common/Base/Config/hkOptionalComponent.h>
-#include <Physics2012/Internal/BroadPhase/TreeBroadPhase/hkpTreeBroadPhase.h>
 
 #if defined(WIN32)
 #include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
@@ -27,12 +26,15 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VScriptIncludes.hpp>
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VLuaHelpers.hpp>
+
+#if USE_HAVOK_PHYSICS_2D
+#include <Physics2012/Internal/BroadPhase/TreeBroadPhase/hkpTreeBroadPhase.h>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
-
 #include <Common/Internal/GeometryProcessing/ConvexHull/hkgpConvexHull.h>
+#endif // USE_HAVOK_PHYSICS_2D
 
 // global function referenced
 extern "C" int luaopen_Toolset2dModule(lua_State *);
@@ -45,6 +47,18 @@ TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf&
 #endif
 
 static const hkUint32 HK_VISUAL_DEBUGGER_WORLD_2D_PORT = 25003;
+
+SpriteCell::SpriteCell()
+{
+	width = originalWidth = 0.f;
+	height = originalHeight = 0.f;
+	index = 0;
+
+#if USE_HAVOK_PHYSICS_2D
+	shape = NULL;
+	shape3d = NULL;
+#endif // USE_HAVOK_PHYSICS_2D
+}
 
 SpriteData::SpriteData()
 {
@@ -62,11 +76,20 @@ void SpriteData::Cleanup()
 	for (int cellIndex = 0; cellIndex < cells.GetSize(); cellIndex++)
 	{
 		SpriteCell *cell = &cells[cellIndex];
+
+#if USE_HAVOK_PHYSICS_2D
 		if (cell->shape != NULL)
 		{
 			cell->shape->removeReference();
 			cell->shape = NULL;
 		}
+
+		if (cell->shape3d != NULL)
+		{
+			cell->shape3d->removeReference();
+			cell->shape3d = NULL;
+		}
+#endif // USE_HAVOK_PHYSICS_2D
 	}
 
 	cells.RemoveAll();
@@ -197,18 +220,7 @@ bool SpriteData::GenerateConvexHull()
 
 			if ( convexHull.build(vertices, config) != -1 )
 			{
-				hkgpConvexHull *result = &convexHull;
-				hkgpConvexHull *convexHullSimplified = NULL;		
-
-				if (simplify)
-				{
-					convexHullSimplified = convexHull.clone();
-					const int numVertsToKeep = max(4, convexHullSimplified->getNumVertices() / 2);
-					if (convexHullSimplified && convexHullSimplified->decimateVertices(numVertsToKeep, true))
-					{
-						result = convexHullSimplified;
-					}
-				}
+				hkgpConvexHull *result = &convexHull;	
 
 				result->generateIndexedFaces(hkgpConvexHull::INTERNAL_VERTICES, cell.verticesPerFace, cell.vertexIndices, true);					
 				result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
@@ -217,9 +229,22 @@ bool SpriteData::GenerateConvexHull()
 				config.m_convexRadius = 0.f;
 				config.m_shrinkByConvexRadius = false;
 				config.m_useOptimizedShrinking = false;
+
 				cell.shape = new hkpConvexVerticesShape(cell.vertexPositions, config);
 
-				V_SAFE_DELETE(convexHullSimplified);
+				hkAabb aabb;
+				cell.shape->getAabb( hkTransform::getIdentity(), 0.f, aabb );
+				hkVector4 extents;
+				aabb.getExtents(extents);
+				const hkReal depth = extents( extents.getIndexOfMaxComponent<2>() ) / 2.0f;
+				hkArray<hkVector4> vertexPositions3d;
+				for (int vertexIndex = 0; vertexIndex < cell.vertexPositions.getSize(); vertexIndex++)
+				{
+					const hkVector4 position = cell.vertexPositions[vertexIndex];
+					vertexPositions3d.pushBack( hkVector4(position(0), position(1), -depth, 0.f) );
+					vertexPositions3d.pushBack( hkVector4(position(0), position(1), depth, 0.f) );
+				}
+				cell.shape3d = new hkpConvexVerticesShape(vertexPositions3d, config);
 
 				success = true;
 			}
@@ -238,15 +263,9 @@ void Toolset2dManager::OneTimeInit()
 	m_camera = NULL;
 	m_bPlayingTheGame = false;
 
-	m_world = NULL;
-	m_physicsModule = NULL;
 
 	FORCE_LINKDYNCLASS(Sprite);
 	FORCE_LINKDYNCLASS(Camera2D);
-
-	FORCE_LINKDYNCLASS(vHavokRigidBody);
-
-	VISION_PLUGIN_ENSURE_LOADED(vHavok);
 
 	Vision::Callbacks.OnRenderHook += this;
 	Vision::Callbacks.OnUpdateSceneFinished += this;
@@ -257,10 +276,19 @@ void Toolset2dManager::OneTimeInit()
 	IVScriptManager::OnRegisterScriptFunctions += this;
 	IVScriptManager::OnScriptProxyCreation += this;
 
+#if USE_HAVOK_PHYSICS_2D
+	m_world = NULL;
+	m_physicsModule = NULL;
+
+	FORCE_LINKDYNCLASS(vHavokRigidBody);
+
+	VISION_PLUGIN_ENSURE_LOADED(vHavok);
+
 	vHavokPhysicsModule::OnBeforeInitializePhysics += this;
 	vHavokPhysicsModule::OnAfterDeInitializePhysics += this;
 	vHavokPhysicsModule::OnAfterWorldCreated += this;
 	vHavokPhysicsModule::OnBeforeDeInitializePhysics += this;
+#endif // USE_HAVOK_PHYSICS_2D
 }
 
 void Toolset2dManager::OneTimeDeInit()
@@ -274,10 +302,12 @@ void Toolset2dManager::OneTimeDeInit()
 	IVScriptManager::OnRegisterScriptFunctions -= this;
 	IVScriptManager::OnScriptProxyCreation -= this;
 
+#if USE_HAVOK_PHYSICS_2D
 	vHavokPhysicsModule::OnBeforeInitializePhysics -= this;
 	vHavokPhysicsModule::OnAfterDeInitializePhysics -= this;
 	vHavokPhysicsModule::OnAfterWorldCreated -= this;
 	vHavokPhysicsModule::OnBeforeDeInitializePhysics -= this;
+#endif // USE_HAVOK_PHYSICS_2D
 }
 
 void Toolset2dManager::InitializeHavokPhysics()
@@ -286,15 +316,15 @@ void Toolset2dManager::InitializeHavokPhysics()
 	{
 		hkpWorldCinfo worldInfo;
 
-		worldInfo.setupSolverInfo(hkpWorldCinfo::SOLVER_TYPE_4ITERS_MEDIUM);
-		worldInfo.m_gravity = hkVector4(0.0f, -9.8f, 0.0f);
+		worldInfo.setupSolverInfo(hkpWorldCinfo::SOLVER_TYPE_8ITERS_HARD);
+		worldInfo.m_gravity = hkVector4(0.0f, 9.81f, 0.0f);
 		worldInfo.m_broadPhaseType = hkpWorldCinfo::BROADPHASE_TYPE_TREE;
 
 		// just fix the entity if the object falls off too far
-		worldInfo.m_broadPhaseBorderBehaviour = hkpWorldCinfo::BROADPHASE_BORDER_FIX_ENTITY;
+		worldInfo.m_broadPhaseBorderBehaviour = hkpWorldCinfo::BROADPHASE_BORDER_DO_NOTHING;
 
 		// You must specify the size of the broad phase - objects should not be simulated outside this region
-		worldInfo.setBroadPhaseWorldSize(1000.0f);
+		worldInfo.setBroadPhaseWorldSize(10000.0f);
 		m_world = new hkpWorld(worldInfo);
 	}
 
@@ -303,22 +333,15 @@ void Toolset2dManager::InitializeHavokPhysics()
 	{
 		hkpAgentRegisterUtil::registerAllAgents( m_world->getCollisionDispatcher() );
 	}
-
-	//m_physicsContext = new hkpPhysicsContext;
-	//hkpPhysicsContext::registerAllPhysicsProcesses();			// all the physics viewers
-	//m_physicsContext->addWorld(m_world);                // add the physics world so the viewers can see it
-	//hkArray<hkProcessContext*> contexts;
-	//contexts.pushBack(m_physicsContext);
-	//m_pVisualDebugger = new hkVisualDebugger(contexts);
-	//m_pVisualDebugger->serve(25003);
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
 void Toolset2dManager::UnintializeHavokPhysics()
 {
+#if USE_HAVOK_PHYSICS_2D
 	V_SAFE_DELETE(m_world);
-
 	VISION_HAVOK_UNSYNC_ALL_STATICS();
+#endif
 }
 
 void Toolset2dManager::Step( float dt )
@@ -329,6 +352,11 @@ void Toolset2dManager::Step( float dt )
 		m_world->stepDeltaTime(dt);
 	}
 #endif
+}
+
+bool Toolset2dManager::IsPlayingGame() const
+{
+	return m_bPlayingTheGame;
 }
 
 bool Toolset2dManager::CreateLuaCast(VScriptCreateStackProxyObject *scriptData, const char *typeName, VType *type)
@@ -373,10 +401,7 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
 
 		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
-		if (pEditorModeChangedData->m_eNewMode != VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME)
-		{
-			SetPlayTheGame(false);
-		}
+		SetPlayTheGame( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME );
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
@@ -398,6 +423,7 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			Render();
 		}
 	}
+#if USE_HAVOK_PHYSICS_2D
 	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
 	{
 		vHavokPhysicsModuleCallbackData *pHavokData = (vHavokPhysicsModuleCallbackData*)pData;
@@ -440,6 +466,7 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	{
 		UnintializeHavokPhysics();
 	}
+#endif // USE_HAVOK_PHYSICS_2D
 	else if (pData->m_pSender == &Vision::Callbacks.OnUpdateSceneFinished)
 	{
 		Update( Vision::GetTimer()->GetTimeDifference() );
@@ -792,21 +819,11 @@ void Toolset2dManager::RegisterLua()
 	}
 }
 
-// switch to play-the-game mode. Do some initialization such as HUD display
 void Toolset2dManager::SetPlayTheGame(bool bStatus)
 {
 	if (m_bPlayingTheGame != bStatus)
 	{
 		m_bPlayingTheGame = bStatus;
-
-		if (m_bPlayingTheGame)
-		{
-			// #jve #todo : Add the sprites that have physics to the world
-			for (int spriteIndex = 0; spriteIndex < m_sprites.GetSize(); spriteIndex++)
-			{
-				//Sprite *sprite = static_cast<Sprite*>( m_sprites[spriteIndex]->GetPtr() );
-			}
-		}
 	}
 }
 
@@ -830,6 +847,13 @@ Camera2D *Toolset2dManager::GetCamera()
 {
 	return m_camera;
 }
+
+#if USE_HAVOK_PHYSICS_2D
+hkpWorld *Toolset2dManager::GetPhysicsWorld()
+{
+	return m_world;
+}
+#endif // USE_HAVOK_PHYSICS_2D
 
 //----- functions
 

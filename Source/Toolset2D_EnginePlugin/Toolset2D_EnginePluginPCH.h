@@ -1,6 +1,12 @@
 #ifndef TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 #define TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 
+// #todo : disabling for now since there are still some known issues with it
+#define USE_HAVOK_PHYSICS_2D	0
+
+// #todo : not yet implemented
+#define USE_BOX_2D				0
+
 // The following defines are necessary primarily on Android so that there aren't duplicate
 // symbols generated for SWIG and vHavok
 #ifndef WIN32
@@ -16,8 +22,6 @@
 #define VSWIG_TypeCheck					T2D_VSWIG_TypeCheck
 #define VSWIG_Lua_typename				T2D_VSWIG_Lua_typename
 #endif
-
-#define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
 
 #if defined(WIN32)
 	// Exclude rarely-used stuff from Windows headers
@@ -41,9 +45,17 @@
 #include <crtdbg.h>
 #endif
 
-#ifndef __HAVOK_PARSER__
+#if !defined(__HAVOK_PARSER__) && USE_HAVOK_PHYSICS_2D
 #undef swap16
+#define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
+#else
+#include <Common/Base/KeyCode.h>
+#include <Common/Base/hkBase.h>
+#include <Common/Base/Ext/hkBaseExt.h>
+#include <Common/Base/System/hkBaseSystem.h>
+#include <Common/Base/Memory/System/Util/hkMemoryInitUtil.h>
+#include <Common/Base/Memory/Allocator/Thread/hkThreadMemory.h>
 #endif
 
 extern VModule gToolset2D_EngineModule;

@@ -13,12 +13,19 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
+#if USE_HAVOK_PHYSICS_2D
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Physics2012/Collide/Query/Collector/BodyPairCollector/hkpAllCdBodyPairCollector.h>
+#include <Physics/Constraint/Data/PointToPlane/hkpPointToPlaneConstraintData.h>
+#endif // USE_HAVOK_PHYSICS_2D
 
 #define CURRENT_SPRITE_VERSION 3
 
 V_IMPLEMENT_SERIAL(Sprite, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);
+
+const ConstraintMode kConstraintMode = POINT_TO_PLANE_CONSTRAINT;
+const float kGlobalPhysicsScale = 100.0f;
+const float kGlobalPhysicsScaleInv = 1.0f / kGlobalPhysicsScale;
 
 Sprite::Sprite()
 {
@@ -57,7 +64,7 @@ void Sprite::CommonDeInit()
 { 
 	Toolset2dManager::Instance()->RemoveSprite(this);
 
-	RemoveShape();
+	RemoveShapes();
 
 	Clear();
 }
@@ -66,8 +73,6 @@ void Sprite::Clear()
 {
 	SetExcludeFromVisTest(true);
 
-	m_lastGeneratedCell = NULL;
-	m_shape2D = NULL;
 	m_offscreen = false;
 
 	m_scrollSpeed.setZero();
@@ -81,6 +86,8 @@ void Sprite::Clear()
 	m_collide = true;
 	m_scrollOffset.setZero();
 	m_convexHullCollision = false;
+	m_simulate = false;
+	m_fixed = false;
 
 	m_spriteData = NULL;
 
@@ -88,27 +95,122 @@ void Sprite::Clear()
 	m_xmlDataFilename = NULL;
 }
 
-void Sprite::RemoveShape()
+void Sprite::RemoveShapes()
 {
-	m_lastGeneratedCell = NULL;
+#if USE_HAVOK_PHYSICS_2D
+	hkpWorld *world = Toolset2dManager::Instance()->GetPhysicsWorld();
 
-	if (m_shape2D != NULL)
+	for (int shapeIndex = 0; shapeIndex < m_shapes.GetSize(); shapeIndex++)
 	{
-		m_shape2D->removeReference();
-		m_shape2D = NULL;
+		m_shapes[shapeIndex]->removeReference();
+	}
+	m_shapes.RemoveAll();
+
+	world->markForWrite();
+	for (int rigidBodyIndex = 0; rigidBodyIndex < m_rigidBodies.GetSize(); rigidBodyIndex++)
+	{
+		world->removeEntity(m_rigidBodies[rigidBodyIndex]);
+		m_rigidBodies[rigidBodyIndex]->removeReference();
+	}
+	world->unmarkForWrite();
+
+	m_rigidBodies.RemoveAll();
+#endif // USE_HAVOK_PHYSICS_2D
+}
+
+void Sprite::UpdateSpriteData()
+{
+	const SpriteData *spriteData = Toolset2dManager::Instance()->GetSpriteData(m_spriteSheetFilename, m_xmlDataFilename);
+	if (spriteData != m_spriteData)
+	{
+		m_spriteData = spriteData;
+		if (m_spriteData != NULL)
+		{
+			m_currentState = m_currentFrame = (m_spriteData->states.GetSize() > 0) ? 0 : -1;
+			CreateShapeData();
+		}
 	}
 }
 
-void Sprite::UpdateTextures()
+void Sprite::CreateShapeData()
 {
-	m_spriteData = Toolset2dManager::Instance()->GetSpriteData(m_spriteSheetFilename, m_xmlDataFilename);
-	if (m_spriteData != NULL)
+	RemoveShapes();
+
+#if USE_HAVOK_PHYSICS_2D
+	hkpWorld *world = Toolset2dManager::Instance()->GetPhysicsWorld();
+	world->markForWrite();
+	for (int cellIndex = 0; cellIndex < m_spriteData->cells.GetSize(); cellIndex++)
 	{
-		if (m_spriteData->states.GetSize() > 0)
+		const hkQsTransform transform = GetTransform();
+		hkpConvexTransformShape *shape = new hkpConvexTransformShape(m_spriteData->cells[cellIndex].shape, transform);
+		m_shapes.Add(shape);
+
+		if (m_simulate)
 		{
-			m_currentState = m_currentFrame = 0;
+			hkpRigidBodyCinfo ci;
+
+			// create a transform that just has scale
+			hkQsTransform scale = hkQsTransform::getIdentity();
+			hkVector4 scaleVec4 = transform.getScale();
+			scaleVec4(2) = 1.0f;
+			scaleVec4.mul(kGlobalPhysicsScaleInv);
+			scale.setScale(scaleVec4);
+			hkpConvexTransformShape *rigidBodyShape = new hkpConvexTransformShape(m_spriteData->cells[cellIndex].shape3d, scale);
+
+			ci.m_shape = rigidBodyShape;
+			ci.m_mass = 1.0f;
+			ci.m_angularDamping = 0.0f;
+			ci.m_linearDamping = 0.0f;
+			ci.m_restitution = 0.5f;
+			hkVector4 translation = transform.getTranslation();
+			translation.mul(kGlobalPhysicsScaleInv);
+			ci.setTransform( hkTransform(transform.getRotation(), translation) );
+
+			if (m_fixed)
+			{
+				ci.m_motionType = hkpMotion::MOTION_FIXED;
+				ci.m_qualityType = HK_COLLIDABLE_QUALITY_FIXED;
+			}
+			else
+			{
+				ci.m_motionType = hkpMotion::MOTION_DYNAMIC;
+				ci.m_qualityType = HK_COLLIDABLE_QUALITY_MOVING;
+			}
+
+			hkpRigidBody* body = new hkpRigidBody(ci);
+			m_rigidBodies.Add(body);
+			world->addEntity(body);
+
+			hkpConstraintData* constraintData = HK_NULL;
+
+			if (kConstraintMode == POINT_TO_PLANE_CONSTRAINT)
+			{
+				hkpPointToPlaneConstraintData* planeData = new hkpPointToPlaneConstraintData();
+				const hkVector4& pivotA = body->getCenterOfMassLocal();
+				hkVector4 pivotB; pivotB.setZero4();
+				hkVector4 plane(0.0f, 0.0f, 1.0f);
+				planeData->setInBodySpace(pivotA, pivotB, plane);
+				constraintData = planeData;
+
+				// Inertia tensor hack.
+				// Only allow rotation around Z axis by zeroing part of inertia tensor.
+				hkpMotion* motion = body->getRigidMotion();
+				motion->m_inertiaAndMassInv(0) = 0.0f;
+				motion->m_inertiaAndMassInv(1) = 0.0f;
+			}
+
+			if (constraintData)
+			{
+				// Constrain body to XY plane.
+				hkpConstraintInstance* constraint = new hkpConstraintInstance(body, HK_NULL, constraintData);
+				world->addConstraint(constraint);
+				constraint->removeReference();
+				constraintData->removeReference();
+			}
 		}
 	}
+	world->unmarkForWrite();
+#endif // USE_HAVOK_PHYSICS_2D
 }
 
 const hkvVec2 *Sprite::GetVertices() const
@@ -151,7 +253,7 @@ bool Sprite::SetSpriteSheetData(const char *spriteSheetFilename, const char *xml
 	{
 		m_spriteSheetFilename = spriteSheetFilename;
 		m_xmlDataFilename = xmlFilename;
-		UpdateTextures();
+		UpdateSpriteData();
 	}
 
 	return success;
@@ -273,22 +375,14 @@ void Sprite::ThinkFunction()
 			}
 		}
 
+#if USE_HAVOK_PHYSICS_2D
 		const SpriteCell *cell = GetCurrentCell();
-		if (m_convexHullCollision)
+		if (cell->index < m_shapes.GetSize())
 		{
-			if (cell != m_lastGeneratedCell && cell->shape != NULL)
-			{
-				RemoveShape();
-
-				m_shape2D = new hkpConvexTransformShape( cell->shape, GetTransform() );
-
-				m_lastGeneratedCell = cell;
-			}
-			else if (m_shape2D != NULL)
-			{
-				m_shape2D->setTransform(GetTransform());
-			}
+			hkpConvexTransformShape *shape = m_shapes[cell->index];
+			shape->setTransform(GetTransform());
 		}
+#endif // USE_HAVOK_PHYSICS_2D
 	}
 }
 
@@ -380,6 +474,26 @@ void Sprite::SetConvexHullCollision(bool enabled)
 bool Sprite::IsConvexHullCollision() const
 {
 	return m_convexHullCollision;
+}
+
+void Sprite::SetSimulate(bool simulate, bool fixed)
+{
+	if (simulate != m_simulate || m_fixed != fixed)
+	{
+		m_simulate = simulate;
+		m_fixed = fixed;
+		CreateShapeData();
+	}
+}
+
+bool Sprite::IsSimulated() const
+{
+	return m_simulate;
+}
+
+bool Sprite::IsFixed() const
+{
+	return m_fixed;
 }
 
 void Sprite::SetCenterPosition(const hkvVec3 &position)
@@ -510,7 +624,7 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 			m_spriteSheetFilename != value)
 		{
 			m_spriteSheetFilename = value;
-			UpdateTextures();
+			UpdateSpriteData();
 		}
 	}
 	else if ( !strcmp(pVar->name, "XmlDataFilename") )
@@ -520,7 +634,7 @@ void Sprite::OnVariableValueChanged(VisVariable_cl *pVar, const char *value)
 			m_xmlDataFilename != value)
 		{
 			m_xmlDataFilename = value;
-			UpdateTextures();
+			UpdateSpriteData();
 		}
 	}
 }
@@ -568,7 +682,34 @@ void Sprite::Update()
 	float width = static_cast<float>(m_spriteData->sourceWidth);
 	float height = static_cast<float>(m_spriteData->sourceHeight);
 
-	hkvVec2 worldPosition = GetPosition().getAsVec2();	
+	hkvVec2 worldPosition = GetPosition().getAsVec2();
+
+	hkvMat3 rotation;
+	rotation.setRotationMatrixZ(m_vOrientation.z);
+
+#if USE_HAVOK_PHYSICS_2D
+	const SpriteCell *cell = GetCurrentCell();
+	if (Toolset2dManager::Instance()->IsPlayingGame() && m_simulate && cell != NULL)
+	{
+		if (cell->index < m_rigidBodies.GetSize())
+		{
+			const hkvVec2 dimensions = GetDimensions();
+			hkVector4 position = m_rigidBodies[cell->index]->getPosition();
+			position.mul(kGlobalPhysicsScale);
+			const hkvVec2 physicsPosition = hkvVec2(position(0) - dimensions.x / 2.f, position(1) - dimensions.y / 2.f);
+
+			const hkQuaternion &r = m_rigidBodies[cell->index]->getRotation();
+			hkvQuat q;
+			q.setValuesDirect( r(0), r(1), r(2), r(3) );
+			hkvMat3 physicsRotation;
+			physicsRotation.setFromQuaternion(q);
+
+			worldPosition = physicsPosition;
+			rotation = physicsRotation;
+		}
+	}
+#endif // USE_HAVOK_PHYSICS_2D
+
 	hkvVec2 topLeft;
 	hkvVec2 bottomRight;
 	hkvVec2 uvTopLeft(0, 0);
@@ -644,8 +785,6 @@ void Sprite::Update()
 			bottomLeft.x -= ww;
 
 			// generate a matrix that rotates around Z
-			hkvMat3 rotation;
-			rotation.setRotationMatrixZ(m_vOrientation.z);
 			
 			// rotate all the corners
 			topLeft = (rotation * topLeft.getAsVec3(0.0f)).getAsVec2().compMul(scale);
@@ -690,7 +829,7 @@ void Sprite::Update()
 	m_renderVertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
 	m_renderVertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
 
-	if(Vision::IsInitialized() && Vision::Contexts.GetMainRenderContext())
+	if ( Vision::IsInitialized() && Vision::Contexts.GetMainRenderContext() )
 	{
 		bool inside = false;
 		int x, y, w, h;
@@ -721,10 +860,18 @@ void Sprite::OnCollision(Sprite *other)
 	this->TriggerScriptEvent("OnSpriteCollision", "*o", other);
 }
 
+#if USE_HAVOK_PHYSICS_2D
 const hkpConvexTransformShape *Sprite::GetShape() const
 {
-	return m_shape2D;
+	const hkpConvexTransformShape *shape = NULL;
+	const SpriteCell *cell = GetCurrentCell();
+	if (cell != NULL && cell->index < m_shapes.GetSize())
+	{
+		shape = m_shapes[cell->index];
+	}
+	return shape;
 }
+#endif // USE_HAVOK_PHYSICS_2D
 
 hkQsTransform Sprite::GetTransform() const
 {
@@ -748,8 +895,13 @@ bool Sprite::IsOverlapping(Sprite *other) const
 {
 	bool inside = false;
 
+#if USE_HAVOK_PHYSICS_2D
 	const hkpConvexTransformShape *shapeA = GetShape();
 	const hkpConvexTransformShape *shapeB = other->GetShape();
+#else
+	const void *shapeA = NULL;
+	const void *shapeB = NULL;
+#endif // USE_HAVOK_PHYSICS_2D
 
 	// if both sprites don't use convex hull collision, then default to simple AABB collision
 	if ( shapeA == NULL || shapeB == NULL ||
@@ -792,6 +944,7 @@ bool Sprite::IsOverlapping(Sprite *other) const
 			}
 		}
 	}
+#if USE_HAVOK_PHYSICS_2D
 	else
 	{
 		vHavokPhysicsModule* physicsModule = vHavokPhysicsModule::GetInstance();
@@ -823,6 +976,7 @@ bool Sprite::IsOverlapping(Sprite *other) const
 			}
 		}
 	}
+#endif // USE_HAVOK_PHYSICS_2D
 
 	return inside;
 }
@@ -853,6 +1007,8 @@ void Sprite::Serialize(VArchive &ar)
 		ar >> m_playOnce;
 		ar >> m_collide;
 		ar >> m_convexHullCollision;
+		ar >> m_simulate;
+		ar >> m_fixed;
 	} 
 	else
 	{
@@ -867,6 +1023,8 @@ void Sprite::Serialize(VArchive &ar)
 		ar << m_playOnce;
 		ar << m_collide;
 		ar << m_convexHullCollision;
+		ar << m_simulate;
+		ar << m_fixed;
 	}
 }
 

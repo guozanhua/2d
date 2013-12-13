@@ -112,6 +112,7 @@ namespace Toolset2D_Managed
 			VArchive &ar = *((VArchive *)info->NativeShapeArchivePtr.ToPointer());
 			ar.WriteObject(GetCamera2dEntity());
 		}
+
 		return true;
 	}
 
@@ -125,8 +126,7 @@ namespace Toolset2D_Managed
 
 	bool EngineInstanceCamera2d::CanAttachComponent(ShapeComponent ^component, String ^%sError)
 	{
-		// For now, just allow script components
-		return (component->PrefabIdentifier == "VScriptComponent");
+		return false;
 	}
 
 	void EngineInstanceCamera2d::OnAttachComponent(ShapeComponent ^component)

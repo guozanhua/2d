@@ -1,26 +1,23 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
-// #todo : disabling for now since there are still some known issues with it
-#define USE_HAVOK_PHYSICS_2D	0
-
-// #todo : not yet implemented
-#define USE_BOX_2D				0
-
 class Sprite;
 class Camera2D;
 class VScriptCreateStackProxyObject;
 class vHavokPhysicsModule;
 
-struct SpriteCell
+enum ConstraintMode
 {
-	SpriteCell()
-	{
-		shape = NULL;
-		width = originalWidth = 0.f;
-		height = originalHeight = 0.f;
-		index = 0;
-	}
+	POINT_TO_PLANE_CONSTRAINT,
+	CUSTOM_CONSTRAINT,
+	KEYFRAME_UTIL,
+	SET_POSITION_ROTATION,
+};
+
+class SpriteCell
+{
+public:
+	SpriteCell();
 
 	VString name;
 	hkvVec2 offset;
@@ -31,15 +28,19 @@ struct SpriteCell
 	float originalHeight;
 	int index;
 
+#if USE_HAVOK_PHYSICS_2D
 	hkArray<int> verticesPerFace;
 	hkArray<int> vertexIndices;
 	hkArray<hkVector4> vertexPositions;
 
 	hkpConvexVerticesShape *shape;
+	hkpConvexVerticesShape *shape3d;
+#endif // USE_HAVOK_PHYSICS_2D
 };
 
-struct SpriteState
+class SpriteState
 {
+public:
 	VString name;
 	VArray<int> cells;
 	float framerate;
@@ -75,7 +76,11 @@ public:
 /// \brief Returns true if the given path is relative to one of the asset libraries (a.k.a. data directories).
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
 
-class Toolset2dManager : public IVisCallbackHandler_cl, public IHavokStepper
+class Toolset2dManager
+: public IVisCallbackHandler_cl
+#if USE_HAVOK_PHYSICS_2D
+, public IHavokStepper
+#endif
 {
 public:
 	TOOLSET_2D_IMPEXP VOVERRIDE void OnHandleCallback(IVisCallbackDataObject_cl *pData);
@@ -95,6 +100,10 @@ public:
 
 	TOOLSET_2D_IMPEXP VOVERRIDE void Step( float dt );
 
+	TOOLSET_2D_IMPEXP bool IsPlayingGame() const;
+
+	//----- Statics
+
 	// Register our LUA library with the script manager
 	static void RegisterLua();
 
@@ -113,6 +122,10 @@ public:
 	TOOLSET_2D_IMPEXP void SetCamera(Camera2D *camera);
 	TOOLSET_2D_IMPEXP Camera2D *GetCamera();
 
+#if USE_HAVOK_PHYSICS_2D
+	TOOLSET_2D_IMPEXP hkpWorld *GetPhysicsWorld();
+#endif
+
 protected:
 	void SetPlayTheGame(bool bStatus);
 
@@ -130,8 +143,10 @@ private:
 
 	bool m_bPlayingTheGame;
 
+#if USE_HAVOK_PHYSICS_2D
 	hkpWorld *m_world;
 	vHavokPhysicsModule *m_physicsModule;
+#endif // USE_HAVOK_PHYSICS_2D
 
 	// We store the sprite data in the manager since sprites will most likely share
 	// the same data and we don't want to re-parse the same information multiple times

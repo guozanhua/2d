@@ -135,7 +135,6 @@ namespace Toolset2D
                 EngineNode.SetCurrentState(m_state);
                 EngineNode.SetPlayOnce(m_playOnce);
                 EngineNode.SetCollision(m_collision);
-                EngineNode.SetConvexHullCollision(m_convexHullCollision);
 
                 if (m_width != 0.0)
                 {
@@ -150,6 +149,9 @@ namespace Toolset2D
                 Vector3F orientation = new Vector3F();
                 EngineNode.GetOrientation(ref orientation);
                 EngineNode.SetOrientation(orientation.X, orientation.Y, m_rotation);
+
+                EngineNode.SetConvexHullCollision(m_convexHullCollision);
+                EngineNode.SetSimulate(m_simulate, m_fixed);
             }
         }
 
@@ -208,6 +210,12 @@ namespace Toolset2D
             {
                 m_convexHullCollision = info.GetBoolean("_convexHullCollision");
             }
+
+            if (SerializationHelper.HasElement(info, "_simulate"))
+            {
+                m_simulate = info.GetBoolean("_simulate");
+                m_fixed = info.GetBoolean("_fixed");
+            }
         }
 
         /// <summary>
@@ -229,6 +237,8 @@ namespace Toolset2D
             info.AddValue("_collision", m_collision);
             info.AddValue("_rotation", m_rotation);
             info.AddValue("_convexHullCollision", m_convexHullCollision);
+            info.AddValue("_simulate", m_simulate);
+            info.AddValue("_fixed", m_fixed);
         }
 
         /// <summary>
@@ -403,6 +413,34 @@ namespace Toolset2D
             set
             {
                 m_convexHullCollision = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        bool m_simulate;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(9)]
+        [Description("Simulate")]
+        public bool Simulate
+        {
+            get { return EngineNode.IsSimulated(); }
+            set
+            {
+                m_simulate = value;
+                SetEngineInstanceBaseProperties();
+            }
+        }
+
+        bool m_fixed;
+        [SortedCategory(CAT_EVENTRES, CATORDER_SPRITE),
+        PropertyOrder(9)]
+        [Description("Fixed")]
+        public bool Fixed
+        {
+            get { return EngineNode.IsFixed(); }
+            set
+            {
+                m_fixed = value;
                 SetEngineInstanceBaseProperties();
             }
         }

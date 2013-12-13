@@ -33,6 +33,11 @@
 #undef HAVOK_SIMULATION_KEYCODE
 #undef HK_FEATURE_PRODUCT_MILSIM
 
+#if !USE_HAVOK_PHYSICS_2D
+#undef HAVOK_PHYSICS_2012_KEYCODE
+#undef HK_FEATURE_PRODUCT_PHYSICS_2012
+#endif // USE_HAVOK_PHYSICS_2D
+
 #include <Common/Base/keycode.cxx>
 #include <Common/Base/Config/hkProductFeatures.cxx>
 

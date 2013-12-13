@@ -31,26 +31,20 @@ function OnSpriteCollision(self, sprite)
 
 	-- Create an explosion effect if neither have been removed yet
 	if (not G.IsSpriteRemoved(self)) and (not G.IsSpriteRemoved(sprite)) then
-		local explosion = Game:CreateEntity(
-			Vision.hkvVec3(0, 0, 0),
-			"Sprite",
-			"",
-			"Explosion")
+		local texture = "Textures/SpriteSheets/Explosion_v1.png"
+		local data = "Textures/SpriteSheets/Explosion_v1.xml"
 		
 		if Util:GetRandFloat() > 0.5 then
-			explosion:UpdateProperty("TextureFilename", "Textures/SpriteSheets/Explosion_v1.png")
-			explosion:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/Explosion_v1.xml")
-		else
-			explosion:UpdateProperty("TextureFilename", "Textures/SpriteSheets/Explosion_v2.png")
-			explosion:UpdateProperty("XmlDataFilename", "Textures/SpriteSheets/Explosion_v2.xml")
+			texture = "Textures/SpriteSheets/Explosion_v2.png"
+			data = "Textures/SpriteSheets/Explosion_v2.xml"
 		end
-		
-		explosion:SetScaling(Util:GetRandFloat(0.4) + 0.6)
 		
 		local position = sprite:GetCenterPosition()
 		position.z = self:GetPosition().z + 200
-		
-		explosion:SetCenterPosition(position)
+
+		local explosion = Toolset2D:CreateSprite( position, texture, data )
+				
+		explosion:SetScaling(Util:GetRandFloat(0.4) + 0.6)
 		explosion:SetPlayOnce(true)
 		explosion:SetCollision(false)
 
@@ -72,19 +66,17 @@ function FireWeapon(self)
 		local offset2 = self:GetPoint(64, 100, kMissileLayer)
 		
 		local removeFunc = function(entity)
-			return entity:GetPosition().y < -entity:GetHeight()
+			return entity:GetPosition().y > G.screenHeight + entity:GetHeight()
 		end
 		
-		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
+		local missileLeft = Toolset2D:CreateSprite(default, kMissileTexture)
 		missileLeft:SetScaling(kMissileScale)
-		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
 		missileLeft:SetCenterPosition(offset1)
 		missileLeft:SetCollision(false)
 		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
 		
-		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
+		local missileRight = Toolset2D:CreateSprite(default, kMissileTexture)
 		missileRight:SetScaling(kMissileScale)
-		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
 		missileRight:SetCenterPosition(offset2)	
 		missileRight:SetCollision(false)
 		G.AddSprite(missileRight, kMissileVelocity, removeFunc)

@@ -44,8 +44,6 @@ end
 function OnThink(self)
 	local kTimeDifference = Timer:GetTimeDiff()
 	
-	Debug:PrintLine("Sprites: " .. Toolset2D:GetNumSprites() )
-	
 	if self.enemySpawnTimer <= 0 then
 		local enemy = Toolset2D:CreateSprite(
 			Vision.hkvVec3(0, 0, 0),

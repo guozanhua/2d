@@ -1,9 +1,8 @@
 #ifndef SPRITE_ENTITY_HPP_INCLUDED
 #define SPRITE_ENTITY_HPP_INCLUDED
 
-struct SpriteState;
-struct SpriteCell;
-
+class SpriteState;
+class SpriteCell;
 class SpriteData;
 
 class Sprite : public VisBaseEntity_cl
@@ -91,11 +90,18 @@ public:
 	TOOLSET_2D_IMPEXP void SetConvexHullCollision(bool enabled);
 	TOOLSET_2D_IMPEXP bool IsConvexHullCollision() const;
 
+	TOOLSET_2D_IMPEXP void SetSimulate(bool simulate, bool fixed);
+	TOOLSET_2D_IMPEXP bool IsSimulated() const;
+	TOOLSET_2D_IMPEXP bool IsFixed() const;
+
 	TOOLSET_2D_IMPEXP hkvVec3 GetPoint(float x, float y, float z = 0.0f) const;
 	TOOLSET_2D_IMPEXP void SetCenterPosition(const hkvVec3 &position);
 	TOOLSET_2D_IMPEXP hkvVec3 GetCenterPosition() const;
 
+#if USE_HAVOK_PHYSICS_2D
 	TOOLSET_2D_IMPEXP const hkpConvexTransformShape *GetShape() const;
+#endif // USE_HAVOK_PHYSICS_2D
+
 	TOOLSET_2D_IMPEXP hkQsTransform GetTransform() const;
 
 	// Managed code doesn't like dealing with hkVector4 so providing a helper
@@ -114,20 +120,16 @@ protected:
 	void CommonDeInit();
 
 	void Clear();
+	void RemoveShapes();
 
-	void RemoveShape();
+	void UpdateSpriteData();
+	void CreateShapeData();
 
-	void UpdateTextures();
 	VTextureObject *GetTexture() const;
 
 	hkvVec2 GetDimensions() const;
 
 private:
-
-	// stores the last cell used to generate the shape
-	const SpriteCell *m_lastGeneratedCell;
-	hkpConvexTransformShape *m_shape2D;
-
 	hkvVec2 m_scrollSpeed;
 	bool m_fullscreen;
 	int m_currentState;
@@ -137,16 +139,34 @@ private:
 	bool m_playOnce;
 	bool m_collide;
 	hkvVec2 m_scrollOffset;
+
+	// Generate a convex hull for this sprite
 	bool m_convexHullCollision;
 
+	// Whether or not to simulate this with physics
+	bool m_simulate;
+	// If simulated, is it a fixed body or dynamic
+	bool m_fixed;
+
 	const SpriteData *m_spriteData;
+
+#if USE_HAVOK_PHYSICS_2D
+	VArray<hkpConvexTransformShape *> m_shapes;
+	VArray<hkpRigidBody *> m_rigidBodies;
+#endif // USE_HAVOK_PHYSICS_2D
+
+	//-- render geometry
 
 	Overlay2DVertex_t m_renderVertices[6];
 	hkvVec2 m_vertices[4];
 	hkvVec2 m_texCoords[4];
 
+	//-- filenames
+
 	VString m_spriteSheetFilename;
 	VString m_xmlDataFilename;
+
+	//-- updated at runtime
 
 	bool m_offscreen;
 };

@@ -135,6 +135,7 @@ namespace Toolset2D_Managed
 						color, width);
 				}
 
+#if USE_HAVOK_PHYSICS_2D
 				// render the convex hull of the current cell
 				const SpriteCell *cell = sprite->GetCurrentCell();
 				if (sprite->IsConvexHullCollision() && cell != NULL && cell->vertexIndices.getSize() > 0)
@@ -158,6 +159,7 @@ namespace Toolset2D_Managed
 						vertexIndices += count;
 					}
 				}
+#endif // USE_HAVOK_PHYSICS_2D
 			}
 		}
 	}
@@ -472,4 +474,33 @@ namespace Toolset2D_Managed
 		}
 		return colliding;
 	}
+
+	void EngineInstanceSprite::SetSimulate(bool simulate, bool fixed)
+	{
+		if (GetSpriteEntity() != NULL)
+		{
+			GetSpriteEntity()->SetSimulate(simulate, fixed);
+		}
+	}
+
+	bool EngineInstanceSprite::IsSimulated()
+	{
+		bool colliding = false;
+		if (GetSpriteEntity() != NULL)
+		{
+			colliding = GetSpriteEntity()->IsSimulated();
+		}
+		return colliding;
+	}
+	
+	bool EngineInstanceSprite::IsFixed()
+	{
+		bool fixed = false;
+		if (GetSpriteEntity() != NULL)
+		{
+			fixed = GetSpriteEntity()->IsFixed();
+		}
+		return fixed;
+	}
+
 }

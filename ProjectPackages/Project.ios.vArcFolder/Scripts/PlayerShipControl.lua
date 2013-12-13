@@ -3,50 +3,16 @@ Author: Joel Van Eenwyk, Ryan Monday
 Purpose: Controls the player
 --]]
 
--- Depth (Z-order) of the missile sprites
-kMissileLayer = 7
+--== Event handlers
 
--- Scale the missile sprite down
-kMissileScale = 0.2
-
--- Add a delay (in milliseconds) to when you can fire
-kMissileFireTimer = 0.1
-
--- Velocity of the missile
-kMissileVelocity = Vision.hkvVec3(0, -600, 0)
-
-kMissileTexture = "Textures/missile.png"
-
-kMoveSpeed = 300
-kRollSpeed = 5
-kRollRecoverSpeed = 4
-
-function FireWeapon(self)
-	if self.missileFireTimer <= 0 then
-		local default = Vision.hkvVec3(0, 0, 0)		
-		local offset1 = self:GetPoint(215, 106, kMissileLayer)
-		local offset2 = self:GetPoint(40, 106, kMissileLayer)
-		
-		local removeFunc = function(entity)
-			return entity:GetPosition().y < -entity:GetHeight()
-		end
-		
-		local missileLeft = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileLeft:SetScaling(kMissileScale)
-		missileLeft:UpdateProperty("TextureFilename", kMissileTexture)
-		missileLeft:SetCenterPosition(offset1)
-		G.AddSprite(missileLeft, kMissileVelocity, removeFunc)
-		
-		local missileRight = Game:CreateEntity(default, "Sprite", "", "Missile")
-		missileRight:SetScaling(kMissileScale)
-		missileRight:UpdateProperty("TextureFilename", kMissileTexture)
-		missileRight:SetCenterPosition(offset2)	
-		G.AddSprite(missileRight, kMissileVelocity, removeFunc)
-		
-		self.missileFireTimer = kMissileFireTimer
-	else
-		self.missileFireTimer = self.missileFireTimer - Timer:GetTimeDiff()
-	end
+function OnExpose(self)
+	self.MissileTexture = "Textures/missile.png"
+	self.MissileVelocity = 600
+	self.MissileFireTimer = 0.1
+	self.MissileScale = 0.2
+	self.MoveSpeed = 300
+	self.RollSpeed = 5
+	self.RollRecoverSpeed = 4
 end
 
 function OnAfterSceneLoaded(self)
@@ -77,7 +43,9 @@ function OnAfterSceneLoaded(self)
 
 	-- Calculate the starting position of the ship
 	self:SetCenterPosition(
-		Vision.hkvVec3(G.screenWidth * 0.5, G.screenHeight - self:GetHeight() - 10, 0) )
+		Vision.hkvVec3(G.screenWidth * 0.5, 
+		               G.screenHeight - self:GetHeight() - 10,
+					   0) )
 	
 	self.roll = 0
 	self.missileFireTimer = 0
@@ -94,10 +62,10 @@ end
 
 function OnThink(self)
 	local dt = Timer:GetTimeDiff()
-	local moveSpeed = kMoveSpeed * dt
+	local moveSpeed = self.MoveSpeed * dt
 	local invMoveSpeed = moveSpeed * -1
-	local rollSpeed = kRollSpeed * dt
-	local rollRecoverSpeed = kRollRecoverSpeed * dt
+	local rollSpeed = self.RollSpeed * dt
+	local rollRecoverSpeed = self.RollRecoverSpeed * dt
 
 	local hasMovementY = false
 	local hasMovementX = false
@@ -153,5 +121,32 @@ function OnThink(self)
 	if (IsTriggered(self, "KeyFire") or IsTriggered(self, "TouchFire")) and
 	   not IsTriggered(self, "TouchUp") then
 		FireWeapon(self)
+	end
+end
+
+--== Utility functions
+
+function FireWeapon(self)
+	if self.missileFireTimer <= 0 then
+		local layer = self:GetPosition().z + 1
+		local offset1 = self:GetPoint(169, 97, layer)
+		local offset2 = self:GetPoint(85, 97, layer)
+		local missileVelocity = Vision.hkvVec3(0, -self.MissileVelocity, 0)
+
+		local removeFunc = function(entity)
+			return entity:GetPosition().y < -entity:GetHeight()
+		end
+		
+		local missileLeft = Toolset2D:CreateSprite(offset1, self.MissileTexture)
+		missileLeft:SetScaling(self.MissileScale)
+		G.AddSprite(missileLeft, missileVelocity, removeFunc)
+		
+		local missileRight = Toolset2D:CreateSprite(offset2, self.MissileTexture)
+		missileRight:SetScaling(self.MissileScale)
+		G.AddSprite(missileRight, missileVelocity, removeFunc)
+		
+		self.missileFireTimer = self.MissileFireTimer
+	else
+		self.missileFireTimer = self.missileFireTimer - Timer:GetTimeDiff()
 	end
 end

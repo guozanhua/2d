@@ -80,6 +80,10 @@ namespace Toolset2D_Managed
 		void SetConvexHullCollision(bool enabled);
 		bool IsConvexHullCollision();
 
+		void SetSimulate(bool simulate, bool fixed);
+		bool IsSimulated();
+		bool IsFixed();
+
 	private:		
 		// pointer to native engine object
 		VWeakPtr<VisBaseEntity_cl> *m_pEntityWP;
