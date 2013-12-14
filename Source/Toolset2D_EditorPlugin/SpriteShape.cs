@@ -282,6 +282,19 @@ namespace Toolset2D
         #endregion
 
         #region Properties
+        public Vector2F CenterPosition
+        {
+            get 
+            {
+                Vector2F position = new Vector2F();
+                if (HasEngineInstance())
+                {
+                    position = EngineNode.GetCenterPosition();
+                }
+                return position;
+            }
+        }
+
         string m_SpriteSheetFilename;
         [SortedCategory(CAT_SPRITE, CATORDER_SPRITE), PropertyOrder(1)]
         [EditorAttribute(typeof(AssetEditor), typeof(UITypeEditor)), AssetDialogFilter(new string[] { "Texture" })]
@@ -492,6 +505,122 @@ namespace Toolset2D
             }
         }
         #endregion
+
+
+        #region Hotspot
+
+        HotSpot2D _hotSpotMove;        // a hotspot for the BoxSize X
+
+        /// <summary>
+        /// Called when the shape is selected
+        /// </summary>
+        public override void OnSelected()
+        {
+            base.OnSelected();
+            System.Diagnostics.Debug.Assert(_hotSpotMove == null);
+
+            // create the hotspots:
+
+            // hotspot for size X
+            _hotSpotMove = new HotSpot2D(this, 20.0f); //@"textures\Hotspot_Rect.dds", VisionColors.Yellow, HotSpotBase.PickType.Square, 4.0f);
+            _hotSpotMove.ToolTipText = "Move";
+            EditorManager.ActiveView.HotSpots.Add(_hotSpotMove);
+
+            UpdateHotspotVisibility();
+
+            // add more hotspots here...
+        }
+
+
+        void SafeRemoveHotSpot(HotSpotBase hotSpot)
+        {
+            if (hotSpot == null) return;
+            EditorManager.ActiveView.HotSpots.Remove(hotSpot);
+            hotSpot.Remove();
+        }
+
+
+        void UpdateHotspotVisibility()
+        {
+        }
+
+
+        void UpdateTypeFlags()
+        {
+        }
+
+        /// <summary>
+        /// Called when the shape is unselected
+        /// </summary>
+        public override void OnUnSelected()
+        {
+            SafeRemoveHotSpot(_hotSpotMove); _hotSpotMove = null;
+            base.OnUnSelected();
+        }
+
+
+        /// <summary>
+        /// Called when user starts dragging a hotspot that belongs to this shape
+        /// </summary>
+        /// <param name="hotSpot"></param>
+        /// <param name="view"></param>
+        public override void OnHotSpotDragBegin(HotSpotBase hotSpot, VisionViewBase view)
+        {
+            if (hotSpot == _hotSpotMove)
+            {
+                //_hotSpotMove.StartDistance = this.BoxSizeX;
+            }
+        }
+
+        /// <summary>
+        /// Called while the user drags a hotspot that belongs to this shape
+        /// </summary>
+        /// <param name="hotSpot"></param>
+        /// <param name="view"></param>
+        /// <param name="fDeltaX"></param>
+        /// <param name="fDeltaY"></param>
+        public override void OnHotSpotDrag(HotSpotBase hotSpot, VisionViewBase view, float fDeltaX, float fDeltaY)
+        {
+            if (hotSpot == _hotSpotMove)
+            {
+                //this.BoxSizeX = _hotSpotMove.CurrentDistance;
+            }
+        }
+
+        /// <summary>
+        /// Called when the user releases the mouse button on a hotspot
+        /// </summary>
+        /// <param name="hotSpot"></param>
+        /// <param name="view"></param>
+        public override void OnHotSpotDragEnd(HotSpotBase hotSpot, VisionViewBase view)
+        {
+            if (hotSpot == _hotSpotMove)
+            {
+                //if (_hotSpotMove.HasChanged)
+                //{
+                //    float fNewSize = _hotSpotMove.CurrentDistance;
+                //    this.BoxSizeX = _hotSpotMove.StartDistance; // set old value for the action
+                //    EditorManager.Actions.Add(SetPropertyAction.CreateSetPropertyAction(this, "BoxSizeX", fNewSize)); // send an action which sets the property from old value to new one
+                //}
+            }
+        }
+
+        /// <summary>
+        /// Called every frame and per hotspot that belongs to the shape
+        /// </summary>
+        /// <param name="hotSpot"></param>
+        public override void OnHotSpotEvaluatePosition(HotSpotBase hotSpot)
+        {
+            if (hotSpot == _hotSpotMove)
+            {
+                //_hotSpotMove.Axis = XAxis;
+                //if (!_hotSpotMove.IsDragging)
+                //    _hotSpotMove.StartDistance = this.BoxSizeX;
+            }
+        }
+
+        #endregion
+
     }
     #endregion
 

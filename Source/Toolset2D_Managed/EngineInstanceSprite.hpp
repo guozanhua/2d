@@ -87,6 +87,8 @@ namespace Toolset2D_Managed
 		bool IsSimulated();
 		bool IsFixed();
 
+		Vector2F GetCenterPosition();
+
 	private:		
 		// pointer to native engine object
 		VWeakPtr<VisBaseEntity_cl> *m_pEntityWP;

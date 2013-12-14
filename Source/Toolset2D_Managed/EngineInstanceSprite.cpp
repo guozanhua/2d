@@ -525,4 +525,14 @@ namespace Toolset2D_Managed
 		return fixed;
 	}
 
+	Vector2F EngineInstanceSprite::GetCenterPosition()
+	{
+		Vector2F position;
+		if (GetSpriteEntity() != NULL)
+		{
+			hkvVec3 p = GetSpriteEntity()->GetCenterPosition();
+			position = Vector2F(p.x, p.y);
+		}
+		return position;
+	}
 }
