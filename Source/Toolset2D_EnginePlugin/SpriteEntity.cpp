@@ -159,9 +159,13 @@ void Sprite::CreateShapeData()
 
 			ci.m_shape = rigidBodyShape;
 			ci.m_mass = 1.0f;
-			ci.m_angularDamping = 0.0f;
-			ci.m_linearDamping = 0.0f;
+			//ci.m_angularDamping = 0.0f;
+			//ci.m_linearDamping = 0.0f;
 			ci.m_restitution = 0.5f;
+			hkMassProperties massProperties;
+			hkpInertiaTensorComputer::computeShapeVolumeMassProperties(ci.m_shape, 1, massProperties);
+			ci.setMassProperties(massProperties);
+
 			hkVector4 translation = transform.getTranslation();
 			translation.mul(kGlobalPhysicsScaleInv);
 			ci.setTransform( hkTransform(transform.getRotation(), translation) );

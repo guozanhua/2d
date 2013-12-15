@@ -32,6 +32,7 @@
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokVisualDebugger.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokSync.hpp>
 #include <Common/Internal/GeometryProcessing/ConvexHull/hkgpConvexHull.h>
 #endif // USE_HAVOK_PHYSICS_2D
@@ -228,7 +229,7 @@ bool SpriteData::GenerateConvexHull()
 				result->fetchPositions(hkgpConvexHull::INTERNAL_VERTICES, cell.vertexPositions);
 
 				hkpConvexVerticesShape::BuildConfig config;
-				config.m_convexRadius = 0.f;
+				config.m_convexRadius = 0.0f;
 				config.m_shrinkByConvexRadius = false;
 				config.m_useOptimizedShrinking = false;
 
@@ -249,6 +250,9 @@ bool SpriteData::GenerateConvexHull()
 					vertexPositions3d.pushBack( hkVector4(position(0), position(1), -depth, 0.f) );
 					vertexPositions3d.pushBack( hkVector4(position(0), position(1), depth, 0.f) );
 				}
+				config.m_convexRadius = 0.05f;
+				config.m_shrinkByConvexRadius = false;
+				config.m_useOptimizedShrinking = true;
 				cell.shape3d = new hkpConvexVerticesShape(vertexPositions3d, config);
 
 				success = true;
@@ -268,7 +272,6 @@ void Toolset2dManager::OneTimeInit()
 	m_camera = NULL;
 	m_bPlayingTheGame = false;
 
-
 	FORCE_LINKDYNCLASS(Sprite);
 	FORCE_LINKDYNCLASS(Camera2D);
 
@@ -284,6 +287,7 @@ void Toolset2dManager::OneTimeInit()
 #if USE_HAVOK_PHYSICS_2D
 	m_world = NULL;
 	m_physicsModule = NULL;
+	m_pContext = NULL;
 
 	FORCE_LINKDYNCLASS(vHavokRigidBody);
 
@@ -293,6 +297,11 @@ void Toolset2dManager::OneTimeInit()
 	vHavokPhysicsModule::OnAfterDeInitializePhysics += this;
 	vHavokPhysicsModule::OnAfterWorldCreated += this;
 	vHavokPhysicsModule::OnBeforeDeInitializePhysics += this;
+
+	vHavokVisualDebugger::OnCreatingContexts += this;
+	vHavokVisualDebugger::OnAddingDefaultViewers += this;
+
+
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
@@ -312,6 +321,14 @@ void Toolset2dManager::OneTimeDeInit()
 	vHavokPhysicsModule::OnAfterDeInitializePhysics -= this;
 	vHavokPhysicsModule::OnAfterWorldCreated -= this;
 	vHavokPhysicsModule::OnBeforeDeInitializePhysics -= this;
+	vHavokVisualDebugger::OnCreatingContexts -= this;
+	vHavokVisualDebugger::OnAddingDefaultViewers -= this;
+	if (m_pContext != NULL)
+	{
+		m_pContext->removeReference();
+		m_pContext = NULL;
+	}
+
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
@@ -329,8 +346,9 @@ void Toolset2dManager::InitializeHavokPhysics()
 		worldInfo.m_broadPhaseBorderBehaviour = hkpWorldCinfo::BROADPHASE_BORDER_DO_NOTHING;
 
 		// You must specify the size of the broad phase - objects should not be simulated outside this region
-		worldInfo.setBroadPhaseWorldSize(10000.0f);
+		worldInfo.setBroadPhaseWorldSize(1000.0f);
 		m_world = new hkpWorld(worldInfo);
+		m_pContext->addWorld(m_world);
 	}
 
 	// Register all collision agents, even though only box - box will be used in this particular example.
@@ -469,6 +487,39 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		{
 			CreateLuaCast(pScriptData, "Sprite", V_RUNTIME_CLASS(Sprite));
 			CreateLuaCast(pScriptData, "Camera2D", V_RUNTIME_CLASS(Camera2D));
+		}
+	}
+	else if( pData->m_pSender == &vHavokVisualDebugger::OnCreatingContexts )
+	{
+		//hkpPhysicsContext::registerAllPhysicsProcesses();
+		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
+		{
+			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
+			if ( hkString::strCmp(currentContext->getTypeIdentifier(), HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
+			{
+				hkpPhysicsContext* physicsContext = static_cast<hkpPhysicsContext*>(currentContext);
+				physicsContext->addWorld(m_world);
+			}
+		}
+	}
+	else if( pData->m_pSender == &vHavokVisualDebugger::OnAddingDefaultViewers )
+	{
+// 		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+// 		if( pEventData->m_pVisualDebugger != HK_NULL )
+// 		{
+// 			//hkpPhysicsContext::addDefaultViewers( pEventData->m_pVisualDebugger );
+// 		}
+		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
+		{
+			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
+			const char* theName = currentContext->getType();
+			if ( hkString::strCmp(theName, HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
+			{
+				m_pContext = static_cast<hkpPhysicsContext*>(currentContext);
+				m_pContext->addReference();
+			}
 		}
 	}
 

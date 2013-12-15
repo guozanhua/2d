@@ -148,6 +148,7 @@ private:
 #if USE_HAVOK_PHYSICS_2D
 	hkpWorld *m_world;
 	vHavokPhysicsModule *m_physicsModule;
+	hkpPhysicsContext* m_pContext;
 #endif // USE_HAVOK_PHYSICS_2D
 
 	// We store the sprite data in the manager since sprites will most likely share
