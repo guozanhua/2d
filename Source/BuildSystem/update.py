@@ -46,7 +46,7 @@ COMMAND_LINE_OPTIONS = (
       'help': "Don't print out status updates"}))
 
 LIBRARIES = ['fmodex', 'lua100', 'Base', 'BaseUI', 'Vision',
-             'AssetFramework', 'CSharpFramework', 'ManagedFramework', 'VisionEnginePlugin',
+             'ManagedBase', 'AssetFramework', 'CSharpFramework', 'ManagedFramework', 'VisionEnginePlugin',
              'vHavok', 'vFmodEnginePlugin', 'vRemotePlugin']
 
 def run(arguments, verbose=False, current_directory=""):

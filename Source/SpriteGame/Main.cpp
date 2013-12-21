@@ -1,118 +1,157 @@
+// TKBMS v1.0 -----------------------------------------------------
+//
+// PLATFORM       : ALL 
+// PRODUCT        : VISION 
+// VISIBILITY     : PUBLIC
+//
+// ------------------------------------------------------TKBMS v1.0
+
 #include "SpriteGamePCH.h"
 
-const int kWindowSizeX   = 1024;
-const int kWindowSizeY   = 768;
-const int kWindowPosX    = 500;
-const int kWindowPosY    = 50;
+#include <Vision/Runtime/Framework/VisionApp/VAppImpl.hpp>
+#include <Vision/Runtime/Framework/VisionApp/Modules/VHelp.hpp>
 
-const char kApplicationName[]  = "2D Sprite Game"; 
-const char kStartUpScene[]     = "Scenes\\Shooter.vscene";
+#include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
 
-// Use the following line to initialize a plugin that is statically linked. 
-// Note that only Windows platform links plugins dynamically (on Windows you can comment out this line).
-VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
-		 
-VisSampleAppPtr spApp;
+#include <Vision/Runtime/Framework/VisionApp/Modules/VLoadingScreen.hpp>
+
+class SpriteApp : public VAppImpl
+{
+public:SpriteApp()
+	{
+	}
+
+	virtual ~SpriteApp()
+	{
+	}
+
+	virtual void SetupAppConfig(VisAppConfig_cl& config) HKV_OVERRIDE;
+	virtual void PreloadPlugins() HKV_OVERRIDE;
+
+	virtual void Init() HKV_OVERRIDE;
+	virtual void OnAfterSceneLoaded(bool bLoadingSuccessful);
+	virtual bool Run() HKV_OVERRIDE;
+	virtual void DeInit() HKV_OVERRIDE;
+
+protected:
+	bool AddFileSystems();
+};
+
+VAPP_IMPLEMENT_SAMPLE(SpriteApp);
+
+void SpriteApp::SetupAppConfig(VisAppConfig_cl& config)
+{
+  // Set custom file system root name ("havok_sdk" by default)
+  config.m_sFileSystemRootName = "template_root";
+
+  // Set the initial starting position of our game window and other properties
+  // if not in fullscreen. This is only relevant on windows
+  config.m_videoConfig.m_iXRes = 1280; // Set the Window size X if not in fullscreen.
+  config.m_videoConfig.m_iYRes = 720;  // Set the Window size Y if not in fullscreen.
+  config.m_videoConfig.m_iXPos = 50;   // Set the Window position X if not in fullscreen.
+  config.m_videoConfig.m_iYPos = 50;   // Set the Window position Y if not in fullscreen.
+
+  // Name to be displayed in the windows title bar.
+  config.m_videoConfig.m_szWindowTitle = "One Shot - LD 28";
+
+  config.m_videoConfig.m_bWaitVRetrace = true;
+
+  // Fullscreen mode with current desktop resolution
+  
+#if defined(WIN32)
+  /*
+  DEVMODEA deviceMode;
+  deviceMode = Vision::Video.GetAdapterMode(config.m_videoConfig.m_iAdapter);
+  config.m_videoConfig.m_iXRes = deviceMode.dmPelsWidth;
+  config.m_videoConfig.m_iYRes = deviceMode.dmPelsHeight;
+  config.m_videoConfig.m_bFullScreen = true;
+  */
+#endif  
+}
+
+void SpriteApp::PreloadPlugins()
+{
+	VISION_PLUGIN_ENSURE_LOADED(vHavok);
+	VISION_PLUGIN_ENSURE_LOADED(vFmodEnginePlugin);
+	//AddFileSystems();
+}
 
 //---------------------------------------------------------------------------------------------------------
 // Init function. Here we trigger loading our scene
 //---------------------------------------------------------------------------------------------------------
-VISION_INIT
+void SpriteApp::Init()
 {
-	// Create our new application.
-	spApp = new VisSampleApp();
+	VLoadingScreen *loadingScreen = GetAppModule<VLoadingScreen>();
 
-	Vision::Error.SystemMessage( "Sprite Game started!" );
+	VLoadingScreenBase::Settings loadingScreenSettings("Textures/Anarchy_Splash_1024x512.dds");
+	loadingScreen->SetSettings(loadingScreenSettings);
 
-	// set the initial starting position of our game window
-	// and other properties if not in fullscreen. This is only relevant on windows
-#if defined(WIN32)
-	spApp->m_appConfig.m_videoConfig.m_iXPos = kWindowPosX;
-	spApp->m_appConfig.m_videoConfig.m_iYPos = kWindowPosY;
-	spApp->m_appConfig.m_videoConfig.m_szWindowTitle = kApplicationName;
-#endif
+	VisAppLoadSettings settings("Scenes/Shooter.pcdx9.vscene");
+	settings.m_customSearchPaths.Append(":template_root/Assets");
 
-	// Set the executable directory the current directory
-	VisionAppHelpers::MakeEXEDirCurrent();
-	
-	// Set the paths to our stand alone version to override the VisSAampleApp paths.
-	// The paths are platform dependent
-#if defined(WIN32)
-	const VString szRoot = "..\\..\\..\\..";
+	//AddFileSystems();
 
-	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Base.pcdx9.vArcFolder" );
-	Vision::File.AddDataDirectory( szRoot + "\\ProjectPackages\\Project.pcdx9.vArcFolder" );
-#elif defined(_VISION_ANDROID)
-	VString szRoot = VisSampleApp::GetApkDirectory();
-	szRoot += "?assets";
-	Vision::File.AddDataDirectory( szRoot + "\\Assets" );
-
-	// "/Data/Vision/Base" is always added by the sample app
-#elif defined(_VISION_IOS)
-	// setup directories, does nothing on platforms other than iOS,
-	// pass true if you want load from the documents directory
-	VISION_SET_DIRECTORIES(false);
-	VString szRoot = VisSampleApp::GetRootDirectory();
-
-	// our deploy script always copies the asset data below the "Data" folder
-	Vision::File.AddDataDirectory( szRoot + "/Data/Assets" );
-
-	// "/Data/Vision/Base" is always added by the sample app
-#endif
-
-#if defined(VISION_OUTPUT_DIR)
-	// Set the output directory manually since VSAMPLE_CUSTOMDATADIRECTORIES was specified
-	// at the initialization.
-	Vision::File.SetOutputDirectory(VISION_OUTPUT_DIR);
-	Vision::File.AddDataDirectory(VISION_OUTPUT_DIR);
-#endif
-	
-	spApp->LoadVisionEnginePlugin();
-
-	// Use the following line to load a plugin. Remember that, except on Windows platform, in addition
-	// you still need to statically link your plugin library (e.g. on mobile platforms) through project
-	// Properties, Linker, Additional Dependencies.
-	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
-
-	// Init the application and point it to the start up scene.
-	if ( !spApp->InitSample("Sprite Game",
-		 kStartUpScene,
-		 VSampleFlags::VSAMPLE_SPLASHSCREEN | VSampleFlags::VSAMPLE_USEDESKTOPRESOLUTION | VSampleFlags::VSAMPLE_SHOWEXITPROMPT | VSampleFlags::VSAMPLE_CUSTOMDATADIRECTORIES,
-		 kWindowSizeX,
-		 kWindowSizeY) )
-	{
-		return false;
-	}
-
-	return true;
+	LoadScene(settings);
 }
 
 //---------------------------------------------------------------------------------------------------------
 // Gets called after the scene has been loaded
 //---------------------------------------------------------------------------------------------------------
-
-VISION_SAMPLEAPP_AFTER_LOADING
+void SpriteApp::OnAfterSceneLoaded(bool bLoadingSuccessful)
 {
 }
 
 //---------------------------------------------------------------------------------------------------------
-// main loop of the application until we quit
+// Main Loop of the application until we quit
 //---------------------------------------------------------------------------------------------------------
-
-VISION_SAMPLEAPP_RUN
+bool SpriteApp::Run()
 {
-	return spApp->Run();
+  return true;
 }
 
-VISION_DEINIT
+void SpriteApp::DeInit()
 {
-	spApp->UnloadScene();
-
-	// Deinit the application
-	spApp->DeInitSample();
-	spApp = NULL;
-
-	return true;
+  // De-Initialization
+  // [...]
 }
 
-VISION_MAIN_DEFAULT
+bool SpriteApp::AddFileSystems()
+{
+	bool failed = false;
+
+	const VString szRoot = "..\\..\\..\\..";
+
+	/*
+	VStaticString<FS_MAX_PATH> sPackagePath = "/Project.pcdx9.vArc";
+	VStaticString<FS_MAX_PATH> sProjectPath;
+
+
+	VStaticString<FS_MAX_PATH> sRootPath;
+	if (VPathHelper::MakeAbsoluteDir("", sRootPath.AsChar()) != NULL)
+	{
+		sProjectPath = sRootPath;
+		sProjectPath += sPackagePath;
+		if (!VFileHelper::Exists(sProjectPath))
+		{
+			if (VPathHelper::MakeAbsoluteDir("../../../../Assets", sRootPath.AsChar()) != NULL)
+			{
+				sProjectPath = sRootPath;
+				sProjectPath += sPackagePath;
+				if (!VFileHelper::Exists(sProjectPath))
+				{
+					failed = true;
+				}
+			}
+		}
+	}
+
+	if (!failed)
+	{
+		bool success = Vision::File.AddFileSystem("template_root", sProjectPath, VFileSystemFlags::ADD_SEARCH_PATH);
+		VASSERT(success);
+	}
+
+	*/
+
+	return !failed;
+}

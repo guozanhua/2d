@@ -1834,7 +1834,7 @@ SWIGINTERN char const *VTypedObject_GetPropertyType(VTypedObject *self,char cons
           case VULPTYPE_BYTE_COLOR4:
             return "VColorRef";
           default:
-            Vision::Error.Warning("Type of property '%s' is unknown in Lua.", propName);
+            hkvLog::Warning("Type of property '%s' is unknown in Lua.", propName);
             return NULL;
       }
     }
@@ -1920,7 +1920,7 @@ SWIGINTERN bool VTypedObject_operator_Se__Se_(VTypedObject *self,VTypedObject co
     if (ARGS_OK) {
       VisVariable_cl *pVar = pTypedObject->GetVariable(pszName);
       if (!pVar) {
-        luaL_error(L, "Called getter of unknown property '%s'", pszName);
+        hkvLog::Warning("Called getter of unknown property '%s'", pszName);
         lua_pushnil(L);
         return 1;
       }
@@ -2009,7 +2009,7 @@ SWIGINTERN bool VTypedObject_operator_Se__Se_(VTypedObject *self,VTypedObject co
           }
           break;
         default:
-          luaL_error(L, "Called getter of unknown type %d (%s)", pVar->type, pszName);
+          hkvLog::Warning("Called getter of unknown type %d (%s)", pVar->type, pszName);
           lua_pushnil(L);
           break;
       }
@@ -2034,9 +2034,8 @@ SWIGINTERN bool VTypedObject_operator_Se__Se_(VTypedObject *self,VTypedObject co
 
       if (!pVar)
       {
-        luaL_error(L, "Called setter of unknown property '%s'", pszName);
-        lua_pushnil(L);
-        return 1;
+        hkvLog::Warning("Called setter of unknown property '%s'", pszName);
+        return 0;
       }
       
       switch (pVar->type) {
@@ -2112,7 +2111,7 @@ SWIGINTERN bool VTypedObject_operator_Se__Se_(VTypedObject *self,VTypedObject co
           }
           break;
         default:
-          luaL_error(L, "Called setter of unknown type %d (%s)", pVar->type, pszName);
+          hkvLog::Warning("Called setter of unknown type %d (%s)", pVar->type, pszName);
           break;
       }
     }
@@ -2242,7 +2241,7 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     VType *pType = Vision::GetTypeManager()->GetType(szComponentType);
     if (pType==NULL)
     {
-      Vision::Error.Warning("[Lua] AddComponentOfType: did not find component of the specified type: %s", szComponentType);
+      hkvLog::Warning("[Lua] AddComponentOfType: did not find component of the specified type: %s", szComponentType);
       lua_settop(L, 0); //remove all items from the stack
       lua_pushnil(L);
       return 1;
@@ -2252,7 +2251,7 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     VSmartPtr<IVObjectComponent> spComponent = (IVObjectComponent *)pType->CreateInstance();
     if (spComponent==NULL)
     {
-      Vision::Error.Warning("[Lua] AddComponentOfType: Failed construction an instance of the specified component type: %s", szComponentType);
+      hkvLog::Warning("[Lua] AddComponentOfType: Failed construction an instance of the specified component type: %s", szComponentType);
       lua_settop(L, 0); //remove all items from the stack
       lua_pushnil(L);
       return 1;
@@ -2290,7 +2289,7 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     VString sCanAddError;
     if (!pSelf->CanAddComponent(spComponent, sCanAddError))
     {
-      Vision::Error.Warning("[Lua] AddComponentOfType: Can't add component of type '%s'. Error: %s", szComponentType, sCanAddError.AsChar());
+      hkvLog::Warning("[Lua] AddComponentOfType: Can't add component of type '%s'. Error: %s", szComponentType, sCanAddError.AsChar());
       lua_settop(L, 0); //remove all items from the stack
       lua_pushnil(L);
       return 1;
@@ -2501,6 +2500,95 @@ SWIGINTERN bool VisTypedEngineObject_cl_RemoveComponentOfType__SWIG_0(VisTypedEn
     char pszBuffer[1024];
     
     sprintf(pszBuffer, "%s: 0x%p",self->GetClassTypeId()->m_lpszClassName,self); //format as requested
+      
+    lua_pushstring(L, pszBuffer);
+    
+    return 1;
+  }
+
+SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisTypedEngineObject_cl *typedObject){
+      VString sError;
+      bool bPossible = self->CanAttachToObject(typedObject, sError) == TRUE;
+      if(!bPossible) hkvLog::Warning("%s", sError.AsChar());
+      return bPossible;
+    }
+
+  SWIGINTERN int IVObjectComponent_GetOwner(lua_State *L)
+  {
+
+    SWIG_CONVERT_POINTER(L, 1, IVObjectComponent, pSelf)
+
+    lua_settop(L, 0);
+    LUA_PushObjectProxy(L, pSelf->GetOwner()); //will handle NULL as well
+ 
+    return 1;
+  }
+
+
+  SWIGINTERN int IVObjectComponent_Concat(lua_State *L)
+  {
+    //this will move this function to the method table of the specified class
+    
+    bool ARGS_OK = true;
+    
+    const char *pszString = NULL;
+    int iIndex = -1;
+    
+    //The concat operator allows "foo"..self and self.."bar" so that
+    //we have to consider self as first and as second stack element.
+    
+    //handle string as first (top) element
+    if(lua_isstring(L,iIndex))
+    {
+      pszString = lua_tostring(L,iIndex);
+      iIndex--;
+    }
+    
+    SWIG_CONVERT_POINTER(L, iIndex, IVObjectComponent, self)
+    iIndex--;
+    
+    //handle string as second element
+    if(iIndex==-2)
+    {
+      pszString = lua_tostring(L,iIndex);
+    }
+        
+    unsigned int uiLen = (unsigned int) strlen(pszString);
+    char *pszBuffer = new char[uiLen+128];
+   
+    sprintf(pszBuffer, "%s",self->GetComponentName()==NULL?self->GetClassTypeId()->m_lpszClassName:self->GetComponentName()); //format as requested
+    
+    //the new buffer should have the size of the old string and the new format string
+    VASSERT_MSG(128>(strlen(pszBuffer)+uiLen), "Please increase your temp buffer size!");
+    
+    //append or prepend old buffer buffer (depending on the position inside the lua stack)
+    if(iIndex==-3) //append old string
+    {
+      memcpy(pszBuffer+strlen(pszBuffer),pszString,uiLen+1); //also copy the terminator at the end
+    }
+    else //prepend old string
+    {
+      memmove(pszBuffer+uiLen,pszBuffer, strlen(pszBuffer)+1); //also move the terminator at the end
+      memcpy(pszBuffer,pszString,uiLen); //insert the old string
+    }
+
+    lua_pushstring(L, pszBuffer);
+  
+    V_SAFE_DELETE_ARRAY(pszBuffer);
+
+    return 1;
+  }
+
+
+  SWIGINTERN int IVObjectComponent_ToString(lua_State *L)
+  {
+    //this will move this function to the method table of the specified class
+    
+    SWIG_CONVERT_POINTER(L, -1, IVObjectComponent, self)
+    
+    char pszBuffer[1024];
+    
+    sprintf(pszBuffer, "%s: %s",self->GetClassTypeId()->m_lpszClassName,self->GetComponentName()); //format as requested
       
     lua_pushstring(L, pszBuffer);
     
@@ -2914,102 +3002,13 @@ SWIGINTERN int VisBaseEntity_cl_GetPrimarySortingKey(VisBaseEntity_cl *self){
     return 1;
   }
 
-SWIGINTERN bool IVObjectComponent_CanAttachToObject(IVObjectComponent *self,VisTypedEngineObject_cl *typedObject){
-      VString sError;
-      bool bPossible = self->CanAttachToObject(typedObject, sError) == TRUE;
-      if(!bPossible) Vision::Error.Warning("%s", sError.AsChar());
-      return bPossible;
-    }
-
-  SWIGINTERN int IVObjectComponent_GetOwner(lua_State *L)
-  {
-
-    SWIG_CONVERT_POINTER(L, 1, IVObjectComponent, pSelf)
-
-    lua_settop(L, 0);
-    LUA_PushObjectProxy(L, pSelf->GetOwner()); //will handle NULL as well
- 
-    return 1;
-  }
-
-
-  SWIGINTERN int IVObjectComponent_Concat(lua_State *L)
-  {
-    //this will move this function to the method table of the specified class
-    
-    bool ARGS_OK = true;
-    
-    const char *pszString = NULL;
-    int iIndex = -1;
-    
-    //The concat operator allows "foo"..self and self.."bar" so that
-    //we have to consider self as first and as second stack element.
-    
-    //handle string as first (top) element
-    if(lua_isstring(L,iIndex))
-    {
-      pszString = lua_tostring(L,iIndex);
-      iIndex--;
-    }
-    
-    SWIG_CONVERT_POINTER(L, iIndex, IVObjectComponent, self)
-    iIndex--;
-    
-    //handle string as second element
-    if(iIndex==-2)
-    {
-      pszString = lua_tostring(L,iIndex);
-    }
-        
-    unsigned int uiLen = (unsigned int) strlen(pszString);
-    char *pszBuffer = new char[uiLen+128];
-   
-    sprintf(pszBuffer, "%s",self->GetComponentName()==NULL?self->GetClassTypeId()->m_lpszClassName:self->GetComponentName()); //format as requested
-    
-    //the new buffer should have the size of the old string and the new format string
-    VASSERT_MSG(128>(strlen(pszBuffer)+uiLen), "Please increase your temp buffer size!");
-    
-    //append or prepend old buffer buffer (depending on the position inside the lua stack)
-    if(iIndex==-3) //append old string
-    {
-      memcpy(pszBuffer+strlen(pszBuffer),pszString,uiLen+1); //also copy the terminator at the end
-    }
-    else //prepend old string
-    {
-      memmove(pszBuffer+uiLen,pszBuffer, strlen(pszBuffer)+1); //also move the terminator at the end
-      memcpy(pszBuffer,pszString,uiLen); //insert the old string
-    }
-
-    lua_pushstring(L, pszBuffer);
-  
-    V_SAFE_DELETE_ARRAY(pszBuffer);
-
-    return 1;
-  }
-
-
-  SWIGINTERN int IVObjectComponent_ToString(lua_State *L)
-  {
-    //this will move this function to the method table of the specified class
-    
-    SWIG_CONVERT_POINTER(L, -1, IVObjectComponent, self)
-    
-    char pszBuffer[1024];
-    
-    sprintf(pszBuffer, "%s: %s",self->GetClassTypeId()->m_lpszClassName,self->GetComponentName()); //format as requested
-      
-    lua_pushstring(L, pszBuffer);
-    
-    return 1;
-  }
-
 
   #include "SpriteEntity.hpp"
 
 SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
     if(pObject && pObject->IsOfType(Sprite::GetClassTypeId()))
       return (Sprite *) pObject;
-    Vision::Error.Warning("[Lua] Cannot cast to %s!","Sprite");
+    hkvLog::Warning("[Lua] Cannot cast to %s!","Sprite");
     return NULL;
   }
 
@@ -3018,7 +3017,7 @@ SWIGINTERN Sprite *Sprite_Cast(VTypedObject *pObject){
 SWIGINTERN Camera2D *Camera2D_Cast(VTypedObject *pObject){
     if(pObject && pObject->IsOfType(Camera2D::GetClassTypeId()))
       return (Camera2D *) pObject;
-    Vision::Error.Warning("[Lua] Cannot cast to %s!","Camera2D");
+    hkvLog::Warning("[Lua] Cannot cast to %s!","Camera2D");
     return NULL;
   }
 
@@ -4554,6 +4553,192 @@ static swig_lua_attribute swig_VisTypedEngineObject_cl_attributes[] = {
 static swig_lua_class *swig_VisTypedEngineObject_cl_bases[] = {0,0};
 static const char *swig_VisTypedEngineObject_cl_base_names[] = {"VTypedObject *",0};
 static swig_lua_class _wrap_class_VisTypedEngineObject_cl = { "VisTypedEngineObject_cl", &SWIGTYPE_p_VisTypedEngineObject_cl,0,0, swig_VisTypedEngineObject_cl_methods, swig_VisTypedEngineObject_cl_attributes, swig_VisTypedEngineObject_cl_bases, swig_VisTypedEngineObject_cl_base_names };
+
+static int _wrap_IVObjectComponent_SetOwner(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
+  
+  SWIG_check_num_args("SetOwner",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetOwner",2,"VisTypedEngineObject_cl *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetOwner",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetOwner",2,SWIGTYPE_p_VisTypedEngineObject_cl);
+  }
+  
+  (arg1)->SetOwner(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_GetComponentID(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("GetComponentID",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_GetComponentID",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  result = (int)((IVObjectComponent const *)arg1)->GetComponentID();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_GetComponentName(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("GetComponentName",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_GetComponentName",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  result = (char *)(arg1)->GetComponentName();
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_SetComponentID(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("SetComponentID",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetComponentID",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetComponentID",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  (arg1)->SetComponentID(arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_SetComponentName(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("SetComponentName",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetComponentName",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_SetComponentName",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  (arg1)->SetComponentName((char const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IVObjectComponent_CanAttachToObject(lua_State* L) {
+  int SWIG_arg = 0;
+  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
+  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("CanAttachToObject",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("CanAttachToObject",2,"VisTypedEngineObject_cl *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
+    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",1,SWIGTYPE_p_IVObjectComponent);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
+    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",2,SWIGTYPE_p_VisTypedEngineObject_cl);
+  }
+  
+  result = (bool)IVObjectComponent_CanAttachToObject(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static swig_lua_method swig_IVObjectComponent_methods[] = {
+    { "__tostring",IVObjectComponent_ToString},
+    { "GetOwner",IVObjectComponent_GetOwner},
+    { "__concat",IVObjectComponent_Concat},
+    {"SetOwner", _wrap_IVObjectComponent_SetOwner}, 
+    {"GetComponentID", _wrap_IVObjectComponent_GetComponentID}, 
+    {"GetComponentName", _wrap_IVObjectComponent_GetComponentName}, 
+    {"SetComponentID", _wrap_IVObjectComponent_SetComponentID}, 
+    {"SetComponentName", _wrap_IVObjectComponent_SetComponentName}, 
+    {"CanAttachToObject", _wrap_IVObjectComponent_CanAttachToObject}, 
+    {0,0}
+};
+static swig_lua_attribute swig_IVObjectComponent_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_class *swig_IVObjectComponent_bases[] = {0,0};
+static const char *swig_IVObjectComponent_base_names[] = {"VisTypedEngineObject_cl *",0};
+static swig_lua_class _wrap_class_IVObjectComponent = { "IVObjectComponent", &SWIGTYPE_p_IVObjectComponent,0,0, swig_IVObjectComponent_methods, swig_IVObjectComponent_attributes, swig_IVObjectComponent_bases, swig_IVObjectComponent_base_names };
 
 static int _wrap_VisObjectKey_cl_SetKey(lua_State* L) {
   int SWIG_arg = 0;
@@ -10166,192 +10351,6 @@ static swig_lua_attribute swig_VisBaseEntity_cl_attributes[] = {
 static swig_lua_class *swig_VisBaseEntity_cl_bases[] = {0,0};
 static const char *swig_VisBaseEntity_cl_base_names[] = {"VisObject3D_cl *",0};
 static swig_lua_class _wrap_class_VisBaseEntity_cl = { "VisBaseEntity_cl", &SWIGTYPE_p_VisBaseEntity_cl,0,0, swig_VisBaseEntity_cl_methods, swig_VisBaseEntity_cl_attributes, swig_VisBaseEntity_cl_bases, swig_VisBaseEntity_cl_base_names };
-
-static int _wrap_IVObjectComponent_SetOwner(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
-  
-  SWIG_check_num_args("SetOwner",2,2)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetOwner",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetOwner",2,"VisTypedEngineObject_cl *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_SetOwner",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
-    SWIG_fail_ptr("IVObjectComponent_SetOwner",2,SWIGTYPE_p_VisTypedEngineObject_cl);
-  }
-  
-  (arg1)->SetOwner(arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IVObjectComponent_GetComponentID(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("GetComponentID",1,1)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentID",1,"IVObjectComponent const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_GetComponentID",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  result = (int)((IVObjectComponent const *)arg1)->GetComponentID();
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IVObjectComponent_GetComponentName(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("GetComponentName",1,1)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetComponentName",1,"IVObjectComponent *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_GetComponentName",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  result = (char *)(arg1)->GetComponentName();
-  lua_pushstring(L,(const char *)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IVObjectComponent_SetComponentID(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("SetComponentID",2,2)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentID",1,"IVObjectComponent *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("SetComponentID",2,"int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_SetComponentID",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  (arg1)->SetComponentID(arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IVObjectComponent_SetComponentName(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("SetComponentName",2,2)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetComponentName",1,"IVObjectComponent *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetComponentName",2,"char const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_SetComponentName",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  (arg1)->SetComponentName((char const *)arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IVObjectComponent_CanAttachToObject(lua_State* L) {
-  int SWIG_arg = 0;
-  IVObjectComponent *arg1 = (IVObjectComponent *) 0 ;
-  VisTypedEngineObject_cl *arg2 = (VisTypedEngineObject_cl *) 0 ;
-  bool result;
-  
-  SWIG_check_num_args("CanAttachToObject",2,2)
-  if(lua_isnil(L, 1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CanAttachToObject",1,"IVObjectComponent *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("CanAttachToObject",2,"VisTypedEngineObject_cl *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_IVObjectComponent,0))){
-    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",1,SWIGTYPE_p_IVObjectComponent);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_VisTypedEngineObject_cl,0))){
-    SWIG_fail_ptr("IVObjectComponent_CanAttachToObject",2,SWIGTYPE_p_VisTypedEngineObject_cl);
-  }
-  
-  result = (bool)IVObjectComponent_CanAttachToObject(arg1,arg2);
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static swig_lua_method swig_IVObjectComponent_methods[] = {
-    { "__tostring",IVObjectComponent_ToString},
-    { "GetOwner",IVObjectComponent_GetOwner},
-    { "__concat",IVObjectComponent_Concat},
-    {"SetOwner", _wrap_IVObjectComponent_SetOwner}, 
-    {"GetComponentID", _wrap_IVObjectComponent_GetComponentID}, 
-    {"GetComponentName", _wrap_IVObjectComponent_GetComponentName}, 
-    {"SetComponentID", _wrap_IVObjectComponent_SetComponentID}, 
-    {"SetComponentName", _wrap_IVObjectComponent_SetComponentName}, 
-    {"CanAttachToObject", _wrap_IVObjectComponent_CanAttachToObject}, 
-    {0,0}
-};
-static swig_lua_attribute swig_IVObjectComponent_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_class *swig_IVObjectComponent_bases[] = {0,0};
-static const char *swig_IVObjectComponent_base_names[] = {"VisTypedEngineObject_cl *",0};
-static swig_lua_class _wrap_class_IVObjectComponent = { "IVObjectComponent", &SWIGTYPE_p_IVObjectComponent,0,0, swig_IVObjectComponent_methods, swig_IVObjectComponent_attributes, swig_IVObjectComponent_bases, swig_IVObjectComponent_base_names };
 
 static int _wrap_Sprite_SetState(lua_State* L) {
   int SWIG_arg = 0;

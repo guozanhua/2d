@@ -3,11 +3,8 @@
   <ItemGroup>
     <ClCompile Include="SpriteGamePCH.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="VisSampleAppCallbacks.cpp" />
-    <ClCompile Include="VisSampleApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SpriteGamePCH.h" />
-    <ClInclude Include="VisSampleApp.hpp" />
   </ItemGroup>
 </Project>

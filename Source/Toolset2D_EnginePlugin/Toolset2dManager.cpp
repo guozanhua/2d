@@ -323,12 +323,6 @@ void Toolset2dManager::OneTimeDeInit()
 	vHavokPhysicsModule::OnBeforeDeInitializePhysics -= this;
 	vHavokVisualDebugger::OnCreatingContexts -= this;
 	vHavokVisualDebugger::OnAddingDefaultViewers -= this;
-	if (m_pContext != NULL)
-	{
-		m_pContext->removeReference();
-		m_pContext = NULL;
-	}
-
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
@@ -364,6 +358,12 @@ void Toolset2dManager::UnintializeHavokPhysics()
 #if USE_HAVOK_PHYSICS_2D
 	V_SAFE_DELETE(m_world);
 	VISION_HAVOK_UNSYNC_ALL_STATICS();
+
+	if (m_pContext != NULL)
+	{
+		m_pContext->removeReference();
+		m_pContext = NULL;
+	}
 #endif
 }
 
@@ -489,40 +489,6 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 			CreateLuaCast(pScriptData, "Camera2D", V_RUNTIME_CLASS(Camera2D));
 		}
 	}
-	else if( pData->m_pSender == &vHavokVisualDebugger::OnCreatingContexts )
-	{
-		//hkpPhysicsContext::registerAllPhysicsProcesses();
-		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
-		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
-		{
-			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
-			if ( hkString::strCmp(currentContext->getTypeIdentifier(), HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
-			{
-				hkpPhysicsContext* physicsContext = static_cast<hkpPhysicsContext*>(currentContext);
-				physicsContext->addWorld(m_world);
-			}
-		}
-	}
-	else if( pData->m_pSender == &vHavokVisualDebugger::OnAddingDefaultViewers )
-	{
-// 		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
-// 		if( pEventData->m_pVisualDebugger != HK_NULL )
-// 		{
-// 			//hkpPhysicsContext::addDefaultViewers( pEventData->m_pVisualDebugger );
-// 		}
-		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
-		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
-		{
-			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
-			const char* theName = currentContext->getType();
-			if ( hkString::strCmp(theName, HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
-			{
-				m_pContext = static_cast<hkpPhysicsContext*>(currentContext);
-				m_pContext->addReference();
-			}
-		}
-	}
-
 #if USE_HAVOK_PHYSICS_2D
 	if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeInitializePhysics)
 	{
@@ -565,6 +531,40 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	else if (pData->m_pSender == &vHavokPhysicsModule::OnBeforeDeInitializePhysics)
 	{
 		UnintializeHavokPhysics();
+	}
+	else if (pData->m_pSender == &vHavokVisualDebugger::OnCreatingContexts)
+	{
+		//hkpPhysicsContext::registerAllPhysicsProcesses();
+		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
+		{
+			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
+			if ( hkString::strCmp(currentContext->getTypeIdentifier(), HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
+			{
+				hkpPhysicsContext* physicsContext = static_cast<hkpPhysicsContext*>(currentContext);
+				physicsContext->addWorld(m_world);
+			}
+		}
+	}
+	else if (pData->m_pSender == &vHavokVisualDebugger::OnAddingDefaultViewers)
+	{
+		// 		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+		// 		if( pEventData->m_pVisualDebugger != HK_NULL )
+		// 		{
+		// 			//hkpPhysicsContext::addDefaultViewers( pEventData->m_pVisualDebugger );
+		// 		}
+
+		vHavokVisualDebuggerCallbackData_cl *pEventData = (vHavokVisualDebuggerCallbackData_cl *)pData;
+		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
+		{
+			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
+			const char* theName = currentContext->getType();
+			if ( hkString::strCmp(theName, HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
+			{
+				m_pContext = static_cast<hkpPhysicsContext*>(currentContext);
+				m_pContext->addReference();
+			}
+		}
 	}
 #endif // USE_HAVOK_PHYSICS_2D
 }
@@ -724,7 +724,7 @@ const SpriteData *Toolset2dManager::GetSpriteData(const VString &spriteSheetFile
 		TiXmlDocument xmlDocument;
 
 		// If we successfully load the XML, then there is data we can parse about the sprites in the sheet
-		if ( xmlDocument.LoadFile(xmlDataFilename, Vision::File.GetManager()) )
+		if ( xmlDocument.LoadFile(xmlDataFilename) )
 		{
 			const char *szActionNode = "SubTexture";
 			TiXmlElement *rootElement = xmlDocument.RootElement();
@@ -882,7 +882,7 @@ void Toolset2dManager::RegisterLua()
 		}
 		else
 		{
-			Vision::Error.Warning("Unable to create Lua Sprite Module, lua_State is NULL!");
+			Vision::Error.AddReportEntry(VIS_REPORTENTRY_WARNING, "Toolset2D", "Unable to create Lua Sprite Module, lua_State is NULL!", "");
 		}
 	}
 }

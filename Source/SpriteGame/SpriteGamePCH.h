@@ -9,6 +9,5 @@
 
 #include <Vision/Runtime/Base/VBase.hpp>
 #include <Vision/Runtime/Engine/System/Vision.hpp>
-#include <Vision/Runtime/Common/VisSampleApp.hpp>
 
 #endif

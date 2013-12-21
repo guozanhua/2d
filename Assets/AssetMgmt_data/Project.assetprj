@@ -1,0 +1,100 @@
+{
+    "Profiles": {
+        "pcdx9": {
+            "Platform": "DX9"
+        }
+    },
+    "TransformTemplates": {
+        "Prefab": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Animation": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Model": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Unknown": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Texture": {
+            "Default": {
+                "pcdx9": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "Usage": "Undefined",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 0
+                    }
+                }
+            },
+            "Default_NORMAL_USAGE": {
+                "pcdx9": {
+                    "TextureTransformationRule": {
+                        "Compression": "Quality",
+                        "Usage": "Undefined",
+                        "RemoveAlphaChannel": false,
+                        "CreateMipMaps": true,
+                        "DownscaleLevel": 0,
+                        "MinimumSize": 0,
+                        "MaximumSize": 0
+                    }
+                }
+            }
+        },
+        "StaticMesh": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Collection": {
+            "Default": {
+                "pcdx9": {
+                    "CollectionTransformationRule": {
+
+                    }
+                }
+            }
+        },
+        "CollisionMesh": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        }
+    }
+}

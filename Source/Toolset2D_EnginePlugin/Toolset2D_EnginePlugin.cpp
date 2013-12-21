@@ -21,7 +21,7 @@ public:
 	// this function is only called once since an external init counter takes care
 	VOVERRIDE void OnInitEnginePlugin()
 	{
-		Vision::Error.SystemMessage( "Toolset2D_EnginePlugin_cl:OnInitEnginePlugin()" );
+		Vision::Error.AddReportEntry(VIS_REPORTENTRY_INFO, "Toolset2D", "Toolset2D_EnginePlugin_cl:OnInitEnginePlugin()", "");
 
 		Vision::RegisterModule(&gToolset2D_EngineModule);
 
@@ -37,7 +37,7 @@ public:
 	// only called once
 	VOVERRIDE void OnDeInitEnginePlugin()
 	{
-		Vision::Error.SystemMessage( "Toolset2D_EnginePlugin_cl:OnDeInitEnginePlugin()" );
+		Vision::Error.AddReportEntry(VIS_REPORTENTRY_INFO, "Toolset2D", "Toolset2D_EnginePlugin_cl:OnDeInitEnginePlugin()", "");
 
 		Toolset2dManager *module = Toolset2dManager::Instance();
 		if (module != NULL)
