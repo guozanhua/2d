@@ -1,0 +1,1299 @@
+{
+    "Configuration": {
+        "Name": "Assets",
+        "FormatVersion": 2,
+        "LastEditTime": 1379700010234661700
+    },
+    "Assets": {
+        "Textures/crate.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 675881074,
+                "TimeStamp": 1387403585055197800,
+                "LastEditTime": 1387661694649730000
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 512,
+                "Height": 512,
+                "HasAlpha": false,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/impossible_enemy.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 884617263,
+                "TimeStamp": 1387403585056198400,
+                "LastEditTime": 1387661694697764300
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 512,
+                "Height": 512,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/impossible_player.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3707117848,
+                "TimeStamp": 1387403585058198700,
+                "LastEditTime": 1387661694747800600
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 512,
+                "Height": 512,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/missile.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2388659172,
+                "TimeStamp": 1387403585058198700,
+                "LastEditTime": 1387661694802840400
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 64,
+                "Height": 128,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/missile_evil.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2846252400,
+                "TimeStamp": 1387403585059200700,
+                "LastEditTime": 1387661694835862600
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 64,
+                "Height": 128,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/ScrollingBGSpace.tga": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 3629514254,
+                "TimeStamp": 1387403584890062200,
+                "LastEditTime": 1387661694978965800
+            },
+            "Texture": {
+                "FileFormat": "TGA",
+                "Width": 512,
+                "Height": 1024,
+                "HasAlpha": false,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/EnemyShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2880460491,
+                "TimeStamp": 1387403584910089900,
+                "LastEditTime": 1387661695366439400
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 1024,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/EnemyShipV2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1580412404,
+                "TimeStamp": 1387403584926097300,
+                "LastEditTime": 1387661695612612600
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/Explosion_v1.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2352928804,
+                "TimeStamp": 1387403584967120600,
+                "LastEditTime": 1387661696019890600
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/Explosion_v2.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2692573523,
+                "TimeStamp": 1387403585005134500,
+                "LastEditTime": 1387661696556287000
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 2048,
+                "Height": 2048,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/SpriteSheets/HeroShip.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1964070483,
+                "TimeStamp": 1387403585041187800,
+                "LastEditTime": 1387661696946552400
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 2048,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/starfield.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 1664956884,
+                "TimeStamp": 1387403585060201300,
+                "LastEditTime": 1387661695027012200
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Textures/starfieldClose.png": {
+            "AssetType": "Texture",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 465688833,
+                "TimeStamp": 1387403585061201900,
+                "LastEditTime": 1387661695123068300
+            },
+            "Texture": {
+                "FileFormat": "PNG",
+                "Width": 1024,
+                "Height": 1024,
+                "HasAlpha": true,
+                "sRGB": false
+            },
+            "Transformations": {
+                "TemplateName": "Default"
+            }
+        },
+        "Fonts/Arial32_00.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383257611108954200
+            },
+            "File": {
+                "LastEditTime": 1383257611108954200
+            }
+        },
+        "Fonts/Arial_18_00.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383257611108954200
+            },
+            "File": {
+                "LastEditTime": 1383257611108954200
+            }
+        },
+        "Fonts/Arial_22_00.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383257611108954200
+            },
+            "File": {
+                "LastEditTime": 1383257611108954200
+            }
+        },
+        "Fonts/CourierNew_18_00.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383257611108954200
+            },
+            "File": {
+                "LastEditTime": 1383257611108954200
+            }
+        },
+        "Fonts/DebugFont_00.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383257611108954200
+            },
+            "File": {
+                "LastEditTime": 1383257611108954200
+            }
+        },
+        "Icons/Android/drawable-hdpi/icon.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383342470971191300
+            },
+            "File": {
+                "LastEditTime": 1383342470971191300
+            }
+        },
+        "Icons/Android/drawable-ldpi/icon.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383342470971191300
+            },
+            "File": {
+                "LastEditTime": 1383342470971191300
+            }
+        },
+        "Icons/Android/drawable-mdpi/icon.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1383342470971191300
+            },
+            "File": {
+                "LastEditTime": 1383342470971191300
+            }
+        },
+        "Meshes/Plane.vcolmesh": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Meshes/Plane.VMESH": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Models/Misc/CharHeight.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Models/Misc/Cube.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763784026100
+            },
+            "File": {
+                "LastEditTime": 1382571763784026100
+            }
+        },
+        "Models/Misc/Plane.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Models/Misc/Point.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Models/Misc/Sphere.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Models/Misc/Torus.Model": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Particles/explosion_page.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Particles/GroundFog.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Particles/Plume_2.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763823028400
+            },
+            "File": {
+                "LastEditTime": 1382571763823028400
+            }
+        },
+        "Particles/smoke.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763824028400
+            },
+            "File": {
+                "LastEditTime": 1382571763824028400
+            }
+        },
+        "Particles/Smoke_A.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763824028400
+            },
+            "File": {
+                "LastEditTime": 1382571763824028400
+            }
+        },
+        "Particles/SmokeSequence_A.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763825028500
+            },
+            "File": {
+                "LastEditTime": 1382571763825028500
+            }
+        },
+        "Particles/Sparkle.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763825028500
+            },
+            "File": {
+                "LastEditTime": 1382571763825028500
+            }
+        },
+        "Particles/star.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763826028500
+            },
+            "File": {
+                "LastEditTime": 1382571763826028500
+            }
+        },
+        "Particles/steam.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763826028500
+            },
+            "File": {
+                "LastEditTime": 1382571763826028500
+            }
+        },
+        "Shaders/Misc_00/MultAssigned.bmp": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Billboards/BillboardAtlas_Diffuse.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763718022400
+            },
+            "File": {
+                "LastEditTime": 1382571763718022400
+            }
+        },
+        "Textures/Billboards/BillboardAtlas_Normal.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763718022400
+            },
+            "File": {
+                "LastEditTime": 1382571763718022400
+            }
+        },
+        "Textures/Billboards/FGrass01.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Billboards/grass_alpha_01.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/Black.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763718022400
+            },
+            "File": {
+                "LastEditTime": 1382571763718022400
+            }
+        },
+        "Textures/Colors/Blue.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763722022600
+            },
+            "File": {
+                "LastEditTime": 1382571763722022600
+            }
+        },
+        "Textures/Colors/BlueDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Textures/Colors/BlueLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Textures/Colors/Color_Orange.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763784026100
+            },
+            "File": {
+                "LastEditTime": 1382571763784026100
+            }
+        },
+        "Textures/Colors/Cyan.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/CyanDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/CyanLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/Gray33.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/Gray50.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/Gray66.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/Green.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763827028600
+            },
+            "File": {
+                "LastEditTime": 1382571763827028600
+            }
+        },
+        "Textures/Colors/GreenDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763828028700
+            },
+            "File": {
+                "LastEditTime": 1382571763828028700
+            }
+        },
+        "Textures/Colors/GreenLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763828028700
+            },
+            "File": {
+                "LastEditTime": 1382571763828028700
+            }
+        },
+        "Textures/Colors/Magenta.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763828028700
+            },
+            "File": {
+                "LastEditTime": 1382571763828028700
+            }
+        },
+        "Textures/Colors/MagentaDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763828028700
+            },
+            "File": {
+                "LastEditTime": 1382571763828028700
+            }
+        },
+        "Textures/Colors/MagentaLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763828028700
+            },
+            "File": {
+                "LastEditTime": 1382571763828028700
+            }
+        },
+        "Textures/Colors/Orange.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763829028700
+            },
+            "File": {
+                "LastEditTime": 1382571763829028700
+            }
+        },
+        "Textures/Colors/OrangeDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763829028700
+            },
+            "File": {
+                "LastEditTime": 1382571763829028700
+            }
+        },
+        "Textures/Colors/OrangeLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763829028700
+            },
+            "File": {
+                "LastEditTime": 1382571763829028700
+            }
+        },
+        "Textures/Colors/Red.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763830028800
+            },
+            "File": {
+                "LastEditTime": 1382571763830028800
+            }
+        },
+        "Textures/Colors/RedDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763830028800
+            },
+            "File": {
+                "LastEditTime": 1382571763830028800
+            }
+        },
+        "Textures/Colors/RedLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763830028800
+            },
+            "File": {
+                "LastEditTime": 1382571763830028800
+            }
+        },
+        "Textures/Colors/White.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763831028800
+            },
+            "File": {
+                "LastEditTime": 1382571763831028800
+            }
+        },
+        "Textures/Colors/Yellow.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763832028900
+            },
+            "File": {
+                "LastEditTime": 1382571763832028900
+            }
+        },
+        "Textures/Colors/YellowDark.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763833028900
+            },
+            "File": {
+                "LastEditTime": 1382571763833028900
+            }
+        },
+        "Textures/Colors/YellowLight.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763833028900
+            },
+            "File": {
+                "LastEditTime": 1382571763833028900
+            }
+        },
+        "Textures/Decals/blubber.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763722022600
+            },
+            "File": {
+                "LastEditTime": 1382571763722022600
+            }
+        },
+        "Textures/Decals/blubber_small.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763722022600
+            },
+            "File": {
+                "LastEditTime": 1382571763722022600
+            }
+        },
+        "Textures/Decals/machinegun.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763834029000
+            },
+            "File": {
+                "LastEditTime": 1382571763834029000
+            }
+        },
+        "Textures/Decals/mgun_hole.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763835029100
+            },
+            "File": {
+                "LastEditTime": 1382571763835029100
+            }
+        },
+        "Textures/Decals/wallmarksmoke.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763835029100
+            },
+            "File": {
+                "LastEditTime": 1382571763835029100
+            }
+        },
+        "Textures/grid01.jpg": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763836029100
+            },
+            "File": {
+                "LastEditTime": 1382571763836029100
+            }
+        },
+        "Textures/UI/Button.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Textures/UI/ButtonQuit_MouseOver.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Textures/UI/ButtonQuit_Normal.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763723022700
+            },
+            "File": {
+                "LastEditTime": 1382571763723022700
+            }
+        },
+        "Textures/UI/Checkmark_Off.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763739023600
+            },
+            "File": {
+                "LastEditTime": 1382571763739023600
+            }
+        },
+        "Textures/UI/Checkmark_On.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763739023600
+            },
+            "File": {
+                "LastEditTime": 1382571763739023600
+            }
+        },
+        "Textures/UI/CloseButton.bmp": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763763024900
+            },
+            "File": {
+                "LastEditTime": 1382571763763024900
+            }
+        },
+        "Textures/UI/CloseButtonGray.bmp": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763763024900
+            },
+            "File": {
+                "LastEditTime": 1382571763763024900
+            }
+        },
+        "Textures/UI/CloseButtonHigh.bmp": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763763024900
+            },
+            "File": {
+                "LastEditTime": 1382571763763024900
+            }
+        },
+        "Textures/UI/CloseButtonSel.bmp": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763763024900
+            },
+            "File": {
+                "LastEditTime": 1382571763763024900
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_E.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763836029100
+            },
+            "File": {
+                "LastEditTime": 1382571763836029100
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_N.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763837029200
+            },
+            "File": {
+                "LastEditTime": 1382571763837029200
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_NE.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763838029200
+            },
+            "File": {
+                "LastEditTime": 1382571763838029200
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_NW.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763838029200
+            },
+            "File": {
+                "LastEditTime": 1382571763838029200
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_S.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763838029200
+            },
+            "File": {
+                "LastEditTime": 1382571763838029200
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_SE.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763839029300
+            },
+            "File": {
+                "LastEditTime": 1382571763839029300
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_SW.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763839029300
+            },
+            "File": {
+                "LastEditTime": 1382571763839029300
+            }
+        },
+        "Textures/UI/cursor2D/MouseArrow_W.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763840029300
+            },
+            "File": {
+                "LastEditTime": 1382571763840029300
+            }
+        },
+        "Textures/UI/cursor2D/MouseCross.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763841029400
+            },
+            "File": {
+                "LastEditTime": 1382571763841029400
+            }
+        },
+        "Textures/UI/cursor2D/MouseCrossAdd.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763841029400
+            },
+            "File": {
+                "LastEditTime": 1382571763841029400
+            }
+        },
+        "Textures/UI/cursor2D/MouseMove.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763841029400
+            },
+            "File": {
+                "LastEditTime": 1382571763841029400
+            }
+        },
+        "Textures/UI/cursor2D/mousepointer-off.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763842029500
+            },
+            "File": {
+                "LastEditTime": 1382571763842029500
+            }
+        },
+        "Textures/UI/cursor2D/mousepointer-on.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763842029500
+            },
+            "File": {
+                "LastEditTime": 1382571763842029500
+            }
+        },
+        "Textures/UI/DialogFrame_blue.tga": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763842029500
+            },
+            "File": {
+                "LastEditTime": 1382571763842029500
+            }
+        },
+        "Textures/UI/Edit.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763842029500
+            },
+            "File": {
+                "LastEditTime": 1382571763842029500
+            }
+        },
+        "Textures/UI/Frame.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763842029500
+            },
+            "File": {
+                "LastEditTime": 1382571763842029500
+            }
+        },
+        "Textures/UI/Media_stop.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763843029500
+            },
+            "File": {
+                "LastEditTime": 1382571763843029500
+            }
+        },
+        "Textures/UI/Mouse.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763843029500
+            },
+            "File": {
+                "LastEditTime": 1382571763843029500
+            }
+        },
+        "Textures/UI/mouseHigh.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763843029500
+            },
+            "File": {
+                "LastEditTime": 1382571763843029500
+            }
+        },
+        "Textures/UI/mouseHigh.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763844029600
+            },
+            "File": {
+                "LastEditTime": 1382571763844029600
+            }
+        },
+        "Textures/UI/mouseHigh.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763845029600
+            },
+            "File": {
+                "LastEditTime": 1382571763845029600
+            }
+        },
+        "Textures/UI/mouseNorm.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763845029600
+            },
+            "File": {
+                "LastEditTime": 1382571763845029600
+            }
+        },
+        "Textures/UI/mouseNorm.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763846029700
+            },
+            "File": {
+                "LastEditTime": 1382571763846029700
+            }
+        },
+        "Textures/UI/mouseNorm.TGA": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763846029700
+            },
+            "File": {
+                "LastEditTime": 1382571763846029700
+            }
+        },
+        "Textures/UI/sliderFrame.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763847029700
+            },
+            "File": {
+                "LastEditTime": 1382571763847029700
+            }
+        },
+        "Textures/UI/sliderFrame.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763847029700
+            },
+            "File": {
+                "LastEditTime": 1382571763847029700
+            }
+        },
+        "Textures/UI/sliderHigh.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763848029800
+            },
+            "File": {
+                "LastEditTime": 1382571763848029800
+            }
+        },
+        "Textures/UI/sliderHigh.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763848029800
+            },
+            "File": {
+                "LastEditTime": 1382571763848029800
+            }
+        },
+        "Textures/UI/sliderNorm.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763849029900
+            },
+            "File": {
+                "LastEditTime": 1382571763849029900
+            }
+        },
+        "Textures/UI/sliderNorm.png": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763850029900
+            },
+            "File": {
+                "LastEditTime": 1382571763850029900
+            }
+        },
+        "Textures/UI/White.dds": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763850029900
+            },
+            "File": {
+                "LastEditTime": 1382571763850029900
+            }
+        },
+        "Textures/Water/Water_N_01.DDS": {
+            "AssetType": "__deleted__",
+            "Common": {
+                "DeleteTime": 1382571763851030000
+            },
+            "File": {
+                "LastEditTime": 1382571763851030000
+            }
+        }
+    },
+    "TrackedFiles": {
+
+    }
+}

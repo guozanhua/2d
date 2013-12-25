@@ -1,0 +1,13 @@
+textures/crate.png	textures/crate.png	sRGB=false
+textures/impossible_enemy.png	textures/impossible_enemy.png	sRGB=false
+textures/impossible_player.png	textures/impossible_player.png	sRGB=false
+textures/missile.png	textures/missile.png	sRGB=false
+textures/missile_evil.png	textures/missile_evil.png	sRGB=false
+textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	sRGB=false
+textures/spritesheets/enemyship.png	textures/spritesheets/enemyship.png	sRGB=false
+textures/spritesheets/enemyshipv2.png	textures/spritesheets/enemyshipv2.png	sRGB=false
+textures/spritesheets/explosion_v1.png	textures/spritesheets/explosion_v1.png	sRGB=false
+textures/spritesheets/explosion_v2.png	textures/spritesheets/explosion_v2.png	sRGB=false
+textures/spritesheets/heroship.png	textures/spritesheets/heroship.png	sRGB=false
+textures/starfield.png	textures/starfield.png	sRGB=false
+textures/starfieldclose.png	textures/starfieldclose.png	sRGB=false

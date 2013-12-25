@@ -60,10 +60,9 @@ Remaining Work
 ###Beta
 
 - Fix Android crash
-- Add a 2D manipulator/gizmo in the editor
 - Optimzied rendering that uses actual mesh buffers
   - Already have a working version of this internally, but need to port it over
-- Convert Havok Physics integration to a component
+- Finalize Havok Physics integration and convert to a component
 - Add support for Havok Physics on Android, iOS and Tizen
   - Need to implement serialization so that convex hull generation only happens on PC
 - Add blending modes for Sprite entity

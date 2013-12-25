@@ -130,6 +130,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(SolutionDir)..\Source\BuildSystem\deploy.py $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>python.exe $(SolutionDir)..\Source\BuildSystem\deploy.py $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

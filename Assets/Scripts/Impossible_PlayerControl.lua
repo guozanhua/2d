@@ -79,13 +79,13 @@ function OnThink(self)
 		end 
 	end
 
-	for i,v in ipairs(self.enemies) do
-		v.position.x = v.position.x - dt * self.EnemySpeed
-		v.sprite:SetCenterPosition(v.position)
+	for _, enemy in ipairs(self.enemies) do
+		enemy.position.x = enemy.position.x - dt * self.EnemySpeed
+		enemy.sprite:SetCenterPosition(enemy.position)
 		
-		if v.position.x < -v.sprite:GetWidth() then
-			v.position.x = G.w + v.sprite:GetWidth()
-			v.sprite:SetVisible(true)
+		if enemy.position.x < -enemy.sprite:GetWidth() then
+			enemy.position.x = G.w + enemy.sprite:GetWidth()
+			enemy.sprite:SetVisible(true)
 		end
 	end
 
@@ -103,7 +103,6 @@ function OnThink(self)
 
 			local rotation = theta / math.pi
 			self:SetOrientation( Vision.hkvVec3(0, 0, rotation * 90) )
-			Debug:PrintLine(height)
 		else
 			self:SetPosition(self.baseVec)
 			self:SetOrientation( Vision.hkvVec3(0, 0, 0) )
