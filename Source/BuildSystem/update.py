@@ -150,31 +150,26 @@ def main():
     success = success and update_files( os.path.join(vision_directory, conf_debug),\
                                         os.path.join(project_directory, conf_debug),\
                                         options.force )
-    
-    if options.force:
-        game_directory = os.path.normpath("%s\\Source\\SpriteGame\\" % project_directory)
-        source_files = ['VisSampleApp.cpp', 'VisSampleAppCallbacks.cpp', 'Tizen\\VisTizenGLESApp.cpp']
-        for source_file in source_files:
-            source = "%s\\Source\\Vision\\Runtime\\Common\\%s" % (vision_directory, source_file)
-            source = os.path.normpath(source)
-            shutil.copy2(source, game_directory)
 
     if options.assets:
         try:
             base = 'Data\Vision\Base'
             base_src = os.path.join(project_directory, base)
             print('Copying assets to %s...' % base)
-            if not os.path.exists(base_src):
+            if options.force:
+                shutil.rmtree(base_src, True)
+            if not os.path.exists(base_src) or options.force:
                 shutil.copytree( os.path.join(vision_directory, base), base_src )
         
-            android = 'Data\Common\Android'
+            android = 'Data\Common'
             android_src = os.path.join(project_directory, android)
             print('Copying assets to %s...' % android)
-            if not os.path.exists(android_src):
+            if options.force:
+                shutil.rmtree(android_src, True)
+            if not os.path.exists(android_src) or options.force:
                 shutil.copytree( os.path.join(vision_directory, android), android_src )
 
             print('Processing assets...')
-            print('NOTE: vForge must be open for the assets to get updated!')
             asset_processor = os.path.join(vision_directory, '%s\AssetProcessor.exe' % conf_dev)
             run([asset_processor, '--removestale=1', '--transform=1', '--all=1', '%s\Assets' % project_directory],
                 True,

@@ -1,6 +1,9 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
+// needed for hkStringBuf
+#include <Common/Base/Ext/hkBaseExt.h>
+
 class Sprite;
 class Camera2D;
 class VScriptCreateStackProxyObject;

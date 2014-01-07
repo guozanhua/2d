@@ -24,6 +24,7 @@
     </ClInclude>
     <ClInclude Include="Camera2dEntity.hpp" />
     <ClInclude Include="Toolset2dManager.hpp" />
+    <ClInclude Include="Toolset2D.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Lua\SpriteEntity.i">

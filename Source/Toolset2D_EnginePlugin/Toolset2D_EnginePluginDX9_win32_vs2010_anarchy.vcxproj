@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks/yajl/Source/;$(DXSDK_DIR)/Include;$(ProjectDir);$(SolutionDir)../ThirdParty/Box2D/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VISION_SDK)/Source;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks/yajl/Source/;$(DXSDK_DIR)/Include;$(ProjectDir);$(SolutionDir)../ThirdParty/Box2D/</AdditionalIncludeDirectories>
       <AdditionalOptions>
       </AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
@@ -226,6 +226,7 @@
     </ClCompile>
     <ClInclude Include="Camera2dEntity.hpp" />
     <ClInclude Include="SpriteEntity.hpp" />
+    <ClInclude Include="Toolset2D.hpp" />
     <ClInclude Include="Toolset2dManager.hpp" />
     <ClInclude Include="Toolset2D_EnginePluginPCH.h" />
     <ClInclude Include="Vision\Runtime\EnginePlugins\VisionEnginePlugin\Scripting\Lua\Toolset2D_Module_wrapper.hpp" />

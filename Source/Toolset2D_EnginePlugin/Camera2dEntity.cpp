@@ -13,6 +13,9 @@
 #include <Vision/Runtime/EnginePlugins/EnginePluginsImport.hpp>
 #include <Vision/Runtime/Base/ThirdParty/tinyXML/tinyxml.h>
 
+#include <Common/Base/hkBase.h>
+#include <Common/Base/System/hkBaseSystem.h>
+
 #define CURRENT_CAMERA_2D_VERSION 1
 
 V_IMPLEMENT_SERIAL(Camera2D, VisBaseEntity_cl, 0, &gToolset2D_EngineModule);

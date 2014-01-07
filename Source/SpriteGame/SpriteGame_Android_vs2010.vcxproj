@@ -28,31 +28,35 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010Debug.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010_anarchyDebug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010Dev.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010_anarchyDev.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
-    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010Release.props" />
+    <Import Project="$(VISION_SDK)\Build\Vision\PropertySheets\Application_android_arm_vs2010_anarchyRelease.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
-    <OutDir>..\..\Bin\android_vs2010\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
-    <IntDir>..\..\Obj\android_vs2010\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\..\Bin\android_arm_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_arm_vs2010_anarchy\$(Configuration)\SpriteGame\</IntDir>
     <TargetName>SpriteGame</TargetName>
+    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <IncludePath>..\..\..\Source;$(VISION_SDK)/Source;$(NDKROOT)/sources;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Include;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Src;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/inc;%(AdditionalIncludeDirectories)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
     <TargetName>SpriteGame</TargetName>
-    <OutDir>..\..\Bin\android_vs2010\$(Configuration)\</OutDir>
-    <IntDir>..\..\Obj\android_vs2010\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\..\Bin\android_arm_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_arm_vs2010_anarchy\$(Configuration)\SpriteGame\</IntDir>
+    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <IncludePath>..\..\..\Source;$(VISION_SDK)/Source;$(NDKROOT)/sources;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Include;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Src;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/inc;%(AdditionalIncludeDirectories)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
     <TargetName>SpriteGame</TargetName>
-    <OutDir>..\..\Bin\android_vs2010\$(Configuration)\</OutDir>
-    <IntDir>..\..\Obj\android_vs2010\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\..\Bin\android_arm_vs2010_anarchy\$(Configuration)\</OutDir>
+    <IntDir>..\..\Obj\android_arm_vs2010_anarchy\$(Configuration)\SpriteGame\</IntDir>
+    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <IncludePath>..\..\..\Source;$(VISION_SDK)/Source;$(NDKROOT)/sources;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Include;$(HAVOK_THIRDPARTY_DIR)/redistsdks\Scaleform\4.3.26/Src;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/inc;%(AdditionalIncludeDirectories)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|hkAndroid'">
     <ClCompile>
@@ -68,13 +72,18 @@
     <ClCompile>
       <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <PostBuildEvent>
-      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Python\deployAndroid.py" $(OutDir)$(TargetName)$(TargetExt) --deployFileName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -r $(SolutionDir)..\External\Android -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodexL.so -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodeventL.so -e -i --asset $(SolutionDir)..\ProjectPackages\Base.android.vArcFolder Data/Vision/Base/ --asset $(SolutionDir)..\ProjectPackages\Project.android.vArcFolder Assets/</Command>
-    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>-lToolset2D_EnginePlugin;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lToolset2D_EnginePlugin;-lVisionAppD;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_arm_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Deploy>
+      <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
+      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <Install>true</Install>
+      <WriteExternal>true</WriteExternal>
+      <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodexL.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodeventL.so</Libraries>
+      <Assets>..\../Data/Vision/Base/ Data/Vision/Base/;..\../Assets/ Assets/</Assets>
+    </Deploy>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dev|hkAndroid'">
     <ClCompile>
@@ -82,13 +91,18 @@
       <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <PostBuildEvent>
-      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe" $(OutDir)$(TargetName)$(TargetExt) --deployFileName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -r $(SolutionDir)..\External\Android -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodexL.so -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodeventL.so -e -i --asset $(SolutionDir)..\ProjectPackages\Base.android.vArcFolder Data/Vision/Base/ --asset $(SolutionDir)..\ProjectPackages\Project.android.vArcFolder Assets/</Command>
-    </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>-lToolset2D_EnginePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_arm_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lToolset2D_EnginePlugin;-lVisionApp;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Deploy>
+      <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
+      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <Install>true</Install>
+      <WriteExternal>true</WriteExternal>
+      <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodex.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodevent.so</Libraries>
+      <Assets>..\../Data/Vision/Base/ Data/Vision/Base/;..\../Assets/ Assets/</Assets>
+    </Deploy>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|hkAndroid'">
     <ClCompile>
@@ -96,24 +110,26 @@
       <PrecompiledHeaderFile>SpriteGamePCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)SpriteGamePCH.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <PostBuildEvent>
-      <Command>"$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe" $(OutDir)$(TargetName)$(TargetExt) --deployFileName $(ProjectFileName)_$(Configuration).deploy -j $(JavaOutputDir) -s $(AndroidAPILevel) -r $(SolutionDir)..\External\Android -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodexL.so -l $(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.16/lib/android/armeabi-v7a/libfmodeventL.so -e -i --asset $(SolutionDir)..\ProjectPackages\Base.android.vArcFolder Data/Vision/Base/ --asset $(SolutionDir)..\ProjectPackages\Project.android.vArcFolder Assets/</Command>
-    </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>..\..\Lib\android_vs2010\$(Configuration)\;$(HAVOK_THIRDPARTY_DIR)/redistsdks/Lua/5.1.4/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>-lToolset2D_EnginePlugin;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Lib\android_arm_vs2010_anarchy\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>-lToolset2D_EnginePlugin;-lVisionApp;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Deploy>
+      <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
+      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <Install>true</Install>
+      <WriteExternal>true</WriteExternal>
+      <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodex.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodevent.so</Libraries>
+      <Assets>..\../Data/Vision/Base/ Data/Vision/Base/;..\../Assets/ Assets/</Assets>
+    </Deploy>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="$(NDKROOT)\sources\android\native_app_glue\android_native_app_glue.c" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SpriteGamePCH.cpp" />
-    <ClCompile Include="VisSampleApp.cpp" />
-    <ClCompile Include="VisSampleAppCallbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SpriteGamePCH.h" />
-    <ClInclude Include="VisSampleApp.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,7 +8,6 @@
 
 #include <Common/Base/KeyCode.h>
 #include <Common/Base/Types/hkBaseTypes.h>
-#include <Common/Base/UnitTest/hkUnitTest.h>
 #include <Common/Base/Config/hkConfigVersion.h>
 
 #define HK_EXCLUDE_FEATURE_SerializeDeprecatedPre700

@@ -1,13 +1,7 @@
 #ifndef TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 #define TOOLSET2D_ENGINEPLUGIN_PCH_H_INCLUDED
 
-// Uses Havok Physics to simulate 2D physics. The benefit here is that you'll be able to
-// mix 2D and 3D physics together. It can be toggled off, however, if your game doesn't require
-// it since it does increase the size of the final binary.
-#define USE_HAVOK_PHYSICS_2D	0
-
-// #todo : not yet implemented
-#define USE_BOX_2D				0
+#include "Toolset2D.hpp"
 
 // The following defines are necessary primarily on Android so that there aren't duplicate
 // symbols generated for SWIG and vHavok
@@ -51,13 +45,6 @@
 #undef swap16
 #define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
-#else
-#include <Common/Base/KeyCode.h>
-#include <Common/Base/hkBase.h>
-#include <Common/Base/Ext/hkBaseExt.h>
-#include <Common/Base/System/hkBaseSystem.h>
-#include <Common/Base/Memory/System/Util/hkMemoryInitUtil.h>
-#include <Common/Base/Memory/Allocator/Thread/hkThreadMemory.h>
 #endif
 
 extern VModule gToolset2D_EngineModule;

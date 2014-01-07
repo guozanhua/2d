@@ -8,12 +8,17 @@
 
 #include "SpriteGamePCH.h"
 
+#include <Common/Base/KeyCode.h>
+
 #include <Vision/Runtime/Framework/VisionApp/VAppImpl.hpp>
 #include <Vision/Runtime/Framework/VisionApp/Modules/VHelp.hpp>
+#include <Vision/Runtime/Framework/VisionApp/Modules/VLoadingScreen.hpp>
 
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
 
-#include <Vision/Runtime/Framework/VisionApp/Modules/VLoadingScreen.hpp>
+VIMPORT IVisPlugin_cl* GetEnginePlugin_vFmodEnginePlugin();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_vHavok();
+VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
 
 class SpriteApp : public VAppImpl
 {
@@ -73,6 +78,8 @@ void SpriteApp::PreloadPlugins()
 {
 	VISION_PLUGIN_ENSURE_LOADED(vHavok);
 	VISION_PLUGIN_ENSURE_LOADED(vFmodEnginePlugin);
+	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
+
 	//AddFileSystems();
 }
 

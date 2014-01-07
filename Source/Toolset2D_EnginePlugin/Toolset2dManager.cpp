@@ -235,13 +235,8 @@ bool SpriteData::GenerateConvexHull()
 
 				cell.shape = new hkpConvexVerticesShape(cell.vertexPositions, config);
 
-				// Get the bounding box of the shape and use the max extent as the depth of the 3d shape
-				hkAabb aabb;
-				cell.shape->getAabb( hkTransform::getIdentity(), 0.f, aabb );
-				hkVector4 extents;
-				aabb.getExtents(extents);
-				const hkReal depth = extents( extents.getIndexOfMaxComponent<2>() ) / 2.0f;
-				
+				const hkReal depth = 100.0f;
+
 				// Generate a 3d
 				hkArray<hkVector4> vertexPositions3d;
 				for (int vertexIndex = 0; vertexIndex < cell.vertexPositions.getSize(); vertexIndex++)
@@ -250,7 +245,18 @@ bool SpriteData::GenerateConvexHull()
 					vertexPositions3d.pushBack( hkVector4(position(0), position(1), -depth, 0.f) );
 					vertexPositions3d.pushBack( hkVector4(position(0), position(1), depth, 0.f) );
 				}
+
+				// Get the bounding box of the shape and use the max extent as the depth of the 3d shape
+				hkAabb aabb;
+				cell.shape->getAabb( hkTransform::getIdentity(), 0.f, aabb );
+				const hkReal depthCenter = depth + 1.3f;
+				hkVector4 center;
+				aabb.getCenter(center);
+				vertexPositions3d.pushBack( hkVector4(center(0), center(1), -depthCenter , 0.f) );
+				vertexPositions3d.pushBack( hkVector4(center(0), center(1), depthCenter , 0.f) );
+
 				config.m_convexRadius = 0.05f;
+				config.m_createConnectivity = true;
 				config.m_shrinkByConvexRadius = false;
 				config.m_useOptimizedShrinking = true;
 				cell.shape3d = new hkpConvexVerticesShape(vertexPositions3d, config);
@@ -539,7 +545,7 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		for( int contextIt = 0; contextIt < pEventData->m_contexts->getSize(); contextIt++ )
 		{
 			hkProcessContext* currentContext = (*(pEventData->m_contexts))[contextIt];
-			if ( hkString::strCmp(currentContext->getTypeIdentifier(), HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
+			if ( hkString::strCmp(currentContext->getType(), HKP_PHYSICS_CONTEXT_TYPE_STRING)==0)
 			{
 				hkpPhysicsContext* physicsContext = static_cast<hkpPhysicsContext*>(currentContext);
 				physicsContext->addWorld(m_world);

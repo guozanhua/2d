@@ -1,6 +1,8 @@
 #include "Toolset2D_ManagedPCH.h"
 
 #include "EngineInstanceSprite.hpp"
+
+#include "Toolset2D_EnginePlugin/Toolset2D.hpp"
 #include "Toolset2D_EnginePlugin/SpriteEntity.hpp"
 #include "Toolset2D_EnginePlugin/Toolset2dManager.hpp"
 

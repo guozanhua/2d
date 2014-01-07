@@ -100,12 +100,11 @@ public:
 
 #if USE_HAVOK_PHYSICS_2D
 	TOOLSET_2D_IMPEXP const hkpConvexTransformShape *GetShape() const;
-#endif // USE_HAVOK_PHYSICS_2D
-
 	TOOLSET_2D_IMPEXP hkQsTransform GetTransform() const;
 
 	// Managed code doesn't like dealing with hkVector4 so providing a helper
 	TOOLSET_2D_IMPEXP hkvVec2 TransformVertex(const hkVector4 &vertex) const;
+#endif // USE_HAVOK_PHYSICS_2D
 
 	TOOLSET_2D_IMPEXP float GetWidth() const;
 	TOOLSET_2D_IMPEXP float GetHeight() const;

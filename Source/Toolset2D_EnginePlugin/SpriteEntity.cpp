@@ -152,16 +152,24 @@ void Sprite::CreateShapeData()
 			// create a transform that just has scale
 			hkQsTransform scale = hkQsTransform::getIdentity();
 			hkVector4 scaleVec4 = transform.getScale();
-			scaleVec4(2) = 1.0f;
+
+			if (m_fixed)
+			{
+				scaleVec4(2) = 1.0f;
+			}
+			else
+			{
+				scaleVec4(2) = 0.5f;
+			}
+
 			scaleVec4.mul(kGlobalPhysicsScaleInv);
 			scale.setScale(scaleVec4);
 			hkpConvexTransformShape *rigidBodyShape = new hkpConvexTransformShape(m_spriteData->cells[cellIndex].shape3d, scale);
-
+			
 			ci.m_shape = rigidBodyShape;
 			ci.m_mass = 1.0f;
-			//ci.m_angularDamping = 0.0f;
-			//ci.m_linearDamping = 0.0f;
 			ci.m_restitution = 0.5f;
+
 			hkMassProperties massProperties;
 			hkpInertiaTensorComputer::computeShapeVolumeMassProperties(ci.m_shape, 1, massProperties);
 			ci.setMassProperties(massProperties);
@@ -178,7 +186,7 @@ void Sprite::CreateShapeData()
 			else
 			{
 				ci.m_motionType = hkpMotion::MOTION_DYNAMIC;
-				ci.m_qualityType = HK_COLLIDABLE_QUALITY_MOVING;
+				ci.m_qualityType = HK_COLLIDABLE_QUALITY_CRITICAL;
 			}
 
 			hkpRigidBody* body = new hkpRigidBody(ci);
@@ -866,6 +874,7 @@ void Sprite::OnCollision(Sprite *other)
 }
 
 #if USE_HAVOK_PHYSICS_2D
+
 const hkpConvexTransformShape *Sprite::GetShape() const
 {
 	const hkpConvexTransformShape *shape = NULL;
@@ -876,7 +885,6 @@ const hkpConvexTransformShape *Sprite::GetShape() const
 	}
 	return shape;
 }
-#endif // USE_HAVOK_PHYSICS_2D
 
 hkQsTransform Sprite::GetTransform() const
 {
@@ -895,6 +903,8 @@ hkvVec2 Sprite::TransformVertex(const hkVector4 &vertex) const
 	output.setTransformedPos( GetTransform(), vertex );
 	return hkvVec2(output(0), output(1));
 }
+
+#endif // USE_HAVOK_PHYSICS_2D
 
 bool Sprite::IsOverlapping(Sprite *other) const
 {
