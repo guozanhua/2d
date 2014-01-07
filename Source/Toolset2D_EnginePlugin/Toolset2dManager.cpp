@@ -12,12 +12,6 @@
 #include "SpriteEntity.hpp"
 #include "Camera2dEntity.hpp"
 
-#include <Common/Base/hkBase.h>
-#include <Common/Base/Config/hkProductFeatures.h>
-#include <Common/Serialize/Version/hkVersionPatchManager.h>
-#include <Common/Compat/hkHavokVersions.h>
-#include <Common/Base/Config/hkOptionalComponent.h>
-
 #if defined(WIN32)
 #include <Vision/Editor/vForge/AssetManagement/AssetFramework/hkvAssetManager.hpp>
 #endif
@@ -28,6 +22,12 @@
 #include <Vision/Runtime/EnginePlugins/VisionEnginePlugin/Scripting/VLuaHelpers.hpp>
 
 #if USE_HAVOK_PHYSICS_2D
+#include <Common/Base/hkBase.h>
+#include <Common/Base/Config/hkProductFeatures.h>
+#include <Common/Serialize/Version/hkVersionPatchManager.h>
+#include <Common/Compat/hkHavokVersions.h>
+#include <Common/Base/Config/hkOptionalComponent.h>
+
 #include <Physics2012/Internal/BroadPhase/TreeBroadPhase/hkpTreeBroadPhase.h>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokRigidBody.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
@@ -348,7 +348,11 @@ void Toolset2dManager::InitializeHavokPhysics()
 		// You must specify the size of the broad phase - objects should not be simulated outside this region
 		worldInfo.setBroadPhaseWorldSize(1000.0f);
 		m_world = new hkpWorld(worldInfo);
-		m_pContext->addWorld(m_world);
+
+		if (m_pContext)
+		{
+			m_pContext->addWorld(m_world);
+		}
 	}
 
 	// Register all collision agents, even though only box - box will be used in this particular example.

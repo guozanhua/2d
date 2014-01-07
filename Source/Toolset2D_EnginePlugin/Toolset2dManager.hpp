@@ -1,8 +1,10 @@
 #ifndef SPRITE_MANAGER_HPP_INCLUDED
 #define SPRITE_MANAGER_HPP_INCLUDED
 
+#if defined(WIN32)
 // needed for hkStringBuf
 #include <Common/Base/Ext/hkBaseExt.h>
+#endif // defined(WIN32)
 
 class Sprite;
 class Camera2D;
@@ -76,8 +78,10 @@ public:
 	VDictionary<int> stateNameToIndex;
 };
 
+#if defined(WIN32)
 /// \brief Returns true if the given path is relative to one of the asset libraries (a.k.a. data directories).
 TOOLSET_2D_IMPEXP bool convertToAssetPath(const char* absolutePath, hkStringBuf& out_relativePath);
+#endif // defined(WIN32)
 
 class Toolset2dManager
 : public IVisCallbackHandler_cl

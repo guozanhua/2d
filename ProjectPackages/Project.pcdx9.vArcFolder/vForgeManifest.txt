@@ -1,3 +1,0 @@
-[Version 1]
-LoadEnginePlugin:Toolset2D_EnginePlugin
-

@@ -45,7 +45,7 @@ COMMAND_LINE_OPTIONS = (
       'default': True,
       'help': "Don't print out status updates"}))
 
-LIBRARIES = ['fmodex', 'lua100', 'Base', 'BaseUI', 'Vision',
+LIBRARIES = ['fmod_event', 'fmodex', 'lua100', 'Base', 'BaseUI', 'Vision',
              'ManagedBase', 'AssetFramework', 'CSharpFramework', 'ManagedFramework', 'VisionEnginePlugin',
              'vHavok', 'vFmodEnginePlugin', 'vRemotePlugin']
 
@@ -153,19 +153,20 @@ def main():
 
     if options.assets:
         try:
+            if options.force:
+                data_path = os.path.join(project_directory, 'Data')
+                print('Removing old data %s...' % data_path)
+                shutil.rmtree(data_path, True)
+
             base = 'Data\Vision\Base'
             base_src = os.path.join(project_directory, base)
             print('Copying assets to %s...' % base)
-            if options.force:
-                shutil.rmtree(base_src, True)
             if not os.path.exists(base_src) or options.force:
                 shutil.copytree( os.path.join(vision_directory, base), base_src )
         
             android = 'Data\Common'
             android_src = os.path.join(project_directory, android)
             print('Copying assets to %s...' % android)
-            if options.force:
-                shutil.rmtree(android_src, True)
             if not os.path.exists(android_src) or options.force:
                 shutil.copytree( os.path.join(vision_directory, android), android_src )
 

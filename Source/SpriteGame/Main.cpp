@@ -8,6 +8,8 @@
 
 #include "SpriteGamePCH.h"
 
+#include "Toolset2D.hpp"
+
 #include <Common/Base/KeyCode.h>
 
 #include <Vision/Runtime/Framework/VisionApp/VAppImpl.hpp>
@@ -22,7 +24,8 @@ VIMPORT IVisPlugin_cl* GetEnginePlugin_Toolset2D_EnginePlugin();
 
 class SpriteApp : public VAppImpl
 {
-public:SpriteApp()
+public:
+	SpriteApp()
 	{
 	}
 
@@ -34,7 +37,7 @@ public:SpriteApp()
 	virtual void PreloadPlugins() HKV_OVERRIDE;
 
 	virtual void Init() HKV_OVERRIDE;
-	virtual void OnAfterSceneLoaded(bool bLoadingSuccessful);
+	virtual void AfterSceneLoaded(bool bLoadingSuccessful) HKV_OVERRIDE;
 	virtual bool Run() HKV_OVERRIDE;
 	virtual void DeInit() HKV_OVERRIDE;
 
@@ -57,7 +60,7 @@ void SpriteApp::SetupAppConfig(VisAppConfig_cl& config)
   config.m_videoConfig.m_iYPos = 50;   // Set the Window position Y if not in fullscreen.
 
   // Name to be displayed in the windows title bar.
-  config.m_videoConfig.m_szWindowTitle = "One Shot - LD 28";
+  config.m_videoConfig.m_szWindowTitle = "Sprite Game";
 
   config.m_videoConfig.m_bWaitVRetrace = true;
 
@@ -76,7 +79,10 @@ void SpriteApp::SetupAppConfig(VisAppConfig_cl& config)
 
 void SpriteApp::PreloadPlugins()
 {
+#if USE_HAVOK_PHYSICS_2D
 	VISION_PLUGIN_ENSURE_LOADED(vHavok);
+#endif // USE_HAVOK_PHYSICS_2D
+
 	VISION_PLUGIN_ENSURE_LOADED(vFmodEnginePlugin);
 	VISION_PLUGIN_ENSURE_LOADED(Toolset2D_EnginePlugin);
 
@@ -88,24 +94,27 @@ void SpriteApp::PreloadPlugins()
 //---------------------------------------------------------------------------------------------------------
 void SpriteApp::Init()
 {
-	VLoadingScreen *loadingScreen = GetAppModule<VLoadingScreen>();
-
-	VLoadingScreenBase::Settings loadingScreenSettings("Textures/Anarchy_Splash_1024x512.dds");
-	loadingScreen->SetSettings(loadingScreenSettings);
-
-	VisAppLoadSettings settings("Scenes/Shooter.pcdx9.vscene");
+	VisAppLoadSettings settings("Scenes/Shooter.vscene");
 	settings.m_customSearchPaths.Append(":template_root/Assets");
-
-	//AddFileSystems();
-
 	LoadScene(settings);
 }
 
 //---------------------------------------------------------------------------------------------------------
 // Gets called after the scene has been loaded
 //---------------------------------------------------------------------------------------------------------
-void SpriteApp::OnAfterSceneLoaded(bool bLoadingSuccessful)
+void SpriteApp::AfterSceneLoaded(bool bLoadingSuccessful)
 {
+  // Define some help text
+  //VArray<const char*> help;
+  //help.Append("How to use this demo...");
+  //help.Append("");
+  //RegisterAppModule(new VHelp(help));
+
+  // Create a mouse controlled camera (set above the ground so that we can see the ground)
+  //Vision::Game.CreateEntity("VisMouseCamera_cl", hkvVec3(0.0f, 0.0f, 170.0f));
+
+  // Add other initial game code here
+  // [...]
 }
 
 //---------------------------------------------------------------------------------------------------------

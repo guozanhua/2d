@@ -6,6 +6,8 @@
 #pragma managed(push, off)
 #endif
 
+#if defined(WIN32) || USE_HAVOK_PHYSICS_2D
+
 #include <Common/Base/KeyCode.h>
 #include <Common/Base/Types/hkBaseTypes.h>
 #include <Common/Base/Config/hkConfigVersion.h>
@@ -39,6 +41,8 @@
 
 #include <Common/Base/keycode.cxx>
 #include <Common/Base/Config/hkProductFeatures.cxx>
+
+#endif // USE_HAVOK_PHYSICS_2D
 
 #ifdef __cplusplus_cli
 #pragma managed(pop)
