@@ -78,7 +78,7 @@
     </Link>
     <Deploy>
       <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
-      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <ResDir>..\..\External\Android</ResDir>
       <Install>true</Install>
       <WriteExternal>true</WriteExternal>
       <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodexL.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodeventL.so</Libraries>
@@ -97,7 +97,7 @@
     </Link>
     <Deploy>
       <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
-      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <ResDir>..\..\External\Android</ResDir>
       <Install>true</Install>
       <WriteExternal>true</WriteExternal>
       <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodex.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodevent.so</Libraries>
@@ -116,7 +116,7 @@
     </Link>
     <Deploy>
       <DeployTool>$(VISION_SDK)\Build\StandaloneTools\Deployment\Exe\deployAndroid.exe</DeployTool>
-      <ResDir>..\..\Data\Common\Anarchy\Android</ResDir>
+      <ResDir>..\..\External\Android</ResDir>
       <Install>true</Install>
       <WriteExternal>true</WriteExternal>
       <Libraries>$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodex.so;$(HAVOK_THIRDPARTY_DIR)/redistsdks/fmod/4.44.23/lib/android/armeabi-v7a/libfmodevent.so</Libraries>

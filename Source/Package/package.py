@@ -25,7 +25,7 @@ import subprocess
 # We define this first as some global constants use it
 def getDatestamp():
     """Get local datestamp"""
-    return "%02i%02i%02i" % time.localtime()[0:3]
+    return "%02i%02i%02i_%02i%02i" % time.localtime()[0:5]
 
 LOGGER = logging.getLogger('toolset2d.package')
 
@@ -34,7 +34,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.join(SCRIPT_DIR, os.pardir),
 
 TOOL_NAME = "Toolset2D"
 
-IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user", ".sdf", ".opensdf", ".ipch"]
+IGNORE_LIST = ["__pycache__", ".pyc", ".spyderproject", ".suo", ".user", ".sdf", ".opensdf", ".ipch", ".cache"]
 IGNORE_FOLDER_LIST = ["obj", "thumbnails", "AndroidTemp", "AssetMgmt_data\\transformed", "AssetMgmt_data\\thumbnails"]
 
 # (src, dest) pairs for packaging
@@ -45,7 +45,7 @@ PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
                  "update.sh": ("Tools/%s/update.sh" % TOOL_NAME),
                  "Source": ("Tools/%s/Source" % TOOL_NAME),
                  "Assets": ("Tools/%s/Assets" % TOOL_NAME),
-                 "ProjectPackages": ("Tools/%s/ProjectPackages" % TOOL_NAME),
+                 "External": ("Tools/%s/External" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_Managed.dll" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s_EnginePlugin.vPluginD" % TOOL_NAME),
                  ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME): ("Bin/win32_vs2010_anarchy/debug_dll/DX9/%s.EditorPlugin.dll" % TOOL_NAME),
@@ -161,10 +161,9 @@ def main(packagePath, verbose=False):
     Generate exes, the package according to rules in PACKAGE_PATHS.
     Final package is placed at 'packagePath'
     """
-    LOGGER.info("FBX Importer Packaging")
+    LOGGER.info("2D Toolset Packaging")
 
     try:
-        #makeExes(verbose)
         makePackage(packagePath)
     except:
         LOGGER.exception("Packaging failed")
@@ -185,5 +184,3 @@ if __name__ == '__main__':
 
     RESULT = main(OPTIONS.packagePath, OPTIONS.verbose)
     LOGGER.info("Done")
-
-    sys.exit(RESULT)
