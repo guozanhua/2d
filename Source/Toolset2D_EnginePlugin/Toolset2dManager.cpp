@@ -242,23 +242,20 @@ bool SpriteData::GenerateConvexHull()
 				for (int vertexIndex = 0; vertexIndex < cell.vertexPositions.getSize(); vertexIndex++)
 				{
 					const hkVector4 position = cell.vertexPositions[vertexIndex];
-					vertexPositions3d.pushBack( hkVector4(position(0), position(1), -depth, 0.f) );
-					vertexPositions3d.pushBack( hkVector4(position(0), position(1), depth, 0.f) );
+					vertexPositions3d.pushBack( hkVector4(position(0), position(1), 0.0f, 0.0f) );
 				}
 
 				// Get the bounding box of the shape and use the max extent as the depth of the 3d shape
 				hkAabb aabb;
 				cell.shape->getAabb( hkTransform::getIdentity(), 0.f, aabb );
-				const hkReal depthCenter = depth + 1.3f;
+				const hkReal depthCenter = depth * 1.3f;
 				hkVector4 center;
 				aabb.getCenter(center);
 				vertexPositions3d.pushBack( hkVector4(center(0), center(1), -depthCenter , 0.f) );
 				vertexPositions3d.pushBack( hkVector4(center(0), center(1), depthCenter , 0.f) );
 
 				config.m_convexRadius = 0.05f;
-				config.m_createConnectivity = true;
 				config.m_shrinkByConvexRadius = false;
-				config.m_useOptimizedShrinking = true;
 				cell.shape3d = new hkpConvexVerticesShape(vertexPositions3d, config);
 
 				success = true;
@@ -338,7 +335,7 @@ void Toolset2dManager::InitializeHavokPhysics()
 	{
 		hkpWorldCinfo worldInfo;
 
-		worldInfo.setupSolverInfo(hkpWorldCinfo::SOLVER_TYPE_8ITERS_HARD);
+		worldInfo.setupSolverInfo(hkpWorldCinfo::SOLVER_TYPE_4ITERS_MEDIUM);
 		worldInfo.m_gravity = hkVector4(0.0f, 9.81f, 0.0f);
 		worldInfo.m_broadPhaseType = hkpWorldCinfo::BROADPHASE_TYPE_TREE;
 

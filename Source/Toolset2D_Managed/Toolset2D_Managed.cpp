@@ -3,6 +3,7 @@
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsModule.hpp>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokConversionUtils.hpp>
 
+#include "Toolset2D_EnginePlugin/Toolset2D.hpp"
 #include "Toolset2D_EnginePlugin/HavokSetup.cxx"
 
 #using <mscorlib.dll>

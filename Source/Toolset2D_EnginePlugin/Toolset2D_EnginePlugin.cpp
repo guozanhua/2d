@@ -10,6 +10,7 @@
 #include "Toolset2D_EnginePluginPCH.h"
 
 #include "Toolset2dManager.hpp"
+#include "Toolset2D.hpp"
 
 #include "HavokSetup.cxx"
 

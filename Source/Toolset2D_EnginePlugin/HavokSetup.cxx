@@ -6,7 +6,7 @@
 #pragma managed(push, off)
 #endif
 
-#if defined(WIN32) || USE_HAVOK_PHYSICS_2D
+#if USE_HAVOK_PHYSICS_2D
 
 #include <Common/Base/KeyCode.h>
 #include <Common/Base/Types/hkBaseTypes.h>
@@ -33,11 +33,6 @@
 #undef HK_FEATURE_PRODUCT_DESTRUCTION
 #undef HAVOK_SIMULATION_KEYCODE
 #undef HK_FEATURE_PRODUCT_MILSIM
-
-#if !USE_HAVOK_PHYSICS_2D
-#undef HAVOK_PHYSICS_2012_KEYCODE
-#undef HK_FEATURE_PRODUCT_PHYSICS_2012
-#endif // USE_HAVOK_PHYSICS_2D
 
 #include <Common/Base/keycode.cxx>
 #include <Common/Base/Config/hkProductFeatures.cxx>

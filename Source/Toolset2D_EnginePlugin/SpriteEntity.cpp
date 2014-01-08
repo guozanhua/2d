@@ -205,8 +205,8 @@ void Sprite::CreateShapeData()
 				planeData->setInBodySpace(pivotA, pivotB, plane);
 				constraintData = planeData;
 
-				// Inertia tensor hack.
-				// Only allow rotation around Z axis by zeroing part of inertia tensor.
+				// Inertia tensor "hack" to only allow rotation around Z axis by
+				// zeroing part of inertia tensor.
 				hkpMotion* motion = body->getRigidMotion();
 				motion->m_inertiaAndMassInv(0) = 0.0f;
 				motion->m_inertiaAndMassInv(1) = 0.0f;
@@ -695,11 +695,6 @@ void Sprite::Update()
 	float width = static_cast<float>(m_spriteData->sourceWidth);
 	float height = static_cast<float>(m_spriteData->sourceHeight);
 
-	hkvVec2 worldPosition = GetPosition().getAsVec2();
-
-	hkvMat3 rotation;
-	rotation.setRotationMatrixZ(m_vOrientation.z);
-
 #if USE_HAVOK_PHYSICS_2D
 	const SpriteCell *cell = GetCurrentCell();
 	if (Toolset2dManager::Instance()->IsPlayingGame() && m_simulate && cell != NULL)
@@ -717,11 +712,16 @@ void Sprite::Update()
 			hkvMat3 physicsRotation;
 			physicsRotation.setFromQuaternion(q);
 
-			worldPosition = physicsPosition;
-			rotation = physicsRotation;
+			m_vPosition = physicsPosition.getAsVec3(0.f);
+			physicsRotation.getAsEulerAngles(m_vOrientation.x, m_vOrientation.y, m_vOrientation.z);
 		}
 	}
 #endif // USE_HAVOK_PHYSICS_2D
+
+	hkvVec2 worldPosition = GetPosition().getAsVec2();
+
+	hkvMat3 rotation;
+	rotation.setRotationMatrixZ(m_vOrientation.z);
 
 	hkvVec2 topLeft;
 	hkvVec2 bottomRight;

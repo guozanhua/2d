@@ -41,7 +41,7 @@
 #include <crtdbg.h>
 #endif
 
-#if !defined(__HAVOK_PARSER__) && USE_HAVOK_PHYSICS_2D
+#if USE_HAVOK_PHYSICS_2D
 #undef swap16
 #define HK_CLASSES_FILE <Common/Serialize/Classlist/hkClasses.h>
 #include <Vision/Runtime/EnginePlugins/Havok/HavokPhysicsEnginePlugin/vHavokPhysicsIncludes.hpp>
