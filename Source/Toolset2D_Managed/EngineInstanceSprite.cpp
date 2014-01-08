@@ -153,7 +153,7 @@ namespace Toolset2D_Managed
 #if USE_HAVOK_PHYSICS_2D
 				// render the convex hull of the current cell
 				const SpriteCell *cell = sprite->GetCurrentCell();
-				if (cell != NULL && cell->vertexIndices.getSize() > 0)
+				if (sprite->IsConvexHullCollision() && cell != NULL && cell->vertexIndices.getSize() > 0)
 				{
 					const int *vertexIndices = &cell->vertexIndices[0];
 					for(int faceIndex = 0; faceIndex < cell->verticesPerFace.getSize(); ++faceIndex)
