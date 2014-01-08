@@ -59,7 +59,6 @@ Remaining Work
 
 ###Beta
 
-- Fix Android crash
 - Optimzied rendering that uses actual mesh buffers
   - Already have a working version of this internally, but need to port it over
 - Finalize Havok Physics integration and convert to a component
@@ -68,7 +67,7 @@ Remaining Work
 - Add blending modes for Sprite entity
 - Add a SetDirection LUA call for setting orientation of sprite
 - Convert the Sprite management LUA code over to C++ so that you can do SpriteManager:CreateSimpleSprite
-- Add support for Tizezn
+- Add support for Tizen and Android x86
 
 ###Wishlist
 
