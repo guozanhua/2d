@@ -683,7 +683,7 @@ VTextureObject *Sprite::GetTexture() const
 	return texture;
 }
 
-void Sprite::Update()
+void Sprite::Update(const hkvAlignedBBox *viewportBoundingBox)
 {
 	if (m_spriteData == NULL)
 	{
@@ -842,21 +842,9 @@ void Sprite::Update()
 	m_renderVertices[4].Set(m_vertices[VERTEX_BOTTOM_LEFT].x, m_vertices[VERTEX_BOTTOM_LEFT].y, m_texCoords[VERTEX_BOTTOM_LEFT].x, m_texCoords[VERTEX_BOTTOM_LEFT].y);
 	m_renderVertices[5].Set(m_vertices[VERTEX_BOTTOM_RIGHT].x, m_vertices[VERTEX_BOTTOM_RIGHT].y, m_texCoords[VERTEX_BOTTOM_RIGHT].x, m_texCoords[VERTEX_BOTTOM_RIGHT].y);
 
-	if ( Vision::IsInitialized() && Vision::Contexts.GetMainRenderContext() )
+	if ( viewportBoundingBox )
 	{
-		bool inside = false;
-		int x, y, w, h;
-		Vision::Contexts.GetMainRenderContext()->GetViewport(x, y, w, h);
-		for (int vertexIndex = 0; vertexIndex < VERTEX_NUM_VERTS; vertexIndex++)
-		{
-			if (m_vertices[vertexIndex].x >= x && m_vertices[vertexIndex].x <= x + w &&
-				m_vertices[vertexIndex].y >= y && m_vertices[vertexIndex].y <= y + h)
-			{
-				inside = true;
-				break;
-			}
-		}
-		m_offscreen = !inside;
+		m_offscreen = !viewportBoundingBox->overlaps( GetBBox() );
 	}
 }
 

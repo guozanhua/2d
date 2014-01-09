@@ -56,7 +56,7 @@ public:
 
 	TOOLSET_2D_IMPEXP bool IsOverlapping(Sprite *other) const;
 
-	TOOLSET_2D_IMPEXP void Update();
+	TOOLSET_2D_IMPEXP void Update(const hkvAlignedBBox *viewportBoundingBox = NULL);
 
 	TOOLSET_2D_IMPEXP const hkvVec2 *GetVertices() const;
 	TOOLSET_2D_IMPEXP hkvAlignedBBox GetBBox() const;

@@ -609,6 +609,21 @@ void Toolset2dManager::Render()
 
 void Toolset2dManager::Update(float deltaTime)
 {
+	hkvAlignedBBox *viewportBoundingBox = NULL;
+	hkvAlignedBBox viewport;
+
+	if ( Vision::IsInitialized() && Vision::Contexts.GetMainRenderContext() )
+	{
+		int x, y, w, h;
+		Vision::Contexts.GetMainRenderContext()->GetViewport(x, y, w, h);
+
+		viewport.setZero();
+		viewport.expandToInclude( hkvVec3(static_cast<float>(x), static_cast<float>(y), 0) );
+		viewport.expandToInclude( hkvVec3(static_cast<float>(x + w), static_cast<float>(y + h), 0) );
+
+		viewportBoundingBox = &viewport;
+	}
+
 	int spriteIndex = 0;
 
 	// Remove all dead sprites and update vertices first before checking collision
@@ -623,7 +638,7 @@ void Toolset2dManager::Update(float deltaTime)
 		else
 		{
 			// Update all the sprites first so we're sure their vertices are up to date
-			sprite->Update();
+			sprite->Update(viewportBoundingBox);
 
 			spriteIndex++;
 		}
