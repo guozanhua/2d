@@ -59,7 +59,7 @@ Remaining Work
 
 ###Beta
 
-- Optimzied rendering that uses actual mesh buffers
+- Optimized rendering that uses actual mesh buffers
   - Already have a working version of this internally, but need to port it over
 - Finalize Havok Physics integration and convert to a component
 - Add support for Havok Physics on Android, iOS and Tizen
