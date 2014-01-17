@@ -273,7 +273,7 @@ bool SpriteData::GenerateConvexHull()
 void Toolset2dManager::OneTimeInit()
 {
 	m_camera = NULL;
-	m_bPlayingTheGame = false;
+	m_gameMode = MODE_STOPPED;
 
 	FORCE_LINKDYNCLASS(Sprite);
 	FORCE_LINKDYNCLASS(Camera2D);
@@ -303,8 +303,6 @@ void Toolset2dManager::OneTimeInit()
 
 	vHavokVisualDebugger::OnCreatingContexts += this;
 	vHavokVisualDebugger::OnAddingDefaultViewers += this;
-
-
 #endif // USE_HAVOK_PHYSICS_2D
 }
 
@@ -398,9 +396,9 @@ void Toolset2dManager::Step( float dt )
 #endif
 }
 
-bool Toolset2dManager::IsPlayingGame() const
+bool Toolset2dManager::InSimulationMode() const
 {
-	return m_bPlayingTheGame;
+	return (m_gameMode == MODE_PLAY_THE_GAME || m_gameMode == MODE_RUN_IN_EDITOR);
 }
 
 bool Toolset2dManager::CreateLuaCast(VScriptCreateStackProxyObject *scriptData, const char *typeName, VType *type)
@@ -445,14 +443,14 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 	if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneLoaded)
 	{
 		// initialize play-the-game only in this vForge mode (or outside vForge)
-		if (Vision::Editor.IsPlayingTheGame())
+		if ( Vision::Editor.IsPlayingTheGame() )
 		{
-			SetPlayTheGame(true);
+			m_gameMode = MODE_PLAY_THE_GAME;
 		}
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnWorldDeInit)
 	{
-		SetPlayTheGame(false);
+		m_gameMode = MODE_STOPPED;
 		RemoveSpriteData();
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnAfterSceneUnloaded)
@@ -467,7 +465,18 @@ void Toolset2dManager::OnHandleCallback(IVisCallbackDataObject_cl *pData)
 		VisEditorModeChangedDataObject_cl *pEditorModeChangedData = (VisEditorModeChangedDataObject_cl *)pData;
 
 		// when vForge switches back from EDITORMODE_PLAYING_IN_GAME, turn off our play the game mode
-		SetPlayTheGame( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME );
+		if ( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_GAME )
+		{
+			m_gameMode = MODE_PLAY_THE_GAME;
+		}
+		else if ( pEditorModeChangedData->m_eNewMode == VisEditorManager_cl::EDITORMODE_PLAYING_IN_EDITOR )
+		{
+			m_gameMode = MODE_RUN_IN_EDITOR;
+		}
+		else
+		{
+			m_gameMode = MODE_STOPPED;
+		}
 	}
 	else if (pData->m_pSender == &Vision::Callbacks.OnRenderHook)
 	{
@@ -906,14 +915,6 @@ void Toolset2dManager::RegisterLua()
 		{
 			Vision::Error.AddReportEntry(VIS_REPORTENTRY_WARNING, "Toolset2D", "Unable to create Lua Sprite Module, lua_State is NULL!", "");
 		}
-	}
-}
-
-void Toolset2dManager::SetPlayTheGame(bool bStatus)
-{
-	if (m_bPlayingTheGame != bStatus)
-	{
-		m_bPlayingTheGame = bStatus;
 	}
 }
 

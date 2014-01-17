@@ -12,7 +12,7 @@ end
 
 function OnAfterSceneLoaded(self)
 	self.playerInputMap = Input:CreateMap("InputMap")
-	self.playerInputMap:MapTrigger("KeyUp", "KEYBOARD", "CT_KB_SPACE")
+	self.playerInputMap:MapTrigger("Up", "KEYBOARD", "CT_KB_SPACE")
 
 	local w, h = Screen:GetViewportSize()
 
@@ -73,7 +73,7 @@ function OnThink(self)
 	self.position = self.position + dt * 360
 
 	if not self.IsJumping then
-		if IsTriggered(self, "KeyUp") and self.IsJumping == false then
+		if IsTriggered(self, "Up") and self.IsJumping == false then
 			self.IsJumping = true;
 			theta = 0
 		end 

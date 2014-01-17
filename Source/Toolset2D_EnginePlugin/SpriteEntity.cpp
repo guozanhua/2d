@@ -697,7 +697,7 @@ void Sprite::Update(const hkvAlignedBBox *viewportBoundingBox)
 
 #if USE_HAVOK_PHYSICS_2D
 	const SpriteCell *cell = GetCurrentCell();
-	if (Toolset2dManager::Instance()->IsPlayingGame() && m_simulate && cell != NULL)
+	if (Toolset2dManager::Instance()->InSimulationMode() && m_simulate && cell != NULL)
 	{
 		if (cell->index < m_rigidBodies.GetSize())
 		{
@@ -777,8 +777,6 @@ void Sprite::Update(const hkvAlignedBBox *viewportBoundingBox)
 		}
 		else
 		{
-			const hkvVec2 &scale = GetScaling().getAsVec2();
-
 			topLeft = cell->pivot;
 			bottomRight.x = topLeft.x + cell->width;
 			bottomRight.y = topLeft.y + cell->height;
@@ -797,14 +795,14 @@ void Sprite::Update(const hkvAlignedBBox *viewportBoundingBox)
 			hkvVec2 bottomLeft = bottomRight;
 			bottomLeft.x -= ww;
 
-			// generate a matrix that rotates around Z
-			
-			// rotate all the corners
-			topLeft = (rotation * topLeft.getAsVec3(0.0f)).getAsVec2().compMul(scale);
-			bottomRight = (rotation * bottomRight.getAsVec3(0.0f)).getAsVec2().compMul(scale);
-			topRight = (rotation * topRight.getAsVec3(0.0f)).getAsVec2().compMul(scale);
-			bottomLeft = (rotation * bottomLeft.getAsVec3(0.0f)).getAsVec2().compMul(scale);
-			
+			const hkvVec2 &scale = GetScaling().getAsVec2();
+
+			// apply rotation and score on all corners
+			topLeft = (rotation * topLeft.compMul(scale).getAsVec3(0.0f)).getAsVec2();
+			bottomRight = (rotation * bottomRight.compMul(scale).getAsVec3(0.0f)).getAsVec2();
+			topRight = (rotation * topRight.compMul(scale).getAsVec3(0.0f)).getAsVec2();
+			bottomLeft = (rotation * bottomLeft.compMul(scale).getAsVec3(0.0f)).getAsVec2();
+						
 			// offset it back to the corner and final position
 			topLeft += worldPosition + offset;
 			bottomRight += worldPosition + offset;

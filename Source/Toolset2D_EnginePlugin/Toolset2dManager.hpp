@@ -19,6 +19,13 @@ enum ConstraintMode
 	SET_POSITION_ROTATION,
 };
 
+enum GameMode
+{
+	MODE_STOPPED,
+	MODE_PLAY_THE_GAME,
+	MODE_RUN_IN_EDITOR
+};
+
 class SpriteCell
 {
 public:
@@ -107,7 +114,7 @@ public:
 
 	TOOLSET_2D_IMPEXP VOVERRIDE void Step( float dt );
 
-	TOOLSET_2D_IMPEXP bool IsPlayingGame() const;
+	TOOLSET_2D_IMPEXP bool InSimulationMode() const;
 
 	//----- Statics
 
@@ -134,8 +141,6 @@ public:
 #endif
 
 protected:
-	void SetPlayTheGame(bool bStatus);
-
 	bool CreateLuaCast(VScriptCreateStackProxyObject *scriptData, const char *typeName, VType *type);
 
 	void InitializeHavokPhysics();
@@ -150,7 +155,7 @@ private:
 
 	Camera2D *m_camera;
 
-	bool m_bPlayingTheGame;
+	GameMode m_gameMode;
 
 #if USE_HAVOK_PHYSICS_2D
 	hkpWorld *m_world;

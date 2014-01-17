@@ -23,7 +23,7 @@ namespace Toolset2D
         public HotSpot2D(SpriteShape owner, float fSize)
             : base(owner, null, VisionColors.White, HotSpotBase.PickType.Circle, fSize)
         {
-            _fSize = fSize; //  *EditorManager.Settings.GlobalUnitScaling; no unit scaling since 2D
+            _fSize = fSize;
         }
 
         #endregion
@@ -93,7 +93,7 @@ namespace Toolset2D
         {
             Vector2F mouse = new Vector2F(fMouseX, fMouseY);
             float distance = (mouse - Sprite.CenterPosition).GetLengthSqr();
-            return (distance < 25);
+            return ( distance < (_fSize * _fSize) );
         }
 
         public override void OnDragBegin(VisionViewBase view)
@@ -118,7 +118,6 @@ namespace Toolset2D
         }
 
         #endregion
-
     }
 }
 

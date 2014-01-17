@@ -21,22 +21,22 @@ function OnAfterSceneLoaded(self)
 	self.playerInputMap = Input:CreateMap("InputMap")
  
 	-- Setup the WASD keyboard playerInputMap
-	self.playerInputMap:MapTrigger("KeyLeft", "KEYBOARD", "CT_KB_A")
-	self.playerInputMap:MapTrigger("KeyRight", "KEYBOARD", "CT_KB_D")
-	self.playerInputMap:MapTrigger("KeyUp", "KEYBOARD", "CT_KB_W")
-	self.playerInputMap:MapTrigger("KeyDown", "KEYBOARD", "CT_KB_S")
-	self.playerInputMap:MapTrigger("KeyFire", "KEYBOARD", "CT_KB_SPACE")
+	self.playerInputMap:MapTrigger("Left", "KEYBOARD", "CT_KB_A")
+	self.playerInputMap:MapTrigger("Right", "KEYBOARD", "CT_KB_D")
+	self.playerInputMap:MapTrigger("Up", "KEYBOARD", "CT_KB_W")
+	self.playerInputMap:MapTrigger("Down", "KEYBOARD", "CT_KB_S")
+	self.playerInputMap:MapTrigger("Fire", "KEYBOARD", "CT_KB_SPACE")
 
 	-- Create a virtual thumbstick then setup playerInputMap for it
 	if Application:GetPlatformName() ~= "WIN32DX9" and
 	   Application:GetPlatformName() ~= "WIN32DX11" then	
 		Input:CreateVirtualThumbStick()
-		self.playerInputMap:MapTriggerAxis("TouchLeft", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_LEFT", kDeadzone)
-		self.playerInputMap:MapTriggerAxis("TouchRight", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
-		self.playerInputMap:MapTriggerAxis("TouchUp", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
-		self.playerInputMap:MapTriggerAxis("TouchDown", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("Left", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_LEFT", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("Right", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_RIGHT", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("Up", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_UP", kDeadzone)
+		self.playerInputMap:MapTriggerAxis("Down", "VirtualThumbStick", "CT_PAD_LEFT_THUMB_STICK_DOWN", kDeadzone)
 		self.playerInputMap:MapTrigger(
-			"TouchFire",
+			"Fire",
 			{ (G.screenWidth * 0.5), (G.screenHeight * 0.5), G.screenWidth, G.screenHeight },
 			"CT_TOUCH_ANY")
 	end
@@ -70,23 +70,23 @@ function OnThink(self)
 	local hasMovementY = false
 	local hasMovementX = false
 	
-	if IsTriggered(self, "KeyUp") or IsTriggered(self, "TouchUp") then
+	if IsTriggered(self, "Up") then
 		self:IncPosition(0, invMoveSpeed, 0)
 		hasMovementY = true
 	end
 
-	if IsTriggered(self, "KeyDown") or IsTriggered(self, "TouchDown") then
+	if IsTriggered(self, "Down") then
 		self:IncPosition(0, moveSpeed, 0)
 		hasMovementY = true
 	end
 	
-	if IsTriggered(self, "KeyLeft") or IsTriggered(self, "TouchLeft") then
+	if IsTriggered(self, "Left") then
 		self:IncPosition(invMoveSpeed, 0, 0)
 		self.roll = self.roll - rollSpeed
 		hasMovementX = true
 	end
 
-	if IsTriggered(self, "KeyRight") or IsTriggered(self, "TouchRight") then
+	if IsTriggered(self, "Right") then
 		self:IncPosition(moveSpeed, 0, 0)
 		self.roll = self.roll + rollSpeed
 		hasMovementX = true
@@ -118,8 +118,7 @@ function OnThink(self)
  
 	self:SetFramePercent(math.abs(self.roll))
 	
-	if (IsTriggered(self, "KeyFire") or IsTriggered(self, "TouchFire")) and
-	   not IsTriggered(self, "TouchUp") then
+	if IsTriggered(self, "Fire") and (not IsTriggered(self, "Up")) then
 		FireWeapon(self)
 	end
 end

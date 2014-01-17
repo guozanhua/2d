@@ -28,6 +28,8 @@ namespace Toolset2D_Managed
 		VOVERRIDE void SetOrientation(float yaw,float pitch,float roll) override;
 		VOVERRIDE bool GetOrientation(Vector3F %orientation) override;
 		VOVERRIDE void SetScaling(float x, float y, float z) override;
+		VOVERRIDE float GetScaleX();
+		VOVERRIDE float GetScaleY();
 		VOVERRIDE bool GetLocalBoundingBox(BoundingBox^ %bbox) override;
 		VOVERRIDE void TraceShape(Shape3D ^ownerShape, Vector3F rayStart,Vector3F rayEnd, ShapeTraceResult^ %result) override;
 		VOVERRIDE bool OnExport(SceneExportInfo ^info) override;

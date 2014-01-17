@@ -100,6 +100,26 @@ namespace Toolset2D_Managed
 		}
 	}
 
+	float EngineInstanceSprite::GetScaleX()
+	{
+		float scale = 1.f;
+		if (GetSpriteEntity())
+		{
+			scale = GetSpriteEntity()->GetScaling().x;
+		}
+		return scale;
+	}
+
+	float EngineInstanceSprite::GetScaleY()
+	{
+		float scale = 1.f;
+		if (GetSpriteEntity())
+		{
+			scale = GetSpriteEntity()->GetScaling().y;
+		}
+		return scale;
+	}
+
 	void EngineInstanceSprite::RenderShape(VisionViewBase^ /*view*/, CSharpFramework::Shapes::ShapeRenderMode mode)
 	{
 		Sprite *sprite = GetSpriteEntity();
