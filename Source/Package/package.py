@@ -56,7 +56,7 @@ PACKAGE_PATHS = {"README.md": ("Tools/%s/README.md" % TOOL_NAME),
 
 # Define the command line options. Need to put this after getDatestamp
 # is defined.
-PACKAGE = "Bin/ProjectAnarchy_Toolset2D_%s.zip" % getDatestamp()
+PACKAGE = "Bin/_packages/ProjectAnarchy_Toolset2D_%s.zip" % getDatestamp()
 COMMAND_LINE_OPTIONS = (
     (('-p', '--pkg-path'), {'action': 'store',
                             'dest': 'packagePath',
