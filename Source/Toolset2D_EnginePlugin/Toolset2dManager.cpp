@@ -105,6 +105,11 @@ void SpriteData::Cleanup()
 
 bool SpriteData::GenerateConvexHull()
 {
+	if ( spriteSheetTexture == NULL || !spriteSheetTexture->HasDeviceHandle() )
+	{
+		return false;
+	}
+
 	bool success = false;
 
 #if defined(WIN32) && USE_HAVOK_PHYSICS_2D
@@ -113,9 +118,17 @@ bool SpriteData::GenerateConvexHull()
 	const int iMipLevel = 0;
 	const int iLockFlags = D3DLOCK_READONLY;
 
+	D3DSURFACE_DESC surfaceDesc;
+	HRESULT result = pTexture2D->GetLevelDesc(iMipLevel, &surfaceDesc);
+
+	if (result != S_OK)
+	{
+		return false;
+	}
+
 	D3DLOCKED_RECT destRect;
 	RECT lockRect = { 0, 0, spriteSheetTexture->GetTextureWidth(), spriteSheetTexture->GetTextureHeight() };
-	HRESULT result = pTexture2D->LockRect(iMipLevel, &destRect, NULL, spriteSheetTexture->GetD3D9LockFlags(iLockFlags));
+	result = pTexture2D->LockRect(iMipLevel, &destRect, NULL, spriteSheetTexture->GetD3D9LockFlags(iLockFlags));
 
 	if (result == S_OK)
 	{

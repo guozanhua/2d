@@ -5,6 +5,15 @@
         }
     },
     "TransformTemplates": {
+        "Animated Texture": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
         "Prefab": {
             "Default": {
                 "pcdx9": {
@@ -15,6 +24,15 @@
             }
         },
         "Animation": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Particle": {
             "Default": {
                 "pcdx9": {
                     "None": {
@@ -36,6 +54,24 @@
             "Default": {
                 "pcdx9": {
                     "None": {
+
+                    }
+                }
+            }
+        },
+        "Script": {
+            "Default": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Havok Tagfile": {
+            "Default": {
+                "AllProfiles": {
+                    "TagfileTransformationRule": {
 
                     }
                 }
@@ -73,6 +109,15 @@
             "Default": {
                 "pcdx9": {
                     "None": {
+
+                    }
+                }
+            }
+        },
+        "FBX": {
+            "Default": {
+                "AllProfiles": {
+                    "FbxToTagfileTransformationRule": {
 
                     }
                 }

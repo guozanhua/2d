@@ -10,8 +10,15 @@ set VCVARS32="%VS10_BIN%\vcvars32.bat"
 
 if not exist %VCVARS32% goto NO_VS10
 
+set PACKAGE_TOOL=%VISION_SDK%\Bin\win32_vs2010_anarchy\dev_dll\DX9\PackageTool.exe
+set PROJECT=%~dp0\..\..\..\Assets\Sample2D.project
+
+%PACKAGE_TOOL% -project="%PROJECT%" -profile="pcdx9,ios,android" -variant="DefaultWithPVR" -export -close
+
 set SOLUTION=%~dp0\..\..\Workspace\2D_Toolset_Win32_VS2010_DX9_All.sln
 set PACKAGE=%~dp0\package.py
+
+goto END
 
 :: Setup the Visual Studio environment variables
 call %VCVARS32%

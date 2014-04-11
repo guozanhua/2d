@@ -59,6 +59,7 @@ Remaining Work
 
 ###Beta
 
+- Example on how to use the 2D camera
 - Optimized rendering that uses actual mesh buffers
   - Already have a working version of this internally, but need to port it over
 - Finalize Havok Physics integration and convert to a component
@@ -71,12 +72,16 @@ Remaining Work
 
 ###Wishlist
 
+- Support multiple physics worlds
+- Support tilemaps (e.g. [Tiled][10])
 - Add custom shader support for Sprite entity
 - Add a broadphase / sweep-and-prune implementation for collision detection
 - Add support for using particle effects (as a child of the Sprite entity)
 - Add pixel-perfect collision detection
 - Add a transform rule that automatically creates the sprite sheet
 - Add support for Box2D
+- Add support for 3rd party animation tool like [Spine][9]
+- Spline mesh editing tools as seen in [Rayman Legends][11]
 
 [1]: http://renderhjs.net/shoebox/
 [2]: http://www.polycount.com/forum/showthread.php?t=91554&highlight=shoebox
@@ -86,3 +91,6 @@ Remaining Work
 [6]: http://www.visualstudio.com/
 [7]: http://flukedude.com/theimpossiblegame/
 [8]: http://www.hedfiles.net/
+[9]: http://esotericsoftware.com/
+[10]: http://www.mapeditor.org/
+[11]: https://www.youtube.com/watch?v=y-chi097uV4

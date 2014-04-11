@@ -12,4 +12,7 @@
     <ClInclude Include="EngineInstanceSprite.hpp" />
     <ClInclude Include="EngineInstanceCamera2d.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\toolset2d_editorplugin\toolset2d_plugin.cs" />
+  </ItemGroup>
 </Project>

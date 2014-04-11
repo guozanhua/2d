@@ -59,6 +59,14 @@ void Camera2D::Clear()
 	m_transform = hkvVec4(1.f, 1.f, 0.f, 0.f);
 }
 
+void Camera2D::SetTransform(const hkvVec4 *transform)
+{
+	if (transform != NULL)
+	{
+		m_transform = (*transform);
+	}
+}
+
 const hkvVec4 *Camera2D::GetTransform() const
 {
 	return &m_transform;

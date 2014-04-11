@@ -1,10 +1,214 @@
 {
     "Configuration": {
         "Name": "Assets",
-        "FormatVersion": 2,
-        "LastEditTime": 1379700010234661700
+        "FormatVersion": 4,
+        "LastEditTime": 1393032290374380500
     },
     "Assets": {
+        "Scripts/EnemyControl.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 368438633,
+                "TimeStamp": 1387403584860043800,
+                "LastEditTime": 1393032297322847100
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Scripts/ExplosionControl.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 192448247,
+                "TimeStamp": 1387403584862046000,
+                "LastEditTime": 1393032297324348900
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Scripts/GameControl.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 2294508629,
+                "TimeStamp": 1391475501717268500,
+                "LastEditTime": 1393032297326838800
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Scripts/Impossible_PlayerControl.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 4130695050,
+                "TimeStamp": 1389918212606886900,
+                "LastEditTime": 1393032297328340200
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Scripts/PlayerShipControl.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 150376972,
+                "TimeStamp": 1391476731606121400,
+                "LastEditTime": 1393032297330841800
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
+        "Scripts/TestSpriteMove.lua": {
+            "AssetType": "Script",
+            "Common": {
+                "Tags": "__NEW_ASSET__",
+                "Dependencies": [
+
+                ],
+                "Variants": [
+
+                ]
+            },
+            "File": {
+                "Hash": 556864448,
+                "TimeStamp": 1387403584871063200,
+                "LastEditTime": 1393032297332343200
+            },
+            "Transformations": {
+                "pcdx9": {
+                    "None": {
+
+                    }
+                },
+                "ios": {
+                    "None": {
+
+                    }
+                },
+                "android": {
+                    "None": {
+
+                    }
+                }
+            }
+        },
         "Textures/crate.png": {
             "AssetType": "Texture",
             "Common": {
@@ -19,7 +223,7 @@
             "File": {
                 "Hash": 675881074,
                 "TimeStamp": 1387403585055197800,
-                "LastEditTime": 1387661694649730000
+                "LastEditTime": 1393032294233539500
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -46,7 +250,7 @@
             "File": {
                 "Hash": 884617263,
                 "TimeStamp": 1387403585056198400,
-                "LastEditTime": 1387661694697764300
+                "LastEditTime": 1393032295092151800
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -73,7 +277,7 @@
             "File": {
                 "Hash": 3707117848,
                 "TimeStamp": 1387403585058198700,
-                "LastEditTime": 1387661694747800600
+                "LastEditTime": 1393032295159210100
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -100,7 +304,7 @@
             "File": {
                 "Hash": 2388659172,
                 "TimeStamp": 1387403585058198700,
-                "LastEditTime": 1387661694802840400
+                "LastEditTime": 1393032295253254000
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -127,7 +331,7 @@
             "File": {
                 "Hash": 2846252400,
                 "TimeStamp": 1387403585059200700,
-                "LastEditTime": 1387661694835862600
+                "LastEditTime": 1393032295282275100
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -154,7 +358,7 @@
             "File": {
                 "Hash": 3629514254,
                 "TimeStamp": 1387403584890062200,
-                "LastEditTime": 1387661694978965800
+                "LastEditTime": 1393032295532460900
             },
             "Texture": {
                 "FileFormat": "TGA",
@@ -181,7 +385,7 @@
             "File": {
                 "Hash": 2880460491,
                 "TimeStamp": 1387403584910089900,
-                "LastEditTime": 1387661695366439400
+                "LastEditTime": 1393032295681573800
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -208,7 +412,7 @@
             "File": {
                 "Hash": 1580412404,
                 "TimeStamp": 1387403584926097300,
-                "LastEditTime": 1387661695612612600
+                "LastEditTime": 1393032295913797500
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -235,7 +439,7 @@
             "File": {
                 "Hash": 2352928804,
                 "TimeStamp": 1387403584967120600,
-                "LastEditTime": 1387661696019890600
+                "LastEditTime": 1393032296278055700
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -262,7 +466,7 @@
             "File": {
                 "Hash": 2692573523,
                 "TimeStamp": 1387403585005134500,
-                "LastEditTime": 1387661696556287000
+                "LastEditTime": 1393032296729891800
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -289,7 +493,7 @@
             "File": {
                 "Hash": 1964070483,
                 "TimeStamp": 1387403585041187800,
-                "LastEditTime": 1387661696946552400
+                "LastEditTime": 1393032297064159400
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -316,7 +520,7 @@
             "File": {
                 "Hash": 1664956884,
                 "TimeStamp": 1387403585060201300,
-                "LastEditTime": 1387661695027012200
+                "LastEditTime": 1393032297178739800
             },
             "Texture": {
                 "FileFormat": "PNG",
@@ -343,7 +547,7 @@
             "File": {
                 "Hash": 465688833,
                 "TimeStamp": 1387403585061201900,
-                "LastEditTime": 1387661695123068300
+                "LastEditTime": 1393032297242286800
             },
             "Texture": {
                 "FileFormat": "PNG",

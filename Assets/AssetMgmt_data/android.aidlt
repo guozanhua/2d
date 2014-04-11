@@ -1,3 +1,9 @@
+scripts/enemycontrol.lua	Scripts/EnemyControl.lua	
+scripts/explosioncontrol.lua	Scripts/ExplosionControl.lua	
+scripts/gamecontrol.lua	Scripts/GameControl.lua	
+scripts/impossible_playercontrol.lua	Scripts/Impossible_PlayerControl.lua	
+scripts/playershipcontrol.lua	Scripts/PlayerShipControl.lua	
+scripts/testspritemove.lua	Scripts/TestSpriteMove.lua	
 textures/crate.png#android-default	AssetMgmt_data/transformed/crate2jl90gcjwr62p.etc	sRGB=false
 textures/crate.png#android-pvr	AssetMgmt_data/transformed/crate2jl90gcjwr62p.pvr	sRGB=false
 textures/impossible_enemy.png#android-default	AssetMgmt_data/transformed/impossible_enemy39gkj5#jwr62p.rgba	sRGB=false

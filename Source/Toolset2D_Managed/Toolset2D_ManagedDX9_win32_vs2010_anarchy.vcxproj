@@ -248,6 +248,9 @@
     <ClInclude Include="EngineInstanceSprite.hpp" />
     <ClInclude Include="Toolset2D_ManagedPCH.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\toolset2d_editorplugin\toolset2d_plugin.cs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|win32'">
     <RunCodeAnalysis>false</RunCodeAnalysis>

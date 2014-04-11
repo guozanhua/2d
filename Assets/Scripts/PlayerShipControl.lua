@@ -26,6 +26,7 @@ function OnAfterSceneLoaded(self)
 	self.playerInputMap:MapTrigger("Up", "KEYBOARD", "CT_KB_W")
 	self.playerInputMap:MapTrigger("Down", "KEYBOARD", "CT_KB_S")
 	self.playerInputMap:MapTrigger("Fire", "KEYBOARD", "CT_KB_SPACE")
+	self.playerInputMap:MapTrigger("Zoom", "KEYBOARD", "CT_KB_Z")
 
 	-- Create a virtual thumbstick then setup playerInputMap for it
 	if Application:GetPlatformName() ~= "WIN32DX9" and
@@ -49,6 +50,7 @@ function OnAfterSceneLoaded(self)
 	
 	self.roll = 0
 	self.missileFireTimer = 0
+	self.zoom = 0
 end
 
 function OnBeforeSceneUnloaded(self)
@@ -120,6 +122,24 @@ function OnThink(self)
 	
 	if IsTriggered(self, "Fire") and (not IsTriggered(self, "Up")) then
 		FireWeapon(self)
+	end
+	
+	if IsTriggered(self, "Zoom") then
+		self.zoom = self.zoom + dt
+	else
+		self.zoom = self.zoom - dt
+	end
+	
+	if self.zoom > 1 then
+		self.zoom = 1
+	elseif self.zoom < 0 then
+		self.zoom = 0
+	end
+		
+	local camera = Toolset2D:GetCamera()
+	if camera ~= nil then
+		local z = 1.0 - (self.zoom * 0.3)
+		camera:SetTransform( Vision.hkvVec4(z, z, 0.0, 0.0) )
 	end
 end
 

@@ -1676,20 +1676,21 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_hkvAlignedBBox swig_types[17]
 #define SWIGTYPE_p_hkvMat3 swig_types[18]
 #define SWIGTYPE_p_hkvVec3 swig_types[19]
-#define SWIGTYPE_p_int swig_types[20]
-#define SWIGTYPE_p_long swig_types[21]
-#define SWIGTYPE_p_p_char swig_types[22]
-#define SWIGTYPE_p_p_unsigned_long swig_types[23]
-#define SWIGTYPE_p_short swig_types[24]
-#define SWIGTYPE_p_signed___int64 swig_types[25]
-#define SWIGTYPE_p_signed_char swig_types[26]
-#define SWIGTYPE_p_unsigned___int64 swig_types[27]
-#define SWIGTYPE_p_unsigned_char swig_types[28]
-#define SWIGTYPE_p_unsigned_int swig_types[29]
-#define SWIGTYPE_p_unsigned_long swig_types[30]
-#define SWIGTYPE_p_unsigned_short swig_types[31]
-static swig_type_info *swig_types[33];
-static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
+#define SWIGTYPE_p_hkvVec4 swig_types[20]
+#define SWIGTYPE_p_int swig_types[21]
+#define SWIGTYPE_p_long swig_types[22]
+#define SWIGTYPE_p_p_char swig_types[23]
+#define SWIGTYPE_p_p_unsigned_long swig_types[24]
+#define SWIGTYPE_p_short swig_types[25]
+#define SWIGTYPE_p_signed___int64 swig_types[26]
+#define SWIGTYPE_p_signed_char swig_types[27]
+#define SWIGTYPE_p_unsigned___int64 swig_types[28]
+#define SWIGTYPE_p_unsigned_char swig_types[29]
+#define SWIGTYPE_p_unsigned_int swig_types[30]
+#define SWIGTYPE_p_unsigned_long swig_types[31]
+#define SWIGTYPE_p_unsigned_short swig_types[32]
+static swig_type_info *swig_types[34];
+static swig_module_info swig_module = {swig_types, 33, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -11027,6 +11028,62 @@ static swig_lua_class *swig_Sprite_bases[] = {0,0};
 static const char *swig_Sprite_base_names[] = {"VisBaseEntity_cl *",0};
 static swig_lua_class _wrap_class_Sprite = { "Sprite", &SWIGTYPE_p_Sprite,0,0, swig_Sprite_methods, swig_Sprite_attributes, swig_Sprite_bases, swig_Sprite_base_names };
 
+static int _wrap_Camera2D_GetTransform(lua_State* L) {
+  int SWIG_arg = 0;
+  Camera2D *arg1 = (Camera2D *) 0 ;
+  hkvVec4 *result = 0 ;
+  
+  SWIG_check_num_args("GetTransform",1,1)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("GetTransform",1,"Camera2D const *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTransform",1,"Camera2D const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Camera2D,0))){
+    SWIG_fail_ptr("Camera2D_GetTransform",1,SWIGTYPE_p_Camera2D);
+  }
+  
+  result = (hkvVec4 *)((Camera2D const *)arg1)->GetTransform();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_hkvVec4,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Camera2D_SetTransform(lua_State* L) {
+  int SWIG_arg = 0;
+  Camera2D *arg1 = (Camera2D *) 0 ;
+  hkvVec4 *arg2 = (hkvVec4 *) 0 ;
+  
+  SWIG_check_num_args("SetTransform",2,2)
+  if(lua_isnil(L, 1)) SWIG_fail_arg("SetTransform",1,"Camera2D *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTransform",1,"Camera2D *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTransform",2,"hkvVec4 const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Camera2D,0))){
+    SWIG_fail_ptr("Camera2D_SetTransform",1,SWIGTYPE_p_Camera2D);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_hkvVec4,0))){
+    SWIG_fail_ptr("Camera2D_SetTransform",2,SWIGTYPE_p_hkvVec4);
+  }
+  
+  (arg1)->SetTransform((hkvVec4 const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_Camera2D_Cast(lua_State* L) {
   int SWIG_arg = 0;
   VTypedObject *arg1 = (VTypedObject *) 0 ;
@@ -11052,6 +11109,8 @@ fail:
 
 
 static swig_lua_method swig_Camera2D_methods[] = {
+    {"GetTransform", _wrap_Camera2D_GetTransform}, 
+    {"SetTransform", _wrap_Camera2D_SetTransform}, 
     {0,0}
 };
 static swig_lua_attribute swig_Camera2D_attributes[] = {
@@ -11463,6 +11522,7 @@ static swig_type_info _swigt__p_float = {"_p_float", "FLOAT *|float *", 0, 0, (v
 static swig_type_info _swigt__p_hkvAlignedBBox = {"_p_hkvAlignedBBox", "hkvAlignedBBox *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_hkvMat3 = {"_p_hkvMat3", "hkvMat3 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_hkvVec3 = {"_p_hkvVec3", "hkvVec3 *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_hkvVec4 = {"_p_hkvVec4", "hkvVec4 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "BOOL *|INT32 *|VBool *|int *|INT *|INT_PTR *|LONG32 *|SINT *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long = {"_p_long", "SHANDLE_PTR *|LONG_PTR *|LONG *|HRESULT *|RETVAL *|long *|SLONG *|SSIZE_T *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_char = {"_p_p_char", "PTCH *|PCTSTR *|LPCTSTR *|LPTCH *|PUTSTR *|LPUTSTR *|PCUTSTR *|LPCUTSTR *|char **|PTSTR *|LPTSTR *", 0, 0, (void*)0, 0};
@@ -11497,6 +11557,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_hkvAlignedBBox,
   &_swigt__p_hkvMat3,
   &_swigt__p_hkvVec3,
+  &_swigt__p_hkvVec4,
   &_swigt__p_int,
   &_swigt__p_long,
   &_swigt__p_p_char,
@@ -11531,6 +11592,7 @@ static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 
 static swig_cast_info _swigc__p_hkvAlignedBBox[] = {  {&_swigt__p_hkvAlignedBBox, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_hkvMat3[] = {  {&_swigt__p_hkvMat3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_hkvVec3[] = {  {&_swigt__p_hkvVec3, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_hkvVec4[] = {  {&_swigt__p_hkvVec4, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long[] = {  {&_swigt__p_long, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -11565,6 +11627,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_hkvAlignedBBox,
   _swigc__p_hkvMat3,
   _swigc__p_hkvVec3,
+  _swigc__p_hkvVec4,
   _swigc__p_int,
   _swigc__p_long,
   _swigc__p_p_char,

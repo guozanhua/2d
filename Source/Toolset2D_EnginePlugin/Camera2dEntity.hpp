@@ -27,6 +27,7 @@ public:
 
 	TOOLSET_2D_IMPEXP void Render(IVRender2DInterface *pRender, VSimpleRenderState_t& state);
 
+	TOOLSET_2D_IMPEXP void SetTransform(const hkvVec4 *transform);
 	TOOLSET_2D_IMPEXP const hkvVec4 *GetTransform() const;
 
 protected:

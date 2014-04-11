@@ -10,7 +10,11 @@
 class Camera2D : public VisBaseEntity_cl
 {
 public:
-	%extend{
+	const hkvVec4 *GetTransform() const;
+	void SetTransform(const hkvVec4 *transform);
+
+	%extend
+	{
 		VSWIG_CREATE_CAST(Camera2D)
 	}
 };

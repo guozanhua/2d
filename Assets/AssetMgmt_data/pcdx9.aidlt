@@ -1,3 +1,9 @@
+scripts/enemycontrol.lua	Scripts/EnemyControl.lua	
+scripts/explosioncontrol.lua	Scripts/ExplosionControl.lua	
+scripts/gamecontrol.lua	Scripts/GameControl.lua	
+scripts/impossible_playercontrol.lua	Scripts/Impossible_PlayerControl.lua	
+scripts/playershipcontrol.lua	Scripts/PlayerShipControl.lua	
+scripts/testspritemove.lua	Scripts/TestSpriteMove.lua	
 textures/crate.png	AssetMgmt_data/transformed/crate2jl90g8clgdtc.dds	sRGB=false
 textures/impossible_enemy.png	AssetMgmt_data/transformed/impossible_enemy39gkj5xclgdtc.dds	sRGB=false
 textures/impossible_player.png	AssetMgmt_data/transformed/impossible_playerftyk130clgdtc.dds	sRGB=false

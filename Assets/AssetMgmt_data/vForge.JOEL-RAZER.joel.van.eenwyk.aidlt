@@ -1,13 +1,19 @@
-textures/crate.png	textures/crate.png	sRGB=false
-textures/impossible_enemy.png	textures/impossible_enemy.png	sRGB=false
-textures/impossible_player.png	textures/impossible_player.png	sRGB=false
-textures/missile.png	textures/missile.png	sRGB=false
-textures/missile_evil.png	textures/missile_evil.png	sRGB=false
-textures/scrollingbgspace.tga	textures/scrollingbgspace.tga	sRGB=false
-textures/spritesheets/enemyship.png	textures/spritesheets/enemyship.png	sRGB=false
-textures/spritesheets/enemyshipv2.png	textures/spritesheets/enemyshipv2.png	sRGB=false
-textures/spritesheets/explosion_v1.png	textures/spritesheets/explosion_v1.png	sRGB=false
-textures/spritesheets/explosion_v2.png	textures/spritesheets/explosion_v2.png	sRGB=false
-textures/spritesheets/heroship.png	textures/spritesheets/heroship.png	sRGB=false
-textures/starfield.png	textures/starfield.png	sRGB=false
-textures/starfieldclose.png	textures/starfieldclose.png	sRGB=false
+textures/crate.png	Textures/crate.png	sRGB=false
+textures/impossible_enemy.png	Textures/impossible_enemy.png	sRGB=false
+textures/impossible_player.png	Textures/impossible_player.png	sRGB=false
+textures/missile.png	Textures/missile.png	sRGB=false
+textures/missile_evil.png	Textures/missile_evil.png	sRGB=false
+textures/scrollingbgspace.tga	Textures/ScrollingBGSpace.tga	sRGB=false
+textures/spritesheets/enemyship.png	Textures/SpriteSheets/EnemyShip.png	sRGB=false
+textures/spritesheets/enemyshipv2.png	Textures/SpriteSheets/EnemyShipV2.png	sRGB=false
+textures/spritesheets/explosion_v1.png	Textures/SpriteSheets/Explosion_v1.png	sRGB=false
+textures/spritesheets/explosion_v2.png	Textures/SpriteSheets/Explosion_v2.png	sRGB=false
+textures/spritesheets/heroship.png	Textures/SpriteSheets/HeroShip.png	sRGB=false
+textures/starfield.png	Textures/starfield.png	sRGB=false
+textures/starfieldclose.png	Textures/starfieldClose.png	sRGB=false
+scripts/enemycontrol.lua	Scripts/EnemyControl.lua	
+scripts/explosioncontrol.lua	Scripts/ExplosionControl.lua	
+scripts/gamecontrol.lua	Scripts/GameControl.lua	
+scripts/impossible_playercontrol.lua	Scripts/Impossible_PlayerControl.lua	
+scripts/playershipcontrol.lua	Scripts/PlayerShipControl.lua	
+scripts/testspritemove.lua	Scripts/TestSpriteMove.lua	
